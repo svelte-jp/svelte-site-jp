@@ -1,10 +1,16 @@
+
+# Svelte Site JP
+
+[Svelte](https://github.com/sveltejs/svelte)の公式ページ[svelte.dev](https://svelte.dev/)を日本語に翻訳するプロジェクトです。
+
+
 ## Running locally
 
 Set up the site sub-project:
 
 ```bash
-git clone https://github.com/sveltejs/svelte.git
-cd site
+git clone https://github.com/tomoam/svelte-site-jp.git
+cd svelte-site-jp
 npm ci
 npm run update
 npm run dev
@@ -12,24 +18,6 @@ npm run dev
 
 and navigate to [localhost:3000](http://localhost:3000).
 
-## Running using the local copy of Svelte
-
-By default, the REPL will fetch the most recent version of Svelte from https://unpkg.com/svelte. When running the site locally, you can also use your local copy of Svelte.
-
-To produce the proper browser-compatible UMD build of the compiler, you will need to run `npm run build` (or `npm run dev`) in the root of this repository with the `PUBLISH` environment variable set to any non-empty string:
-
-```bash
-git clone https://github.com/sveltejs/svelte.git
-cd svelte
-npm ci
-PUBLISH=1 npm run build
-cd site
-npm ci
-npm run update
-npm run dev
-```
-
-Then visit the REPL at [localhost:3000/repl?version=local](http://localhost:3000/repl?version=local). Please note that the local REPL only works with `npm run dev` and not when building the site for production usage.
 
 ## REPL GitHub integration
 
