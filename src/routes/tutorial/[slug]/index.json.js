@@ -26,7 +26,14 @@ function get_tutorial(slug) {
 
 	const dir = `content/tutorial/${found.section}/${found.chapter}`;
 
-	const markdown = fs.readFileSync(`${dir}/text.md`, 'utf-8');
+	//const markdown = fs.readFileSync(`${dir}/text.md`, 'utf-8');
+	// TODO:もっといい実装を考える
+	let markdown;
+	try {
+		markdown = fs.readFileSync(`${dir}/text.ja.md`, 'utf-8');
+	} catch (err) {
+		markdown = fs.readFileSync(`${dir}/text.md`, 'utf-8');
+	}
 	const app_a = fs.readdirSync(`${dir}/app-a`);
 	const app_b = fs.existsSync(`${dir}/app-b`) && fs.readdirSync(`${dir}/app-b`);
 

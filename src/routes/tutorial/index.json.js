@@ -24,7 +24,14 @@ function get_sections() {
 					.filter(dir => /^\d+/.test(dir))
 					.map(tutorial => {
 						try {
-							const md = fs.readFileSync(`content/tutorial/${dir}/${tutorial}/text.md`, 'utf-8');
+							// const md = fs.readFileSync(`content/tutorial/${dir}/${tutorial}/text.md`, 'utf-8');
+							// TODO:もっといい実装を考える
+							let md;
+							try {
+								md = fs.readFileSync(`content/tutorial/${dir}/${tutorial}/text.ja.md`, 'utf-8');
+							} catch (err) {
+								md = fs.readFileSync(`content/tutorial/${dir}/${tutorial}/text.md`, 'utf-8');
+							}
 							const { metadata } = extract_frontmatter(md);
 
 							const slug = tutorial.replace(/^\d+-/, '');
