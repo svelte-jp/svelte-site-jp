@@ -3,6 +3,20 @@
 
 [Svelte](https://github.com/sveltejs/svelte)の公式ページ[svelte.dev](https://svelte.dev/)を日本語に翻訳するプロジェクトです。
 
+Svelteは素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。
+
+翻訳はまだまだ進行中ですが、[https://svelte-jp.herokuapp.com/](https://svelte-jp.herokuapp.com/)で閲覧することができます。
+
+進捗は[Milestones](https://github.com/tomoam/svelte-site-jp/milestones)で確認できます。
+
+
+## 貢献(Contribution)について
+
+この翻訳プロジェクトではみなさんの貢献を歓迎しています！
+
+興味がある方は[CONTRIBUTING.md](https://github.com/tomoam/svelte-site-jp/blob/master/CONTRIBUTING.md)をご参照ください。
+
+意見や気が付いたことがあれば、お気軽にIssueを作成ください。もしくは[Svelte日本のDiscord](https://discord.com/invite/YTXq3ZtBbx)の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
 
 ## Running locally
 
