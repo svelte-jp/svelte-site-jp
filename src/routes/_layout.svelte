@@ -93,16 +93,6 @@
 {/if}
 
 <main>
-	<section style="position: absolute; width: 100%; padding: 0 var(--side-nav); max-width: 120rem; left:50%; transform: translate(-50%, 15%); font-size: var(--h6);">
-		<div>
-			<p>
-				{$_('attention.1', { default: 'This is an unofficial site for Japanese translation by volunteers in Svelte Japan.' })}<br/>
-				{$_('attention.2', { default: '(The repository is ' })}<a href="https://github.com/tomoam/svelte-site-jp">{$_('attention.3_link', { default: 'here' })}</a>{$_('attention.4', { default: ')' })}<br/>
-				{$_('attention.5', { default: 'The content on this unofficial site may be out of date or incorrect.' })}<br/>
-				{$_('attention.6', { default: 'If you are looking for the official website, please visit ' })}<a href="https://svelte.dev/">{$_('attention.7_link', { default: 'svelte.dev' })}</a>{$_('attention.8', { default: '.' })}
-			</p>
-		</div>
-	</section>
 	<slot></slot>
 </main>
 
