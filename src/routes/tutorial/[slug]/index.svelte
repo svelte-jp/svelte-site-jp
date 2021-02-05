@@ -1,5 +1,8 @@
 <script context="module">
+	import { waitLocale } from 'svelte-i18n';
+
 	export async function preload({ params }) {
+		waitLocale();
 		const res = await this.fetch(`tutorial/${params.slug}.json`);
 
 		if (!res.ok) {
@@ -15,7 +18,7 @@
 
 <script>
 	import Repl from '@sveltejs/svelte-repl';
-	import { getContext } from 'svelte';
+	import { getContext, onDestroy } from 'svelte';
 
 	import ScreenToggle from '../../../components/ScreenToggle.svelte';
 	import TableOfContents from './_TableOfContents.svelte';
@@ -26,8 +29,24 @@
 		svelteUrl
 	} from '../../../config';
 
+	import { locale } from 'svelte-i18n';
+
 	export let slug;
 	export let chapter;
+
+	const unsbscribe = locale.subscribe(async value => {
+		if (process.browser) {
+			console.log('subscribe');
+			const res = await fetch(`tutorial/${slug}.json`);
+			if (!res.ok) {
+				return this.redirect(301, `tutorial/basics`);
+			}
+
+			chapter = await res.json();
+		}
+	});
+	
+	onDestroy(unsbscribe);
 
 	const { sections } = getContext('tutorial');
 
