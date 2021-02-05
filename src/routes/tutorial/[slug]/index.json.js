@@ -4,6 +4,7 @@ import marked from 'marked';
 import send from '@polka/send';
 import { extract_frontmatter, extract_metadata, link_renderer } from '@sveltejs/site-kit/utils/markdown';
 import { highlight } from '../../../utils/highlight';
+import { getCookie } from '../../../modules/cookie.js'
 
 const cache = new Map();
 
@@ -20,18 +21,21 @@ function find_tutorial(slug) {
 	}
 }
 
-function get_tutorial(slug) {
+function get_tutorial(slug, locale) {
 	const found = find_tutorial(slug);
 	if (!found) return found;
 
 	const dir = `content/tutorial/${found.section}/${found.chapter}`;
 
-	//const markdown = fs.readFileSync(`${dir}/text.md`, 'utf-8');
-	// TODO:もっといい実装を考える
+	// TODO 処理フローはあとで見直す
 	let markdown;
-	try {
-		markdown = fs.readFileSync(`${dir}/text.ja.md`, 'utf-8');
-	} catch (err) {
+	if (locale && locale !== 'en') {
+		try {
+			markdown = fs.readFileSync(`${dir}/text.${locale}.md`, 'utf-8');
+		} catch (err) {
+			markdown = fs.readFileSync(`${dir}/text.md`, 'utf-8');
+		}
+	} else {
 		markdown = fs.readFileSync(`${dir}/text.md`, 'utf-8');
 	}
 	const app_a = fs.readdirSync(`${dir}/app-a`);
@@ -95,10 +99,13 @@ function get_tutorial(slug) {
 export function get(req, res) {
 	const { slug } = req.params;
 
-	let tut = cache.get(slug);
+	const locale = getCookie('locale', req.headers.cookie);
+	const slugWithLocale = locale ? slug + '.' + locale : slug;
+
+	let tut = cache.get(slugWithLocale);
 	if (!tut || process.env.NODE_ENV !== 'production') {
-		tut = get_tutorial(slug);
-		cache.set(slug, tut);
+		tut = get_tutorial(slug, locale);
+		cache.set(slugWithLocale, tut);
 	}
 
 	if (tut) {

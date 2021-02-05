@@ -1,0 +1,69 @@
+{
+    "languages": {
+        "en": "English",
+        "ja": "日本語"
+    },
+    "direction": "ltr",
+    "attention": {
+        "1": "このサイトは有志による非公式な日本語化サイトです。",
+        "2": "（リポジトリは",
+        "3_link": "こちら",
+        "4": "）",
+        "5": "記載されている内容は古くなっているか、または誤りがある可能性がございます",
+        "6": "公式サイトをお探しの場合は",
+        "7_link": "svelte.dev",
+        "8": "へどうぞ。"
+    },
+    "top": {
+        "blurb": {
+            "one": {
+                "title": "Write less code",
+                "content": "あなたが既に知っている言語（HTML、CSS、JavaScript）で、ボイラープレートのないコンポーネントを作成することができます",
+                "learn-more": "さらに詳しく"
+            },
+            "two": {
+                "title": "No virtual DOM",
+                "content": "Svelteは、あなたのコードをフレームワークが含まれない小さいvanilla JSにコンパイルします - アプリケーションは高速に起動し、そのスピードを維持します",
+                "learn-more": "さらに詳しく"
+            },
+            "three": {
+                "title": "Truly reactive",
+                "content": "もう複雑な状態管理ライブラリは必要ありません - SvelteはJavaScriptそのものにリアクティビティをもたらします",
+                "learn-more": "さらに詳しく"
+            },
+            "what": {
+                "p1": {
+                    "first": "Svelteはユーザーインタフェースを構築する先鋭的で新しいアプローチです。ReactやVueのような従来のフレームワークがその作業の大部分を",
+                    "second_em": "ブラウザー",
+                    "third": "で行うのに対し、Svelteは、その作業をアプリをビルドする際の",
+                    "fourth_em": "コンパイル時",
+                    "fifth": "に行います。"
+                },
+                "p2": "Svelteは、仮想DOMによる差分検出のようなテクニックを使用する代わりに、アプリケーションの状態が変化したときにDOMを外科的に更新するコードを生成します。",
+                "p3": {
+                    "first_link": "もっと詳しく知りたい方はこちらの紹介ブログ記事",
+                    "second": "をご覧ください。"
+                }
+            },
+            "how": {
+                "terminal": {
+                    "dl": {
+                        "first": "または、こちらのzipファイルをダウンロードして解凍してください:",
+                        "link": "zip file"
+                    },
+                    "ts": {
+                        "first": " ",
+                        "second_link": "TypeScript",
+                        "third": "を使用する場合はこちらを実行してください"
+                    }
+                },
+                "p1": {
+                    "first": "もっと詳しく知りたい方はこちらの",
+                    "second_link": "quickstart guide",
+                    "third": "をご覧ください。"
+                },
+                "learn_link": "Svelteを学ぶ"
+            }
+        }
+    }
+}

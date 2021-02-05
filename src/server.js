@@ -4,6 +4,8 @@ import sirv from 'sirv';
 import * as sapper from '@sapper/server';
 import { sanitize_user, authenticate } from './utils/auth';
 
+import { i18nMiddleware } from './i18n.js';
+
 const { PORT = 3000 } = process.env;
 
 const app = polka({
@@ -28,6 +30,9 @@ app.use(
 			res.hasHeader('Cache-Control') || res.setHeader('Cache-Control', 'max-age=600'); // 10min default
 		}
 	}),
+
+	// from https://github.com/kaisermann/sapper-template-i18n/blob/master/src/server.js
+	i18nMiddleware(),
 
 	sapper.middleware({
 		session: req => ({
