@@ -91,6 +91,11 @@ Fork元にPull Requestを提出してください。Pull Requestのコメント�
 工事中
 
 
+## 備考
+
+翻訳の進め方やCONTRIBUTING.mdに記載する内容などはAngularの日本語化プロジェクトである[angular-ja](https://github.com/angular/angular-ja)を参考にさせて頂きました。
+
+
 ## ライセンス
 
 Svelte Site JPは[sveltejs/svelteのsiteディレクトリ](https://github.com/sveltejs/svelte/tree/master/site)をフォークして作成されており、ライセンス(MIT)を引き継いでいます。
