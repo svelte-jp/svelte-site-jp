@@ -27,4 +27,4 @@ title: <svelte:options>
 * `namespace="..."` —  このコンポーネントが使用される名前空間。最も一般的なものは `"svg"` です。
 * `tag="..."` — このコンポーネントをカスタム要素としてコンパイルする際に使用する名前。
 
-Consult the [API reference](docs) for more information on these options.
+これらのオプションの詳細については、[API リファレンス](docs)を参照してください。
