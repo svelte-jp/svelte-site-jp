@@ -2,9 +2,7 @@
 title: The animate directive
 ---
 
-[前の章]（チュートリアル/遅延遷移）では、要素が1つのToDoリストから別のリストに移動するときに、遷移の遅延を使用して動きの錯覚を作成しました。
-
-To complete the illusion, we also need to apply motion to the elements that *aren't* transitioning. For this, we use the `animate` directive.
+[前の章](tutorial/deferred-transitions)では、要素が1つの ToDoリストから別のリストに移動するときに、遷移の遅延を使用して動きの錯覚を作成しました。
 
 この錯覚を完成させるには、遷移して *いない* 要素にモーションを適用する必要もあります。このために、 `animate` ディレクティブを使用します。
 
@@ -35,6 +33,5 @@ import { flip } from 'svelte/animate';
 ```
 
 > `duration` は `d => ミリ秒` 関数にもなります。この `d` は，要素が移動する必要があるピクセル数です．
-
 
 注意、すべてのトランジションとアニメーションは JavaScript ではなく CSS で適用されています。これはメインスレッドをブロックしない（もしくはブロックされない）ことを意味します。
