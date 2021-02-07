@@ -2,9 +2,9 @@
 title: The animate directive
 ---
 
-[前の章](tutorial/deferred-transitions)では、要素が1つの ToDoリストから別のリストに移動するときに、遷移の遅延を使用して動きの錯覚を作成しました。
+[前の章](tutorial/deferred-transitions)では、要素が1つのToDoリストから別のリストに移動するときに、遷移の遅延を使用して動きの錯覚を作成しました。
 
-この錯覚を完成させるには、遷移して *いない* 要素にモーションを適用する必要もあります。このために、 `animate` ディレクティブを使用します。
+この錯覚を完成させるには、遷移して *いない* 要素にもモーションを適用する必要があります。このために、`animate` ディレクティブを使用します。
 
 最初に `flip` 関数を — flip は ['First, Last, Invert, Play'](https://aerotwist.com/blog/flip-your-animations/) の略です — `svelte/animate` からインポートします
 
@@ -22,7 +22,7 @@ import { flip } from 'svelte/animate';
 >
 ```
 
-この場合、動きが少し遅いので、`duration`パラメータを追加することができます。
+この場合、動きが少し遅いので、`duration` パラメータを追加することができます。
 
 ```html
 <label
