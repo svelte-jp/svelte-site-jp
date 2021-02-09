@@ -1,5 +1,8 @@
 <script context="module">
+	import { waitLocale } from 'svelte-i18n';
+
 	export async function preload() {
+		waitLocale();
 		const sections = await this.fetch(`docs.json`).then(r => r.json());
 		return { sections };
 	}
@@ -7,8 +10,18 @@
 
 <script>
 	import { Docs } from '@sveltejs/site-kit';
+	import { onDestroy } from 'svelte';
+	import { locale } from 'svelte-i18n';
 
 	export let sections;
+
+	const unsbscribe = locale.subscribe(async value => {
+		if (process.browser) {
+			sections = await fetch(`docs.json`).then(r => r.json());
+		}
+	});
+
+	onDestroy(unsbscribe);
 </script>
 
 <svelte:head>

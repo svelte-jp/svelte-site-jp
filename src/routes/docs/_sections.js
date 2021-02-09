@@ -19,7 +19,7 @@ const blockTypes = [
 	'tablecell'
 ];
 
-export default function() {
+export default function (locale) {
 	const make_slug = make_session_slug_processor({
 		preserve_unicode: SLUG_PRESERVE_UNICODE,
 		separator: SLUG_SEPARATOR
@@ -29,7 +29,18 @@ export default function() {
 		.readdirSync(`content/docs`)
 		.filter(file => file[0] !== '.' && path.extname(file) === '.md')
 		.map(file => {
-			const markdown = fs.readFileSync(`content/docs/${file}`, 'utf-8');
+
+			// TODO 処理フローはあとで見直す
+			let markdown;
+			if (locale && locale !== 'en') {
+				try {
+					markdown = fs.readFileSync(`content/docs/${locale}/${path.basename(file, '.md')}.${locale}.md`, 'utf-8');
+				} catch (err) {
+					markdown = fs.readFileSync(`content/docs/${file}`, 'utf-8');
+				}
+			} else {
+				markdown = fs.readFileSync(`content/docs/${file}`, 'utf-8');
+			}
 
 			const { content, metadata } = extract_frontmatter(markdown);
 
