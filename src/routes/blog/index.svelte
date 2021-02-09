@@ -1,12 +1,26 @@
 <script context="module">
+	import { waitLocale } from 'svelte-i18n';
+
 	export async function preload() {
+		waitLocale();
 		const posts = await this.fetch(`blog.json`).then(r => r.json());
 		return { posts };
 	}
 </script>
 
 <script>
+	import { onDestroy } from 'svelte';
+	import { locale } from 'svelte-i18n';
+
 	export let posts;
+
+	const unsbscribe = locale.subscribe(async value => {
+		if (process.browser) {
+			posts = await fetch(`blog.json`).then(r => r.json());
+		}
+	});
+
+	onDestroy(unsbscribe);
 </script>
 
 <svelte:head>

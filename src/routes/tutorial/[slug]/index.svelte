@@ -36,11 +36,7 @@
 
 	const unsbscribe = locale.subscribe(async value => {
 		if (process.browser) {
-			console.log('subscribe');
 			const res = await fetch(`tutorial/${slug}.json`);
-			if (!res.ok) {
-				return this.redirect(301, `tutorial/basics`);
-			}
 
 			chapter = await res.json();
 		}

@@ -8,18 +8,28 @@ import { SLUG_PRESERVE_UNICODE } from '../../../config';
 
 const makeSlug = makeSlugProcessor(SLUG_PRESERVE_UNICODE);
 
-export default function get_posts() {
+export default function get_posts(locale) {
 	return fs
 		.readdirSync('content/blog')
+		.filter(file => file[0] !== '.' && path.extname(file) === '.md')
 		.map(file => {
-			if (path.extname(file) !== '.md') return;
 
 			const match = /^(\d+-\d+-\d+)-(.+)\.md$/.exec(file);
 			if (!match) throw new Error(`Invalid filename '${file}'`);
 
 			const [, pubdate, slug] = match;
 
-			const markdown = fs.readFileSync(`content/blog/${file}`, 'utf-8');
+			// TODO 処理フローはあとで見直す
+			let markdown;
+			if (locale && locale !== 'en') {
+				try {
+					markdown = fs.readFileSync(`content/blog/${locale}/${path.basename(file, '.md')}.${locale}.md`, 'utf-8');
+				} catch (err) {
+					markdown = fs.readFileSync(`content/blog/${file}`, 'utf-8');
+				}
+			} else {
+				markdown = fs.readFileSync(`content/blog/${file}`, 'utf-8');
+			}
 
 			const { content, metadata } = extract_frontmatter(markdown);
 
@@ -52,7 +62,8 @@ export default function get_posts() {
 			return {
 				html,
 				metadata,
-				slug
+				slug,
+				locale
 			};
 		})
 		.sort((a, b) => a.metadata.pubdate < b.metadata.pubdate ? 1 : -1);
