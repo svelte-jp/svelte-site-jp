@@ -1,11 +1,13 @@
 import send from '@polka/send';
 import get_posts from './_posts.js';
+import { getCookie } from '../../modules/cookie.js'
 
 let json;
 
 export function get(req, res) {
 	if (!json || process.env.NODE_ENV !== 'production') {
-		const posts = get_posts()
+		const locale = getCookie('locale', req.headers.cookie);
+		const posts = get_posts(locale)
 			.filter(post => !post.metadata.draft)
 			.map(post => {
 				return {

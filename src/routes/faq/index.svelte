@@ -1,14 +1,29 @@
 <script context="module">
+	import { waitLocale } from 'svelte-i18n';
+
 	export async function preload() {
+		waitLocale();
 		const faqs = await this.fetch(`faq.json`).then(r => r.json());
 		return { faqs };
 	}
 </script>
 
 <script>
+	import { onDestroy } from 'svelte';
+	import { locale } from 'svelte-i18n';
+
 	const description = "Frequently Asked Questions about Svelte"
 
 	export let faqs;
+
+	const unsbscribe = locale.subscribe(async value => {
+		if (process.browser) {
+			console.log("faq/index.svelte subscribe");
+			faqs = await fetch(`faq.json`).then(r => r.json());
+		}
+	});
+
+	onDestroy(unsbscribe);
 </script>
 
 <svelte:head>

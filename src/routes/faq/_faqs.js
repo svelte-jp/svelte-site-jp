@@ -8,18 +8,28 @@ import { SLUG_PRESERVE_UNICODE } from '../../../config';
 
 const makeSlug = makeSlugProcessor(SLUG_PRESERVE_UNICODE);
 
-export default function get_faqs() {
+export default function get_faqs(locale) {
 	return fs
 		.readdirSync('content/faq')
+		.filter(file => file[0] !== '.' && path.extname(file) === '.md')
 		.map(file => {
-			if (path.extname(file) !== '.md') return;
 
 			const match = /^([0-9]+)-(.+)\.md$/.exec(file);
 			if (!match) throw new Error(`Invalid filename '${file}'`);
 
 			const [, order, slug] = match;
 
-			const markdown = fs.readFileSync(`content/faq/${file}`, 'utf-8');
+			// TODO 処理フローはあとで見直す
+			let markdown;
+			if (locale && locale !== 'en') {
+				try {
+					markdown = fs.readFileSync(`content/faq/${locale}/${path.basename(file, '.md')}.${locale}.md`, 'utf-8');
+				} catch (err) {
+					markdown = fs.readFileSync(`content/faq/${file}`, 'utf-8');
+				}
+			} else {
+				markdown = fs.readFileSync(`content/faq/${file}`, 'utf-8');
+			}
 
 			const { content, metadata } = extract_frontmatter(markdown);
 
