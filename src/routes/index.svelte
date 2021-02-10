@@ -11,6 +11,8 @@
 	// 	console.log('lazy loading');
 	// 	return import('../components/Repl/ReplWidget.svelte').then(mod => mod.default);
 	// }
+
+	let innerWidth;
 </script>
 
 <style>
@@ -25,7 +27,35 @@
 		color: white;
 		overflow: hidden;
 	}
+
+	.attention {
+		position: absolute;
+		width: 100%;
+		padding: 0 var(--side-nav);
+		max-width: 120rem;
+		left:50%;
+		transform: translate(-50%, 15%);
+		font-size: var(--h6);
+		z-index: 1;
+	}
+
+	@media (max-width: 710px) {
+		.attention {
+			padding: 0 2rem;
+			transform: translate(-50%, 5%);
+		}
+	}
+
+	@media (max-width: 425px) {
+		.attention {
+			padding: 0 1rem;
+			transform: translate(-50%, 2%);
+			line-height: 130%;
+		}
+	}
 </style>
+
+<svelte:window bind:innerWidth />
 
 <svelte:head>
 	<title>Svelte • Cybernetically enhanced web apps</title>
@@ -35,12 +65,18 @@
 	<meta name="Description" content="Cybernetically enhanced web apps">
 </svelte:head>
 
-<section style="position: absolute; width: 100%; padding: 0 var(--side-nav); max-width: 120rem; left:50%; transform: translate(-50%, 15%); font-size: var(--h6);">
+<section class="attention">
 	<div>
 		<p>
-			{$_('attention.1', { default: 'This is an unofficial site for Japanese translation by volunteers in Svelte Japan.' })}<br/>
-			{$_('attention.2', { default: '(The repository is ' })}<a href="https://github.com/tomoam/svelte-site-jp">{$_('attention.3_link', { default: 'here' })}</a>{$_('attention.4', { default: ')' })}<br/>
-			{$_('attention.5', { default: 'The content on this unofficial site may be out of date or incorrect.' })}<br/>
+			{$_('attention.1', { default: 'This is an unofficial site for Japanese translation by volunteers in Svelte Japan ' })}
+			{$_('attention.2', { default: '(The repository is ' })}<a href="https://github.com/tomoam/svelte-site-jp">{$_('attention.3_link', { default: 'here' })}</a>{$_('attention.4', { default: '). ' })}
+			{#if innerWidth > 700}
+				<br/>
+			{/if}
+			{$_('attention.5', { default: 'The content on this unofficial site may be out of date or incorrect.' })}
+			{#if innerWidth > 700}
+				<br/>
+			{/if}
 			{$_('attention.6', { default: 'If you are looking for the official website, please visit ' })}<a href="https://svelte.dev/">{$_('attention.7_link', { default: 'svelte.dev' })}</a>{$_('attention.8', { default: '.' })}
 		</p>
 	</div>
