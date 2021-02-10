@@ -29,7 +29,7 @@
 		svelteUrl
 	} from '../../../config';
 
-	import { locale } from 'svelte-i18n';
+	import { _, locale } from 'svelte-i18n';
 
 	export let slug;
 	export let chapter;
@@ -80,7 +80,7 @@
 	const tutorial_repo_link = 'https://github.com/sveltejs/svelte/tree/master/site/content/tutorial';
 
 	$: selected = lookup.get(slug);
-	$: improve_link = `${tutorial_repo_link}/${selected.chapter.section_dir}/${selected.chapter.chapter_dir}`;
+	$: improve_link = `/${selected.chapter.section_dir}/${selected.chapter.chapter_dir}`;
 
 	const clone = file => ({
 		name: file.name,
@@ -308,7 +308,7 @@
 				</div>
 
 				<div class="improve-chapter">
-					<a class="no-underline" href={improve_link}>Edit this chapter</a>
+					<a class="no-underline" target="_blank" rel="noopener" href={$_('tutorial.repo_link', {default : tutorial_repo_link}) + improve_link}>Edit this chapter</a>
 				</div>
 			</div>
 		</div>

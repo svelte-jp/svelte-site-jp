@@ -65,5 +65,8 @@
                 "learn_link": "Svelteを学ぶ"
             }
         }
+    },
+    "tutorial": {
+        "repo_link": "https://github.com/tomoam/svelte-site-jp/tree/master/content/tutorial"
     }
 }
