@@ -67,6 +67,6 @@
         }
     },
     "tutorial": {
-        "repo_link": "https://github.com/tomoam/svelte-site-jp/tree/master/content/tutorial"
+        "repo_link": "https://github.com/svelte-jp/svelte-site-jp/tree/master/content/tutorial"
     }
 }

@@ -96,7 +96,7 @@ etc...
 
 #### 1. 翻訳するドキュメントを選ぶ
 
-翻訳が必要な文書は[Issue](https://github.com/tomoam/svelte-site-jp/issues?q=is%3Aopen+is%3Aissue+label%3Atranslation)が作成されています。
+翻訳が必要な文書は[Issue](https://github.com/svelte-jp/svelte-site-jp/issues?q=is%3Aopen+is%3Aissue+label%3Atranslation)が作成されています。
 
 まだ誰も着手していないIssueには`翻訳者募集中`というLabelがついています。翻訳したいものがあれば、Issueのコメントで知らせてください(堅苦しい挨拶などは不要です。「この翻訳やりましょうか？」と言っていただけたらそれだけでとても嬉しいです！)。
 
@@ -154,4 +154,4 @@ TODO
 
 Svelte Site JPは[sveltejs/svelteのsiteディレクトリ](https://github.com/sveltejs/svelte/tree/master/site)をフォークして作成されており、ライセンス(MIT)を引き継いでいます。
 
-Svelte Site JPに貢献することにより, あなたはあなたの貢献が[MIT license](https://github.com/tomoam/svelte-site-jp/blob/master/LICENSE)の下でライセンスされることに同意するものとします。
+Svelte Site JPに貢献することにより, あなたはあなたの貢献が[MIT license](https://github.com/svelte-jp/svelte-site-jp/blob/master/LICENSE)の下でライセンスされることに同意するものとします。

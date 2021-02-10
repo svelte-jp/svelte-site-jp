@@ -69,7 +69,7 @@
 	<div>
 		<p>
 			{$_('attention.1', { default: 'This is an unofficial site for Japanese translation by volunteers in Svelte Japan ' })}
-			{$_('attention.2', { default: '(The repository is ' })}<a href="https://github.com/tomoam/svelte-site-jp">{$_('attention.3_link', { default: 'here' })}</a>{$_('attention.4', { default: '). ' })}
+			{$_('attention.2', { default: '(The repository is ' })}<a href="https://github.com/svelte-jp/svelte-site-jp">{$_('attention.3_link', { default: 'here' })}</a>{$_('attention.4', { default: '). ' })}
 			{#if innerWidth > 700}
 				<br/>
 			{/if}

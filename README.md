@@ -7,23 +7,23 @@ Svelteは素晴らしいツールで、公式ドキュメント及びチュー�
 
 翻訳はまだまだ進行中ですが、[https://svelte-jp.herokuapp.com/](https://svelte-jp.herokuapp.com/)で閲覧することができます。
 
-進捗は[Milestones](https://github.com/tomoam/svelte-site-jp/milestones)で確認できます。
+進捗は[Milestones](https://github.com/svelte-jp/svelte-site-jp/milestones)で確認できます。
 
 
 ## 貢献(Contribution)について
 
 この翻訳プロジェクトではみなさんの貢献を歓迎しています！
 
-興味がある方は[CONTRIBUTING.md](https://github.com/tomoam/svelte-site-jp/blob/master/CONTRIBUTING.md)をご参照ください。
+興味がある方は[CONTRIBUTING.md](https://github.com/svelte-jp/svelte-site-jp/blob/master/CONTRIBUTING.md)をご参照ください。
 
 意見や気が付いたことがあれば、お気軽にIssueを作成ください。もしくは[Svelte日本のDiscord](https://discord.com/invite/YTXq3ZtBbx)の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
 
 ## Running locally
 
-Set up the site sub-project:
+Set up the site project:
 
 ```bash
-git clone https://github.com/tomoam/svelte-site-jp.git
+git clone https://github.com/svelte-jp/svelte-site-jp.git
 cd svelte-site-jp
 npm ci
 npm run update
