@@ -4,47 +4,46 @@ title: Component format
 
 ---
 
-Components are the building blocks of Svelte applications. They are written into `.svelte` files, using a superset of HTML.
+コンポーネントは、Svelteアプリケーションを構成するブロックです。これらは `.svelte` ファイルにHTMLのスーパーセットを使って記述されます。
 
-All three sections — script, styles and markup — are optional.
+ここで説明されるスクリプト、スタイル、マークアップのいずれもコンポーネントに必須のものではありません。
 
 ```sv
 <script>
-	// logic goes here
+	// ロジックを記述
 </script>
 
 <style>
-	/* styles go here */
+	/* スタイルを記述 */
 </style>
 
-<!-- markup (zero or more items) goes here -->
+<!-- 0個以上のマークアップを記述 -->
 ```
 
 ### &lt;script&gt;
 
-A `<script>` block contains JavaScript that runs when a component instance is created. Variables declared (or imported) at the top level are 'visible' from the component's markup. There are four additional rules:
-
+`<script>` ブロックは、コンポーネントのインスタンスが生成されるときに実行される JavaScript を含みます。トップレベルで宣言（またはインポート）された変数は、そのコンポーネントのマークアップから '見る' ことができます。 `<script>` には、4つのルールがあります。
 ##### 1. `export` creates a component prop
 
 ---
 
-Svelte uses the `export` keyword to mark a variable declaration as a *property* or *prop*, which means it becomes accessible to consumers of the component (see the section on [attributes and props](docs#Attributes_and_props) for more information).
+Svelteでは、 変数の宣言に対して *プロパティ* または *プロップ* を付けるために `export` キーワードを使います。これは、そのコンポーネントの使用者からプロパティが付いた変数にアクセスできることを意味します（より詳しい情報は [属性とプロップ](docs#Attributes_and_props)を見てください）。
 
 ```sv
 <script>
 	export let foo;
 
-	// Values that are passed in as props
-	// are immediately available
+	// プロップとして渡された変数は、
+	// 即座に使用可能になります
 	console.log({ foo });
 </script>
 ```
 
 ---
 
-You can specify a default initial value for a prop. It will be used if the component's consumer doesn't specify the prop on the component (or if its initial value is `undefined`) when instantiating the component. Note that whenever a prop is removed by the consumer, its value is set to `undefined` rather than the initial value.
+プロップ変数には、初期値を指定することができます。これは、コンポーネントの使用者がコンポーネントのインスタンスが生成される時に、プロップ変数に何も値を渡さない場合（または渡された値の初期値が `undefined` の場合）使用されます。使用者によってプロップ変数が消去される場合、その値は初期値ではなく `undefined` になることに注意してください。
 
-In development mode (see the [compiler options](docs#svelte_compile)), a warning will be printed if no default initial value is provided and the consumer does not specify a value. To squelch this warning, ensure that a default initial value is specified, even if it is `undefined`.
+ディベロップメントモード（[コンパイラオプション](docs#svelte_compile)を参照）では、プロップ変数に初期値が指定されておらず、使用者も値を渡していない場合警告が出ます。この警告を解消するためには、たとえ　`undefined` であっても初期値を指定してください。
 
 ```sv
 <script>
@@ -56,31 +55,32 @@ In development mode (see the [compiler options](docs#svelte_compile)), a warning
 ---
 
 If you export a `const`, `class` or `function`, it is readonly from outside the component. Function *expressions* are valid props, however.
+もし `const`、 `class`、 または `function` に `export` を与える場合は、これらはコンポーネントの外からは読み取り専用になりますが、関数の *式* はプロップになります。
 
 ```sv
 <script>
-	// these are readonly
+	// これらは読み取り専用になります
 	export const thisIs = 'readonly';
 
 	export function greet(name) {
 		alert(`hello ${name}!`);
 	}
 
-	// this is a prop
+	// これはプロップになります
 	export let format = n => n.toFixed(2);
 </script>
 ```
 
 ---
 
-You can use reserved words as prop names.
+予約語もプロップ変数の名前として使用することができます。
 
 ```sv
 <script>
 	let className;
 
-	// creates a `class` property, even
-	// though it is a reserved word
+	// `class` は予約語ですが、
+	// `class` プロパティを作ることができます
 	export { className as class };
 </script>
 ```
