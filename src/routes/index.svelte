@@ -29,29 +29,19 @@
 	}
 
 	.attention {
-		position: absolute;
 		width: 100%;
-		padding: 0 var(--side-nav);
 		max-width: 120rem;
-		left:50%;
-		transform: translate(-50%, 15%);
+		padding: 2em var(--side-nav);
+		margin: 0 auto;
 		font-size: var(--h6);
-		z-index: 1;
 	}
-
-	@media (max-width: 710px) {
-		.attention {
-			padding: 0 2rem;
-			transform: translate(-50%, 5%);
-		}
+	.attention div {
+		padding: 1em var(--side-nav);
+		background: #eeeeee;
+		border-radius: var(--border-r);
 	}
-
-	@media (max-width: 425px) {
-		.attention {
-			padding: 0 1rem;
-			transform: translate(-50%, 2%);
-			line-height: 130%;
-		}
+	.attention div p {
+		margin-bottom: 0;
 	}
 </style>
 
