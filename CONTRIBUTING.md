@@ -47,46 +47,46 @@ Svelte Site JPに貢献する方法はたくさんあり、その多くはコー
 .
 ├── content
 │   ├── blog
-│   │   ├── 2016-11-26-frameworks-without-the-framework.md			# <- Blogの原文
+│   │   ├── 2016-11-26-frameworks-without-the-framework.md         # <- Blogの原文
 │   │   ...
 │   │   └── ja
-│   │       ├── 2016-11-26-frameworks-without-the-framework.ja.md	# <- Blogの日本語翻訳用ファイル
+│   │       ├── 2016-11-26-frameworks-without-the-framework.ja.md  # <- Blogの日本語翻訳用ファイル
 │   │       ...
 │   │
 │   ├── docs
-│   │   ├── 00-introduction.md			# <- API Docsの原文
+│   │   ├── 00-introduction.md         # <- API Docsの原文
 │   │   ...
 │   │   └── ja
-│   │       ├── 00-introduction.ja.md	# <- API Docsの日本語翻訳用ファイル
+│   │       ├── 00-introduction.ja.md  # <- API Docsの日本語翻訳用ファイル
 │   │       ...
 │   │
 │   ├── examples
 │   ├── faq
-│   │   ├── 100-im-new-to-svelte.md			# <- FAQの原文
+│   │   ├── 100-im-new-to-svelte.md         # <- FAQの原文
 │   │   ...
 │   │   └── ja
-│   │       ├── 100-im-new-to-svelte.ja.md	# <- FAQの日本語翻訳用ファイル
+│   │       ├── 100-im-new-to-svelte.ja.md  # <- FAQの日本語翻訳用ファイル
 │   │       ...
 │   │
 │   └── tutorial
 │       ├── 01-introduction
 │       │   ├── 01-basics
 │       │   │   ├── app-a
-│       │   │   ├── text.ja.md	# <- チュートリアルの日本語翻訳用ファイル
-│       │   │   └── text.md		# <- チュートリアルの原文
+│       │   │   ├── text.ja.md  # <- チュートリアルの日本語翻訳用ファイル
+│       │   │   └── text.md     # <- チュートリアルの原文
 │       ...
 ...
 ├── messages
-│   ├── en.json				# <- トップページの英語ファイル
-│   └── ja.json				# <- トップページの日本語ファイル
+│   ├── en.json           # <- トップページの英語ファイル
+│   └── ja.json           # <- トップページの日本語ファイル
 ...
 ├── src
 │   ├── routes
 │   │   ...
-│   │   ├── index.svelte	# <- トップページ
+│   │   ├── index.svelte  # <- トップページ
 │   │   ...
-│   │   ├── chat-jp.js	# <- Svelte日本Discordへのリンク
-│   │   ├── chat.js		# <- SvelteDiscordへのリンク
+│   │   ├── chat-jp.js  # <- Svelte日本Discordへのリンク
+│   │   ├── chat.js     # <- SvelteDiscordへのリンク
 │   │   ...
 etc...
 ```
