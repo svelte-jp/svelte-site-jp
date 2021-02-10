@@ -25,27 +25,71 @@ Svelte Site JPに貢献する方法はたくさんあり、その多くはコー
 
 ### ディレクトリ構成・翻訳の仕組み
 
-チュートリアルの原文はcontent/tutorial配下のそれぞれの章ごとに`text.md`というファイルから読み取られています。日本語翻訳は、その`text.md`をコピーして`text.ja.md`というファイルを作成して文章を翻訳します。  
-(`text.ja.md`はホットリロードだと変更が反映されないのでご注意ください！)
+- **Blog**
+  - Blogの原文は content/blog 配下にあります。  
+    日本語翻訳は content/blog/**ja** 配下の {原文のファイル名}.**ja**.md というファイルを修正して行います。
+- **API Docs**
+  - API Docsの原文は content/docs 配下にあります。  
+    日本語翻訳は content/docs/**ja** 配下の {原文のファイル名}.**ja**.md というファイルを修正して行います。
+- **FAQ**
+  - FAQの原文は content/faq 配下にあります。  
+    日本語翻訳は content/faq/**ja** 配下の {原文のファイル名}.**ja**.md というファイルを修正して行います。
+- **チュートリアル**
+  - チュートリアルの原文はcontent/tutorial配下のそれぞれの章ごとに`text.md`というファイルから読み取られています。
+    日本語翻訳は、その`text.md`をコピーして`text.ja.md`というファイルを作成して文章を翻訳します。  
+    (`text.ja.md`はホットリロードだと変更が反映されないのでご注意ください！)
+- **トップページ**
+  - トップページはmessages配下の`en.json`が原文で、日本語翻訳は`ja.json`ファイルです。
+- **Chat(Discord)のリンク**
+  - Svelte本体のDiscordのリンクはsrc/routes配下の`chat.js`にあり、Svelte日本Discordのリンクは`chat-jp.js`にあります。
 
 ```
 .
 ├── content
 │   ├── blog
+│   │   ├── 2016-11-26-frameworks-without-the-framework.md			# <- Blogの原文
+│   │   ...
+│   │   └── ja
+│   │       ├── 2016-11-26-frameworks-without-the-framework.ja.md	# <- Blogの日本語翻訳用ファイル
+│   │       ...
+│   │
 │   ├── docs
+│   │   ├── 00-introduction.md			# <- API Docsの原文
+│   │   ...
+│   │   └── ja
+│   │       ├── 00-introduction.ja.md	# <- API Docsの日本語翻訳用ファイル
+│   │       ...
+│   │
 │   ├── examples
 │   ├── faq
+│   │   ├── 100-im-new-to-svelte.md			# <- FAQの原文
+│   │   ...
+│   │   └── ja
+│   │       ├── 100-im-new-to-svelte.ja.md	# <- FAQの日本語翻訳用ファイル
+│   │       ...
+│   │
 │   └── tutorial
-│       ├── 01-introduction
-│       │   ├── 01-basics
-│       │   │   ├── app-a
-│       │   │   ├── text.ja.md  # ←日本語翻訳 原文をコピーして作成
-│       │   │   └── text.md     # ←原文
+│       ├── 01-introduction
+│       │   ├── 01-basics
+│       │   │   ├── app-a
+│       │   │   ├── text.ja.md	# <- チュートリアルの日本語翻訳用ファイル
+│       │   │   └── text.md		# <- チュートリアルの原文
+│       ...
+...
+├── messages
+│   ├── en.json				# <- トップページの英語ファイル
+│   └── ja.json				# <- トップページの日本語ファイル
+...
+├── src
+│   ├── routes
+│   │   ...
+│   │   ├── index.svelte	# <- トップページ
+│   │   ...
+│   │   ├── chat-jp.js	# <- Svelte日本Discordへのリンク
+│   │   ├── chat.js		# <- SvelteDiscordへのリンク
+│   │   ...
 etc...
 ```
-
-※チュートリアル以外の翻訳は準備中です。
-
 
 ### 翻訳の流れ
 
@@ -76,15 +120,23 @@ npm run dev
 
 #### 3. 翻訳作業
 
-[ディレクトリ構成・翻訳の仕組み](#ディレクトリ構成翻訳の仕組み)を参考に、担当する文書の翻訳を行います。いきなり完璧な翻訳を目指さなくても大丈夫です。
+[ディレクトリ構成・翻訳の仕組み](#ディレクトリ構成翻訳の仕組み)を参考に、担当する文書を見つけてください。
+
+実際の翻訳については[翻訳のガイドライン](#翻訳のガイドライン)を参考にしてください。
+
+いきなり完璧な翻訳を目指さなくても大丈夫です。PRに間違いや誤字・脱字があっても大丈夫です。ちゃんとレビューをしますし、レビューで怒ったりしませんのでご安心ください。それより、あなたがこのプロジェクトに貢献するため時間と労力を割いてくれたことに感謝しかありません。
 
 翻訳ができたらcommitし、Fork先にpushします。
 
 
 #### 4. Pull Request作成
 
-Fork元にPull Requestを提出してください。Pull RequestのコメントにはIssueの番号を含めてください。レビュー後、問題がなければマージされます。
+Fork元にPull Requestを提出してください。Pull RequestのコメントにはIssueの番号を含めてください。レビュー後、問題がなければマージされます。何度も言いますが、PRに間違いや誤字・脱字、ガイドライン違反があっても大丈夫です。間違いを恐れないでください。
 
+
+### 翻訳のガイドライン
+
+TODO
 
 ## Issueを作成する
 
