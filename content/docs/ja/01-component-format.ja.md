@@ -23,6 +23,7 @@ title: Component format
 ### &lt;script&gt;
 
 `<script>` ブロックは、コンポーネントのインスタンスが生成されるときに実行される JavaScript を含みます。トップレベルで宣言（またはインポート）された変数は、そのコンポーネントのマークアップから '見る' ことができます。 `<script>` には、4つのルールがあります。
+
 ##### 1. `export` creates a component prop
 
 ---
