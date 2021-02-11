@@ -6,7 +6,7 @@ title: Component format
 
 コンポーネントは、Svelteアプリケーションを構成するブロックです。これらは `.svelte` ファイルにHTMLのスーパーセットを使って記述されます。
 
-ここで説明されるscript、style、マークアップのいずれもコンポーネントに必須のものではありません。
+ここで説明される script 、 style 、マークアップのいずれもコンポーネントに必須のものではありません。
 
 ```sv
 <script>
@@ -14,7 +14,7 @@ title: Component format
 </script>
 
 <style>
-	/* スタイルを記述 */
+	/* styleを記述 */
 </style>
 
 <!-- 0個以上のマークアップを記述 -->
@@ -28,13 +28,13 @@ title: Component format
 
 ---
 
-Svelteでは、 変数の宣言に対して *プロパティ* または *プロップ* を付けるために `export` キーワードを使います。これは、そのコンポーネントの使用者からプロパティが付いた変数にアクセスできることを意味します（より詳しい情報は [属性とプロップ](docs#Attributes_and_props)を見てください）。
+Svelte では、 変数の宣言に対して *prop* （*プロパティ*）を付けるために `export` キーワードを使います。これは、そのコンポーネントの使用者から prop が付いた変数にアクセスできることを意味します（より詳しい情報は [属性と prop ](docs#Attributes_and_props)を見てください）。
 
 ```sv
 <script>
 	export let foo;
 
-	// プロップとして渡された変数は、
+	// propとして渡された変数は、
 	// 即座に使用可能になります
 	console.log({ foo });
 </script>
@@ -42,9 +42,9 @@ Svelteでは、 変数の宣言に対して *プロパティ* または *プロ�
 
 ---
 
-プロップ変数には、初期値を指定することができます。これは、コンポーネントの使用者がコンポーネントのインスタンスが生成される時に、プロップ変数に何も値を渡さない場合（または渡された値の初期値が `undefined` の場合）使用されます。使用者によってプロップ変数が消去される場合、その値は初期値ではなく `undefined` になることに注意してください。
+prop 変数には、初期値を指定することができます。これは、コンポーネントの使用者がコンポーネントのインスタンスが生成される時に、 prop 変数に何も値を渡さない場合（または渡された値の初期値が `undefined` の場合）使用されます。使用者によって prop 変数が消去される場合、その値は初期値ではなく `undefined` になることに注意してください。
 
-ディベロップメントモード（[コンパイラオプション](docs#svelte_compile)を参照）では、プロップ変数に初期値が指定されておらず、使用者も値を渡していない場合警告が出ます。この警告を解消するためには、たとえ　`undefined` であっても初期値を指定してください。
+ディベロップメントモード（[コンパイラオプション](docs#svelte_compile)を参照）では、 prop 変数に初期値が指定されておらず、使用者も値を渡していない場合警告が出ます。この警告を解消するためには、たとえ　`undefined` であっても初期値を指定してください。
 
 ```sv
 <script>
@@ -55,8 +55,7 @@ Svelteでは、 変数の宣言に対して *プロパティ* または *プロ�
 
 ---
 
-If you export a `const`, `class` or `function`, it is readonly from outside the component. Function *expressions* are valid props, however.
-もし `const`、 `class`、 または `function` に `export` を与える場合は、これらはコンポーネントの外からは読み取り専用になりますが、関数の *式* はプロップになります。
+もし `const`、 `class`、 または `function` に `export` を与える場合は、これらはコンポーネントの外からは読み取り専用になりますが、関数の *式* は prop になります。
 
 ```sv
 <script>
@@ -67,14 +66,14 @@ If you export a `const`, `class` or `function`, it is readonly from outside the 
 		alert(`hello ${name}!`);
 	}
 
-	// これはプロップになります
+	// これはpropになります
 	export let format = n => n.toFixed(2);
 </script>
 ```
 
 ---
 
-予約語もプロップ変数の名前として使用することができます。
+予約語も prop 変数の名前として使用することができます。
 
 ```sv
 <script>
