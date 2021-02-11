@@ -24,8 +24,8 @@ FROM mhart/alpine-node:slim-12
 WORKDIR /app
 COPY --from=0 /app .
 COPY --from=builder /app/__sapper__/ ./__sapper__/
-COPY ./static/ ./static/
-COPY ./content/ ./content/
+COPY --from=builder /app/static/ ./static/
+COPY --from=builder /app/content/ ./content/
 
 EXPOSE 3000
 CMD ["node", "__sapper__/build"]
