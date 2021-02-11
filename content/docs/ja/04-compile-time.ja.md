@@ -5,10 +5,12 @@ title: Compile time
 通常、Svelte コンパイラと直接やりとりすることはなく、代わりにバンドルプラグインを使ってビルドシステムに統合することになります。
 
 * [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) は [Rollup](https://rollupjs.org) のユーザー向けです
-* [svelte-loader](https://github.com/sveltejs/svelte-loader) は [webpack](https://webpack.js.org)のユーザー向けです
-* もしくは [コミュニティでメンテナンスされているプラグイン](https://github.com/sveltejs/integrations#bundler-plugins)  のどれか
+* [svelte-loader](https://github.com/sveltejs/svelte-loader) は [webpack](https://webpack.js.org) のユーザー向けです
+* もしくは [コミュニティでメンテナンスされているプラグイン](https://github.com/sveltejs/integrations#bundler-plugins) のどれか
 
 とはいえ、バンドルプラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
+
+
 
 ### `svelte.compile`
 
@@ -324,6 +326,7 @@ walk(ast: Node, {
 コンパイラの組み込みインスタンスである[estree-walker](https://github.com/Rich-Harris/estree-walker)を使用します。
 
 ウォーカーは歩くための抽象構文木と、オプションの2つのメソッド `enter` と `leave` を持つオブジェクトを受け取ります。各ノードに対して、(存在すれば) `enter` が呼び出されます。そして `enter` を実行している間に `this.skip()` が呼ばれない限り、各子プロセスを巡回した後、ノード上で `leave` が呼ばれます。
+
 
 ```js
 const svelte = require('svelte/compiler');
