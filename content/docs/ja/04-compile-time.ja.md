@@ -74,7 +74,7 @@ const result = svelte.compile(source, {
 | `customElement` | `false` | `true` ならば、コンパイラに通常のSvelteコンポーネントの代わりにカスタム要素のコンストラクタを生成するように指示します。
 | `tag` | `null` | Svelteにカスタム要素を登録するタグ名を指定する `string`。文字列は小文字の英数字で、少なくとも1つのハイフンを含んだ文字列でなければなりません。例えば `"my-element"`.
 | `css` | `true` | `true` の場合、スタイルはJavaScriptクラスに含まれ、実行時に注入されます。これを `false` に設定して静的に生成されたCSSを使うと、JavaScriptのバンドルが小さくなり、パフォーマンスが向上するのでおすすめです。
-| `loopGuardTimeout` | 0 | `loopGuardTimeout` msを超えてスレッドがブロックされた場合にループを解除するようにSvelteに指示する `数値` です。これは無限ループを防ぐのに便利です。`dev: true` **の場合にのみ利用可能です**
+| `loopGuardTimeout` | 0 | `loopGuardTimeout` msを超えてスレッドがブロックされた場合にループを解除するようにSvelteに指示する `数値` です。これは無限ループを防ぐのに便利です。**利用可能なのは `dev: true` の場合のみです**
 | `preserveComments` | `false` | `true` の場合、サーバサイドでのレンダリング中に HTML コメントが保存されます。デフォルトではコメントは削除されます。
 | `preserveWhitespace` | `false` | `true` の場合、要素内や要素間の空白は、可能であれば削除されたり単一の空白になったりするのではなく、入力したとおりに保持されます。
 | `outputFilename` | `null` | JavaScriptのソースマップに使われる `文字列` です。
@@ -99,7 +99,7 @@ const {
 
 * `js` と `css` は以下のプロパティを持つオブジェクトである。
 	* `code` は JavaScript の文字列です。
-	* `map` はソースマップに `toString() と `toUrl() の便利なメソッドを追加したものです。
+	* `map` はソースマップに `toString()` と `toUrl()` の便利なメソッドを追加したものです。
 * `ast` はコンポーネントの構造を表す抽象構文ツリーです。
 * `warnings` はコンパイル時に生成された警告オブジェクトの配列です。各警告にはいくつかのプロパティがあります。
 	* `code` は警告のカテゴリを識別する文字列です。
