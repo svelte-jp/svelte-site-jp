@@ -3,11 +3,11 @@ title: Template syntax
 ---
 
 
-### Tags
+### タグ
 
 ---
 
-A lowercase tag, like `<div>`, denotes a regular HTML element. A capitalised tag, such as `<Widget>` or `<Namespace.Widget>`, indicates a *component*.
+`<div>` のような小文字のタグは、通常の HTML 要素を表します。大文字のタグ、例えば `<Widget>` や `<Namespace.Widget>` は *コンポーネント* を表します。
 
 ```sv
 <script>
