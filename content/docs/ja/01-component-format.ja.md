@@ -85,23 +85,23 @@ You can use reserved words as prop names.
 </script>
 ```
 
-##### 2. Assignments are 'reactive'
+##### 2. 代入は'リアクティブ'
 
 ---
 
-To change component state and trigger a re-render, just assign to a locally declared variable.
+コンポーネントの状態を変更して再レンダリングをトリガーするために必要なのは、ローカルで宣言された変数に代入することだけです。
 
-Update expressions (`count += 1`) and property assignments (`obj.x = y`) have the same effect.
+更新式 (`count += 1`) とプロパティの代入 (`obj.x = y`) には同じ効果があります。
 
-Because Svelte's reactivity is based on assignments, using array methods like `.push()` and `.splice()` won't automatically trigger updates. Options for getting around this can be found in the [tutorial](tutorial/updating-arrays-and-objects).
+Svelteのリアクティビティは代入に基づいているため、`.push()` や `.splice()` のような配列のメソッドを使用しても自動的に更新をトリガーしません。これを回避する方法は[チュートリアル](tutorial/updating-arrays-and-objects)に記載しています。
 
 ```sv
 <script>
 	let count = 0;
 
 	function handleClick () {
-		// calling this function will trigger an
-		// update if the markup references `count`
+		// マークアップが `count` を参照している場合、
+		// この関数を呼び出すと更新がトリガーされます
 		count = count + 1;
 	}
 </script>
