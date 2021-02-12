@@ -107,7 +107,7 @@ Because Svelte's reactivity is based on assignments, using array methods like `.
 </script>
 ```
 
-##### 3. `$:` marks a statement as reactive
+##### 3. `$:` はステートメントがリアクティブであることを示す
 
 ---
 
