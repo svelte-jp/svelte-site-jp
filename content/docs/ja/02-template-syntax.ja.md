@@ -166,18 +166,18 @@ Comments beginning with `svelte-ignore` disable warnings for the next block of m
 ### {#if ...}
 
 ```sv
-{#if expression}...{/if}
+{#if 式}...{/if}
 ```
 ```sv
-{#if expression}...{:else if expression}...{/if}
+{#if 式}...{:else if 式}...{/if}
 ```
 ```sv
-{#if expression}...{:else}...{/if}
+{#if 式}...{:else}...{/if}
 ```
 
 ---
 
-Content that is conditionally rendered can be wrapped in an if block.
+条件付きでレンダリングされるコンテンツは、if ブロックでラップできます。
 
 ```sv
 {#if answer === 42}
@@ -187,7 +187,7 @@ Content that is conditionally rendered can be wrapped in an if block.
 
 ---
 
-Additional conditions can be added with `{:else if expression}`, optionally ending in an `{:else}` clause.
+追加の条件は `{:else if 式}` で付け足すことができ、`{:else}` 句で終わらせることもできます。
 
 ```sv
 {#if porridge.temperature > 100}
