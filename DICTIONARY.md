@@ -53,5 +53,6 @@ listen|リッスン|「リスン」としない。Vueでは「リッスン」が
 prop/props|prop/props|英語のままで統一する。「プロップ」「プロップス」としない。
 property/properties|プロパティ|文脈に応じて使い分ける。
 script|script|`<script>`やJavaScriptのコードを指している場合など、原則として`script`とする。但し、文章や台詞の意味で使用されている場合は`スクリプト`でも可。
+store/stores|ストア|
 style|style or スタイル|文脈に応じて使い分ける。`<style>`タグそのものを指している場合は`style`、cssについて書いている場合は`スタイル`など。開発者にとって自然に読めればどちらでも可。
 vanilla JS/CSS|純粋なJS/CSS|「バニラJS/CSS」としない。
