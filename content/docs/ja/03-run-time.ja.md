@@ -146,9 +146,9 @@ setContext(key: any, context: any)
 
 ---
 
-Associates an arbitrary `context` object with the current component and the specified `key`. The context is then available to children of the component (including slotted content) with `getContext`.
+任意の `context` オブジェクトを現在のコンポーネントと指定された `key` に関連付けます。context は、コンポーネントの子 (スロットコンテンツを含む) が `getContext` で利用できるようになります。
 
-Like lifecycle functions, this must be called during component initialisation.
+ライフサイクル関数と同様に、これはコンポーネントの初期化時に呼ばれなければなりません。
 
 ```sv
 <script>
@@ -158,7 +158,7 @@ Like lifecycle functions, this must be called during component initialisation.
 </script>
 ```
 
-> Context is not inherently reactive. If you need reactive values in context then you can pass a store into context, which *will* be reactive.
+> context は本質的にリアクティブではありません。リアクティブな値が必要な場合は、context にストアを渡すことができます。これは *おそらく* リアクティブになります。
 
 #### `getContext`
 
@@ -168,7 +168,8 @@ context: any = getContext(key: any)
 
 ---
 
-Retrieves the context that belongs to the closest parent component with the specified `key`. Must be called during component initialisation.
+指定された `key` を持つ、最も近い親コンポーネントに属する context を取得します。
+コンポーネントの初期化中に呼び出されなければなりません。
 
 ```sv
 <script>
@@ -186,7 +187,7 @@ hasContext: boolean = hasContext(key: any)
 
 ---
 
-Checks whether a given `key` has been set in the context of a parent component. Must be called during component initialisation.
+与えられた `key` が親コンポーネントの context に設定されているかどうかをチェックします。コンポーネントの初期化時に呼び出されなければなりません。
 
 ```sv
 <script>
