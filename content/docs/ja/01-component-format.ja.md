@@ -169,19 +169,19 @@ If a statement consists entirely of an assignment to an undeclared variable, Sve
 </script>
 ```
 
-##### 4. Prefix stores with `$` to access their values
+##### 4. ストアに`$`接頭辞を付けて値にアクセスする
 
 ---
 
-A *store* is an object that allows reactive access to a value via a simple *store contract*. The [`svelte/store` module](docs#svelte_store) contains minimal store implementations which fulfil this contract.
+*ストア*は、シンプルな*ストア契約*(store contract)を介して値へのリアクティブなアクセスを可能にするオブジェクトです。[`svelte/store` モジュール](docs#svelte_store)にはこの契約を満たす最小限のストア実装が含まれています。
 
-Any time you have a reference to a store, you can access its value inside a component by prefixing it with the `$` character. This causes Svelte to declare the prefixed variable, and set up a store subscription that will be unsubscribed when appropriate.
+ストアへの参照を持っているときはいつでも、`$`を接頭辞として付けることで、コンポーネント内からその値にアクセスできます。これによってSvelteは接頭辞付きの変数を宣言し、ストアのサブスクリプションを設定します。このサブスクリプションは適切なタイミングで解除されます。
 
-Assignments to `$`-prefixed variables require that the variable be a writable store, and will result in a call to the store's `.set` method.
+`$`接頭辞が付いた変数に代入するには、その変数が書き込み可能なストアである必要があります。また、代入時にはストアの `.set`メソッドが呼び出されます。 
 
-Note that the store must be declared at the top level of the component — not inside an `if` block or a function, for example.
+ストアはコンポーネントのトップレベルで宣言しなければならないことに注意してください - 例えば、`if`ブロックや関数の中では宣言できません。
 
-Local variables (that do not represent store values) must *not* have a `$` prefix.
+(ストア値を表すものではない)ローカル変数には、`$`接頭辞を付けてはいけません。
 
 ```sv
 <script>
