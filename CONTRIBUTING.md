@@ -136,12 +136,20 @@ Fork元にPull Requestを提出してください。Pull Requestのコメント�
 
 ### 翻訳のガイドライン
 
+#### 文体
+
+「だである」ではなく「ですます」調を使用してください。
+
+
 #### 改行位置を原文と揃える
 
 可能な限り、原文と翻訳文の行数を揃え、更新時のdiffチェックが楽になるように協力してください。
 
 
-TODO
+#### 単語、表記ゆれ
+
+[DICTIONARY.md](https://github.com/svelte-jp/svelte-site-jp/blob/master/DICTIONARY.md)を参考にしてください。
+
 
 ## Issueを作成する
 
@@ -152,7 +160,8 @@ TODO
 
 ## 備考
 
-翻訳の進め方やCONTRIBUTING.mdに記載する内容などはAngularの日本語化プロジェクトである[angular-ja](https://github.com/angular/angular-ja)を参考にさせて頂きました。
+翻訳の進め方やCONTRIBUTING.mdに記載する内容などは、各フロントエンドフレームワーク及びライブラリの日本語化プロジェクトである、[angular/angular-ja](https://github.com/angular/angular-ja)、[vuejs
+/jp.vuejs.org](https://github.com/vuejs/jp.vuejs.org), [reactjs/ja.reactjs.org](https://github.com/reactjs/ja.reactjs.org)を参考にさせて頂きました。
 
 
 ## ライセンス
