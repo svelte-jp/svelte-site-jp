@@ -1,7 +1,7 @@
 ---
-question: I'm new to Svelte. Where should I start?
+question: Svelteは初めてです。どこから始めればいいですか?
 ---
 
-We think the best way to get started is playing through the interactive [Tutorial](tutorial). Each step there is mainly focused on one specific aspect and is easy to follow. You'll be editing and running real Svelte components right in your browser.
+最初に行う最善の方法は、対話型の [チュートリアル](tutorial) を再生することです。各ステップは、主に1つの特定の側面に焦点を当てており、容易に実行できます。ブラウザで実際のSvelteコンポーネントを編集して実行します。
 
-Five to ten minutes should be enough to get you up and running. An hour and a half should get you through the entire tutorial.
+5~10分あれば、すぐに使用できます。1時間半でチュートリアル全体を完了できます。

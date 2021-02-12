@@ -1,11 +1,11 @@
 ---
-question: How do I test Svelte apps?
+question: Svelteアプリケーションをテストするにはどうすればよいですか？
 ---
 
-We recommend trying to seperate your view logic from your business logic. Data transformation or cross component state management is best kept outside of Svelte components. You can test those parts like you would test any JavaScript functionality that way. When it comes to testing the components, it is best to test the logic of the component and remember that the Svelte library has its own tests and you do not need to test implementation details provided by Svelte.
+ビューロジックとビジネスロジックを分離することをお勧めします。データ変換またはコンポーネント間の状態管理は、Svelteコンポーネントの外部に保管するのが最適です。このようにしてJavaScriptの機能をテストするのと同じように、これらの部分をテストすることができます。コンポーネントをテストする際には、コンポーネントのロジックをテストし、Svelteライブラリには独自のテストがあり、Svelteが提供する実装の詳細をテストする必要はないことを覚えておくのが最善です。
 
-There are a few approaches that people take when testing, but it generally involves compiling the component and mounting it to something and then performing the tests. You essentially need to create a bundle for each component you're testing (since svelte is a compiler and not a normal library) and then mount them. You can mount to a JSDOM instance. Or you can use a real browser powered by a library like Playwright, Puppeteer, or Cypress.
+テストを行うときにはいくつかの方法がありますが、一般的にはコンポーネントをコンパイルして何かにマウントし、テストを実行します。基本的には、テストするコンポーネントごとにバンドルを作成し(なぜなら、svelteはコンパイラであり、通常のライブラリではないからです。)、それらをマウントする必要があります。JSDOMインスタンスにマウントできます。また、Playwright、Puppeteer、Cypressなどのライブラリを備えた本物のブラウザを使うこともできる。
 
-Some resources for getting started with unit testing:
+単体テストを始めるためのリソース:
 - [Svelte Testing Library](https://testing-library.com/docs/svelte-testing-library/example/)
 - [Example using uvu test runner with JSDOM](https://github.com/lukeed/uvu/tree/master/examples/svelte)
