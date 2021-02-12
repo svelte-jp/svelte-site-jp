@@ -5,7 +5,7 @@ title: Run time
 
 ### `svelte`
 
-The `svelte` package exposes [lifecycle functions](tutorial/onmount) and the [context API](tutorial/context-api).
+`svelte` パッケージは、[ライフサイクル関数](tutorial/onmount) と [コンテキストAPI](tutorial/context-api) を公開します。
 
 #### `onMount`
 
@@ -18,9 +18,9 @@ onMount(callback: () => () => void)
 
 ---
 
-The `onMount` function schedules a callback to run as soon as the component has been mounted to the DOM. It must be called during the component's initialisation (but doesn't need to live *inside* the component; it can be called from an external module).
+`onMount` 関数は、コンポーネントが DOM にマウントされるとすぐに実行されるコールバックをスケジュールします。これはコンポーネントの初期化中に呼び出されなければなりません (ただし、コンポーネントの *内部* に存在する必要はありません。外部モジュールから呼び出すことができます)。
 
-`onMount` does not run inside a [server-side component](docs#Server-side_component_API).
+`onMount` は [サーバーサイドコンポーネント](docs#Server-side_component_API) の内部では実行されません。
 
 ```sv
 <script>
@@ -34,7 +34,7 @@ The `onMount` function schedules a callback to run as soon as the component has 
 
 ---
 
-If a function is returned from `onMount`, it will be called when the component is unmounted.
+`onMount` から関数が返された場合、コンポーネントがアンマウントされたときに呼び出されます。
 
 ```sv
 <script>
@@ -50,7 +50,7 @@ If a function is returned from `onMount`, it will be called when the component i
 </script>
 ```
 
-> This behaviour will only work when the function passed to `onMount` *synchronously* returns a value. `async` functions always return a `Promise`, and as such cannot *synchronously* return a function.
+>この挙動は、`onMount` に渡された関数が *同期的に* 値を返す場合にのみ動作します。`async` の関数は常に `Promise` を返すため、*同期的に* 値を返すことはできません。
 
 #### `beforeUpdate`
 
@@ -60,9 +60,9 @@ beforeUpdate(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately before the component is updated after any state change.
+state が変化した後、コンポーネントが更新される直前に実行されるコールバックをスケジュールします。
 
-> The first time the callback runs will be before the initial `onMount`
+> コールバックが最初に実行されるのは、初回の `onMount` の前になります。
 
 ```sv
 <script>
@@ -82,7 +82,7 @@ afterUpdate(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately after the component has been updated.
+コンポーネントが更新された直後に実行するコールバックをスケジュールします。
 
 ```sv
 <script>
@@ -102,9 +102,9 @@ onDestroy(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately before the component is unmounted.
+コンポーネントがアンマウントされる直前に実行するコールバックをスケジュールします。
 
-Out of `onMount`, `beforeUpdate`, `afterUpdate` and `onDestroy`, this is the only one that runs inside a server-side component.
+`onMount`, `beforeUpdate`, `afterUpdate`, `onDestroy` のうち、サーバサイドコンポーネントの中で動作するのはこれだけです。
 
 ```sv
 <script>
@@ -124,7 +124,7 @@ promise: Promise = tick()
 
 ---
 
-Returns a promise that resolves once any pending state changes have been applied, or in the next microtask if there are none.
+保留中の state の変更が適用されると resolve する promise を返します。もしくは何も保留していない場合に、その次のマイクロタスクで実行されます。
 
 ```sv
 <script>
