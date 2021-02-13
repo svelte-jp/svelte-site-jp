@@ -1431,9 +1431,9 @@ It cannot appear at the top level of your markup; it must be inside an if or eac
 
 ---
 
-The `<svelte:component>` element renders a component dynamically, using the component constructor specified as the `this` property. When the property changes, the component is destroyed and recreated.
+`<svelte:component>` 要素は、 `this` プロパティで指定されたコンポーネントのコンストラクタを用いて、コンポーネントを動的にレンダリングします。プロパティが変更されると、コンポーネントは破棄されて再生成されます。
 
-If `this` is falsy, no component is rendered.
+`this` の値が falsy である場合、コンポーネントはレンダリングされません。
 
 ```sv
 <svelte:component this={currentSelection.component} foo={bar}/>
