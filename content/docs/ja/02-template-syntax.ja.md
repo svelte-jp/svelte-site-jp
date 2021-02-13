@@ -1431,9 +1431,9 @@ Named slots can also expose values. The `let:` directive goes on the element wit
 
 ---
 
-The `<svelte:component>` element renders a component dynamically, using the component constructor specified as the `this` property. When the property changes, the component is destroyed and recreated.
+`<svelte:component>` 要素は、 `this` プロパティで指定されたコンポーネントのコンストラクタを用いて、コンポーネントを動的にレンダリングします。プロパティが変更されると、コンポーネントは破棄されて再生成されます。
 
-If `this` is falsy, no component is rendered.
+`this` の値が falsy である場合、コンポーネントはレンダリングされません。
 
 ```sv
 <svelte:component this={currentSelection.component} foo={bar}/>
