@@ -107,30 +107,30 @@ Svelteのリアクティビティは代入に基づいているため、`.push()
 </script>
 ```
 
-##### 3. `$:` marks a statement as reactive
+##### 3. `$:` はステートメントがリアクティブであることを示す
 
 ---
 
-Any top-level statement (i.e. not inside a block or a function) can be made reactive by prefixing it with the `$:` [JS label syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label). Reactive statements run immediately before the component updates, whenever the values that they depend on have changed.
+トップレベルの（つまりブロック内や関数内でない）ステートメントは `$:` という [JS ラベル構文](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/label) のプレフィックスをつけることでリアクティブにできます。リアクティブステートメントは依存する値が変更されるたび、コンポーネント更新の直前に実行されます。
 
 ```sv
 <script>
 	export let title;
 
-	// this will update `document.title` whenever
-	// the `title` prop changes
+	// これは `title` prop が変わるたびに
+	// `document.title` を更新します
 	$: document.title = title;
 
 	$: {
-		console.log(`multiple statements can be combined`);
-		console.log(`the current title is ${title}`);
+		console.log(`複数のステートメントをまとめることができます`);
+		console.log(`現在のタイトルは ${title}`);
 	}
 </script>
 ```
 
 ---
 
-Only values which directly appear within the `$:` block will become dependencies of the reactive statement. For example, in the code below `total` will only update when `x` changes, but not `y`.
+`$:` のブロック内に直接現れる値だけがリアクティブステートメントの依存関係になります。例えば次のコードで `total` は `x` が変更された時にのみ更新され、`y` では更新されません。
 
 ```sv
 <script>
@@ -156,14 +156,14 @@ Total: {total}
 
 ---
 
-If a statement consists entirely of an assignment to an undeclared variable, Svelte will inject a `let` declaration on your behalf.
+宣言されていない変数への代入だけでステートメントが構成されている場合、Svelte はあなたの代わりに `let` 宣言を挿入します。
 
 ```sv
 <script>
 	export let num;
 
-	// we don't need to declare `squared` and `cubed`
-	// — Svelte does it for us
+	// `squared` や `cubed` を宣言する必要はありません
+	// — Svelte がやってくれます
 	$: squared = num * num;
 	$: cubed = squared * num;
 </script>
