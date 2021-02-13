@@ -274,8 +274,7 @@ You cannot `export default`, since the default export is the component itself.
 	div :global(strong) {
 		/*
 			これは、このコンポーネント内の <div> 要素の中にある
-			すべての <strong> 要素に適用されます
-		*/
+			すべての <strong> 要素に適用されます */
 		color: goldenrod;
 	}
 </style>
