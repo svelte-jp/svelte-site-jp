@@ -545,7 +545,7 @@ $: $size = big ? 100 : 10;
 
 ### `svelte/transition`
 
-`svelte/transition` モジュールは 7 つの関数をエクスポートします。`fade`、`blur`、`fly`、 `slide`、`scale`、`draw`、`crossfade` の7つの関数をエクスポートします。これらは Svelte [`transitions`](docs#transition_fn) で使用します。
+`svelte/transition` モジュールは7つの関数をエクスポートします。`fade`、`blur`、`fly`、 `slide`、`scale`、`draw`、`crossfade` の7つの関数をエクスポートします。これらは Svelte [`transitions`](docs#transition_fn) で使用します。
 
 #### `fade`
 
@@ -567,9 +567,9 @@ out:fade={params}
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
-* `easing` (`function`, default `linear`) — [easing function](docs#svelte_easing)
+* `easing` (`function`, default `linear`) — [イージング関数](docs#svelte_easing)
 
-[transition tutorial](tutorial/transition) で `fade` トランジションの動作を見ることができます。
+[トランジション チュートリアル](tutorial/transition) で `fade` トランジションの動作を見ることができます。
 
 ```sv
 <script>
