@@ -358,14 +358,14 @@ promise が失敗した時に何もレンダリングする必要がない場合
 ### {#key ...}
 
 ```sv
-{#key expression}...{/key}
+{#key 式}...{/key}
 ```
 
-Key blocks destroy and recreate their contents when the value of an expression changes.
+key ブロックは式の値が変更されたときに、その中身を破棄して再作成します。
 
 ---
 
-This is useful if you want an element to play its transition whenever a value changes.
+これは、値が変更されるたびに要素のトランジションを再生したい場合に便利です。
 
 ```sv
 {#key value}
@@ -375,7 +375,7 @@ This is useful if you want an element to play its transition whenever a value ch
 
 ---
 
-When used around components, this will cause them to be reinstantiated and reinitialised.
+コンポーネントを囲んで使用した場合、コンポーネントの再インスタンス化と再初期化をもたらします。
 
 ```sv
 {#key value}
