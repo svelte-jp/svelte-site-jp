@@ -134,7 +134,7 @@ An element or component can have multiple spread attributes, interspersed with r
 
 ---
 
-Text can also contain JavaScript expressions:
+テキストにはJavaScriptの式を含めることもできます。
 
 ```sv
 <h1>Hello {name}!</h1>
