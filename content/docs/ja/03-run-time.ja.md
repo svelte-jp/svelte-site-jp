@@ -414,7 +414,7 @@ const value = get(store);
 
 ### `svelte/motion`
 
-The `svelte/motion` module exports two functions, `tweened` and `spring`, for creating writable stores whose values change over time after `set` and `update`, rather than immediately.
+`svelte/motion` モジュールは、`tweened` と `spring` という2つの関数をエクスポートします。これは書き込み可能なストアを作成するためのもので、値がすぐにではなく、`set` と `update` の後に時間の経過とともに変化するものです。
 
 #### `tweened`
 
@@ -422,20 +422,20 @@ The `svelte/motion` module exports two functions, `tweened` and `spring`, for cr
 store = tweened(value: any, options)
 ```
 
-Tweened stores update their values over a fixed duration. The following options are available:
+トゥイーンされたストアは、一定の期間にわたって値を更新します。以下のオプションが利用可能です。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the tween lasts
-* `easing` (`function`, default `t => t`) — an [easing function](docs#svelte_easing)
-* `interpolate` (`function`) — see below
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トゥイーンの持続時間のミリ秒
+* `easing` (`function`, default `t => t`) — [イージング関数](docs#svelte_easing)
+* `interpolate` (`function`) — 下記を参照してください。
 
-`store.set` and `store.update` can accept a second `options` argument that will override the options passed in upon instantiation.
+`store.set` と `store.update` は、インスタンス化時に渡されたオプションを上書きする第2引数 `options` を受け取ることができます。
 
-Both functions return a Promise that resolves when the tween completes. If the tween is interrupted, the promise will never resolve.
+どちらの関数も、トゥイーンが完了すると resolve する promise を返します。トゥイーンが中断されると、promise は resolve されません。
 
 ---
 
-Out of the box, Svelte will interpolate between two numbers, two arrays or two objects (as long as the arrays and objects are the same 'shape', and their 'leaf' properties are also numbers).
+Svelte は2つの数値、2つの配列、または2つのオブジェクトの間を補間します(配列とオブジェクトが同じ '形状' であり、それらの '子孫' プロパティも数値である限り)。
 
 ```sv
 <script>
@@ -448,7 +448,7 @@ Out of the box, Svelte will interpolate between two numbers, two arrays or two o
 	});
 
 	function handleClick() {
-		// this is equivalent to size.update(n => n + 1)
+		// これは size.update(n => n + 1) と等価です
 		$size += 1;
 	}
 </script>
@@ -461,7 +461,7 @@ Out of the box, Svelte will interpolate between two numbers, two arrays or two o
 
 ---
 
-If the initial value is `undefined` or `null`, the first value change will take effect immediately. This is useful when you have tweened values that are based on props, and don't want any motion when the component first renders.
+初期値が `undefined` または `null` の場合、最初の値の変更はすぐに有効になります。これは、props をベースにしたトゥイーン値を設定していて、コンポーネントの最初のレンダリング時にモーションをかけたくない場合に便利です。
 
 ```js
 const size = tweened(undefined, {
@@ -474,7 +474,7 @@ $: $size = big ? 100 : 10;
 
 ---
 
-The `interpolate` option allows you to tween between *any* arbitrary values. It must be an `(a, b) => t => value` function, where `a` is the starting value, `b` is the target value, `t` is a number between 0 and 1, and `value` is the result. For example, we can use the [d3-interpolate](https://github.com/d3/d3-interpolate) package to smoothly interpolate between two colours.
+`interpolate` オプションを指定すると、*任意の* 値の間でトゥイーンを行うことができます。関数 `(a, b) => t => value` で、`a` は開始値、`b` は目標値、`t` は 0 から 1 の間の数値、`value` は結果です。例えば、[d3-interpolate](https://github.com/d3/d3-interpolate) パッケージを使えば、2つの色の間をスムーズに補間することができます。
 
 ```sv
 <script>
@@ -509,19 +509,19 @@ The `interpolate` option allows you to tween between *any* arbitrary values. It 
 store = spring(value: any, options)
 ```
 
-A `spring` store gradually changes to its target value based on its `stiffness` and `damping` parameters. Whereas `tweened` stores change their values over a fixed duration, `spring` stores change over a duration that is determined by their existing velocity, allowing for more natural-seeming motion in many situations. The following options are available:
+`spring` ストアは、`stiffness` と `damping` パラメータに基づいて目標値まで徐々に変化します。`tweened` ストアが一定のタイミングで値を変化させるのに対し、`spring` ストアは既存の速度によって決定されるタイミングで変化するため、多くの状況でより自然に見える動きを可能にします。以下のオプションが利用可能です。
 
-* `stiffness` (`number`, default `0.15`) — a value between 0 and 1 where higher means a 'tighter' spring
-* `damping` (`number`, default `0.8`) — a value between 0 and 1 where lower means a 'springier' spring
-* `precision` (`number`, default `0.001`) — determines the threshold at which the spring is considered to have 'settled', where lower means more precise
+* `stiffness` (`number`, default `0.15`) — 0 から 1 の間の値で、高い方が「よりタイトな」スプリングを意味します。
+* `damping` (`number`, default `0.8`) — 0 から 1 の間の値で、少ない方が「より弾力のある」スプリングを意味します。
+* `precision` (`number`, default `0.001`) — は、スプリングが「止まった」とみなされる閾値を決定します。少ない方がより精密であることを意味します。
 
 ---
 
-As with [`tweened`](docs#tweened) stores, `set` and `update` return a Promise that resolves if the spring settles. The `store.stiffness` and `store.damping` properties can be changed while the spring is in motion, and will take immediate effect.
+[`tweened`](docs#tweened) ストアと同様に、`set` と `update` はスプリングが止まれば resolve する promise を返します。`store.stiffness` と `store.damping` プロパティはスプリングが動いている間に変更することができ、すぐに効果を発揮します。
 
-Both `set` and `update` can take a second argument — an object with `hard` or `soft` properties. `{ hard: true }` sets the target value immediately; `{ soft: n }` preserves existing momentum for `n` seconds before settling. `{ soft: true }` is equivalent to `{ soft: 0.5 }`.
+`set` と `update` はどちらも第2引数として `hard` または `soft` プロパティを持つオブジェクトを取ることができます。`{ hard: true }` は対象の値を即座に設定します。`{ soft: n }` は既存の運動量を `n` 秒間保持してから止まります。`{ soft: true }` は `{ soft: 0.5 }` と同等です。
 
-[See a full example on the spring tutorial.](tutorial/spring)
+[スプリングチュートリアルの例を参照してください。](tutorial/spring)
 
 ```sv
 <script>
@@ -536,7 +536,7 @@ Both `set` and `update` can take a second argument — an object with `hard` or 
 
 ---
 
-If the initial value is `undefined` or `null`, the first value change will take effect immediately, just as with `tweened` values (see above).
+初期値が `undefined` または `null` の場合、最初の値の変更は `tweened` の場合と同様に即座に有効になります (上記を参照)。
 
 ```js
 const size = spring();
