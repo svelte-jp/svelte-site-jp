@@ -247,14 +247,14 @@ You cannot `export default`, since the default export is the component itself.
 
 ---
 
-CSS inside a `<style>` block will be scoped to that component.
+`<style>` ブロック内の CSS は、そのコンポーネントにスコープされます。
 
-This works by adding a class to affected elements, which is based on a hash of the component styles (e.g. `svelte-123xyz`).
+これは、影響を受ける要素にクラスを追加することで動作し、そのクラスはコンポーネントのスタイルのハッシュに基づいています (例えば `svelte-123xyz`)。
 
 ```sv
 <style>
 	p {
-		/* this will only affect <p> elements in this component */
+		/* これはこのコンポーネントの <p> 要素にのみ影響します */
 		color: burlywood;
 	}
 </style>
@@ -262,19 +262,20 @@ This works by adding a class to affected elements, which is based on a hash of t
 
 ---
 
-To apply styles to a selector globally, use the `:global(...)` modifier.
+スタイルをグローバルなセレクタに適用するには、`:global(...)`修飾子を使用します。
 
 ```sv
 <style>
 	:global(body) {
-		/* this will apply to <body> */
+		/* これは <body> に適用されます */
 		margin: 0;
 	}
 
 	div :global(strong) {
-		/* this will apply to all <strong> elements, in any
-			 component, that are inside <div> elements belonging
-			 to this component */
+		/*
+			これは、このコンポーネント内の <div> 要素の中にある
+			すべての <strong> 要素に適用されます
+		*/
 		color: goldenrod;
 	}
 </style>
@@ -282,9 +283,9 @@ To apply styles to a selector globally, use the `:global(...)` modifier.
 
 ---
 
-If you want to make @keyframes that are accessible globally, you need to prepend your keyframe names with `-global-`.
+グローバルにアクセスできる @keyframe を作りたい場合は、キーフレーム名の前に `-global-` を付ける必要があります。
 
-The `-global-` part will be removed when compiled, and the keyframe then be referenced using just `my-animation-name` elsewhere in your code.
+コンパイル時に `-global-` の部分は削除され、キーフレームはコード内の他の箇所では `my-animation-name` だけを使って参照されます。
 
 ```html
 <style>
