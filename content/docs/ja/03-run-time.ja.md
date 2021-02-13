@@ -597,15 +597,15 @@ out:blur={params}
 
 ---
 
-Animates a `blur` filter alongside an element's opacity.
+要素の opacity で `blur` フィルタをアニメーション化します。
 
-`blur` accepts the following parameters:
+`blur` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicInOut`) — an [easing function](docs#svelte_easing)
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
-* `amount` (`number`, default 5) - the size of the blur in pixels
+* `delay` (`number`, default 0) —開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — アニメーションの持続時間のミリ秒
+* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#svelte_easing)
+* `opacity` (`number`, default 0) - アニメーション化する opacity の値
+* `amount` (`number`, default 5) - ぼかしのサイズをピクセル単位で表します
 
 ```sv
 <script>
