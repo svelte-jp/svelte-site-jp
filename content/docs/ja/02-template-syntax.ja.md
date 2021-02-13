@@ -146,7 +146,7 @@ Text can also contain JavaScript expressions:
 
 ---
 
-You can use HTML comments inside components.
+コンポーネント内でHTMLコメントを使用することができます。
 
 ```sv
 <!-- this is a comment! -->
@@ -155,7 +155,7 @@ You can use HTML comments inside components.
 
 ---
 
-Comments beginning with `svelte-ignore` disable warnings for the next block of markup. Usually these are accessibility warnings; make sure that you're disabling them for a good reason.
+`svelte-ignore` で始まるコメントは、マークアップの次のブロックに対する警告を無効にします。通常、これらはアクセシビリティの警告です。正当な理由で警告を無効にしていることを確認してください。
 
 ```sv
 <!-- svelte-ignore a11y-autofocus -->
