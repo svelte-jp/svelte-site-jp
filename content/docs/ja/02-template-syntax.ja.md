@@ -134,7 +134,7 @@ Boolean な属性は、その値が [truthy](https://developer.mozilla.org/en-US
 
 ---
 
-Text can also contain JavaScript expressions:
+テキストにはJavaScriptの式を含めることもできます。
 
 ```sv
 <h1>Hello {name}!</h1>
