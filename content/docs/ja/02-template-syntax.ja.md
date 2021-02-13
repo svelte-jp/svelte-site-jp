@@ -1406,9 +1406,9 @@ Named slots can also expose values. The `let:` directive goes on the element wit
 
 ---
 
-The `<svelte:self>` element allows a component to include itself, recursively.
+`<svelte:self>` 要素を使用すると、コンポーネントにそれ自体を再帰的に含めることができます。
 
-It cannot appear at the top level of your markup; it must be inside an if or each block to prevent an infinite loop.
+マークアップのトップレベルに表示することはできません。また、無限ループを防ぐために、 `if` または `each` ブロック内にある必要があります。
 
 ```sv
 <script>
