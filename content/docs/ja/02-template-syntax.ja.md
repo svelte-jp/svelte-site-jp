@@ -3,7 +3,7 @@ title: Template syntax
 ---
 
 
-### タグ
+### Tags
 
 ---
 
