@@ -292,52 +292,52 @@ An each block can also have an `{:else}` clause, which is rendered if the list i
 ### {#await ...}
 
 ```sv
-{#await expression}...{:then name}...{:catch name}...{/await}
+{#await 式}...{:then name}...{:catch name}...{/await}
 ```
 ```sv
-{#await expression}...{:then name}...{/await}
+{#await 式}...{:then name}...{/await}
 ```
 ```sv
-{#await expression then name}...{/await}
+{#await 式 then name}...{/await}
 ```
 ```sv
-{#await expression catch name}...{/await}
+{#await 式 catch name}...{/await}
 ```
 
 ---
 
-Await blocks allow you to branch on the three possible states of a Promise — pending, fulfilled or rejected.
+await ブロックを使用すると、Promise が取りうる 3 つの状態（保留中、成功、失敗）に分岐できます。
 
 ```sv
 {#await promise}
-	<!-- promise is pending -->
+	<!-- promise が保留中 -->
 	<p>waiting for the promise to resolve...</p>
 {:then value}
-	<!-- promise was fulfilled -->
+	<!-- promise が成功した -->
 	<p>The value is {value}</p>
 {:catch error}
-	<!-- promise was rejected -->
+	<!-- promise が失敗した -->
 	<p>Something went wrong: {error.message}</p>
 {/await}
 ```
 
 ---
 
-The `catch` block can be omitted if you don't need to render anything when the promise rejects (or no error is possible).
+promise が失敗した時に何もレンダリングする必要がない場合（もしくはエラーが発生しない場合）は `catch` ブロックを省略できます。
 
 ```sv
 {#await promise}
-	<!-- promise is pending -->
+	<!-- promise が保留中 -->
 	<p>waiting for the promise to resolve...</p>
 {:then value}
-	<!-- promise was fulfilled -->
+	<!-- promise が成功した -->
 	<p>The value is {value}</p>
 {/await}
 ```
 
 ---
 
-If you don't care about the pending state, you can also omit the initial block.
+保留中の状態を気にしない場合は、最初のブロックを省略することもできます。
 
 ```sv
 {#await promise then value}
@@ -347,7 +347,7 @@ If you don't care about the pending state, you can also omit the initial block.
 
 ---
 
-If conversely you only want to show the error state, you can omit the `then` block.
+逆にエラー状態のみを表示したい場合は `then` ブロックを省略できます。
 
 ```sv
 {#await promise catch error}
