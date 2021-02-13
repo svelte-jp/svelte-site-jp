@@ -24,7 +24,7 @@ title: Template syntax
 
 ---
 
-By default, attributes work exactly like their HTML counterparts.
+デフォルトでは、属性はHTMLと全く同じように動作します。
 
 ```sv
 <div class="foo">
@@ -34,7 +34,7 @@ By default, attributes work exactly like their HTML counterparts.
 
 ---
 
-As in HTML, values may be unquoted.
+HTMLのように、値は引用符で囲まれていない場合があります。
 
 ```sv
 <input type=checkbox>
@@ -42,7 +42,7 @@ As in HTML, values may be unquoted.
 
 ---
 
-Attribute values can contain JavaScript expressions.
+属性値には JavaScript の式を含めることができます。
 
 ```sv
 <a href="page/{p}">page {p}</a>
@@ -50,7 +50,7 @@ Attribute values can contain JavaScript expressions.
 
 ---
 
-Or they can *be* JavaScript expressions.
+あるいは、JavaScript の式にすることもできます。
 
 ```sv
 <button disabled={!clickable}>...</button>
@@ -58,9 +58,9 @@ Or they can *be* JavaScript expressions.
 
 ---
 
-Boolean attributes are included on the element if their value is [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) and excluded if it's [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy).
+Boolean な属性は、その値が [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) であれば要素に含まれ、[falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) であれば除外されます。
 
-All other attributes are included unless their value is [nullish](https://developer.mozilla.org/en-US/docs/Glossary/Nullish) (`null` or `undefined`).
+それ以外の属性は、その値が [nullish](https://developer.mozilla.org/en-US/docs/Glossary/Nullish) (`null` または `undefined`) でない限り含まれます。
 
 ```html
 <input required={false} placeholder="This input field is not required">
@@ -69,7 +69,7 @@ All other attributes are included unless their value is [nullish](https://develo
 
 ---
 
-An expression might include characters that would cause syntax highlighting to fail in regular HTML, so quoting the value is permitted. The quotes do not affect how the value is parsed:
+式には、通常の HTML ではシンタックスハイライトに失敗するような文字が含まれている可能性があるので、値を引用符で囲むことが許可されています。引用符は値の解析方法には影響しません。
 
 ```sv
 <button disabled="{number !== 42}">...</button>
@@ -77,7 +77,7 @@ An expression might include characters that would cause syntax highlighting to f
 
 ---
 
-When the attribute name and value match (`name={name}`), they can be replaced with `{name}`.
+属性名と値が一致する場合(`name={name}`)は、`{name}`で置き換えることができます。
 
 ```sv
 <!-- These are equivalent -->
@@ -87,9 +87,9 @@ When the attribute name and value match (`name={name}`), they can be replaced wi
 
 ---
 
-By convention, values passed to components are referred to as *properties* or *props* rather than *attributes*, which are a feature of the DOM.
+慣習として、コンポーネントに渡される値は DOM の機能である *属性* ではなく、*プロパティ* または *props* と呼ばれます。
 
-As with elements, `name={name}` can be replaced with the `{name}` shorthand.
+要素の場合と同様に、`name={name}` は `{name}` の短縮形に置き換えることができます。
 
 ```sv
 <Widget foo={bar} answer={42} text="hello"/>
@@ -97,9 +97,9 @@ As with elements, `name={name}` can be replaced with the `{name}` shorthand.
 
 ---
 
-*Spread attributes* allow many attributes or properties to be passed to an element or component at once.
+*スプレッド属性* は、多くの属性やプロパティを一度に要素やコンポーネントに渡すことを可能にします。
 
-An element or component can have multiple spread attributes, interspersed with regular ones.
+要素またはコンポーネントは、通常のものとは別に、複数のスプレッド属性を持つことができます。
 
 ```sv
 <Widget {...things}/>
@@ -107,7 +107,7 @@ An element or component can have multiple spread attributes, interspersed with r
 
 ---
 
-*`$$props`* references all props that are passed to a component, including ones that are not declared with `export`. It is not generally recommended, as it is difficult for Svelte to optimise. But it can be useful in rare cases – for example, when you don't know at compile time what props might be passed to a component.
+*`$$props`* は、`export` で宣言されていないものも含めて、コンポーネントに渡されるすべての props を参照します。これは Svelte の最適化が難しいので、一般的には推奨されません。しかし、コンパイル時にどのような props がコンポーネントに渡されるかわからない場合など、稀なケースでは便利です。
 
 ```sv
 <Widget {...$$props}/>
@@ -115,14 +115,14 @@ An element or component can have multiple spread attributes, interspersed with r
 
 ---
 
-*`$$restProps`* contains only the props which are *not* declared with `export`. It can be used to pass down other unknown attributes to an element in a component. It shares the same optimisation problems as *`$$props`*, and is likewise not recommended.
+*`$$restProps`* には、`export` で宣言されて *いない* props のみが含まれます。これは他の未知の属性をコンポーネントの要素に渡すために使用できます。 *`$$props`* と同じ最適化の問題を共有しており、同様に推奨されません。
 
 ```html
 <input {...$$restProps}>
 ```
 
 
-> The `value` attribute of an `input` element or its children `option` elements must not be set with spread attributes when using `bind:group` or `bind:checked`. Svelte needs to be able to see the element's `value` directly in the markup in these cases so that it can link it to the bound variable.
+> `input` 要素やその子要素である `option` 要素の `value` 属性は、`bind:group` や `bind:checked` を使用している場合、スプレッド属性で設定してはいけません。Svelte はこのような場合、要素の `value` をマークアップで直接見ることができるようにして、バインドされた変数にリンクさせる必要があります。
 
 ---
 
