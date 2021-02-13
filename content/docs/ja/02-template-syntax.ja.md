@@ -203,24 +203,24 @@ Comments beginning with `svelte-ignore` disable warnings for the next block of m
 ### {#each ...}
 
 ```sv
-{#each expression as name}...{/each}
+{#each 式 as name}...{/each}
 ```
 ```sv
-{#each expression as name, index}...{/each}
+{#each 式 as name, index}...{/each}
 ```
 ```sv
-{#each expression as name (key)}...{/each}
+{#each 式 as name (key)}...{/each}
 ```
 ```sv
-{#each expression as name, index (key)}...{/each}
+{#each 式 as name, index (key)}...{/each}
 ```
 ```sv
-{#each expression as name}...{:else}...{/each}
+{#each 式 as name}...{:else}...{/each}
 ```
 
 ---
 
-Iterating over lists of values can be done with an each block.
+each ブロックで値のリストの反復処理ができます。
 
 ```sv
 <h1>Shopping list</h1>
@@ -231,11 +231,11 @@ Iterating over lists of values can be done with an each block.
 </ul>
 ```
 
-You can use each blocks to iterate over any array or array-like value — that is, any object with a `length` property.
+配列や配列のような値、つまり `length` プロパティを持つオブジェクトを反復処理するのに each ブロックを使用できます。
 
 ---
 
-An each block can also specify an *index*, equivalent to the second argument in an `array.map(...)` callback:
+each ブロックは `array.map(...)` のコールバックの第 2 引数に相当する*インデックス*を指定することもできます。
 
 ```sv
 {#each items as item, i}
@@ -245,14 +245,14 @@ An each block can also specify an *index*, equivalent to the second argument in 
 
 ---
 
-If a *key* expression is provided — which must uniquely identify each list item — Svelte will use it to diff the list when data changes, rather than adding or removing items at the end. The key can be any object, but strings and numbers are recommended since they allow identity to persist when the objects themselves change.
+*key* の式（各リストアイテムを一意に識別できる必要があります）が与えられた場合、データが変更されたときに Svelte は末尾にアイテムを追加したり削除するのではなくそれを使用して差分を取ります。key はどんなものでもよいですが、オブジェクト自体が変更されたときに同一性を維持できるため、文字列か数値をお勧めします。
 
 ```sv
 {#each items as item (item.id)}
 	<li>{item.name} x {item.qty}</li>
 {/each}
 
-<!-- or with additional index value -->
+<!-- もしくはインデックスを追加 -->
 {#each items as item, i (item.id)}
 	<li>{i + 1}: {item.name} x {item.qty}</li>
 {/each}
@@ -260,7 +260,7 @@ If a *key* expression is provided — which must uniquely identify each list ite
 
 ---
 
-You can freely use destructuring and rest patterns in each blocks.
+each ブロックでは分割代入や残余構文のパターンを自由に使えます。
 
 ```sv
 {#each items as { id, name, qty }, i (id)}
@@ -278,7 +278,7 @@ You can freely use destructuring and rest patterns in each blocks.
 
 ---
 
-An each block can also have an `{:else}` clause, which is rendered if the list is empty.
+each ブロックには `{:else}` 句を入れることもできます。これはリストが空の場合にレンダリングされます。
 
 ```sv
 {#each todos as todo}
