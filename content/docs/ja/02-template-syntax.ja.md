@@ -1451,7 +1451,7 @@ Named slots can also expose values. The `let:` directive goes on the element wit
 
 ---
 
-The `<svelte:window>` element allows you to add event listeners to the `window` object without worrying about removing them when the component is destroyed, or checking for the existence of `window` when server-side rendering.
+`<svelte:window>` 要素を使うと、コンポーネントが破棄されたときにイベントリスナを削除したり、サーバサイドでレンダリングするときに `window` が存在するかどうかをチェックしたりすることなく、`window` オブジェクトにイベントリスナを追加することができます。
 
 ```sv
 <script>
@@ -1465,7 +1465,7 @@ The `<svelte:window>` element allows you to add event listeners to the `window` 
 
 ---
 
-You can also bind to the following properties:
+また、以下のプロパティにバインドすることもできます。
 
 * `innerWidth`
 * `innerHeight`
@@ -1473,9 +1473,9 @@ You can also bind to the following properties:
 * `outerHeight`
 * `scrollX`
 * `scrollY`
-* `online` — an alias for window.navigator.onLine
+* `online` — window.navigator.onLine の別名です
 
-All except `scrollX` and `scrollY` are readonly.
+`scrollX` と `scrollY` 以外はすべて読み込み専用です。
 
 ```sv
 <svelte:window bind:scrollY={y}/>
