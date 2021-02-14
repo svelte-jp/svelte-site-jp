@@ -1490,7 +1490,7 @@ All except `scrollX` and `scrollY` are readonly.
 
 ---
 
-As with `<svelte:window>`, this element allows you to add listeners to events on `document.body`, such as `mouseenter` and `mouseleave` which don't fire on `window`.
+`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。
 
 ```sv
 <svelte:body
