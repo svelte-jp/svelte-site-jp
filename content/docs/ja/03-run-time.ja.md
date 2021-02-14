@@ -829,9 +829,9 @@ You can see a full example on the [animations tutorial](tutorial/animate)
 
 ### `svelte/easing`
 
-Easing functions specify the rate of change over time and are useful when working with Svelte's built-in transitions and animations as well as the tweened and spring utilities. `svelte/easing` contains 31 named exports, a `linear` ease and 3 variants of 10 different easing functions: `in`, `out` and `inOut`.
+イージング関数は、時間の経過とともに変化する速度を指定するもので、Svelte に組み込まれたトランジションやアニメーション、tweened や spring ユーティリティの作業をする際に便利です。`svelte/easing` には、31の名前付きエクスポートが含まれています。`linear` イージング、10種類のイージング関数の3つのバリエーション `in`, `out`, `inOut` です。
 
-You can explore the various eases using the [ease visualiser](examples#easing) in the [examples section](examples).
+[examples section](examples) の [ease visualiser](examples#easing) で様々なイージングを試してみることができます。
 
 
 | ease | in | out | inOut |
