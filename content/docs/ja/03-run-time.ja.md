@@ -633,18 +633,18 @@ out:fly={params}
 
 ---
 
-Animates the x and y positions and the opacity of an element. `in` transitions animate from an element's current (default) values to the provided values, passed as parameters. `out` transitions animate from the provided values to an element's default values.
+要素の x と y の位置と opacity をアニメーション化します。`in` トランジションは、要素の現在の(デフォルトの)値からパラメータとして渡された値にアニメーションします。`out` トランジションは、指定された値から要素のデフォルト値にアニメーションします。
 
-`fly` accepts the following parameters:
+`fly` は以下のパラメータを受け付けいます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `x` (`number`, default 0) - the x offset to animate out to and in from
-* `y` (`number`, default 0) - the y offset to animate out to and in from
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `x` (`number`, default 0) - アニメーションで移動する x 位置のオフセット 
+* `y` (`number`, default 0) - アニメーションで移動する y 位置のオフセット
+* `opacity` (`number`, default 0) - アニメーションで変化する opacity のオフセット
 
-You can see the `fly` transition in action in the [transition tutorial](tutorial/adding-parameters-to-transitions).
+`fly` トランジションの動作は [トランジション チュートリアル](tutorial/adding-parameters-to-transitions) で見ることができます。
 
 ```sv
 <script>
