@@ -80,3 +80,33 @@ In order to work on features that depend on those packages, you need to [link](h
 Anchors are automatically generated using headings in the documentation and by default (for the english language) they are latinised to make sure the URL is always conforming to RFC3986.
 
 If we need to translate the API documentation to a language using unicode chars, we can setup this app to export the correct anchors by setting up `SLUG_PRESERVE_UNICODE` to `true` in `config.js`.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/tomoam"><img src="https://avatars.githubusercontent.com/u/29677552?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tomoam</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=tomoam" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/myLifeAsaDog"><img src="https://avatars.githubusercontent.com/u/18300178?v=4?s=100" width="100px;" alt=""/><br /><sub><b>myLifeAsaDog</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=myLifeAsaDog" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/Makohan"><img src="https://avatars.githubusercontent.com/u/32333141?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mkin</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=Makohan" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://qiita.com/jay-es"><img src="https://avatars.githubusercontent.com/u/46585162?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jun Shindo</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=jay-es" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://speakerdeck.com/clown0082"><img src="https://avatars.githubusercontent.com/u/4125257?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Keeth Kuwahara</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=kkeeth" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/oekazuma"><img src="https://avatars.githubusercontent.com/u/29580221?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kazuma Oe</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=oekazuma" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/Shunpoco"><img src="https://avatars.githubusercontent.com/u/25903627?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Shunpoco</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=Shunpoco" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/ampcpmgp"><img src="https://avatars.githubusercontent.com/u/13173632?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ampcpmgp</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=ampcpmgp" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/takoyaro"><img src="https://avatars.githubusercontent.com/u/54836677?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jimmy</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=takoyaro" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

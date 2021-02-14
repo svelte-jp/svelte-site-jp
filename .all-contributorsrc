@@ -1,0 +1,96 @@
+{
+  "projectName": "svelte-site-jp",
+  "projectOwner": "svelte-jp",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "tomoam",
+      "name": "tomoam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29677552?v=4",
+      "profile": "https://github.com/tomoam",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "myLifeAsaDog",
+      "name": "myLifeAsaDog",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18300178?v=4",
+      "profile": "https://github.com/myLifeAsaDog",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Makohan",
+      "name": "mkin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32333141?v=4",
+      "profile": "https://github.com/Makohan",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "jay-es",
+      "name": "Jun Shindo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/46585162?v=4",
+      "profile": "https://qiita.com/jay-es",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "kkeeth",
+      "name": "Keeth Kuwahara",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4125257?v=4",
+      "profile": "https://speakerdeck.com/clown0082",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "oekazuma",
+      "name": "Kazuma Oe",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29580221?v=4",
+      "profile": "https://github.com/oekazuma",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "Shunpoco",
+      "name": "Shunpoco",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25903627?v=4",
+      "profile": "https://github.com/Shunpoco",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ampcpmgp",
+      "name": "ampcpmgp",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13173632?v=4",
+      "profile": "https://github.com/ampcpmgp",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "takoyaro",
+      "name": "Jimmy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54836677?v=4",
+      "profile": "https://github.com/takoyaro",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
