@@ -545,7 +545,7 @@ $: $size = big ? 100 : 10;
 
 ### `svelte/transition`
 
-The `svelte/transition` module exports seven functions: `fade`, `blur`, `fly`, `slide`, `scale`, `draw` and `crossfade`. They are for use with Svelte [`transitions`](docs#transition_fn).
+`svelte/transition` モジュールは7つの関数をエクスポートします。`fade`、`blur`、`fly`、 `slide`、`scale`、`draw`、`crossfade` の7つの関数をエクスポートします。これらは Svelte [`transitions`](docs#transition_fn) で使用します。
 
 #### `fade`
 
@@ -561,15 +561,15 @@ out:fade={params}
 
 ---
 
-Animates the opacity of an element from 0 to the current opacity for `in` transitions and from the current opacity to 0 for `out` transitions.
+要素の opacity を、`in` トランジションでは 0 から現在の opacity まで、`out` トランジションでは現在の opacity から 0 までアニメーションします。
 
-`fade` accepts the following parameters:
+`fade` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `linear`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `linear`) — [イージング関数](docs#svelte_easing)
 
-You can see the `fade` transition in action in the [transition tutorial](tutorial/transition).
+[トランジション チュートリアル](tutorial/transition) で `fade` トランジションの動作を見ることができます。
 
 ```sv
 <script>
