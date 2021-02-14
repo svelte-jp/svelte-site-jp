@@ -675,7 +675,7 @@ out:slide={params}
 
 要素をスライドさせて出し入れします。
 
-`slide` は下記のパラメータを受け入れます。
+`slide` は下記のパラメータを受け付けます。
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
