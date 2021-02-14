@@ -236,11 +236,11 @@ dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
 
 ### `svelte/store`
 
-The `svelte/store` module exports functions for creating [readable](docs#readable), [writable](docs#writable) and [derived](docs#derived) stores.
+`svelte/store` モジュールは、[readable](docs#readable)、[writable](docs#writable)、そして [derived](docs#derived) ストアを作成するための関数をエクスポートします。
 
-Keep in mind that you don't *have* to use these functions to enjoy the [reactive `$store` syntax](docs#4_Prefix_stores_with_$_to_access_their_values) in your components. Any object that correctly implements `.subscribe`, unsubscribe, and (optionally) `.set` is a valid store, and will work both with the special syntax, and with Svelte's built-in [`derived` stores](docs#derived).
+コンポーネントで[リアクティブな `$store` 構文](docs#4_$)を便利に使うために、これらの関数を使用する必要がないことを覚えておいてください。`.subscribe` とそのサブスクライブの解除、（オプションで）`.set` を正しく実装したオブジェクトは有効なストアであり、その特殊な構文と Svelte に組み込まれた [`derived` ストア](docs#derived)の両方で機能します。
 
-This makes it possible to wrap almost any other reactive state handling library for use in Svelte. Read more about the [store contract](docs#Store_contract) to see what a correct implementation looks like.
+これにより、Svelte で使用するための、ほぼすべての他のリアクティブ状態を扱うライブラリをラップすることが可能になります。続いて説明する正しい実装がどのようなものか理解するために、[Store contract](docs#Store_contract) も読んでみてください。
 
 #### `writable`
 
@@ -253,11 +253,11 @@ store = writable(value: any, (set: (value: any) => void) => () => void)
 
 ---
 
-Function that creates a store which has values that can be set from 'outside' components. It gets created as an object with additional `set` and `update` methods.
+「外部」コンポーネントから設定できる値を持つストアを作成する関数。これは、`set` と `update` 関数を併せ持つオブジェクトを作成します。
 
-`set` is a method that takes one argument which is the value to be set. The store value gets set to the value of the argument if the store value is not already equal to it.
+`set` は、設定する値である1つの引数を受け取る関数です。ストア値が引数の値とまだ等しくない場合、ストア値は引数の値に設定されます。
 
-`update` is a method that takes one argument which is a callback. The callback takes the existing store value as its argument and returns the new value to be set to the store.
+`update` は、コールバックである1つの引数を受け取る関数です。コールバックは、既存のストア値を引数として受け取り、ストアに設定される新しい値を返します。
 
 ```js
 import { writable } from 'svelte/store';
@@ -275,7 +275,7 @@ count.update(n => n + 1); // logs '2'
 
 ---
 
-If a function is passed as the second argument, it will be called when the number of subscribers goes from zero to one (but not from one to two, etc). That function will be passed a `set` function which changes the value of the store. It must return a `stop` function that is called when the subscriber count goes from one to zero.
+関数が第二引数として渡された場合、サブスクライバーの数が 0 から 1 になると呼び出されます（ただし、1 から 2 になった場合などには呼び出されません）。その関数は、ストアの値を変更する `set` 関数からは呼び出されません。サブスクライバーの数が 1 から 0 になったときに呼び出される `stop` 関数を返す必要があります。
 
 ```js
 import { writable } from 'svelte/store';
@@ -302,9 +302,9 @@ store = readable(value: any, (set: (value: any) => void) => () => void)
 
 ---
 
-Creates a store whose value cannot be set from 'outside', the first argument is the store's initial value.
+「外側」から値を設定できないストアを作成します。第一引数はストアの初期値です。
 
-The second argument to `readable` is the same as the second argument to `writable`, except that it is required with `readable` (since otherwise there would be no way to update the store value).
+`readable` の第二引数は、必須であることを除いて `writable` の第二引数と同じです（そうでない場合、ストア値を更新する方法がないため）。
 
 ```js
 import { readable } from 'svelte/store';
@@ -337,9 +337,9 @@ store = derived([a, ...b], callback: ([a: any, ...b: any[]], set: (value: any) =
 
 ---
 
-Derives a store from one or more other stores. Whenever those dependencies change, the callback runs.
+1つ以上の他のストアからストアを派生させます。これらの依存関係が変更されるたびに、コールバックが実行されます。
 
-In the simplest version, `derived` takes a single store, and the callback returns a derived value.
+最もシンプルな例だと、`derived` は単一のストアを受け取り、コールバックは派生値を返します。
 
 ```js
 import { derived } from 'svelte/store';
@@ -349,9 +349,9 @@ const doubled = derived(a, $a => $a * 2);
 
 ---
 
-The callback can set a value asynchronously by accepting a second argument, `set`, and calling it when appropriate.
+コールバックは、第二引数に `set` を受け取り、必要に応じて呼び出すことにより、非同期に値を設定できます。
 
-In this case, you can also pass a third argument to `derived` — the initial value of the derived store before `set` is first called.
+この場合、`derived` に第三引数を渡すこともでき、`set` が最初に呼び出される前の、派生ストアの初期値を設定します。
 
 ```js
 import { derived } from 'svelte/store';
@@ -363,7 +363,7 @@ const delayed = derived(a, ($a, set) => {
 
 ---
 
-If you return a function from the callback, it will be called when a) the callback runs again, or b) the last subscriber unsubscribes.
+コールバックから関数を返す場合、a）コールバックが再度実行されるとき、または b）最後のサブスクライバーがサブスクライブを解除するときに呼び出されます。
 
 ```js
 import { derived } from 'svelte/store';
@@ -381,7 +381,7 @@ const tick = derived(frequency, ($frequency, set) => {
 
 ---
 
-In both cases, an array of arguments can be passed as the first argument instead of a single store.
+どちらの場合も、第一引数として、単一ストアの代わりに引数の配列を渡すことができます。
 
 ```js
 import { derived } from 'svelte/store';
@@ -401,9 +401,9 @@ value: any = get(store)
 
 ---
 
-Generally, you should read the value of a store by subscribing to it and using the value as it changes over time. Occasionally, you may need to retrieve the value of a store to which you're not subscribed. `get` allows you to do so.
+通常は、ストアをサブスクライブして、ストア値が切り替わるたびに使用する方法で読み取るほうがよいでしょう。しかし、場合によっては、サブスクライブしていないストア値を取得する必要があります。`get` はそれを可能にします。
 
-> This works by creating a subscription, reading the value, then unsubscribing. It's therefore not recommended in hot code paths.
+> これは、サブスクリプションを作成し、値を読み取ってから、サブスクリプションを解除することで機能します。したがって、ホットコードパスではお勧めしません。
 
 ```js
 import { get } from 'svelte/store';
