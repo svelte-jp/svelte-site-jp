@@ -673,13 +673,13 @@ out:slide={params}
 
 ---
 
-Slides an element in and out.
+要素をスライドさせて出し入れします。
 
-`slide` accepts the following parameters:
+`slide` は下記のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
 
 ```sv
 <script>
