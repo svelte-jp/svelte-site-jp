@@ -453,7 +453,7 @@ The `{@debug}` tag without any arguments will insert a `debugger` statement that
 
 ### Element directives
 
-As well as attributes, elements can have *directives*, which control the element's behaviour in some way.
+要素には、属性と同じように*ディレクティブ*を持たせることができます。これは何らかの方法で要素の動作を制御します。
 
 
 #### [on:*eventname*](on_element_event)
