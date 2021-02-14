@@ -791,7 +791,7 @@ The `speed` parameter is a means of setting the duration of the transition relat
 animate:flip={params}
 ```
 
-`flip` 関数は要素の開始位置と終了位置を計算し、その間で `x` と `y` の値を変換してアニメーションを行います。`flip` は [First, Last, Invert, Invert, Play] の略です(https://aerotwist.com/blog/flip-your-animations/)。
+`flip` 関数は要素の開始位置と終了位置を計算し、その間で `x` と `y` の値を変換してアニメーションを行います。`flip` は [First, Last, Invert, Play] の略です(https://aerotwist.com/blog/flip-your-animations/)。
 
 `flip` は以下のパラメータを受け付けます。
 
