@@ -1530,7 +1530,7 @@ This element makes it possible to insert elements into `document.head`. During s
 * `immutable={true}` — 変異可能なデータは絶対に使いません。そのため、コンパイラは値が変更されたかどうかを判断するために単純な参照等価性チェックを行うことができます。
 * `immutable={false}` — デフォルトです。Svelte は、変更可能なオブジェクトが変更されたかどうかについて、より保守的になります。
 * `accessors={true}` — コンポーネントの props のゲッターとセッターを追加します。
-* `accessors={false}` — 初期値
+* `accessors={false}` — 初期値です
 * `namespace="..."` — このコンポーネントが使用される名前空間、最も一般的には "svg "です。大文字小文字を区別しない属性名とHTML固有の警告を除外するために "外部の" 名前空間を使用します。
 * `tag="..."` — このコンポーネントをカスタム要素としてコンパイルする際に使用する名前。
 
