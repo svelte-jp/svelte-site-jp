@@ -708,15 +708,15 @@ out:scale={params}
 
 ---
 
-Animates the opacity and scale of an element. `in` transitions animate from an element's current (default) values to the provided values, passed as parameters. `out` transitions animate from the provided values to an element's default values.
+要素の opacity と scale をアニメーション化します。`in` トランジションは、要素の現在の(デフォルトの)値からパラメータとして渡された値にアニメーションします。`out` トランジションは、指定された値から要素のデフォルト値にアニメーションします。
 
-`scale` accepts the following parameters:
+`scale` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `start` (`number`, default 0) - the scale value to animate out to and in from
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `start` (`number`, default 0) - アニメーションで変化する scale の値
+* `opacity` (`number`, default 0) - アニメーションで変化する opacity の値
 
 ```sv
 <script>
