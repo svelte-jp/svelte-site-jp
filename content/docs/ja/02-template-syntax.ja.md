@@ -807,7 +807,7 @@ action = (node: HTMLElement, parameters: any) => {
 
 ---
 
-Actions are functions that are called when an element is created. They can return an object with a `destroy` method that is called after the element is unmounted:
+アクションは、要素が作成されたときに呼び出される関数です。要素がアンマウントされたときに呼び出される `destroy` 関数をもつオブジェクトを返すことができます。
 
 ```sv
 <script>
@@ -827,9 +827,9 @@ Actions are functions that are called when an element is created. They can retur
 
 ---
 
-An action can have a parameter. If the returned value has an `update` method, it will be called whenever that parameter changes, immediately after Svelte has applied updates to the markup.
+アクションにはパラメータを含めることができます。戻り値に `update` 関数がある場合、Svelte がマークアップに更新を適用した直後、そのパラメータが変更されるたびに呼び出されます。
 
-> Don't worry about the fact that we're redeclaring the `foo` function for every component instance — Svelte will hoist any functions that don't depend on local state out of the component definition.
+> すべてのコンポーネントインスタンスに対して `foo` 関数を再宣言しているという事実について心配する必要はありません。Svelte は、コンポーネント定義からローカル状態に依存しない関数を巻き上げます。
 
 ```sv
 <script>
