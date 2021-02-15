@@ -777,7 +777,7 @@ class:name
 `class:`というディレクティブは要素のクラスを切り替えるための簡単な方法を提供してくれます。
 
 ```sv
-<!-- この二つは同じ書き方をしています -->
+<!-- この二つは同等です -->
 <div class="{active ? 'active' : ''}">...</div>
 <div class:active={active}>...</div>
 
