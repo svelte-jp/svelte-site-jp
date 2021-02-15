@@ -1525,14 +1525,14 @@ Named slots can also expose values. The `let:` directive goes on the element wit
 
 ---
 
-The `<svelte:options>` element provides a place to specify per-component compiler options, which are detailed in the [compiler section](docs#svelte_compile). The possible options are:
+`<svelte:options>` 要素は、コンポーネントごとのコンパイラオプションを指定する場所を提供します。これらは [コンパイラセクション](docs#svelte_compile) で詳しく説明されています。使用できるオプションは以下の通りです。
 
-* `immutable={true}` — you never use mutable data, so the compiler can do simple referential equality checks to determine if values have changed
-* `immutable={false}` — the default. Svelte will be more conservative about whether or not mutable objects have changed
-* `accessors={true}` — adds getters and setters for the component's props
-* `accessors={false}` — the default
-* `namespace="..."` — the namespace where this component will be used, most commonly "svg"; use the "foreign" namespace to opt out of case-insensitive attribute names and HTML-specific warnings
-* `tag="..."` — the name to use when compiling this component as a custom element
+* `immutable={true}` — 変異可能なデータは絶対に使いません。そのため、コンパイラは値が変更されたかどうかを判断するために単純な参照等価性チェックを行うことができます。
+* `immutable={false}` — デフォルトです。Svelte は、変更可能なオブジェクトが変更されたかどうかについて、より保守的になります。
+* `accessors={true}` — コンポーネントの props のゲッターとセッターを追加します。
+* `accessors={false}` — 初期値です
+* `namespace="..."` — このコンポーネントが使用される名前空間、最も一般的には "svg "です。大文字小文字を区別しない属性名とHTML固有の警告を除外するために "外部の" 名前空間を使用します。
+* `tag="..."` — このコンポーネントをカスタム要素としてコンパイルする際に使用する名前。
 
 ```sv
 <svelte:options tag="my-custom-element"/>
