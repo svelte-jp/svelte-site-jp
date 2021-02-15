@@ -90,6 +90,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "jdkfx",
+      "name": "Haruki Tazoe",
+      "avatar_url": "https://avatars.githubusercontent.com/u/40142697?v=4",
+      "profile": "https://github.com/jdkfx",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
