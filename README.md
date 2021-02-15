@@ -33,20 +33,6 @@ npm run dev
 and navigate to [localhost:3000](http://localhost:3000).
 
 
-## REPL GitHub integration
-
-In order for the REPL's GitHub integration to work properly when running locally, you will need to:
-- [create a GitHub OAuth app](https://github.com/settings/developers):
-   - set `Authorization callback URL` to `http://localhost:3000/auth/callback`;
-   - set `Application name` as you like, and `Homepage URL` as `http://localhost:3000/`;
-   - create the app and take note of `Client ID` and `Client Secret`
-- in this repo, create `site/.env` containing:
-   ```
-   GITHUB_CLIENT_ID=[your app's Client ID]
-   GITHUB_CLIENT_SECRET=[your app's Client Secret]
-   BASEURL=http://localhost:3000
-   ```
-
 ## Building the site
 
 To build the website, run `npm run build`. The output can be found in `__sapper__/build`.
@@ -56,33 +42,9 @@ To build the website, run `npm run build`. The output can be found in `__sapper_
 Tests can be run using `npm run test`.
 
 
-## Linking `@sveltejs/site-kit` and `@sveltejs/site-repl`
-
-This site depends on `@sveltejs/site-kit`, a collection of styles, components and icons used in common by *.svelte.dev websites, and `@sveltejs/site-repl`.
-
-In order to work on features that depend on those packages, you need to [link](https://docs.npmjs.com/cli/link) their repositories:
-
-- `cd <somewhere>`
-- `git clone https://github.com/sveltejs/site-kit`
-- `git clone https://github.com/sveltejs/svelte-repl`
-- `cd <somewhere>/site-kit`
-- `npm link`
-- `cd <somewhere>/svelte-repl`
-- `npm link`
-- `cd <svelte-repo>/site`
-- `npm link @sveltejs/site-kit`
-- `npm link @sveltejs/svelte-repl`
- 
-
-
-## Translating the API docs
-
-Anchors are automatically generated using headings in the documentation and by default (for the english language) they are latinised to make sure the URL is always conforming to RFC3986.
-
-If we need to translate the API documentation to a language using unicode chars, we can setup this app to export the correct anchors by setting up `SLUG_PRESERVE_UNICODE` to `true` in `config.js`.
-
 ## Contributors ✨
 
+日本語翻訳に貢献してくれたコントリビューターの皆さんはこちらです！  
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
@@ -101,6 +63,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/ampcpmgp"><img src="https://avatars.githubusercontent.com/u/13173632?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ampcpmgp</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=ampcpmgp" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/takoyaro"><img src="https://avatars.githubusercontent.com/u/54836677?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jimmy</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=takoyaro" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/jdkfx"><img src="https://avatars.githubusercontent.com/u/40142697?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haruki Tazoe</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=jdkfx" title="Documentation">📖</a></td>
   </tr>
 </table>
 
