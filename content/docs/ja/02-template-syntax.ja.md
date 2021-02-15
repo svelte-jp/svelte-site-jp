@@ -693,7 +693,7 @@ Videos additionally have readonly `videoWidth` and `videoHeight` bindings.
 
 ---
 
-Block-level elements have 4 readonly bindings, measured using a technique similar to [this one](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/):
+ブロックレベル要素は、[これ](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/)と同様の手法で測定された4つの読み取り専用バインディングを持っています。
 
 * `clientWidth`
 * `clientHeight`
