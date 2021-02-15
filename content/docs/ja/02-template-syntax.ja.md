@@ -411,12 +411,12 @@ key ブロックは式の値が変更されたときに、その中身を破棄�
 {@debug}
 ```
 ```sv
-{@debug var1, var2, ..., varN}
+{@debug 変数1, 変数2, ..., 変数N}
 ```
 
 ---
 
-The `{@debug ...}` tag offers an alternative to `console.log(...)`. It logs the values of specific variables whenever they change, and pauses code execution if you have devtools open.
+`{@debug ...}` タグは `console.log(...)` の代わりになります。指定した変数の値が変更されるたびログに出力し、devtools が開いているとコードの実行を一時停止します。
 
 ```sv
 <script>
@@ -433,21 +433,21 @@ The `{@debug ...}` tag offers an alternative to `console.log(...)`. It logs the 
 
 ---
 
-`{@debug ...}` accepts a comma-separated list of variable names (not arbitrary expressions).
+`{@debug ...}` はカンマ区切りの変数名のリストを受け取ります（任意の式ではありません）。
 
 ```sv
-<!-- Compiles -->
+<!-- コンパイルされる -->
 {@debug user}
 {@debug user1, user2, user3}
 
-<!-- WON'T compile -->
+<!-- コンパイルできない -->
 {@debug user.firstname}
 {@debug myArray[0]}
 {@debug !isReady}
 {@debug typeof user === 'object'}
 ```
 
-The `{@debug}` tag without any arguments will insert a `debugger` statement that gets triggered when *any* state changes, as opposed to the specified variables.
+引数なしの `{@debug}` タグは、（特定の変数とは反対で）状態がどれか 1 つでも変化した時にトリガされる `debugger` 文を挿入します。
 
 
 
