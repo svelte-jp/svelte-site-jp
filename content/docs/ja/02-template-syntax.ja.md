@@ -386,16 +386,16 @@ key ブロックは式の値が変更されたときに、その中身を破棄�
 ### {@html ...}
 
 ```sv
-{@html expression}
+{@html 式}
 ```
 
 ---
 
-In a text expression, characters like `<` and `>` are escaped; however, with HTML expressions, they're not.
+テキストの式（`{式}` の構文）では、 `<` や `>` のような文字はエスケープされますが、HTML 式ではエスケープされません。
 
-The expression should be valid standalone HTML — `{@html "<div>"}content{@html "</div>"}` will *not* work, because `</div>` is not valid HTML.
+式は単独で正しい HTML になっている必要があります。`{@html "<div>"}content{@html "</div>"}` は `</div>` の部分が正しい HTML ではないため、動作*しません*。
 
-> Svelte does not sanitize expressions before injecting HTML. If the data comes from an untrusted source, you must sanitize it, or you are exposing your users to an XSS vulnerability.
+> Svelte は HTML を挿入する前に式をサニタイズしません。データが信頼できないソースからのものである場合はサニタイズする必要があります。そうしないと、ユーザーを XSS の脆弱性にさらしてしまいます。
 
 ```sv
 <div class="blog-post">
