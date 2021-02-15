@@ -745,16 +745,16 @@ out:draw={params}
 
 ---
 
-Animates the stroke of an SVG element, like a snake in a tube. `in` transitions begin with the path invisible and draw the path to the screen over time. `out` transitions start in a visible state and gradually erase the path. `draw` only works with elements that have a `getTotalLength` method, like `<path>` and `<polyline>`.
+SVG 要素のストロークを蛇が管の中を進むようにアニメーション化します。`in` トランジションはパスが見えない状態から始まり、時間の経過とともにパスが画面に描画されます。`out` トランジションはパスが見える状態から始まり、徐々にパスを消していきます。`draw` は `<path>` や `<polyline>` のように `getTotalLength` メソッドを持つ要素でのみ動作します。
 
-`draw` accepts the following parameters:
+`draw` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `speed` (`number`, default undefined) - the speed of the animation, see below.
-* `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicInOut`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `speed` (`number`, default undefined) - アニメーションの速度、下記を参照してください
+* `duration` (`number` | `function`, default 800) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#svelte_easing)
 
-The `speed` parameter is a means of setting the duration of the transition relative to the path's length. It is modifier that is applied to the length of the path: `duration = length / speed`. A path that is 1000 pixels with a speed of 1 will have a duration of `1000ms`, setting the speed to `0.5` will double that duration and setting it to `2` will halve it.
+速度パラメータ `speed` はパスの長さに対する遷移の持続時間を設定する手段です。これはパスの長さに適用される修飾子で `duration = length / speed` となります。1000ピクセルで速度が1のパスの持続時間は `1000ms` であり、速度を `0.5` に設定すると持続時間は2倍になり、`2` に設定すると半分になります。
 
 ```sv
 <script>
