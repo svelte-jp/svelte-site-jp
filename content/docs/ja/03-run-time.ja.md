@@ -1066,11 +1066,11 @@ const result = Component.render(...)
 
 ---
 
-Unlike client-side components, server-side components don't have a lifespan after you render them — their whole job is to create some HTML and CSS. For that reason, the API is somewhat different.
+クライアント側のコンポーネントとは異なり、サーバー側のコンポーネントはレンダリングしてもライフサイクルがありません。-- それらは HTML と CSS を作成するのが仕事です。そのため API が多少異なります。
 
-A server-side component exposes a `render` method that can be called with optional props. It returns an object with `head`, `html`, and `css` properties, where `head` contains the contents of any `<svelte:head>` elements encountered.
+サーバーサイドコンポーネントは任意の props と一緒に呼びだせる `render` メソッドを公開しています。これは `head`、 `html`、 `css` プロパティを持つオブジェクトを返します。この `head` は見つけた `<svelte:head>` 要素の内容を含みます。
 
-You can import a Svelte component directly into Node using [`svelte/register`](docs#svelte_register).
+Svelte コンポーネントを直接 Node にインポートするには、[`svelte/register`](docs#svelte_register) を使ってください。
 
 ```js
 require('svelte/register');
