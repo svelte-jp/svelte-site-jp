@@ -850,7 +850,7 @@ animate:flip={params}
 
 ### `svelte/register`
 
-To render Svelte components in Node.js without bundling, use `require('svelte/register')`. After that, you can use `require` to include any `.svelte` file.
+Svelteコンポーネントをビルドせずに Node.js でレンダリングするには、`require('svelte/register')`を使います。その後 `require` を使って `.svelte` ファイルをインクルードすることができます。
 
 ```js
 require('svelte/register');
@@ -862,9 +862,9 @@ const App = require('./App.svelte').default;
 const { html, css, head } = App.render({ answer: 42 });
 ```
 
-> The `.default` is necessary because we're converting from native JavaScript modules to the CommonJS modules recognised by Node. Note that if your component imports JavaScript modules, they will fail to load in Node and you will need to use a bundler instead.
+> `.default`は、ネイティブの JavaScript モジュールから Node が認識する CommonJS モジュールに変換するために必要です。コンポーネントが JavaScript モジュールをインポートすると、Node での読み込みに失敗するので、代わりにバンドラを使う必要があることに注意してください。
 
-To set compile options, or to use a custom file extension, call the `register` hook as a function:
+コンパイルオプションを設定したり、カスタムファイルの拡張子を使用したりするには、`register` フックを関数として呼び出します。
 
 ```js
 require('svelte/register')({
