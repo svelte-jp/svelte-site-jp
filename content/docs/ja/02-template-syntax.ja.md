@@ -1128,9 +1128,9 @@ Animations can be used with Svelte's [built-in animation functions](docs#svelte_
 
 ---
 
-As with actions and transitions, animations can have parameters.
+アクションやトランジションと同様に、アニメーションはパラメータを持つことができます。
 
-(The double `{{curlies}}` aren't a special syntax; this is an object literal inside an expression tag.)
+(ダブル `{{中括弧}}` は特殊な構文ではありません。これは式タグ内のオブジェクトリテラルです。)
 
 ```sv
 {#each list as item, index (item)}
