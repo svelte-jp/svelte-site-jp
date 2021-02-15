@@ -217,13 +217,13 @@ For interoperability with RxJS Observables, the `.subscribe` method is also allo
 
 ---
 
-A `<script>` tag with a `context="module"` attribute runs once when the module first evaluates, rather than for each component instance. Values declared in this block are accessible from a regular `<script>` (and the component markup) but not vice versa.
+`context="module"` 属性をもつ `<script>` タグは、コンポーネントインスタンスごとではなく、モジュールが最初に評価するときに1回実行されます。このブロックで宣言された値は、通常の `<script>` （およびコンポーネントのマークアップ）からアクセスできますが、その逆はできません。
 
-You can `export` bindings from this block, and they will become exports of the compiled module.
+このブロックからバインディングを `export` でき、それらはコンパイルされたモジュールのエクスポートになります。
 
-You cannot `export default`, since the default export is the component itself.
+デフォルトのエクスポートはコンポーネント自体であるため、`export default` はできません。
 
-> Variables defined in `module` scripts are not reactive — reassigning them will not trigger a rerender even though the variable itself will update. For values shared between multiple components, consider using a [store](docs#svelte_store).
+> `module` スクリプトで定義された変数はリアクティブではありません。つまり、変数自体が更新されたとしても、変数の再代入は再レンダリングのトリガーにはなりません。複数のコンポーネント間で共有される値については、[ストア](docs#svelte_store)の使用を検討してください。
 
 ```sv
 <script context="module">
