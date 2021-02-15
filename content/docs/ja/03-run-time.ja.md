@@ -996,7 +996,7 @@ app.count += 1;
 
 ---
 
-Svelte components can also be compiled to custom elements (aka web components) using the `customElement: true` compiler option. You should specify a tag name for the component using the `<svelte:options>` [element](docs#svelte_options).
+Svelte コンポーネントは、`customElement: true` コンパイラオプションを使ってカスタム要素 (別名Webコンポーネント) にコンパイルすることもできます。コンポーネントのタグ名は `<svelte:options>` [element](docs#svelte_options) で指定する必要があります。
 
 ```sv
 <svelte:options tag="my-element" />
@@ -1011,7 +1011,7 @@ Svelte components can also be compiled to custom elements (aka web components) u
 
 ---
 
-Alternatively, use `tag={null}` to indicate that the consumer of the custom element should name it.
+あるいは、`tag={null}` を使って、カスタム要素の利用者がそれに名前を付けるべきであることを示します。
 
 ```js
 import MyElement from './MyElement.svelte';
@@ -1021,7 +1021,7 @@ customElements.define('my-element', MyElement);
 
 ---
 
-Once a custom element has been defined, it can be used as a regular DOM element:
+一度カスタム要素が定義されると、それを通常の DOM 要素として使用することができます。
 
 ```js
 document.body.innerHTML = `
@@ -1033,9 +1033,9 @@ document.body.innerHTML = `
 
 ---
 
-By default, custom elements are compiled with `accessors: true`, which means that any [props](docs#Attributes_and_props) are exposed as properties of the DOM element (as well as being readable/writable as attributes, where possible).
+デフォルトでは、カスタム要素は `accessors: true` でコンパイルされます。これは、任意の [props](docs#Attributes_and_props) が DOM 要素のプロパティとして公開されることを意味します (また、可能であれば属性として読み書き可能です)。
 
-To prevent this, add `accessors={false}` to `<svelte:options>`.
+これを防ぐには、`<svelte:options>` に `accessors={false}` を追加します。
 
 ```js
 const el = document.querySelector('my-element');
@@ -1047,14 +1047,14 @@ console.log(el.name);
 el.name = 'everybody';
 ```
 
-Custom elements can be a useful way to package components for consumption in a non-Svelte app, as they will work with vanilla HTML and JavaScript as well as [most frameworks](https://custom-elements-everywhere.com/). There are, however, some important differences to be aware of:
+カスタム要素は、非Svelteアプリで利用するためのコンポーネントをパッケージ化するのに便利な方法です。それらは純粋な HTML と JavaScript の同様に、[ほとんどのフレームワーク](https://custom-elements-everywhere.com/) でも動作します。しかし、注意すべき重要な違いがいくつかあります。
 
-* Styles are *encapsulated*, rather than merely *scoped*. This means that any non-component styles (such as you might have in a `global.css` file) will not apply to the custom element, including styles with the `:global(...)` modifier
-* Instead of being extracted out as a separate .css file, styles are inlined into the component as a JavaScript string
-* Custom elements are not generally suitable for server-side rendering, as the shadow DOM is invisible until JavaScript loads
-* In Svelte, slotted content renders *lazily*. In the DOM, it renders *eagerly*. In other words, it will always be created even if the component's `<slot>` element is inside an `{#if ...}` block. Similarly, including a `<slot>` in an `{#each ...}` block will not cause the slotted content to be rendered multiple times
-* The `let:` directive has no effect
-* Polyfills are required to support older browsers
+* スタイルは単なる *scoped* ではなく *encapsulated（カプセル化）* です。これは、`:global(...)` 修飾子を持つスタイルを含む、コンポーネントにはないスタイル (`global.css` ファイルにあるような) はカスタム要素には適用されないことを意味します。
+* スタイルは、別の .css ファイルとして抽出されるのではなく、JavaScript の文字列としてコンポーネントにインライン化されます。
+* JavaScript が読み込まれるまでシャドウ DOM は見えないので、カスタム要素は一般的にサーバーサイドのレンダリングには適していません。
+* Svelte では、スロットコンテンツは *怠惰に（後で）* レンダリングされます。DOMでは *熱心に（他のDOMと同様に）* レンダリングします。言い換えれば、コンポーネントの `<slot>` 要素が `{#if ...}` ブロックの中にあっても、常に作成されます。同様に、`{#each ...}` ブロックの中に `<slot>` 要素を含めても、スロットの内容が何度もレンダリングされることはありません。
+* `let:` ディレクティブは何の効果もありません。
+* 古いブラウザをサポートするにはポリフィルが必要です。
 
 
 
