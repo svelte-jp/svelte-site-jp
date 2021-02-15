@@ -1113,9 +1113,9 @@ DOMRect {
 
 ---
 
-An animation is triggered when the contents of a [keyed each block](docs#each) are re-ordered. Animations do not run when an element is removed, only when the each block's data is reordered. Animate directives must be on an element that is an *immediate* child of a keyed each block.
+アニメーションは、[keyed each block](docs#each) の内容が並び替えられたときに発生します。アニメーションは、要素が削除されたときには実行されず、各ブロックのデータが並べ替えられたときにのみ実行されます。アニメーションの指示は、キー付き各ブロックの *直接の* 子要素上になければなりません。
 
-Animations can be used with Svelte's [built-in animation functions](docs#svelte_animate) or [custom animation functions](docs#Custom_animation_functions).
+アニメーションは Svelte の[組み込みアニメーション関数](docs#svelte_animate) または [カスタムアニメーション関数](docs#Custom_animation_functions) を使用することができます。
 
 ```sv
 <!-- When `list` is reordered the animation will run-->
