@@ -223,7 +223,7 @@ For interoperability with RxJS Observables, the `.subscribe` method is also allo
 
 デフォルトのエクスポートはコンポーネント自体であるため、`export default` はできません。
 
-> `module` スクリプトで定義された変数はリアクティブではありません。変数自体が更新されても、変数を再割り当てしても再レンダリングはトリガーされません。複数のコンポーネント間で共有される値については、[ストア](docs#svelte_store)の使用を検討してください。
+> `module` スクリプトで定義された変数はリアクティブではありません。つまり、変数自体が更新されたとしても、変数の再代入は再レンダリングのトリガーにはなりません。複数のコンポーネント間で共有される値については、[ストア](docs#svelte_store)の使用を検討してください。
 
 ```sv
 <script context="module">
