@@ -651,24 +651,24 @@ Elements with the `contenteditable` attribute support `innerHTML` and `textConte
 
 ---
 
-Media elements (`<audio>` and `<video>`) have their own set of bindings — six *readonly* ones...
+メディア要素 (`<audio>` と `<video>`) には、独自のバインディングのセットがあります -- 6つの *readonly* と...
 
-* `duration` (readonly) — the total duration of the video, in seconds
-* `buffered` (readonly) — an array of `{start, end}` objects
-* `played` (readonly) — ditto
-* `seekable` (readonly) — ditto
-* `seeking` (readonly) — boolean
-* `ended` (readonly) — boolean
+* `duration` (readonly) — 動画の総再生時間を秒単位で指定します。
+* `buffered` (readonly) —  `{start, end}` オブジェクトの配列です。
+* `played` (readonly) — 同上
+* `seekable` (readonly) — 同上
+* `seeking` (readonly) — Boolean
+* `ended` (readonly) — Boolean
 
-...and five *two-way* bindings:
+...そして5つの *双方向* バインディング。
 
-* `currentTime` — the current playback time in the video, in seconds
-* `playbackRate` — how fast or slow to play the video, where 1 is 'normal'
-* `paused` — this one should be self-explanatory
-* `volume` — a value between 0 and 1
-* `muted` — a boolean value where `true` is muted
+* `currentTime` — 動画の現在の再生時間、秒単位です。
+* `playbackRate` — いかに早く、または遅く動画を再生するか、1 が `通常値` です。
+* `paused` — これは自明のはずです。
+* `volume` — 値は 0 から 1 の間です。
+* `muted` — Booleanの値で、`true` はミュートになります。
 
-Videos additionally have readonly `videoWidth` and `videoHeight` bindings.
+動画にはさらに、`videoWidth` と `videoHeight` という読み取り専用のバインディングがあります。
 
 ```sv
 <video
