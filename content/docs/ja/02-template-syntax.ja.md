@@ -653,7 +653,7 @@ Elements with the `contenteditable` attribute support `innerHTML` and `textConte
 
 メディア要素 (`<audio>` と `<video>`) には、独自のバインディングのセットがあります -- 6つの *readonly* と...
 
-* `duration` (readonly) — 動画の総再生時間を秒単位で指定します。
+* `duration` (readonly) — 動画の総再生時間(秒単位)です。
 * `buffered` (readonly) —  `{start, end}` オブジェクトの配列です。
 * `played` (readonly) — 同上
 * `seekable` (readonly) — 同上
