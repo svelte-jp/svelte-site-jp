@@ -553,9 +553,9 @@ bind:property={variable}
 
 ---
 
-Data ordinarily flows down, from parent to child. The `bind:` directive allows data to flow the other way, from child to parent. Most bindings are specific to particular elements.
+データは通常、親から子へと流れていきます。`bind:` ディレクティブにより、データを子から親へと逆方向に流すことができます。ほとんどのバインディングは個々の要素に特定されます。
 
-The simplest bindings reflect the value of a property, such as `input.value`.
+もっともシンプルなバインディングは、`input.value` のようなプロパティの値を示します。
 
 ```sv
 <input bind:value={name}>
@@ -566,7 +566,7 @@ The simplest bindings reflect the value of a property, such as `input.value`.
 
 ---
 
-If the name matches the value, you can use a shorthand.
+名前が値と一致する場合は、省略形を使用できます。
 
 ```sv
 <!-- These are equivalent -->
@@ -576,7 +576,7 @@ If the name matches the value, you can use a shorthand.
 
 ---
 
-Numeric input values are coerced; even though `input.value` is a string as far as the DOM is concerned, Svelte will treat it as a number. If the input is empty or invalid (in the case of `type="number"`), the value is `undefined`.
+数値の入力値は強制されます。つまり、DOM に関する限り `input.value` は文字列ですが、Svelte はそれを数値として扱います。入力が empty や 無効な値の場合 (`type="number"` であれば) 値は `undefined` になります。
 
 ```sv
 <input type="number" bind:value={num}>
@@ -585,7 +585,7 @@ Numeric input values are coerced; even though `input.value` is a string as far a
 
 ---
 
-On `<input>` elements with `type="file"`, you can use `bind:files` to get the [`FileList` of selected files](https://developer.mozilla.org/en-US/docs/Web/API/FileList).
+`type="file"` のついた `<input>` 要素では、[選択ファイルの `FileList`](https://developer.mozilla.org/en-US/docs/Web/API/FileList) を取得するために `bind:files` を使用できます。
 
 ```sv
 <label for="avatar">Upload a picture:</label>
