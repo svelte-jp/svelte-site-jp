@@ -745,7 +745,7 @@ bind:this={dom_node}
 
 ---
 
-To get a reference to a DOM node, use `bind:this`.
+DOM ノードを参照するには `bind:this` を使用します。
 
 ```sv
 <script>
