@@ -603,7 +603,7 @@ bind:property={variable}
 
 ---
 
-A `<select>` value binding corresponds to the `value` property on the selected `<option>`, which can be any value (not just strings, as is normally the case in the DOM).
+`<select>` 値のバインディングは、選択された `<option>` の `value` プロパティに対応しており、(通常の DOM のように文字列だけでなく)どんな値でも設定できます。
 
 ```sv
 <select bind:value={selected}>
@@ -615,7 +615,7 @@ A `<select>` value binding corresponds to the `value` property on the selected `
 
 ---
 
-A `<select multiple>` element behaves similarly to a checkbox group.
+`<select multiple>` 要素はチェックボックスのグループと同様の動作になります。
 
 ```sv
 <select multiple bind:value={fillings}>
@@ -628,7 +628,7 @@ A `<select multiple>` element behaves similarly to a checkbox group.
 
 ---
 
-When the value of an `<option>` matches its text content, the attribute can be omitted.
+`<option>` の値がテキスト内容と一致する場合、`value` 属性は省略できます。
 
 ```sv
 <select multiple bind:value={fillings}>
@@ -641,7 +641,7 @@ When the value of an `<option>` matches its text content, the attribute can be o
 
 ---
 
-Elements with the `contenteditable` attribute support `innerHTML` and `textContent` bindings.
+`contenteditable` 属性をもつ要素は `innerHTML` と `textContent` のバインディングをサポートします。
 
 ```sv
 <div contenteditable="true" bind:innerHTML={html}></div>
