@@ -774,17 +774,17 @@ class:name
 
 ---
 
-A `class:` directive provides a shorter way of toggling a class on an element.
+`class:`というディレクティブは要素のクラスを切り替えるための簡単な方法を提供してくれます。
 
 ```sv
-<!-- These are equivalent -->
+<!-- この二つは同じ書き方をしています -->
 <div class="{active ? 'active' : ''}">...</div>
 <div class:active={active}>...</div>
 
-<!-- Shorthand, for when name and value match -->
+<!-- 名前と値が一致する場合の省略形がこちらです -->
 <div class:active>...</div>
 
-<!-- Multiple class toggles can be included -->
+<!-- 複数のクラスの切り替えを含めることができます -->
 <div class:active class:inactive={!active} class:isAdmin>...</div>
 ```
 
