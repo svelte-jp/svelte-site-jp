@@ -994,7 +994,7 @@ If a transition returns a function instead of a transition object, the function 
 
 ---
 
-An element with transitions will dispatch the following events in addition to any standard DOM events:
+トランジションを持つ要素は、標準的なDOMイベントに加えて以下のイベントをディスパッチします。
 
 * `introstart`
 * `introend`
@@ -1017,7 +1017,7 @@ An element with transitions will dispatch the following events in addition to an
 
 ---
 
-Local transitions only play when the block they belong to is created or destroyed, *not* when parent blocks are created or destroyed.
+ローカルトランジションは、親ブロックが作成または破棄されたときには再生されず、所属するブロックが作成または破棄されたときにのみ再生されます。
 
 ```sv
 {#if x}
