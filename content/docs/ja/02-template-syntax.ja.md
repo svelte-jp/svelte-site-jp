@@ -902,9 +902,9 @@ transition = (node: HTMLElement, params: any) => {
 
 ---
 
-Like actions, transitions can have parameters.
+アクションと同様に、トランジションはパラメータを持つことができます。
 
-(The double `{{curlies}}` aren't a special syntax; this is an object literal inside an expression tag.)
+(ダブル `{{中括弧}}` は特殊な構文ではありません。これは式タグ内のオブジェクトリテラルです。)
 
 ```sv
 {#if visible}
