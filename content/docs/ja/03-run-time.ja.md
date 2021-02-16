@@ -882,7 +882,7 @@ require('svelte/register')({
 const component = new Component(options)
 ```
 
-A client-side component — that is, a component compiled with `generate: 'dom'` (or the `generate` option left unspecified) is a JavaScript class.
+クライアントサイドのコンポーネント、つまり `generate: 'dom'`（もしくは `generate` オプションを指定しないまま）でコンパイルされたコンポーネントは JavaScript のクラスです。
 
 ```js
 import App from './App.svelte';
@@ -890,33 +890,33 @@ import App from './App.svelte';
 const app = new App({
 	target: document.body,
 	props: {
-		// assuming App.svelte contains something like
-		// `export let answer`:
+		// App.svelte に `export let answer` のようなものが
+		// 含まれていると仮定:
 		answer: 42
 	}
 });
 ```
 
-The following initialisation options can be provided:
+以下の初期化オプションを与えることができます。
 
-| option | default | description |
+| オプション | デフォルト | 説明 |
 | --- | --- | --- |
-| `target` | **none** | An `HTMLElement` to render to. This option is required
-| `anchor` | `null` | A child of `target` to render the component immediately before
-| `props` | `{}` | An object of properties to supply to the component
-| `hydrate` | `false` | See below
-| `intro` | `false` | If `true`, will play transitions on initial render, rather than waiting for subsequent state changes
+| `target` | **none** | レンダリング先の `HTMLElement`。このオプションは必須です
+| `anchor` | `null` | `target` の子要素。これのすぐ前にコンポーネントがレンダリングされます
+| `props` | `{}` | コンポーネントに渡すプロパティのオブジェクト
+| `hydrate` | `false` | 下記参照
+| `intro` | `false` | `true` なら、その後の状態変化を待つのではなく、初回レンダリング時にトランジションを再生します。
 
-Existing children of `target` are left where they are.
+`target` の既存の子要素はそのまま残されます。
 
 
 ---
 
-The `hydrate` option instructs Svelte to upgrade existing DOM (usually from server-side rendering) rather than creating new elements. It will only work if the component was compiled with the [`hydratable: true` option](docs#svelte_compile). Hydration of `<head>` elements only works properly if the server-side rendering code was also compiled with `hydratable: true`, which adds a marker to each element in the `<head>` so that the component knows which elements it's responsible for removing during hydration.
+`hydrate` オプションは、新しい要素を作成するのではなく、既存の DOM を（大抵はサーバーサイドレンダリングから）アップグレードするよう Svelte に指示します。これはコンポーネントが [`hydratable: true` のオプション](docs#svelte_compile) でコンパイルされた場合にのみ機能します。`<head>` 要素のハイドレーションは、サーバーサイドレンダリングのコードも `hydratable: true` を使ってコンパイルされた場合にのみ適切に動作します。これは `head` 内の各要素にマーカーを追加して、コンポーネントがハイドレーション中にどの要素を除去すべきかを認識できるようにします。
 
-Whereas children of `target` are normally left alone, `hydrate: true` will cause any children to be removed. For that reason, the `anchor` option cannot be used alongside `hydrate: true`.
+通常、`target` の子要素はそのまま残されますが、`hydrate: true` ではすべての子要素が削除されます。そのため `anchor` オプションは `hydrate: true` と一緒に使用できません。
 
-The existing DOM doesn't need to match the component — Svelte will 'repair' the DOM as it goes.
+既存の DOM はコンポーネントと一致している必要はありません。Svelte は DOM をそのまま「修復」します。
 
 ```js
 import App from './App.svelte';
