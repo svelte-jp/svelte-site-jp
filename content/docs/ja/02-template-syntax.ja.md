@@ -1064,9 +1064,9 @@ out:fn|local={params}
 
 ---
 
-Similar to `transition:`, but only applies to elements entering (`in:`) or leaving (`out:`) the DOM.
+`transition:` に似ていますが、要素が DOM に入るときに(`in:`)、出るときに(`out:`)を適用します。
 
-Unlike with `transition:`, transitions applied with `in:` and `out:` are not bidirectional — an in transition will continue to 'play' alongside the out transition, rather than reversing, if the block is outroed while the transition is in progress. If an out transition is aborted, transitions will restart from scratch.
+`transition:` とは違って、`in:` と `out:` を適用したトランジションは双方向ではありません。つまり、もしトランジションの最中にブロックがアウトロされた場合、逆転するのではなく、イントロトランジションはアウトロトランジションと一緒に「再生」し続けます。アウトロトランジションが中止された場合、トランジションは最初から再開されます。
 
 ```sv
 {#if visible}
