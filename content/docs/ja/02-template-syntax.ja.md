@@ -725,12 +725,12 @@ bind:group={variable}
 	let fillings = [];
 </script>
 
-<!-- こちらのグループ化されたラジオ入力は相互に排他的です -->
+<!-- こちらのグループ化されたラジオinputは相互に排他的です -->
 <input type="radio" bind:group={tortilla} value="Plain">
 <input type="radio" bind:group={tortilla} value="Whole wheat">
 <input type="radio" bind:group={tortilla} value="Spinach">
 
-<!-- こちらのグループ化されたチェックボックス入力は配列にデータを挿入します -->
+<!-- こちらのグループ化されたチェックボックスinputは配列にデータを挿入します -->
 <input type="checkbox" bind:group={fillings} value="Rice">
 <input type="checkbox" bind:group={fillings} value="Beans">
 <input type="checkbox" bind:group={fillings} value="Cheese">
