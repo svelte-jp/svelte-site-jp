@@ -1360,7 +1360,7 @@ Note that explicitly passing in an empty named slot will add that slot's name to
 
 スロットは0回以上レンダリングすることができ、propsを使って親に値を *戻す* ことができます。親は `let:` ディレクティブを使ってスロットテンプレートに値を公開します。
 
-通常の速記ルールが適用されます -- `let:item` は `let:item={item}` と同等であり、`<slot {item}>` は `<slot item={item}>` と同等です。
+通常の短縮ルールが適用されます -- `let:item` は `let:item={item}` と同等であり、`<slot {item}>` は `<slot item={item}>` と同等です。
 
 ```sv
 <!-- FancyList.svelte -->
