@@ -882,11 +882,11 @@ transition = (node: HTMLElement, params: any) => {
 
 ---
 
-A transition is triggered by an element entering or leaving the DOM as a result of a state change.
+トランジションは、状態変化の結果として DOM に出入りする要素によってトリガーされます。
 
-When a block is transitioning out, all elements inside the block, including those that do not have their own transitions, are kept in the DOM until every transition in the block has completed.
+ブロックがトランジションしているとき、独自のトランジションを持たない要素を含む、ブロック内のすべての要素は、ブロック内のすべてのトランジジョンが完了するまで DOM に保持されます。
 
-The `transition:` directive indicates a *bidirectional* transition, which means it can be smoothly reversed while the transition is in progress.
+`transition:` ディレクティブは *双方向* トランジションを示しており、トランジションが進行している間、円滑に反転させることができることを意味しています。
 
 ```sv
 {#if visible}
@@ -896,7 +896,7 @@ The `transition:` directive indicates a *bidirectional* transition, which means 
 {/if}
 ```
 
-> By default intro transitions will not play on first render. You can modify this behaviour by setting `intro: true` when you [create a component](docs#Client-side_component_API).
+> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](docs#Client-side_component_API) ときに `intro: true` を設定することで変更できます。
 
 ##### Transition parameters
 
