@@ -1145,9 +1145,11 @@ As with actions and transitions, animations can have parameters.
 アニメーションは、`node`、`animation` オブジェクト、および任意の `paramaters` を引数として指定するカスタム関数を使用することができます。`animation` パラメータは、`from` と `to` プロパティを含むオブジェクトで、それぞれ要素の `start` と `end` の位置におけるジオメトリを記述した [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties) を含みます。`from` プロパティは要素の開始位置の DOMRect であり、`to` プロパティはリストが並び替えられ DOM が更新された後の最終位置の DOMRect です。
 
 返されたオブジェクトが `css` メソッドを持つ場合、Svelte は要素上で再生される CSS アニメーションを作成します。
+
 `css` に渡される `t` 引数は `easing` 関数が適用された後の `0` と `1` の値です。引数 `u` は `1 - t` に等しい値です。
 
 この関数はアニメーションが始まる *前に* 繰り返し呼ばれ、異なる `t` と `u` の引数を持ちます。
+
 
 ```sv
 <script>
