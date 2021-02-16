@@ -918,11 +918,11 @@ transition = (node: HTMLElement, params: any) => {
 
 ---
 
-Transitions can use custom functions. If the returned object has a `css` function, Svelte will create a CSS animation that plays on the element.
+トランジションはカスタム関数を使うことができます。返されたオブジェクトに `css` 関数があれば、Svelte は要素上で再生される CSS アニメーションを作成します。
 
-The `t` argument passed to `css` is a value between `0` and `1` after the `easing` function has been applied. *In* transitions run from `0` to `1`, *out* transitions run from `1` to `0` — in other words `1` is the element's natural state, as though no transition had been applied. The `u` argument is equal to `1 - t`.
+`css` に渡される `t` 引数は `easing` 関数を適用した後の `0` から `1` の間の値です。 *In* トランジションは `0` から `1` まで、*out* トランジションは `1` から `0` までの間で実行されます。-- 言い換えれば、`1` はトランジションが適用されていないかのような要素の自然な状態です。 引数 `u` は `1 - t` と等しくなります。
 
-The function is called repeatedly *before* the transition begins, with different `t` and `u` arguments.
+この関数はトランジションが始まる *前に* 繰り返し呼び出され、異なる `t` と `u` の引数を持ちます。
 
 ```sv
 <script>
@@ -951,9 +951,9 @@ The function is called repeatedly *before* the transition begins, with different
 
 ---
 
-A custom transition function can also return a `tick` function, which is called *during* the transition with the same `t` and `u` arguments.
+カスタムのトランジション関数は `tick` 関数を返すこともでき、これは同じ `t` と `u` の引数を持つトランジションの *最中に* 呼び出されます。
 
-> If it's possible to use `css` instead of `tick`, do so — CSS animations can run off the main thread, preventing jank on slower devices.
+> `tick` の代わりに `css` を使うことが可能ならば、そうしてください。-- CSS アニメーションはメインスレッドの外で実行することができるため、遅いデバイスでのジャンクを防ぐことができます。
 
 ```sv
 <script>
@@ -987,7 +987,7 @@ A custom transition function can also return a `tick` function, which is called 
 {/if}
 ```
 
-If a transition returns a function instead of a transition object, the function will be called in the next microtask. This allows multiple transitions to coordinate, making [crossfade effects](tutorial/deferred-transitions) possible.
+トランジションがトランジションオブジェクトではなく関数を返す場合、その関数は次のマイクロタスクで呼び出されます。これにより、複数のトランジションを調整することができ、[クロスフェード効果](tutorial/deferred-transitions) が可能になります。
 
 
 ##### Transition events
