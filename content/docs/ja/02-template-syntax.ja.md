@@ -1332,16 +1332,16 @@ Named slots allow consumers to target specific areas. They can also have fallbac
 
 ---
 
-`$$slots` is an object whose keys are the names of the slots passed into the component by the parent. If the parent does not pass in a slot with a particular name, that name will not be a present in `$$slots`. This allows components to render a slot (and other elements, like wrappers for styling) only if the parent provides it.
+`$$slots` は、親からコンポーネントに渡されたスロットの名前がキーとなるオブジェクトです。親が特定の名前のスロットを渡さなかった場合、その名前は `$$slots` には存在しません。これにより、親がスロットを指定した場合にのみコンポーネントがスロット (と他の要素、例えばスタイリング用のラッパーなど)をレンダリングすることができます。
 
-Note that explicitly passing in an empty named slot will add that slot's name to `$$slots`. For example, if a parent passes `<div slot="title" />` to a child component, `$$slots.title` will be truthy within the child.
+注意してください、明示的に空の名前付きスロットを渡すと、そのスロットの名前が `$$slots` に追加されます。例えば、親が `<div slot="title" />` を子コンポーネントに渡した場合、`$$slots.title` は子コンポーネント内で有効になります。
 
 ```sv
 <!-- Card.svelte -->
 <div>
 	<slot name="title"></slot>
 	{#if $$slots.description}
-		<!-- This <hr> and slot will render only if a slot named "description" is provided. -->
+		<!-- この<hr>とスロットは、"description"という名前のスロットが提供されている場合にのみレンダリングされます。 -->
 		<hr>
 		<slot name="description"></slot>
 	{/if}
@@ -1350,7 +1350,7 @@ Note that explicitly passing in an empty named slot will add that slot's name to
 <!-- App.svelte -->
 <Card>
 	<h1 slot="title">Blog Post Title</h1>
-	<!-- No slot named "description" was provided so the optional slot will not be rendered. -->
+	<!-- "description"という名前のスロットは提供されていないので、該当しないスロットはレンダリングされません。 -->
 </Card>
 ```
 
