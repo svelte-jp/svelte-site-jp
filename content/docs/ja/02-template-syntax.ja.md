@@ -1142,13 +1142,13 @@ DOMRect {
 
 ---
 
-Animations can use custom functions that provide the `node`, an `animation` object and any `paramaters` as arguments. The `animation` parameter is an object containing `from` and `to` properties each containing a [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties) describing the geometry of the element in its `start` and `end` positions. The `from` property is the DOMRect of the element in its starting position, the `to` property is the DOMRect of the element in its final position after the list has been reordered and the DOM updated.
+アニメーションは、`node`、`animation` オブジェクト、および任意の `paramaters` を引数として指定するカスタム関数を使用することができます。`animation` パラメータは、`from` と `to` プロパティを含むオブジェクトで、それぞれ要素の `start` と `end` の位置におけるジオメトリを記述した [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties) を含みます。`from` プロパティは要素の開始位置の DOMRect であり、`to` プロパティはリストが並び替えられ DOM が更新された後の最終位置の DOMRect です。
 
-If the returned object has a `css` method, Svelte will create a CSS animation that plays on the element.
+返されたオブジェクトが `css` メソッドを持つ場合、Svelte は要素上で再生される CSS アニメーションを作成します。
 
-The `t` argument passed to `css` is a value that goes from `0` and `1` after the `easing` function has been applied. The `u` argument is equal to `1 - t`.
+`css` に渡される `t` 引数は `easing` 関数が適用された後の `0` と `1` の値です。引数 `u` は `1 - t` に等しい値です。
 
-The function is called repeatedly *before* the animation begins, with different `t` and `u` arguments.
+この関数はアニメーションが始まる *前に* 繰り返し呼ばれ、異なる `t` と `u` の引数を持ちます。
 
 
 ```sv
@@ -1180,9 +1180,9 @@ The function is called repeatedly *before* the animation begins, with different 
 ---
 
 
-A custom animation function can also return a `tick` function, which is called *during* the animation with the same `t` and `u` arguments.
+カスタムアニメーション関数は `tick` 関数を返すこともでき、これは同じ `t` と `u` の引数を持つアニメーションの *最中* に呼び出されます。
 
-> If it's possible to use `css` instead of `tick`, do so — CSS animations can run off the main thread, preventing jank on slower devices.
+> `tick` の代わりに `css` を使うことが可能ならば、そうしてください。-- CSS アニメーションはメインスレッドの外で実行することができるため、遅いデバイスでのジャンクを防ぐことができます。
 
 ```sv
 <script>
