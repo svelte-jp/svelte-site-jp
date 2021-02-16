@@ -467,7 +467,7 @@ on:eventname|modifiers={handler}
 
 ---
 
-Use the `on:` directive to listen to DOM events.
+DOM イベントをリッスンするには `on:` ディレクティブを使用します。
 
 ```sv
 <script>
@@ -485,7 +485,7 @@ Use the `on:` directive to listen to DOM events.
 
 ---
 
-Handlers can be declared inline with no performance penalty. As with attributes, directive values may be quoted for the sake of syntax highlighters.
+ハンドラはパフォーマンスを低下させることなくインラインで宣言できます。 属性と同様、ディレクティブの値はシンタックスハイライトのために引用符で囲むことができます。
 
 ```sv
 <button on:click="{() => count += 1}">
@@ -495,40 +495,40 @@ Handlers can be declared inline with no performance penalty. As with attributes,
 
 ---
 
-Add *modifiers* to DOM events with the `|` character.
+`|` の文字を使って DOM イベントに*修飾子*を追加します。
 
 ```sv
 <form on:submit|preventDefault={handleSubmit}>
-	<!-- the `submit` event's default is prevented,
-	     so the page won't reload -->
+	<!-- `submit` イベントの規定の動作が妨げられ
+	     ページはリロードされません -->
 </form>
 ```
 
-The following modifiers are available:
+次の修飾子を使用できます:
 
-* `preventDefault` — calls `event.preventDefault()` before running the handler
-* `stopPropagation` — calls `event.stopPropagation()`, preventing the event reaching the next element
-* `passive` — improves scrolling performance on touch/wheel events (Svelte will add it automatically where it's safe to do so)
-* `nonpassive` — explicitly set `passive: false`
-* `capture` — fires the handler during the *capture* phase instead of the *bubbling* phase
-* `once` — remove the handler after the first time it runs
-* `self` — only trigger handler if event.target is the element itself
+* `preventDefault` — ハンドラを実行する前に `event.preventDefault()` を呼び出します
+* `stopPropagation` — `event.stopPropagation()` を呼び出し、イベントが次の要素に到達するのを防ぎます
+* `passive` — タッチ/ホイールイベントのスクロールパフォーマンスを向上させます（Svelte は安全に動作する場所へ自動的に追加します）
+* `nonpassive` — 明示的に `passive: false` を設定します
+* `capture` — *バブリング*フェーズではなく*キャプチャ*フェーズ中にハンドラを実行します
+* `once` — ハンドラが最初に実行された後、削除します
+* `self` — event.target がその要素自体だった場合のみハンドラをトリガします
 
-Modifiers can be chained together, e.g. `on:click|once|capture={...}`.
+修飾子は連鎖させることができます。例 `on:click|once|capture={...}`
 
 ---
 
-If the `on:` directive is used without a value, the component will *forward* the event, meaning that a consumer of the component can listen for it.
+`on:` ディレクティブが値なしで使用された場合、コンポーネントはイベントを*転送*します。つまりコンポーネントの使用者がイベントをリッスンできます。
 
 ```sv
 <button on:click>
-	The component itself will emit the click event
+	コンポーネント自体がクリックイベントを発火します
 </button>
 ```
 
 ---
 
-It's possible to have multiple event listeners for the same event:
+同じイベントに対して複数のイベントリスナを持つことができます。
 
 ```sv
 <script>
