@@ -1358,9 +1358,9 @@ Note that explicitly passing in an empty named slot will add that slot's name to
 
 ---
 
-Slots can be rendered zero or more times, and can pass values *back* to the parent using props. The parent exposes the values to the slot template using the `let:` directive.
+スロットは0回以上レンダリングすることができ、propsを使って親に値を *戻す* ことができます。親は `let:` ディレクティブを使ってスロットテンプレートに値を公開します。
 
-The usual shorthand rules apply — `let:item` is equivalent to `let:item={item}`, and `<slot {item}>` is equivalent to `<slot item={item}>`.
+通常の速記ルールが適用されます -- `let:item` は `let:item={item}` と同等であり、`<slot {item}>` は `<slot item={item}>` と同等です。
 
 ```sv
 <!-- FancyList.svelte -->
@@ -1380,7 +1380,7 @@ The usual shorthand rules apply — `let:item` is equivalent to `let:item={item}
 
 ---
 
-Named slots can also expose values. The `let:` directive goes on the element with the `slot` attribute.
+名前付きスロットは値を公開することもできます。`let:` ディレクティブは `slot` 属性を持つ要素に適用されます。
 
 ```sv
 <!-- FancyList.svelte -->
