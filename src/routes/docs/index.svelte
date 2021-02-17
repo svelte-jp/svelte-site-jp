@@ -2,7 +2,7 @@
 	import { waitLocale } from 'svelte-i18n';
 
 	export async function preload() {
-		waitLocale();
+		await waitLocale();
 		const sections = await this.fetch(`docs.json`).then(r => r.json());
 		return { sections };
 	}
@@ -11,7 +11,7 @@
 <script>
 	import { Docs } from '@sveltejs/site-kit';
 	import { onDestroy } from 'svelte';
-	import { locale } from 'svelte-i18n';
+	import { _, locale } from 'svelte-i18n';
 
 	export let sections;
 
@@ -33,4 +33,10 @@
 </svelte:head>
 
 <h1 class="visually-hidden">API Docs</h1>
-<Docs {sections}/>
+<Docs
+	{sections}
+	owner={$_("docs.owner", { default : "sveltejs"})}
+	project={$_("docs.project", { default : "svelte"})}
+	path={$_("docs.path", { default : "/site/content"})}
+	dir={$_("docs.dir", { default : "docs"})}
+/>

@@ -66,6 +66,12 @@
             }
         }
     },
+    "docs": {
+        "owner": "svelte-jp",
+        "project": "svelte-site-jp",
+        "path": "/content",
+        "dir": "docs/ja"
+    },
     "tutorial": {
         "repo_link": "https://github.com/svelte-jp/svelte-site-jp/tree/master/content/tutorial"
     }
