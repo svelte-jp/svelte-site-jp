@@ -75,7 +75,7 @@
 <h1 class="visually-hidden">Svelte</h1>
 <Hero
 	title="Svelte"
-	tagline="Cybernetically enhanced web apps"
+	tagline={$_('tagline', { default: 'Cybernetically enhanced web apps'})}
 	outline="svelte-logo-outline.svg"
 	logotype="svelte-logotype.svg"
 />
