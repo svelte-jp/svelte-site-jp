@@ -173,7 +173,7 @@ If a statement consists entirely of an assignment to an undeclared variable, Sve
 
 ---
 
-*ストア*は、シンプルな*ストア契約*(store contract)を介して値へのリアクティブなアクセスを可能にするオブジェクトです。[`svelte/store` モジュール](docs#svelte_store)にはこの契約を満たす最小限のストア実装が含まれています。
+*ストア*は、シンプルな*ストアコントラクト*(store contract)を介して値へのリアクティブなアクセスを可能にするオブジェクトです。[`svelte/store` モジュール](docs#svelte_store)にはこのコントラクト(contract)を満たす最小限のストア実装が含まれています。
 
 ストアへの参照を持っているときはいつでも、`$`を接頭辞として付けることで、コンポーネント内からその値にアクセスできます。これによってSvelteは接頭辞付きの変数を宣言し、ストアのサブスクリプションを設定します。このサブスクリプションは適切なタイミングで解除されます。
 
@@ -198,19 +198,19 @@ If a statement consists entirely of an assignment to an undeclared variable, Sve
 </script>
 ```
 
-##### Store contract
+##### ストアコントラクト(Store contract)
 
 ```js
 store = { subscribe: (subscription: (value: any) => void) => (() => void), set?: (value: any) => void }
 ```
 
-You can create your own stores without relying on [`svelte/store`](docs#svelte_store), by implementing the *store contract*:
+*ストアコントラクト*(store contract)を実装することで、[`svelte/store`](docs#svelte_store)に依存せずに独自のストアを作ることができます。
 
-1. A store must contain a `.subscribe` method, which must accept as its argument a subscription function. This subscription function must be immediately and synchronously called with the store's current value upon calling `.subscribe`. All of a store's active subscription functions must later be synchronously called whenever the store's value changes.
-2. The `.subscribe` method must return an unsubscribe function. Calling an unsubscribe function must stop its subscription, and its corresponding subscription function must not be called again by the store.
-3. A store may *optionally* contain a `.set` method, which must accept as its argument a new value for the store, and which synchronously calls all of the store's active subscription functions. Such a store is called a *writable store*.
+1. ストアは `.subscribe` メソッドを含まなければならず、その引数としてサブスクリプション関数を受けとる必要があります。このサブスクリプション関数は `.subscribe` が呼ばれたらストアの現在の値と同期して即座に呼び出されなければいけません。ストアのアクティブなサブスクリプション関数は全て、ストアの値が変更されるたびに同期して呼び出されなければいけません。
+2. `.subscribe` メソッドはサブスクリプションを解除する関数を返さなければなりません。サブスクリプションを解除する関数が呼ばれたら、そのサブスクリプションを停止してそれに対応するサブスクリプション関数がそのストアから再び呼び出されないようにしなければいけません。
+3. ストアはオプションで `.set` メソッドを含むことができ、その引数としてストアの新しい値を受けとる必要があります。このメソッドは全てのアクティブなサブスクリプション関数を同期的に呼び出します。このようなストアを *書き込み可能なストア* (writable store) と呼びます。
 
-For interoperability with RxJS Observables, the `.subscribe` method is also allowed to return an object with an `.unsubscribe` method, rather than return the unsubscription function directly. Note however that unless `.subscribe` synchronously calls the subscription (which is not required by the Observable spec), Svelte will see the value of the store as `undefined` until it does.
+RxJSのObservablesとの相互運用性のため、`.subscribe` メソッドはサブスクリプションを解除する関数を直接返すのではなく、`.unsubscribe` メソッドを使用してオブジェクトを返すこともできます。ただし、`.subscribe` が同期的にサブスクリプションを呼び出さない限り(これはObservableの仕様で要求されていませんが)、Svelteはストアの値を `undefined` とみなすことに注意してください。
 
 
 ### &lt;script context="module"&gt;
