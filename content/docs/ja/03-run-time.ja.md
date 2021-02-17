@@ -935,9 +935,9 @@ component.$set(props)
 
 ---
 
-Programmatically sets props on an instance. `component.$set({ x: 1 })` is equivalent to `x = 1` inside the component's `<script>` block.
+プログラムでインスタンスに props をセットします。`component.$set({ x: 1 })` はコンポーネントの `<script>` ブロック内の `x = 1` と同じです。
 
-Calling this method schedules an update for the next microtask — the DOM is *not* updated synchronously.
+このメソッドを呼ぶと次のマイクロタスクに更新がスケジュールされます。DOM は同期的に更新*されません*。
 
 ```js
 component.$set({ answer: 42 });
@@ -951,9 +951,9 @@ component.$on(event, callback)
 
 ---
 
-Causes the `callback` function to be called whenever the component dispatches an `event`.
+コンポーネントが `event` をディスパッチするたびに、`callback` 関数が呼び出されるようにします。
 
-A function is returned that will remove the event listener when called.
+呼び出されたときにイベントリスナーを削除する関数が返されます。
 
 ```js
 const off = app.$on('selected', event => {
@@ -969,7 +969,7 @@ off();
 component.$destroy()
 ```
 
-Removes a component from the DOM and triggers any `onDestroy` handlers.
+DOM からコンポーネントを削除し、すべての `onDestroy` ハンドラをトリガします。
 
 #### Component props
 
