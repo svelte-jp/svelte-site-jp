@@ -2,7 +2,7 @@
 	import { waitLocale } from 'svelte-i18n';
 
 	export async function preload({ params }) {
-		waitLocale();
+		await waitLocale();
 		const res = await this.fetch(`tutorial/${params.slug}.json`);
 
 		if (!res.ok) {
