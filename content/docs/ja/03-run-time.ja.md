@@ -982,9 +982,9 @@ component.prop = value
 
 ---
 
-If a component is compiled with `accessors: true`, each instance will have getters and setters corresponding to each of the component's props. Setting a value will cause a *synchronous* update, rather than the default async update caused by `component.$set(...)`.
+コンポーネントが `accessors: true` でコンパイルされている場合、各インスタンスはコンポーネントの各 props に対するゲッターとセッターを持ちます。値をセットすると（`component.$set(...)` によって起こるデフォルトの非同期更新ではなく）、*同期的な*更新が起こります。
 
-By default, `accessors` is `false`, unless you're compiling as a custom element.
+カスタム要素としてコンパイルする場合を除き、デフォルトでは `accessors` は `false` です。
 
 ```js
 console.log(app.count);
