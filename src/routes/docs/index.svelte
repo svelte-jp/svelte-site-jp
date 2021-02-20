@@ -38,5 +38,4 @@
 	owner={$_("docs.owner", { default : "sveltejs"})}
 	project={$_("docs.project", { default : "svelte"})}
 	path={$_("docs.path", { default : "/site/content"})}
-	dir={$_("docs.dir", { default : "docs"})}
 />
