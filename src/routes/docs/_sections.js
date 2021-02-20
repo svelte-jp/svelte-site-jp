@@ -36,7 +36,7 @@ export default function (locale) {
 				try {
 					const filename = `${path.basename(file, '.md')}.${locale}.md`;
 					markdown = fs.readFileSync(`content/docs/${locale}/${filename}`, 'utf-8');
-					file = filename;
+					file = `${locale}/${filename}`;
 				} catch (err) {
 					markdown = fs.readFileSync(`content/docs/${file}`, 'utf-8');
 				}

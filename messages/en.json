@@ -70,8 +70,7 @@
     "docs": {
         "owner": "sveltejs",
         "project": "svelte",
-        "path": "/site/content",
-        "dir": "docs"
+        "path": "/site/content"
     },
     "tutorial": {
         "repo_link": "https://github.com/svelte-jp/svelte-site-jp/tree/master/content/tutorial"
