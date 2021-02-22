@@ -5,6 +5,15 @@ author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
 
+> 翻訳 : Svelte日本コミュニティ  
+> 
+> 日本語版はオリジナルをよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはオリジナルである英語版を参照してください。  
+> また、日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。  
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
+
+
 全てのコードにはバグがあります(All code is buggy)。したがって、書かなければいけないコードが多ければ多いほど、アプリケーションがバグだらけになるのは理にかなっています。
 
 多くのコードを書くには多くの時間がかかるので、他のこと(例えば最適化や、良い機能を開発すること、またはPCの前に座らずに外出することなど)に充てられる時間は少なくなります。
