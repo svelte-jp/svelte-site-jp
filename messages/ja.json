@@ -14,7 +14,9 @@
         "7_link": "svelte.dev",
         "8": "へどうぞ。"
     },
-    "tagline": "自動制御により強化されたWebアプリ",
+    "title": "Svelte • サイバネティクスで強化されたWebアプリ",
+    "description": "サイバネティクスで強化されたWebアプリ",
+    "tagline": "サイバネティクスで強化されたWebアプリ",
     "top": {
         "blurb": {
             "one": {
