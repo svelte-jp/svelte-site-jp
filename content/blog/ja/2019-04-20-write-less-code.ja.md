@@ -4,7 +4,6 @@ description: 注意が払われていない最も重要な指標について
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
-
 > 翻訳 : Svelte日本コミュニティ  
 > 
 > 日本語版はオリジナルをよりよく理解するための参考となることを目的としています。  
@@ -12,7 +11,6 @@ authorURL: https://twitter.com/Rich_Harris
 > また、日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。  
 > - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
 > - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
-
 
 全てのコードにはバグがあります(All code is buggy)。したがって、書かなければいけないコードが多ければ多いほど、アプリケーションがバグだらけになるのは理にかなっています。
 
