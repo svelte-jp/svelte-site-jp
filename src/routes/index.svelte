@@ -48,11 +48,11 @@
 <svelte:window bind:innerWidth />
 
 <svelte:head>
-	<title>Svelte • Cybernetically enhanced web apps</title>
+	<title>{$_('title', { default: 'Svelte • Cybernetically enhanced web apps'})}</title>
 
 	<meta name="twitter:title" content="Svelte">
-	<meta name="twitter:description" content="Cybernetically enhanced web apps">
-	<meta name="Description" content="Cybernetically enhanced web apps">
+	<meta name="twitter:description" content={$_('description', { default: 'Cybernetically enhanced web apps'})}>
+	<meta name="Description" content={$_('description', { default: 'Cybernetically enhanced web apps'})}>
 </svelte:head>
 
 <section class="attention">
@@ -75,7 +75,7 @@
 <h1 class="visually-hidden">Svelte</h1>
 <Hero
 	title="Svelte"
-	tagline="Cybernetically enhanced web apps"
+	tagline={$_('tagline', { default: 'Cybernetically enhanced web apps'})}
 	outline="svelte-logo-outline.svg"
 	logotype="svelte-logotype.svg"
 />
