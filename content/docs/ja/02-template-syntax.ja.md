@@ -1287,9 +1287,9 @@ bind:this={component_instance}
 
 ---
 
-Components can have child content, in the same way that elements can.
+コンポーネントは要素と同じ様に、子コンテンツを持つことができます。
 
-The content is exposed in the child component using the `<slot>` element, which can contain fallback content that is rendered if no children are provided.
+コンテンツは `<slot>` 要素を用いて子コンポーネントに公開され、子が何も提供されない場合、レンダリングされるフォールバックのコンテンツを含みます。
 
 ```sv
 <!-- Widget.svelte -->
@@ -1311,7 +1311,7 @@ The content is exposed in the child component using the `<slot>` element, which 
 
 ---
 
-Named slots allow consumers to target specific areas. They can also have fallback content.
+名前付きスロットは、特定の場所をターゲットにすることを可能にします。 また、フォールバックのコンテンツを含むこともできます。
 
 ```sv
 <!-- Widget.svelte -->
@@ -1358,7 +1358,7 @@ Named slots allow consumers to target specific areas. They can also have fallbac
 
 ---
 
-スロットは0回以上レンダリングすることができ、propsを使って親に値を *戻す* ことができます。親は `let:` ディレクティブを使ってスロットテンプレートに値を公開します。
+スロットは０回以上レンダリングすることができ、props を使って親に値を *戻す* ことができます。親は `let:` ディレクティブを使ってスロットテンプレートに値を公開します。
 
 通常の短縮ルールが適用されます -- `let:item` は `let:item={item}` と同等であり、`<slot {item}>` は `<slot item={item}>` と同等です。
 
