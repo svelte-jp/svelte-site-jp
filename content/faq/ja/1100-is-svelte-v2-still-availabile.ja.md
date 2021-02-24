@@ -1,7 +1,7 @@
 ---
-question: Is Svelte v2 still available?
+question: Svelte v 2はまだ入手可能ですか？
 ---
 
-New features aren't being added to it, and bugs will probably only be fixed if they are extremely nasty or present some sort of security vulnerability.
+新しい機能は追加されておらず、バグはおそらく、非常に悪質な場合や、何らかのセキュリティ脆弱性がある場合にのみ修正されるだろう。
 
-The documentation is still available [here](https://v2.svelte.dev/guide).
+ドキュメントはまだ [ここ](https://v2.svelte.dev/guide) から入手できます。

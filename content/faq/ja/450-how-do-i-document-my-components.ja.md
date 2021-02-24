@@ -1,8 +1,8 @@
 ---
-question: How do I document my components?
+question: コンポーネントをドキュメント化する方法？
 ---
 
-In editors which use the Svelte Language Server you can document Components, functions and exports using specially formatted comments.
+Svelte Language Serverを使用するエディターでは、特別にフォーマットされたコメントを使用して、コンポーネント、関数、およびエクスポートを文書化することができます。
 
 ````svelte
 <script>
@@ -29,4 +29,4 @@ It will show up on hover.
 </main>
 ````
 
-Note: The `@component` is necessary in the HTML comment which describes your component.
+Note:コンポーネントを記述するHTMLコメントには`@component`が必要です。
