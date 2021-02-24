@@ -1222,7 +1222,7 @@ on:eventname={handler}
 
 ---
 
-Components can emit events using [createEventDispatcher](docs#createEventDispatcher), or by forwarding DOM events. Listening for component events looks the same as listening for DOM events:
+コンポーネントは [createEventDispatcher](docs#createEventDispatcher) を用いるか、または DOM イベントをフォワーディングすることでイベントを発火することができます。コンポーネントのイベントをリッスンすることは、DOM イベントをリッスンすることと同義です:
 
 ```sv
 <SomeComponent on:whatever={handler}/>
@@ -1230,7 +1230,7 @@ Components can emit events using [createEventDispatcher](docs#createEventDispatc
 
 ---
 
-As with DOM events, if the `on:` directive is used without a value, the component will *forward* the event, meaning that a consumer of the component can listen for it.
+DOM イベントと同様に、`on:` ディレクティブが値なしに使われる場合、コンポーネントはイベントを*フォワード*しますが、これはコンポーネントのユーザーがイベントをリッスンできることを意味します。
 
 ```sv
 <SomeComponent on:whatever/>
@@ -1245,7 +1245,7 @@ bind:property={variable}
 
 ---
 
-You can bind to component props using the same syntax as for elements.
+要素と同じ構文を用いてコンポーネントの props にバインドすることができます。
 
 ```sv
 <Keypad bind:value={pin}/>
@@ -1259,9 +1259,9 @@ bind:this={component_instance}
 
 ---
 
-Components also support `bind:this`, allowing you to interact with component instances programmatically.
+またコンポーネントは `bind:this` をサポートしており、これを用いることでコンポーネントのインスタンスをプログラムで操作できるようになります。
 
-> Note that we can't do `{cart.empty}` since `cart` is `undefined` when the button is first rendered and throws an error.
+> 注意 ボタンが最初にレンダリングされた際 `cart` は `undefined` となりエラーを投げるため、`{cart.empty}` は実行できません。
 
 ```sv
 <ShoppingCart bind:this={cart}/>
