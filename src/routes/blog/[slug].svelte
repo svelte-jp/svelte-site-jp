@@ -17,7 +17,6 @@
 
 	const unsbscribe = locale.subscribe(async value => {
 		if (process.browser) {
-			console.log(slug);
 			const res = await fetch(`blog/${slug}.json`);
 			post = await res.json();
 		}
