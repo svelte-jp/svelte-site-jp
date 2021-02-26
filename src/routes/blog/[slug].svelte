@@ -1,12 +1,29 @@
 <script context="module">
+	import { waitLocale } from 'svelte-i18n';
+
 	export async function preload({ params }) {
+		await waitLocale();
 		const res = await this.fetch(`blog/${params.slug}.json`);
-		return res.ok ? { post: await res.json() } : this.error(404, 'Not found');
+		return res.ok ? { post: await res.json(), slug: params.slug } : this.error(404, 'Not found');
 	}
 </script>
 
 <script>
+	import { onDestroy } from 'svelte';
+	import { locale } from 'svelte-i18n';
+
 	export let post;
+	export let slug;
+
+	const unsbscribe = locale.subscribe(async value => {
+		if (process.browser) {
+			console.log(slug);
+			const res = await fetch(`blog/${slug}.json`);
+			post = await res.json();
+		}
+	});
+
+	onDestroy(unsbscribe);
 </script>
 
 <svelte:head>
