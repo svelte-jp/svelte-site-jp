@@ -1,22 +1,29 @@
 ---
-title: Write less code
-description: The most important metric you're not paying attention to
+title: コード量を減らす(Write less code)
+description: 注意が払われていない最も重要な指標について
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 
+> 日本語版はオリジナルをよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはオリジナルである英語版を参照してください。  
+> また、日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。  
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-All code is buggy. It stands to reason, therefore, that the more code you have to write the buggier your apps will be.
+全てのコードにはバグが存在する可能性があります(All code is buggy)。したがって、書かなければいけないコードが多ければ多いほど、アプリケーションがバグだらけになるのは理にかなっています。
 
-Writing more code also takes more time, leaving less time for other things like optimisation, nice-to-have features, or being outdoors instead of hunched over a laptop.
+多くのコードを書くには多くの時間がかかるので、他のこと(例えば最適化や、良い機能を開発すること、またはPCの前に座らずに外出することなど)に充てられる時間は少なくなります。
 
-In fact it's widely acknowledged that [project development time](https://blog.codinghorror.com/diseconomies-of-scale-and-lines-of-code/) and [bug count](https://www.mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio) grow *quadratically*, not linearly, with the size of a codebase. That tracks with our intuitions: a ten-line pull request will get a level of scrutiny rarely applied to a 100-line one. And once a given module becomes too big to fit on a single screen, the cognitive effort required to understand it increases significantly. We compensate by refactoring and adding comments — activities that almost always result in *more* code. It's a vicious cycle.
+実際、[プロジェクトの開発時間](https://blog.codinghorror.com/diseconomies-of-scale-and-lines-of-code/) と [バグ件数](https://www.mayerdan.com/ruby/2012/11/11/bugs-per-line-of-code-ratio) はコードベースのサイズに対して直線的ではなく*二次関数的*に増加することが広く知られています。これは私たちの直感と一致しています : 10行のプルリクエストは、100行のプルリクエストだと有り得ないレベルで精査されるでしょう。また、モジュールが1つの画面に収まりきらないほど大きくなると、それを理解するために必要な認知的努力が著しく増大します。リファクタリングし、コメントを追加することでこの問題に対応しようとしますが、ほとんどの場合コードがもっと増加してしまいます。悪循環です。
 
-Yet while we obsess — rightly! — over performance numbers, bundle size and anything else we can measure, we rarely pay attention to the amount of code we're writing.
+しかし、私たちはパフォーマンスの数値やバンドルサイズ、その他計測できるものはなんでも気にかける一方で、書いているコードの量に注意を払うことはほとんどありません。
 
 
-## Readability is important
+## 重要なのは読みやすさ(Readability is important)
 
-I'm certainly not claiming that we should use clever tricks to scrunch our code into the most compact form possible at the expense of readability. Nor am I claiming that reducing *lines* of code is necessarily a worthwhile goal, since it encourages turning readable code like this...
+巧妙なトリックを使って読みやすさを犠牲にしてでもできるだけコードをコンパクトにするべきだ、と主張しているわけではありません。また、コードの*行数*を減らすことこそが価値のある目標であると主張しているわけでもありません、このような主張は、例えば次のような読みやすいコードを...
 
 ```js
 for (let i = 0; i <= 100; i += 1) {
@@ -26,18 +33,18 @@ for (let i = 0; i <= 100; i += 1) {
 }
 ```
 
-...into something much harder to parse:
+...次のように解析がより難しいものに変えるよう促してしまいます:
 
 ```js
 for (let i = 0; i <= 100; i += 1) if (i % 2 === 0) console.log(`${i} is even`);
 ```
 
-Instead, I'm claiming that we should favour languages and patterns that allow us to naturally write less code.
+代わりに、自然とコードが少なくなるような言語とパターンを好むべきだと主張します。
 
 
-## Yes, I'm talking about Svelte
+## はい、Svelteについて話しています(Yes, I'm talking about Svelte)
 
-Reducing the amount of code you have to write is an explicit goal of Svelte. To illustrate, let's look at a very simple component implemented in React, Vue and Svelte. First, the Svelte version:
+書かなければいけないコードの量を減らすことは、Svelteの明確な目標です。説明のために、React、Vue、Svelteでそれぞれ実装されたシンプルなコンポーネントを見てみましょう。まずはSvelteのバージョンです:
 
 <div class="max">
 	<iframe
@@ -47,7 +54,7 @@ Reducing the amount of code you have to write is an explicit goal of Svelte. To 
 	></iframe>
 </div>
 
-How would we build this in React? It would probably look something like this:
+これをReactで構築するには? おそらく次のようになるでしょう:
 
 ```js
 import React, { useState } from 'react';
@@ -75,7 +82,7 @@ export default () => {
 };
 ```
 
-Here's an equivalent component in Vue:
+Vueで同等のことをやると次のようになります:
 
 ```html
 <template>
@@ -100,24 +107,24 @@ Here's an equivalent component in Vue:
 ```
 
 <aside>
-	<p>I'm counting by copying the source code to the clipboard and running `pbpaste | wc -c` in my terminal</p>
+	<p>コードをクリップボードにコピーし、ターミナルで `pbpaste | wc -c` を実行してカウントします</p>
 </aside>
 
-In other words, it takes 442 characters in React, and 263 characters in Vue, to achieve something that takes 145 characters in Svelte. The React version is literally three times larger!
+つまり、Svelteだと145文字でできることが、Reactだと442文字、Vueだと263文字かかります。Reactバージョンは文字通り3倍大きいです!
 
-It's unusual for the difference to be *quite* so obvious — in my experience, a React component is typically around 40% larger than its Svelte equivalent. Let's look at the features of Svelte's design that enable you to express ideas more concisely:
-
-
-### Top-level elements
-
-In Svelte, a component can have as many top-level elements as you like. In React and Vue, a component must have a single top-level element — in React's case, trying to return two top-level elements from a component function would result in syntactically invalid code. (You can use a fragment — `<>` — instead of a `<div>`, but it's the same basic idea, and still results in an extra level of indentation).
-
-In Vue, your markup must be wrapped in a `<template>` element, which I'd argue is redundant.
+ここまで差がつくのは中々珍しいケースです - 私の経験では、ReactコンポーネントはSvelteの同等のコンポーネントより大体約40%ほど大きいです。では、アイデアを簡潔に表現することを可能にするSvelteの設計の特徴を見ていきましょう。
 
 
-### Bindings
+### トップレベル要素(Top-level elements)
 
-In React, we have to respond to input events ourselves:
+Svelteでは、1つのコンポーネントに好きなだけトップレベル要素を含めることができます。ReactやVueは、1つのコンポーネントには単一のトップレベル要素しか含めることができません - Reactの場合、コンポーネント関数から2つのトップレベル要素を返そうとすると構文的に誤ったコードになります。(`<div>` の代わりに `<>`を使用できますが、基本的な考え方は同じで、インデントが余分に発生します)
+
+Vueの場合、`<template>`要素でラップしなければなりません、これは冗長です。
+
+
+### バインディング(Bindings)
+
+Reactでは、自分で入力イベントに対応しなければなりません。
 
 ```js
 function handleChangeA(event) {
@@ -125,14 +132,14 @@ function handleChangeA(event) {
 }
 ```
 
-This isn't just boring plumbing that takes up extra space on the screen, it's also extra surface area for bugs. Conceptually, the value of the input is bound to the value of `a` and vice versa, but that relationship isn't cleanly expressed — instead we have two tightly-coupled but physically separate chunks of code (the event handler and the `value={a}` prop). Not only that, but we have to remember to coerce the string value with the `+` operator, otherwise `2 + 2` will equal `22` instead of `4`.
+これは退屈で画面上に余分なスペースを取るだけでなく、余分なバグを生みかねません。概念的には、入力の値は `a` の値と結びついており、その逆も同様ですが、この関係が綺麗に表現されていません - その代わり、緊密に結合しているものの物理的には分離しているコードのチャンク(イベントハンドラと `value={a}` prop) になります。それだけでなく、`+` 演算子で文字列の値が強制(coerce)されることも忘れないようにしないといけません(*訳注 : JavaScriptでは暗黙的に型が変換されるケースがあります。詳しくは [Type coercion (型強制) - MDN Web Docs](https://developer.mozilla.org/ja/docs/Glossary/Type_coercion) をご参照ください*)。さもないと、`2 + 2` が `4` ではなく `22` になってしまいます。
 
-Like Svelte, Vue does have a way of expressing the binding — the `v-model` attribute, though again we have to be careful to use `v-model.number` even though it's a numeric input.
+Svelteと同様、Vueにはバインディングを表現する方法があります - `v-model`属性です。ただし、数値入力であっても `v-model.number` を使うように気をつけなければなりません。
 
 
 ### State
 
-In Svelte, you update local component state with an assignment operator:
+Svelteでは、ローカルコンポーネントのstateを代入演算子で更新します。
 
 ```js
 let count = 0;
@@ -142,7 +149,7 @@ function increment() {
 }
 ```
 
-In React, we use the `useState` hook:
+Reactでは、`useState`フックを使用します。
 
 ```js
 const [count, setCount] = useState(0);
@@ -152,13 +159,13 @@ function increment() {
 }
 ```
 
-This is much *noisier* — it expresses the exact same concept but with over 60% more characters. As you're reading the code, you have to do that much more work to understand the author's intent.
+これは*かなりノイジー(much noisier)*です。全く同じ概念を表現していますが文字が60%も多いです。コードを読む際に、その意図を理解するためにより多くの労力をかける必要があります。
 
-In Vue, meanwhile, we have a default export with a `data` function that returns an object literal with properties corresponding to our local state. Things like helper functions and child components can't simply be imported and used in the template, but must instead be 'registered' by attaching them to the correct part of the default export.
+一方Vueでは、デフォルトのエクスポートに `data`関数があり、ローカルのstateに対応するプロパティを持つオブジェクトリテラルを返します。ヘルパー関数や子コンポーネントなどは単純にインポートしてテンプレートで使用することはできません、デフォルトのエクスポートの正しい部分にアタッチして'登録'する必要があります。
 
 
-## Death to boilerplate
+## ボイラープレートに終焉を(Death to boilerplate)
 
-These are just some of the ways that Svelte helps you build user interfaces with a minimum of fuss. There are plenty of others — for example, [reactive declarations](tutorial/reactive-declarations) essentially do the work of React's `useMemo`, `useCallback` and `useEffect` without the boilerplate (or indeed the garbage collection overhead of creating inline functions and arrays on each state change).
+これらは、最小限の手間でユーザーインタフェースを構築するのにSvelteが役立つことの、ほんの一部に過ぎません。他には、例えば[reactive declarations](tutorial/reactive-declarations) はReactの`useMemo`、`useCallback`、`useEffect`にあたる動作をボイラープレート(あるいは、stateが変化するたびにインライン関数と配列を作成するのに伴うガベージコレクションのオーバーヘッド)なしで本質的に行います。
 
-How? By choosing a different set of constraints. Because [Svelte is a compiler](blog/frameworks-without-the-framework), we're not bound to the peculiarities of JavaScript: we can *design* a component authoring experience, rather than having to fit it around the semantics of the language. Paradoxically, this results in *more* idiomatic code — for example using variables naturally rather than via proxies or hooks — while delivering significantly more performant apps.
+どうやって？ 別の制約セットを選択します。[Svelteはコンパイラ](blog/frameworks-without-the-framework)なので、JavaScriptの特性に縛られません : 言語のセマンティクスに合わせるのではなく、コンポーネントのオーサリングエクスペリエンスを設計できます。逆説的に言えば、結果としてよりイディオムなコードが可能になります - 例えば、プロキシやフックを経由するのではなく、自然に変数を使用することができます - しかも、よりパフォーマンスの高いアプリを提供することができます。

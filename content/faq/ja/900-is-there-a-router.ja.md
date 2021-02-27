@@ -1,13 +1,13 @@
 ---
-question: Is there a router?
+question: ルーターはありますか？
 ---
 
-You can use any router lib you want. A lot of people use [page.js](https://github.com/visionmedia/page.js). There's also [navaid](https://github.com/lukeed/navaid), which is very similar.
+任意のルータライブラリを使用できます。多くの人が [page.js](https://github.com/visionmedia/page.js) を使っています。[navaid](https://github.com/lukeed/navaid),というよく似たものもあります。
 
-If you prefer a declarative HTML approach, there's [svelte-routing](https://github.com/EmilTholin/svelte-routing).
+宣言型のHTMLによるアプローチを好むなら、 [svelte-routing](https://github.com/EmilTholin/svelte-routing) があります。
 
-If you need hash-based routing on the client side, check out [svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router), or [abstract-state-router](https://github.com/TehShrike/abstract-state-router/), a mature router for business software.
+クライアント側でハッシュ・ベースのルーティングが必要な場合は、[svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router)、または[abstract-state-router](https://github.com/TehShrike/abstract-state-router/)などの,ビジネス・ソフトウェア向けに成熟したルーターを確認してみてください。
 
-For filesystem-based routing, you can take a look at [Routify](https://routify.dev).
+ファイルシステムベースのルーティングについては、[Routify](https://routify.dev) を見てください。
 
-For an official solution, there's nothing that's simply a routing library. There is, however, the official [Sapper](https://sapper.svelte.dev/) framework, a Next.js-style application framework built on Svelte, which includes its own filesystem-based routing.
+公式なソリューションとしては、単なるルーティング・ライブラリーというものはありません。しかし、Svelte上に構築された、独自のファイルシステムベースのルーティングを含むNext.js形式のアプリケーションフレームワークである公式の [Sapper](https://sapper.svelte.dev/) フレームワークがあります。

@@ -1222,7 +1222,7 @@ on:eventname={handler}
 
 ---
 
-Components can emit events using [createEventDispatcher](docs#createEventDispatcher), or by forwarding DOM events. Listening for component events looks the same as listening for DOM events:
+コンポーネントは [createEventDispatcher](docs#createEventDispatcher) を用いるか、または DOM イベントをフォワーディングすることでイベントを発火することができます。コンポーネントのイベントをリッスンすることは、DOM イベントをリッスンすることと同義です:
 
 ```sv
 <SomeComponent on:whatever={handler}/>
@@ -1230,7 +1230,7 @@ Components can emit events using [createEventDispatcher](docs#createEventDispatc
 
 ---
 
-As with DOM events, if the `on:` directive is used without a value, the component will *forward* the event, meaning that a consumer of the component can listen for it.
+DOM イベントと同様に、`on:` ディレクティブが値なしに使われる場合、コンポーネントはイベントを*フォワード*しますが、これはコンポーネントのユーザーがイベントをリッスンできることを意味します。
 
 ```sv
 <SomeComponent on:whatever/>
@@ -1245,7 +1245,7 @@ bind:property={variable}
 
 ---
 
-You can bind to component props using the same syntax as for elements.
+要素と同じ構文を用いてコンポーネントの props にバインドすることができます。
 
 ```sv
 <Keypad bind:value={pin}/>
@@ -1259,9 +1259,9 @@ bind:this={component_instance}
 
 ---
 
-Components also support `bind:this`, allowing you to interact with component instances programmatically.
+またコンポーネントは `bind:this` をサポートしており、これを用いることでコンポーネントのインスタンスをプログラムで操作できるようになります。
 
-> Note that we can't do `{cart.empty}` since `cart` is `undefined` when the button is first rendered and throws an error.
+> 注意 ボタンが最初にレンダリングされた際 `cart` は `undefined` となりエラーを投げるため、`{cart.empty}` は実行できません。
 
 ```sv
 <ShoppingCart bind:this={cart}/>
@@ -1287,9 +1287,9 @@ Components also support `bind:this`, allowing you to interact with component ins
 
 ---
 
-Components can have child content, in the same way that elements can.
+コンポーネントは要素と同じ様に、子コンテンツを持つことができます。
 
-The content is exposed in the child component using the `<slot>` element, which can contain fallback content that is rendered if no children are provided.
+コンテンツは `<slot>` 要素を用いて子コンポーネントに公開され、子が何も提供されない場合、レンダリングされるフォールバックのコンテンツを含みます。
 
 ```sv
 <!-- Widget.svelte -->
@@ -1311,7 +1311,7 @@ The content is exposed in the child component using the `<slot>` element, which 
 
 ---
 
-Named slots allow consumers to target specific areas. They can also have fallback content.
+名前付きスロットは、特定の場所をターゲットにすることを可能にします。 また、フォールバックのコンテンツを含むこともできます。
 
 ```sv
 <!-- Widget.svelte -->
@@ -1358,7 +1358,7 @@ Named slots allow consumers to target specific areas. They can also have fallbac
 
 ---
 
-スロットは0回以上レンダリングすることができ、propsを使って親に値を *戻す* ことができます。親は `let:` ディレクティブを使ってスロットテンプレートに値を公開します。
+スロットは０回以上レンダリングすることができ、props を使って親に値を *戻す* ことができます。親は `let:` ディレクティブを使ってスロットテンプレートに値を公開します。
 
 通常の短縮ルールが適用されます -- `let:item` は `let:item={item}` と同等であり、`<slot {item}>` は `<slot item={item}>` と同等です。
 

@@ -1,20 +1,20 @@
 ---
-question: What about TypeScript support?
+question: TypeScriptのサポートはどうですか?
 ---
 
-You need to install a preprocessor such as [svelte-preprocess](https://github.com/sveltejs/svelte-preprocess). You can run type checking from the command line with [svelte-check](https://www.npmjs.com/package/svelte-check).
+[svelte-preprocess](https://github.com/sveltejs/svelte-preprocess) などのプリプロセッサをインストールする必要があります。[svelte-check](https://www.npmjs.com/package/svelte-check) を使用すると、コマンドラインからタイプチェックを実行できます。
 
-To declare the type of a reactive variable in a Svelte template, you should use the following syntax:
+Svelteテンプレートでリアクティブ変数の型を宣言するには、次の構文を使用します。
 
 ```
 let x: number;
 $: x = count + 1;
 ```
 
-To import a type or interface make sure to use [TypeScript's `type` modifier](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export):
+タイプまたはインタフェースをインポートするには、[TypeScriptの`type`修飾子](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export)を使用します:
 
 ```
 import type { SomeInterface } from './SomeFile';
 ```
 
-You must use the `type` modifier because `svelte-preprocess` doesn't know whether an import is a type or a value — it only transpiles one file at a time without knowledge of the other files and therefore can't safely erase imports which only contain types without this modifier present.
+`svelte-preprocess` はインポートが型であるか値であるかを認識しないため、 `type` 修飾子を使用する必要があります。 `svelte-preprocess` は他のファイルを認識することなく一度に1つのファイルのみをトランスパイルするため、この修飾子が存在しない型のみを含むインポートを安全に消去することはできません。

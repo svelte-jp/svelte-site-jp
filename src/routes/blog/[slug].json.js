@@ -18,7 +18,6 @@ export function get(req, res) {
 	}
 
 	if (post) {
-		res.setHeader('Cache-Control', `max-age=${5 * 60 * 1e3}`); // 5 minutes
 		send(res, 200, post);
 	} else {
 		send(res, 404, { message: 'not found' });
