@@ -6,8 +6,8 @@ question: ルーターはありますか？
 
 宣言型のHTMLによるアプローチを好むなら、 [svelte-routing](https://github.com/EmilTholin/svelte-routing) があります。
 
-クライアント側でハッシュ・ベースのルーティングが必要な場合は、 [svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router),または[abstract-state-router](https://github.com/TehShrike/abstract-state-router/),ビジネス・ソフトウェア用の成熟したルーターを調べてください。
+クライアント側でハッシュ・ベースのルーティングが必要な場合は、[svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router)、または[abstract-state-router](https://github.com/TehShrike/abstract-state-router/)などの,ビジネス・ソフトウェア向けに成熟したルーターを確認してみてください。
 
 ファイルシステムベースのルーティングについては、[Routify](https://routify.dev) を見てください。
 
-公式なソリューションとしては、単なるルーティング・ライブラリーというものはありません。しかし、Svelte上に構築された、独自のファイルシステムベースのルーティングを含むNext.js形式のアプリケーションフレームワークである公式の [Sapper](https://sapper.svelte.dev/) フレームワークがある。
+公式なソリューションとしては、単なるルーティング・ライブラリーというものはありません。しかし、Svelte上に構築された、独自のファイルシステムベースのルーティングを含むNext.js形式のアプリケーションフレームワークである公式の [Sapper](https://sapper.svelte.dev/) フレームワークがあります。

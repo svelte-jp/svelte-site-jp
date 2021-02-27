@@ -11,10 +11,10 @@ let x: number;
 $: x = count + 1;
 ```
 
-タイプまたはインタフェースをインポートするには、[TypeScriptの`type`修飾子](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export):
+タイプまたはインタフェースをインポートするには、[TypeScriptの`type`修飾子](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export)を使用します:
 
 ```
 import type { SomeInterface } from './SomeFile';
 ```
 
-`svelte-preprocess` はインポートが型であるか値であるかを認識しないため、 `type` 修飾子を使用する必要があります。 `svelte-preprocess` は他のファイルを認識することなく一度に1つのファイルのみをトランスポーズするため、この修飾子が存在しない型のみを含むインポートを安全に消去することはできません。
+`svelte-preprocess` はインポートが型であるか値であるかを認識しないため、 `type` 修飾子を使用する必要があります。 `svelte-preprocess` は他のファイルを認識することなく一度に1つのファイルのみをトランスパイルするため、この修飾子が存在しない型のみを含むインポートを安全に消去することはできません。

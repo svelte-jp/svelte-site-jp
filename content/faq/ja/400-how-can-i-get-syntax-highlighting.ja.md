@@ -1,5 +1,5 @@
 ---
-question:　VS Codeで.svelteファイルを構文強調表示するにはどうすればよいですか?
+question: VS Codeで.svelteファイルにシンタックスハイライトを行うにはどうすればよいですか?
 ---
 
-[Svelteの公式VSコード拡張](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)がある。
+[Svelteの公式VS Code拡張](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)があります。
