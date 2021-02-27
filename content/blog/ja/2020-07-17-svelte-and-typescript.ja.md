@@ -14,7 +14,7 @@ authorURL: https://twitter.com/orta
 
 以前から最も多く要望をもらっていた機能がついに実現しました、Svelte は正式に TypeScript をサポートします。
 
-これにより、より良い開発体験が得られると考えています。 -- また、より大きなSvelteコードベースにも美しくスケールします -- TypeScript と JavaScript のどちらを使用していても。
+これにより、より良い開発体験が得られると考えています。 -- また、より大きな Svelte コードベースにも美しくスケールします -- TypeScript と JavaScript のどちらを使用していても。
 
 <figure>
 	<img alt="Screenshot of TypeScript in Svelte" src="media/svelte-ts.png">
@@ -56,7 +56,7 @@ TypeScript のサポートの 2 つの主要な部分を理解するために、
 
 TypeScript のための Svelte コンパイラのサポートは、[Christian Kaisermann](https://github.com/kaisermann) の [`svelte-preprocess`](https://github.com/sveltejs/svelte-preprocess#svelte-preprocess) が担当しており、現在では公式の Svelte プロジェクトとなっています。
 
-エディタについては、[Pine's](https://github.com/octref) 氏による [Vue](https://vuejs.org) エコシステムの [Vetur](https://github.com/vuejs/vetur) からインスピレーションを得ました。Vetur は [LSP](https://github.com/vuejs/vetur/blob/master/server)、VS Code 拡張機能、[CLI](https://github.com/vuejs/vetur/blob/master/vti) を提供します。Svelteも現在、[LSP](https://github.com/sveltejs/language-tools/blob/master/packages/language-server)、[VS Code 拡張機能](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-vscode)、[CLI](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check) を提供しています。
+エディタについては、[Pine's](https://github.com/octref) による [Vue](https://vuejs.org) エコシステムの [Vetur](https://github.com/vuejs/vetur) からインスピレーションを得ました。Vetur は [LSP](https://github.com/vuejs/vetur/blob/master/server)、VS Code 拡張機能、[CLI](https://github.com/vuejs/vetur/blob/master/vti) を提供します。Svelteも現在、[LSP](https://github.com/sveltejs/language-tools/blob/master/packages/language-server)、[VS Code 拡張機能](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-vscode)、[CLI](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check) を提供しています。
 
 
 #### `*.svelte` イントロスペクション(`*.svelte` Introspection)
@@ -112,7 +112,7 @@ TypeScriptを設定するには、プロジェクトのルートに `tsconfig.js
 
 ##### 2. エディタサポート(Editor Support)
 
-[LSPを使用](https://langserver.org/#implementations-client) しているエディタであれば、どのようなエディタでも対応可能です。[VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) 拡張機能は、私たちが最も優先してきたものです。しかし、[Atom上](https://github.com/sveltejs/language-tools/pull/160)では作業が進行中で、[coc-svelte](https://github.com/coc-extensions/coc-svelte) 経由の Vim は最新の LS Pでアップデートされています。
+[LSPを使用](https://langserver.org/#implementations-client) しているエディタであれば、どのようなエディタでも対応可能です。[VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) 拡張機能は、私たちが最も優先してきたものです。しかし、[Atom上](https://github.com/sveltejs/language-tools/pull/160)では作業が進行中で、[coc-svelte](https://github.com/coc-extensions/coc-svelte) 経由の Vim は最新の LSPでアップデートされています。
 
 これらのエディタ拡張機能は、JavaScript だけを使っていてもコーディング体験を向上させてくれます。エディタはエラーを提供してくれませんが、推論やリファクタリングツールを提供してくれます。JavaScript を使って `<script>` タグの先頭に [`// @ts-check` を追加](https://www.staging-typescript.org/docs/handbook/intro-to-js-ts.html)すると、インフラの変更なしでより良いエラーメッセージを得ることができます。
 
