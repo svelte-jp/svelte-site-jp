@@ -1,6 +1,6 @@
 ---
 title: Svelte <3 TypeScript
-description: Typernetically enhanced web apps
+description: 型により強化されたWebアプリ
 author: Orta Therox
 authorURL: https://twitter.com/orta
 ---
@@ -32,7 +32,7 @@ cd svelte-typescript-app
 node scripts/setupTypeScript.js
 ```
 
-VS Code ユーザーの方は、(新しい) [official extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) を使用していることを確認してください。これは James Birtles による人気の高い拡張機能に取って代わるものです。
+VS Code ユーザーの方は、(新しい) [公式の拡張機能](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) を使用していることを確認してください。これは James Birtles による人気の高い拡張機能に取って代わるものです。
 この記事の後半では、既存の Svelte プロジェクトで TypeScript を使用するための個々のステップについて詳しく説明します。
 
 ## Svelte の TypeScript サポートとは何を意味しますか？(What does it mean to support TypeScript in Svelte?)
@@ -50,7 +50,7 @@ Svelte が TypeScript をサポートするようになったということは�
 
 #### どのような仕組みになっていますか？(How does it work?)
 
-TypeScript のサポートの 2 つの主要な部分を理解するために、TypeScript が開発ツールを提供するために使用している技術と比較してみましょう。それはコマンドラインで実行し `*.ts` を `*.js` に変換する `tsc` コンパイラと、テキストエディタからのリクエストに応答するノードAPI である `TSServer` です。`TSServer` は、コーディング中のエディタにJavaScriptとTypeScriptのリアルタイムイントロスペクションを提供するもので、その中にコンパイラのコードのほとんどが含まれています。
+TypeScript のサポートの 2 つの主要な部分を理解するために、TypeScript が開発ツールを提供するために使用している技術と比較してみましょう。それはコマンドラインで実行し `*.ts` を `*.js` に変換する `tsc` コンパイラと、テキストエディタからのリクエストに応答するノードAPI である `TSServer` です。`TSServer` は、コーディング中のエディタに JavaScript と TypeScript のリアルタイムイントロスペクションを提供するもので、その中にコンパイラのコードのほとんどが含まれています。
 
 一方 Svelte には、Svelte コンパイラと、[Language Server Protocol standard](https://microsoft.github.io//language-server-protocol/overviews/lsp/overview/) を介してテキストエディタの呼び出しに応答する [`svelte-language-server`](https://github.com/sveltejs/language-tools/tree/master/packages/language-server#svelte-language-server) があります。ファーストクラスの TypeScript サポートというのは、これらの _両方_ のシステムが TypeScript コードをうまく扱えることを意味しています。
 
@@ -61,14 +61,14 @@ TypeScript のための Svelte コンパイラのサポートは、[Christian Ka
 
 #### `*.svelte` イントロスペクション(`*.svelte` Introspection)
 
-公式の Svelte VS Code エクステンションでは、[James Birtles](https://github.com/UnwrittenFun) 氏が[`UnwrittenFun/svelte-vscode`](https://github.com/UnwrittenFun/svelte-vscode) と [`UnwrittenFun/svelte-language-server`](https://github.com/UnwrittenFun/svelte-language-server/) で作成した基盤を基に構築しました。
+公式の Svelte VS Code 拡張機能では、[James Birtles](https://github.com/UnwrittenFun) 氏が[`UnwrittenFun/svelte-vscode`](https://github.com/UnwrittenFun/svelte-vscode) と [`UnwrittenFun/svelte-language-server`](https://github.com/UnwrittenFun/svelte-language-server/) で作成した基盤を基に構築しました。
 
 [Simon Holthausen](https://github.com/dummdidumm) と [Lyu, Wei-Da](https://github.com/jasonlyu123) は、JavaScript と TypeScript のイントロスペクションを改善する素晴らしい仕事をしてくれました。またコードベース内のコンポーネントの props を理解する力を強化する [@halfnelson](https://github.com/halfnelson) の [svelte2tsx](https://github.com/sveltejs/language-tools/tree/master/packages/svelte2tsx#svelte2tsx) を統合しました。
 
 
 ## 既存のプロジェクトにTypeScriptを追加する(Adding TypeScript to an existing project)
 
-スタートする前に、依存関係を追加します。
+はじめる前に、依存関係を追加します。
 
 ```bash
 npm install --save-dev @tsconfig/svelte typescript svelte-preprocess svelte-check
@@ -114,13 +114,13 @@ TypeScriptを設定するには、プロジェクトのルートに `tsconfig.js
 
 [LSPを使用](https://langserver.org/#implementations-client) しているエディタであれば、どのようなエディタでも対応可能です。[VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) 拡張機能は、私たちが最も優先してきたものです。しかし、[Atom上](https://github.com/sveltejs/language-tools/pull/160)では作業が進行中で、[coc-svelte](https://github.com/coc-extensions/coc-svelte) 経由の Vim は最新の LS Pでアップデートされています。
 
-これらのエディタ拡張機能は、JavaScriptだけを使っていてもコーディング体験を向上させてくれます。エディタはエラーを提供してくれませんが、推論やリファクタリングツールを提供してくれます。JavaScript を使って `<script>` タグの先頭に [`// @ts-check` を追加](https://www.staging-typescript.org/docs/handbook/intro-to-js-ts.html)すると、インフラの変更なしでより良いエラーメッセージを得ることができます。
+これらのエディタ拡張機能は、JavaScript だけを使っていてもコーディング体験を向上させてくれます。エディタはエラーを提供してくれませんが、推論やリファクタリングツールを提供してくれます。JavaScript を使って `<script>` タグの先頭に [`// @ts-check` を追加](https://www.staging-typescript.org/docs/handbook/intro-to-js-ts.html)すると、インフラの変更なしでより良いエラーメッセージを得ることができます。
 
 `<script>` を TypeScript を使うように切り替えるには、`<script lang="ts">` を使ってください。願わくば、赤い四角い線の海を見ることがないことを願っています。
 
 ##### 3. CIでのチェック(CI Checks)
 
-赤い四角いマークがあるのは素晴らしいことですが、まあ、ちょっとしたことです。しかし、長期的には、コードにエラーがないことを確認できるようにしたいものです。プロジェクトにエラーがないことを確認するには、CLIツールの [`svelte-check`](https://www.npmjs.com/package/svelte-check) を使うことができます。これはエディタのように動作し、すべての `.svelte` ファイルに対してエラーを確認します。
+赤い四角いマークがあるのは素晴らしいことですが、まあ、ちょっとしたことです。しかし、長期的には、コードにエラーがないことを確認できるようにしたいものです。プロジェクトにエラーがないことを確認するには、CLI ツールの [`svelte-check`](https://www.npmjs.com/package/svelte-check) を使うことができます。これはエディタのように動作し、すべての `.svelte` ファイルに対してエラーを確認します。
 
 依存関係をプロジェクトに追加し、CI に追加することができます。
 
