@@ -2,7 +2,7 @@
 	import { waitLocale } from 'svelte-i18n';
 
 	export async function preload() {
-		waitLocale();
+		await waitLocale();
 		const faqs = await this.fetch(`faq.json`).then(r => r.json());
 		return { faqs };
 	}
