@@ -42,7 +42,7 @@ Svelte の最初のバージョンは[仮説を検証する](blog/frameworks-wit
 
 ## リアクティビティを言語化する(Moving reactivity into the language)
 
-昔のSvelteでは、`this.set` メソッドを呼び出すことで state が変わったことをコンピュータに伝えることができました。
+昔の Svelte では、`this.set` メソッドを呼び出すことで state が変わったことをコンピュータに伝えることができました。
 
 ```js
 const { count } = this.get();
@@ -51,7 +51,7 @@ this.set({
 });
 ```
 
-これはコンポーネントが *react* する原因になります。そういえば、`this.set` は古典的な (hooks 以前の) React で使われている `this.setState` メソッドとほぼ同じです。
+これはコンポーネントが *react(反応)* する原因になります。そういえば、`this.set` は古典的な (hooks 以前の) React で使われている `this.setState` メソッドとほぼ同じです。
 
 ```js
 const { count } = this.state;
@@ -74,7 +74,7 @@ this.setState({
 count += 1;
 ```
 
-コンパイラなので、裏でアサインメントをインストルメントすることで、それが可能になります。
+コンパイラなので、裏で代入にタグ付けすることでそれが可能になります。
 
 ```js
 count += 1; $$invalidate('count', count);
@@ -85,7 +85,7 @@ count += 1; $$invalidate('count', count);
 
 ## 新しい Svelte(New look)
 
-改修されているのはコンポーネントだけではありません。[svelte.technology](https://svelte.technology) から [svelte.dev](https://svelte.dev) に移行した新しいロゴとウェブサイトを作成したAchimVedamの素晴らしいデザイン作業のおかげで、Svelte自体はまったく新しいルックアンドフィールになっています。 
+改修されているのはコンポーネントだけではありません。[svelte.technology](https://svelte.technology) から [svelte.dev](https://svelte.dev) に移行した新しいロゴとウェブサイトを作成した [AchimVedam](https://vedam.de/) の素晴らしいデザイン作業のおかげで、Svelte 自体はまったく新しいルックアンドフィールになっています。 
 
 また、私たちはキャッチフレーズを「魔法のように消える UI フレームワーク」から「サイバネティックに強化されたウェブアプリ」に変更しました。Svelte には様々な側面があります。-- 卓越した性能、小さなバンドル、アクセシビリティ、組み込みのスタイルカプセル化、宣言的な遷移、使いやすさ、コンパイラであることなど -- その中のどれか一つに焦点を当てることは、他のものに不公平感を与えるような気がします。「Cybernetically enhanced」は、私たちのツールは私たち自身の知能の拡張として機能するべきだという Svelte の包括的な哲学を思い起こさせるようにデザインされています -- 願わくばレトロでウィリアム・ギブソン風のひねりを加えて。
 
@@ -99,8 +99,6 @@ count += 1; $$invalidate('count', count);
 
 ## これから(Still to come)
 
-このリリースは大変なものでしたが、まだ完成には至っていません。 よりスマートでコンパクトなコードと長い機能のウィッシュリストを生成するためのアイデアがたくさんあります。 
-
-Next.js スタイルのアプリフレームワークである [Sapper](https://sapper.svelte.dev) は、Svelte 3 を使用するためのアップデートの真っ最中です。[Svelte Native](https://svelte-native.technology/) のコミュニティプロジェクトは、Svelte で Android や iOS アプリを書くことができるようになり、順調に進んでいますが、コアからのより完全なサポートが必要です。他のフレームワークが持っているようなエディタ拡張機能、シンタックスハイライター、コンポーネントキット、devtools などの豊富な機能はまだありません。私たちは *本当に* ファーストクラスの TypeScript サポートを追加したいと思っています。
+このリリースは大変なものでしたが、まだ完成には至っていません。 よりスマートでコンパクトなコードと長い機能のウィッシュリストを生成するためのアイデアがたくさんあります。Next.js スタイルのアプリフレームワークである [Sapper](https://sapper.svelte.dev) は、Svelte 3 を使用するためのアップデートの真っ最中です。[Svelte Native](https://svelte-native.technology/) のコミュニティプロジェクトは、Svelte で Android や iOS アプリを書くことができるようになり、順調に進んでいますが、コアからのより完全なサポートが必要です。他のフレームワークが持っているようなエディタ拡張機能、シンタックスハイライター、コンポーネントキット、devtools などの豊富な機能はまだありません。私たちは *本当に* ファーストクラスの TypeScript サポートを追加したいと思っています。
 
 しかし、それらを待つ間でも Svelte 3 は Web アプリを構築するための最良の方法だと考えています。1時間ほどかけて[チュートリアル](tutorial)を読んでみてください。いずれにしても、[Discord チャットルーム](chat)や [GitHub](https://github.com/sveltejs/svelte) でお待ちしています。-- 誰でも歓迎します、特にあなたは。
