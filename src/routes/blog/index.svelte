@@ -1,9 +1,11 @@
 <script context="module">
 	import { waitLocale } from 'svelte-i18n';
+	import { get } from 'svelte/store';
 
 	export async function preload() {
 		await waitLocale();
-		const posts = await this.fetch(`blog.json`).then(r => r.json());
+		// `locale` parameterはキャッシュのためだけに使用しており、Server Sideでは何も使われない
+		const posts = await this.fetch(`blog.json?locale=${get(locale)}`).then(r => r.json());
 		return { posts };
 	}
 </script>
@@ -16,7 +18,8 @@
 
 	const unsbscribe = locale.subscribe(async value => {
 		if (process.browser) {
-			posts = await fetch(`blog.json`).then(r => r.json());
+			// `locale` parameterはキャッシュのためだけに使用しており、Server Sideでは何も使われない
+			posts = await fetch(`blog.json?locale=${value}`).then(r => r.json());
 		}
 	});
 
