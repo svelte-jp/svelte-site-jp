@@ -5,7 +5,7 @@
 
 Svelteは素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。
 
-翻訳はまだまだ進行中ですが、[https://svelte-jp.herokuapp.com/](https://svelte-jp.herokuapp.com/)で閲覧することができます。
+翻訳はまだまだ進行中ですが、[https://sveltejp.dev/](https://sveltejp.dev/)で閲覧することができます。
 
 進捗は[Milestones](https://github.com/svelte-jp/svelte-site-jp/milestones)で確認できます。
 
