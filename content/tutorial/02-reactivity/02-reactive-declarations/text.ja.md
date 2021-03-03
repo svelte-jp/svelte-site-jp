@@ -13,7 +13,7 @@ let count = 0;
 $: doubled = count * 2;
 ```
 
-> これが少し異質に見えても心配しないでください。これは [valid](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label) (型にはまらないが) な JavaScript で、Svelte は「参照される値が変わるたびにこのコードを再実行する」という意味だと解釈しています。一度慣れてしまえば、もう後戻りはできません。
+> これが少し異質に見えても心配しないでください。これは [valid](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label) (型にはまらない) な JavaScript で、Svelte は「参照される値が変わるたびにこのコードを再実行する」という意味だと解釈しています。一度慣れてしまえば、もう後戻りはできません。
 
 マークアップで `doubled` を使ってみましょう。
 
