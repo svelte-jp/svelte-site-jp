@@ -64,6 +64,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/ampcpmgp"><img src="https://avatars.githubusercontent.com/u/13173632?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ampcpmgp</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=ampcpmgp" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/takoyaro"><img src="https://avatars.githubusercontent.com/u/54836677?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jimmy</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=takoyaro" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/jdkfx"><img src="https://avatars.githubusercontent.com/u/40142697?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haruki Tazoe</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=jdkfx" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://shin1127.github.io/myPortfolio/"><img src="https://avatars.githubusercontent.com/u/56531152?v=4?s=100" width="100px;" alt=""/><br /><sub><b>shin1127</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=shin1127" title="Documentation">📖</a></td>
   </tr>
 </table>
 
