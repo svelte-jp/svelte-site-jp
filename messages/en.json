@@ -1,7 +1,11 @@
 {
     "languages": {
         "en": "English",
-        "ja": "日本語"
+        "en-US": "English",
+        "en-us": "English",
+        "ja": "日本語",
+        "ja-JP": "日本語",
+        "ja-jp": "日本語"
     },
     "direction": "ltr",
     "attention": {

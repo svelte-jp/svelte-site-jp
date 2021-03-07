@@ -27,7 +27,7 @@
     "prism-svelte": "^0.4.3",
     "prismjs": "^1.21.0",
     "sirv": "^1.0.0",
-    "svelte-i18n": "^3.3.0",
+    "svelte-i18n": "^3.3.6",
     "yootils": "0.0.16"
   },
   "devDependencies": {

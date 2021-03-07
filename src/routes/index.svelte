@@ -11,8 +11,6 @@
 	// 	console.log('lazy loading');
 	// 	return import('../components/Repl/ReplWidget.svelte').then(mod => mod.default);
 	// }
-
-	let innerWidth;
 </script>
 
 <style>
@@ -45,8 +43,6 @@
 	}
 </style>
 
-<svelte:window bind:innerWidth />
-
 <svelte:head>
 	<title>{$_('title', { default: 'Svelte • Cybernetically enhanced web apps'})}</title>
 
@@ -60,13 +56,9 @@
 		<p>
 			{$_('attention.1', { default: 'This is an unofficial site for Japanese translation by volunteers in Svelte Japan ' })}
 			{$_('attention.2', { default: '(The repository is ' })}<a href="https://github.com/svelte-jp/svelte-site-jp">{$_('attention.3_link', { default: 'here' })}</a>{$_('attention.4', { default: '). ' })}
-			{#if innerWidth > 700}
-				<br/>
-			{/if}
+			<br/>
 			{$_('attention.5', { default: 'The content on this unofficial site may be out of date or incorrect.' })}
-			{#if innerWidth > 700}
-				<br/>
-			{/if}
+			<br/>
 			{$_('attention.6', { default: 'If you are looking for the official website, please visit ' })}<a href="https://svelte.dev/">{$_('attention.7_link', { default: 'svelte.dev' })}</a>{$_('attention.8', { default: '.' })}
 		</p>
 	</div>

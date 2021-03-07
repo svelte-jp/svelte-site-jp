@@ -1,7 +1,7 @@
 <script context="module">
 	import { waitLocale } from "svelte-i18n";
 	export async function preload(page) {
-		return waitLocale();
+		return await waitLocale();
 	}
 </script>
 
@@ -74,13 +74,13 @@
 		</Menu>
 
 		<Menu bind:this={langMenu}>
-			<span slot="title">{$_("languages." + $locale.replace("-", "_"))}</span>
+			<span slot="title">{$_("languages." + $locale.replace("_", "-"), { default : "English" })}</span>
 			{#each $locales as item}
 				<MenuItem
 					on:click={() => ($locale = item, langMenu.toggleVisiblity())}
 					selected={$locale.includes(item)}
 					{item}>
-					{$_("languages." + item.replace("-", "_"))}
+					{$_("languages." + item.replace("_", "-"))}
 				</MenuItem>
 			{/each}
 		</Menu>

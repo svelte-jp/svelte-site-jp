@@ -4,6 +4,7 @@ import {
     register,
     init,
     getLocaleFromNavigator,
+    getLocaleFromQueryString,
     locale as $locale,
 } from 'svelte-i18n';
 
@@ -11,7 +12,6 @@ import { setCookie, getCookie } from './modules/cookie.js';
 
 const INIT_OPTIONS = {
     fallbackLocale: 'en',
-    initialLocale: null,
     loadingDelay: 200,
     formats: {},
     warnOnMissingMessages: true,
@@ -37,7 +37,7 @@ $locale.subscribe((value) => {
 export function startClient() {
     init({
         ...INIT_OPTIONS,
-        initialLocale: getCookie('locale') || getLocaleFromNavigator(),
+        initialLocale: getLocaleFromQueryString('lang') || getCookie('locale') || getLocaleFromNavigator(),
     });
 }
 
