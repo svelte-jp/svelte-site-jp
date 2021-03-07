@@ -34,7 +34,7 @@ npm run dev
 これはアプリを [localhost:5000](http://localhost:5000) で起動し、`svelte-app/src` ファイルを変更するたびに [Rollup](https://rollupjs.org) が再ビルドします。
 
 
-## 2. Use degit
+## 2. degit の利用
 
 REPL からダウンロードした場合、カスタマイズされたバージョンの [sveltejs/template](https://github.com/sveltejs/template) リポジトリを取得することになります。プロジェクトの足場となるツール [degit](https://github.com/Rich-Harris/degit) を使えば zip ファイルを操作する必要はありません。
 
