@@ -1,44 +1,44 @@
 ---
-title: The easiest way to get started with Svelte
-description: This'll only take a minute.
+title: Svelte の一番簡単な始め方
+description: これならすぐにできる。
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
 
-Svelte is a [new kind of framework](/blog/frameworks-without-the-framework). Rather than putting a `<script src='svelte.js'>` tag on the page, or bringing it into your app with `import` or `require`, Svelte is a compiler that works behind the scenes to turn your component files into beautifully optimised JavaScript.
+Svelte は[新しい種類のフレームワーク](/blog/frameworks-without-the-framework)です。`<script src='svelte.js'>` タグをページに配置するか、`import` か `require` を利用してアプリケーションに持ってくるよりもむしろ、Svelte はページで動作する前にコンポーネントファイルを美しく最適化された JavaScript に変換するためのコンパイラといえます。
 
-Because of that, getting started with it can be a little bit confusing at first. How, you might reasonably ask, do you make a Svelte app?
+そのため、最初は少し戸惑うかもしれません。どのように Svelte アプリを作ればよいのか？と疑問を持つかもしれません。
 
 
-## 1. Use the REPL
+## 1. REPL の利用
 
-The [Svelte REPL](repl) is the easiest way to begin. You can choose from a list of examples to get you started, and tweak them until they do what you want.
+[Svelte REPL](repl) は Svelte を始めるための最も簡単な方法です。 始めるための例のリストから選択し、あなたが望むようにそれらの例を微調整することも可能です。
 
-<aside><p>You'll need to have <a href="https://nodejs.org/">Node.js</a> installed, and know how to use the terminal</p></aside>
+<aside><p><a href="https://nodejs.org/">Node.js</a> をインストールし、ターミナルの使い方を知っている必要があるでしょう。</p></aside>
 
-At some point, your app will outgrow the REPL. Click the **download** button to save a `svelte-app.zip` file to your computer and uncompress it.
+ある時点で、あなたのアプリは REPL を超えてしまいます。**ダウンロード**ボタンをクリックして `svelte-app.zip` ファイルをコンピュータに保存し、解凍してください。
 
-Open a terminal window and set the project up...
+ターミナルウィンドウを開きプロジェクトを設定しましょう…
 
 ```bash
 cd /path/to/svelte-app
 npm install
 ```
 
-...then start up a development server:
+…そして開発サーバーを起動します:
 
 ```bash
 npm run dev
 ```
 
-This will serve your app on [localhost:5000](http://localhost:5000) and rebuild it with [Rollup](https://rollupjs.org) every time you make a change to the files in `svelte-app/src`.
+これはアプリを [localhost:5000](http://localhost:5000) で起動し、`svelte-app/src` ファイルを変更するたびに [Rollup](https://rollupjs.org) が再ビルドします。
 
 
 ## 2. Use degit
 
-When you download from the REPL, you're getting a customised version of the [sveltejs/template](https://github.com/sveltejs/template) repo. You can skip messing around with zip files by using [degit](https://github.com/Rich-Harris/degit), a project scaffolding tool.
+REPL からダウンロードした場合、カスタマイズされたバージョンの [sveltejs/template](https://github.com/sveltejs/template) リポジトリを取得することになります。プロジェクトの足場となるツール [degit](https://github.com/Rich-Harris/degit) を使えば zip ファイルを操作する必要はありません。
 
-In the terminal, you can instantly create a new project like so:
+ターミナルでは、このように新しいプロジェクトをすぐに作ることができます:
 
 ```bash
 npx degit sveltejs/template my-svelte-project
@@ -50,16 +50,16 @@ npm install
 npm run dev
 ```
 
-This will create a new project in the `my-svelte-project` directory, install its dependencies, and start a server on http://localhost:5000.
+これにより新しいプロジェクトが `my-svelte-project` ディレクトリ内に生成され、依存関係をインストールし、http://localhost:5000 でサーバーが起動されます。
 
-You can find more information about using TypeScript [here](blog/svelte-and-typescript).
+TypeScript のより詳しい使用方法を知りたい場合は [こちら](blog/svelte-and-typescript) をご参照ください。
 
-Once you've tinkered a bit and understood how everything fits together, you can fork [sveltejs/template](https://github.com/sveltejs/template) and start doing this instead:
+一度少しいじってみて全体がどのように組み合わさっているかを理解しましたら、[sveltejs/template](https://github.com/sveltejs/template)  をフォークし、代わりに以下を実行することができます:
 
 ```bash
 npx degit your-name/template my-new-project
 ```
 
-And that's it! Do `npm run build` to create a production-ready version of your app, and check the project template's [README](https://github.com/sveltejs/template/blob/master/README.md) for instructions on how to easily deploy your app to the web with [Vercel](https://vercel.com) or [Surge](http://surge.sh/).
+これで完了です！本番環境に対応したバージョンのアプリを作成するために `npm run build` を使用し、プロジェクトテンプレートの [README](https://github.com/sveltejs/template/blob/master/README.md) から [Vercel](https://vercel.com) や [Surge](http://surge.sh/) を用いてアプリを簡単に Web にデプロイする方法についての説明を確認してください。
 
-You're not restricted to using Rollup — there are also integrations for [webpack](https://github.com/sveltejs/svelte-loader), [Browserify](https://github.com/tehshrike/sveltify) and others, or you can use the [Svelte CLI](https://github.com/sveltejs/svelte-cli) (Update from 2019: with Svelte 3 the CLI was deprecated and we now use [sirv-cli](https://www.npmjs.com/package/sirv-cli) in our template. Feel free to use whatever tool you like!) or the [API](https://github.com/sveltejs/svelte/tree/v2#api) directly. If you make a project template using one of these tools, please share it with the [Svelte Discord chatroom](chat), or via [@sveltejs](https://twitter.com/sveltejs) on Twitter!
+Rollup を使うことに制限はありません — [webpack](https://github.com/sveltejs/svelte-loader)、[Browserify](https://github.com/tehshrike/sveltify) やその他の統合ツールもありますし、[Svelte CLI](https://github.com/sveltejs/svelte-cli) (2019年からのアップデート: Svelte 3 では CLI は非推奨となり、現在では[sirv-cli](https://www.npmjs.com/package/sirv-cli) をテンプレートで使用しています。ご自由にお好きなツールをご利用ください！) や [API](https://github.com/sveltejs/svelte/tree/v2#api) を使うこともできます。これらのツールの一つを用いてプロジェクトテンプレートを作成する場合は、是非 [Svelte Discord chatroom](chat) か、Twitter で [@sveltejs](https://twitter.com/sveltejs) にご共有ください！
