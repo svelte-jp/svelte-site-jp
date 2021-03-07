@@ -1,7 +1,11 @@
 {
     "languages": {
         "en": "English",
-        "ja": "日本語"
+        "en-US": "English",
+        "en-us": "English",
+        "ja": "日本語",
+        "ja-JP": "日本語",
+        "ja-jp": "日本語"
     },
     "direction": "ltr",
     "attention": {
@@ -55,7 +59,7 @@
                         "link": "zip file"
                     },
                     "ts": {
-                        "first": " ",
+                        "first": "もし",
                         "second_link": "TypeScript",
                         "third": "を使用する場合はこちらを実行してください"
                     }
