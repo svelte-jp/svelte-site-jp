@@ -4,6 +4,13 @@ description: これならすぐにできる。
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
+> 翻訳 : Svelte日本コミュニティ
+>
+> 日本語版はオリジナルをよりよく理解するための参考となることを目的としています。
+> 正確な内容についてはオリジナルである英語版を参照してください。
+> また、日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
 Svelte は[新しい種類のフレームワーク](/blog/frameworks-without-the-framework)です。`<script src='svelte.js'>` タグをページに配置するか、`import` か `require` を利用してアプリケーションに持ってくるよりもむしろ、Svelte はページで動作する前にコンポーネントファイルを美しく最適化された JavaScript に変換するためのコンパイラといえます。
 
