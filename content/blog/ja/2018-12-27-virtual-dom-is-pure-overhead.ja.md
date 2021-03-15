@@ -46,6 +46,7 @@ function HelloMessage(props) {
 
 ...しかし、結果は同じで — ページがどのように見えるかを表現するオブジェクトになります。このオブジェクトは仮想DOMです。アプリのstateが更新されるたびに(例えば `name` prop が変わったとき)、これが新たに作成されます。フレームワークの仕事は、新しいオブジェクトと古いオブジェクトを*調整*し、どのような変更が必要か把握して、実際のDOMにそれを適用することです。
 
+
 ## このミームはどう始まった?(How did the meme start?)
 
 仮想DOMのパフォーマンスに関する誤解された主張は、Reactの立ち上げまで遡ります。元ReactコアチームメンバーのPete Hunt氏による2013年の発展的な講演 [Rethinking Best Practices](https://www.youtube.com/watch?v=x7cQ3mrcKaY)で、私たちは次のことを学びました。
