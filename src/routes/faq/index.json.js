@@ -1,11 +1,11 @@
 import send from '@polka/send';
 import get_faqs from './_faqs.js';
-import { getCookie } from '../../modules/cookie.js'
+import { getLocaleFromRequest } from '../../i18n.js';
 
 const lookup = new Map();
 
 export function get(req, res) {
-	const locale = getCookie('locale', req.headers.cookie) || 'en';
+	const locale = getLocaleFromRequest(req);
 	let json = lookup.get(locale);
 	if (!json || process.env.NODE_ENV !== 'production') {
 		const faqs = get_faqs(locale)

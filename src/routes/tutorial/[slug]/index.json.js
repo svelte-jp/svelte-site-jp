@@ -4,7 +4,7 @@ import marked from 'marked';
 import send from '@polka/send';
 import { extract_frontmatter, extract_metadata, link_renderer } from '@sveltejs/site-kit/utils/markdown';
 import { highlight } from '../../../utils/highlight';
-import { getCookie } from '../../../modules/cookie.js'
+import { getLocaleFromRequest } from '../../../i18n.js'
 
 const cache = new Map();
 
@@ -99,7 +99,7 @@ function get_tutorial(slug, locale) {
 export function get(req, res) {
 	const { slug } = req.params;
 
-	const locale = getCookie('locale', req.headers.cookie);
+	const locale = getLocaleFromRequest(req);
 	const slugWithLocale = locale ? slug + '.' + locale : slug;
 
 	let tut = cache.get(slugWithLocale);
