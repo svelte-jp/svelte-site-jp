@@ -37,7 +37,7 @@ $locale.subscribe((value) => {
 export function startClient() {
     init({
         ...INIT_OPTIONS,
-        initialLocale: getLocaleFromQueryString('lang') || getCookie('locale') || getLocaleFromNavigator(),
+        initialLocale: getLocaleFromQueryString('lang') || getCookie('locale') || 'ja',
     });
 }
 
