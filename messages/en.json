@@ -9,11 +9,11 @@
     },
     "direction": "ltr",
     "attention": {
-        "1": "This is an unofficial site for Japanese translation by volunteers in Svelte Japan ",
+        "1": "This is a site for Japanese translation by Svelte Japan Community",
         "2": "(The repository is ",
         "3_link": "here",
         "4": " ). ",
-        "5": "The content on this unofficial site may be out of date or incorrect.",
+        "5": "The content on this site may be out of date or incorrect.",
         "6": "If you are looking for the official website, please visit ",
         "7_link": "svelte.dev",
         "8": "."
