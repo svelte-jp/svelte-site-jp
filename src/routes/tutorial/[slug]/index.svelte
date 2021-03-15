@@ -1,11 +1,10 @@
 <script context="module">
 	import { waitLocale } from 'svelte-i18n';
-	import { get } from 'svelte/store';
+	import { getLocaleFromQueryOrStore } from '../../../i18n.js';
 
-	export async function preload({ params }) {
+	export async function preload({ params, query }) {
 		await waitLocale();
-		// `locale` parameterはキャッシュのためだけに使用しており、Server Sideでは何も使われない
-		const res = await this.fetch(`tutorial/${params.slug}.json?locale=${get(locale)}`);
+		const res = await this.fetch(`tutorial/${params.slug}.json?locale=${getLocaleFromQueryOrStore(query.lang)}`);
 
 		if (!res.ok) {
 			return this.redirect(301, `tutorial/basics`);

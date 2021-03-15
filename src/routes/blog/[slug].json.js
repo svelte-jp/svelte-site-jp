@@ -1,11 +1,11 @@
 import send from '@polka/send';
 import get_posts from './_posts.js';
-import { getCookie } from '../../modules/cookie.js'
+import { getLocaleFromRequest } from '../../i18n.js'
 
 const lookup = new Map();
 
 export function get(req, res) {
-	const locale = getCookie('locale', req.headers.cookie);
+	const locale = getLocaleFromRequest(req);
 	const slugWithLocale = locale ? req.params.slug + '.' + locale : req.params.slug;
 
 	let post = lookup.get(slugWithLocale);

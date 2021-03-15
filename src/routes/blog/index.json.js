@@ -1,11 +1,11 @@
 import send from '@polka/send';
 import get_posts from './_posts.js';
-import { getCookie } from '../../modules/cookie.js'
+import { getLocaleFromRequest } from '../../i18n.js'
 
 const cache = new Map();
 
 export function get(req, res) {
-	const locale = getCookie('locale', req.headers.cookie) || 'en';
+	const locale = getLocaleFromRequest(req);
 
 	let json = cache.get(locale);
 	if (!json || process.env.NODE_ENV !== 'production') {

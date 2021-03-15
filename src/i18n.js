@@ -1,17 +1,19 @@
 // from https://github.com/kaisermann/sapper-template-i18n/blob/master/src/i18n.js
 // svelte-i18n is awesome!!
+import { get } from 'svelte/store';
 import {
     register,
     init,
-    getLocaleFromNavigator,
     getLocaleFromQueryString,
     locale as $locale,
+    locales,
 } from 'svelte-i18n';
-
 import { setCookie, getCookie } from './modules/cookie.js';
 
+export const defaultLocale = 'ja';
+
 const INIT_OPTIONS = {
-    fallbackLocale: 'en',
+    fallbackLocale: defaultLocale,
     loadingDelay: 200,
     formats: {},
     warnOnMissingMessages: true,
@@ -37,8 +39,31 @@ $locale.subscribe((value) => {
 export function startClient() {
     init({
         ...INIT_OPTIONS,
-        initialLocale: getLocaleFromQueryString('lang') || getCookie('locale') || 'ja',
+        initialLocale: findLocaleFromQuery('lang') || getCookie('locale') || defaultLocale,
     });
+}
+
+export const findLocaleFromQuery = (key) => {
+    const value = getLocaleFromQueryString(key)
+    if (!value) {
+        return value;
+    }
+    return get(locales).find(loc => loc === value);
+}
+
+export const getLocaleFromRequest = (req) => {
+    return getLocaleFromQuery(req.query.locale) || getCookie('locale', req.headers.cookie) || defaultLocale;
+}
+
+export const getLocaleFromQueryOrStore = (value) => {
+    return getLocaleFromQuery(value) || get($locale);
+}
+
+export const getLocaleFromQuery = (value) => {
+    if (!value) {
+        return value;
+    }
+    return get(locales).find(loc => loc === value);
 }
 
 // init only for routes (urls with no extensions such as .js, .css, etc) and for service worker
