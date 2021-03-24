@@ -1,9 +1,11 @@
 ---
-question: Where can I get support?
+question: サポートはどこで受けられますか？
 ---
 
-If your question is about certain syntax, the [API page](https://svelte.dev/docs) is a good place to start.
+特定の構文に関する質問がある場合は、 [APIページ](docs) が参考になると思います。
 
-Stack Overflow is a popular forum to ask code-level questions or if you’re stuck with a specific error. Read through the existing questions tagged with [Svelte](https://stackoverflow.com/questions/tagged/svelte+or+svelte-3) or [ask your own](https://stackoverflow.com/questions/ask?tags=svelte)!
+コードレベルの質問やエラーで詰まった際に利用されているStack Overflowという人気のフォーラムがあります。 [Svelte](https://stackoverflow.com/questions/tagged/svelte+or+svelte-3) とタグづけられた既存の質問を読んでみてください。または [自分で質問](https://stackoverflow.com/questions/ask?tags=svelte) してみください！
 
-There are online forums and chats which are a great place for discussion about best practices, application architecture or just to get to know fellow Svelte users. [Our Discord](https://svelte.dev/chat) or [the Reddit channel](https://www.reddit.com/r/sveltejs/) are examples of that. If you have an answerable code-level question, Stack Overflow is usually a better fit.
+ベストプラクティスやアプリケーションアーキテクチャについて議論したり、他のSvelteユーザーと交流する場所としてオンラインやチャットの場があります。例えば [私達のDiscord](https://svelte.dev/chat) または [Redditのチャンネル](https://www.reddit.com/r/sveltejs/) などです。コードレベルの質問がある場合は、Stack Overflowの方が適切です。
+
+>日本語翻訳版 追記：上記のDiscordはSvelte本体のもので、英語でコミュニケーションが行われています。もし日本語で質問したり交流したいのであれば、Svelte日本のDiscordにどうぞ！
