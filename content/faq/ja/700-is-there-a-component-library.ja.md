@@ -2,4 +2,4 @@
 question: UIコンポーネントライブラリはありますか？
 ---
 
-いくつかのUIコンポーネントライブラリがあります。Svelte Community webサイトの[コードセクション](https://svelte-community.netlify.com/code) で探すことができます。
+There are several UI component libraries as well as standalone components. Find them under the [components section](https://sveltesociety.dev/components) of the Svelte Society website.
