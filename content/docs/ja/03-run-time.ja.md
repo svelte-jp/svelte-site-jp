@@ -904,6 +904,7 @@ const app = new App({
 | `target` | **none** | レンダリング先の `HTMLElement`。このオプションは必須です
 | `anchor` | `null` | `target` の子要素。これのすぐ前にコンポーネントがレンダリングされます
 | `props` | `{}` | コンポーネントに渡すプロパティのオブジェクト
+| `context` | `new Map()` | A `Map` of root-level context key-value pairs to supply to the component
 | `hydrate` | `false` | 下記参照
 | `intro` | `false` | `true` なら、その後の状態変化を待つのではなく、初回レンダリング時にトランジションを再生します。
 
@@ -1080,4 +1081,30 @@ const App = require('./App.svelte').default;
 const { head, html, css } = App.render({
 	answer: 42
 });
+```
+
+---
+
+The `.render()` method accepts the following parameters:
+
+| parameter | default | description |
+| --- | --- | --- |
+| `props` | `{}` | An object of properties to supply to the component
+| `options` | `{}` | An object of options
+
+The `options` object takes in the following options:
+
+| option | default | description |
+| --- | --- | --- |
+| `context` | `new Map()` | A `Map` of root-level context key-value pairs to supply to the component
+
+```js
+const { head, html, css } = App.render(
+	// props
+	{ answer: 42 },
+	// options
+	{
+		context: new Map([['context-key', 'context-value']])
+	}
+);
 ```
