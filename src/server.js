@@ -27,7 +27,7 @@ app.use(
 		dev: process.env.NODE_ENV === 'development',
 		setHeaders(res) {
 			res.setHeader('Access-Control-Allow-Origin', '*');
-			res.hasHeader('Cache-Control') || res.setHeader('Cache-Control', 'max-age=600'); // 10min default
+			res.hasHeader('Cache-Control') || res.setHeader('Cache-Control', 'max-age=604800'); // 7days default
 		}
 	}),
 
