@@ -66,6 +66,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/jdkfx"><img src="https://avatars.githubusercontent.com/u/40142697?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haruki Tazoe</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=jdkfx" title="Documentation">📖</a></td>
     <td align="center"><a href="https://shin1127.github.io/myPortfolio/"><img src="https://avatars.githubusercontent.com/u/56531152?v=4?s=100" width="100px;" alt=""/><br /><sub><b>shin1127</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=shin1127" title="Documentation">📖</a></td>
     <td align="center"><a href="https://twilink.click/mikeanakida"><img src="https://avatars.githubusercontent.com/u/32151765?v=4?s=100" width="100px;" alt=""/><br /><sub><b>manaki</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=manak1" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/knj4484"><img src="https://avatars.githubusercontent.com/u/11140280?v=4?s=100" width="100px;" alt=""/><br /><sub><b>knj4484</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=knj4484" title="Documentation">📖</a></td>
   </tr>
 </table>
 
