@@ -9,6 +9,7 @@
     "build": "npm run copy-workers && sapper build --legacy",
     "update": "node scripts/update_template.js && node scripts/get-contributors.js && node scripts/update_whos_using.js",
     "start": "node __sapper__/build",
+    "lint": "node -e \"var shell=require('shelljs');var files=shell.find(['./CONTRIBUTING.md','./content/tutorial/**/*.ja.md']).join(' ');if(shell.exec('textlint -f pretty-error '+files).code!==0){shell.exit(1)};\"",
     "test": "mocha -r esm test/**",
     "deploy": "make deploy"
   },
@@ -58,7 +59,11 @@
     "rollup-plugin-terser": "^7.0.0",
     "sapper": "^0.28.10",
     "shelljs": "^0.8.3",
-    "svelte": "^3.12.0"
+    "svelte": "^3.12.0",
+    "textlint": "^11.9.0",
+    "textlint-rule-detect-bad-chars": "^1.0.2",
+    "textlint-rule-no-mix-dearu-desumasu": "^4.0.1",
+    "textlint-rule-preset-jtf-style": "^2.3.8"
   },
   "engines": {
     "node": ">=10.0.0"
