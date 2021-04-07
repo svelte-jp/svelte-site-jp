@@ -179,4 +179,4 @@ Fork元にPull Requestを提出してください。Pull Requestのコメント�
 
 Svelte Site JPは[sveltejs/svelteのsiteディレクトリ](https://github.com/sveltejs/svelte/tree/master/site)をフォークして作成されており、ライセンス(MIT)を引き継いでいます。
 
-Svelte Site JPに貢献することにより, あなたはあなたの貢献が[MIT license](https://github.com/svelte-jp/svelte-site-jp/blob/master/LICENSE)の下でライセンスされることに同意するものとします。
+Svelte Site JPに貢献することにより、あなたはあなたの貢献が[MIT license](https://github.com/svelte-jp/svelte-site-jp/blob/master/LICENSE)の下でライセンスされることに同意するものとします。

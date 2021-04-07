@@ -2,7 +2,7 @@
 title: Exports
 ---
 
-`context="module"` スクリプトブロックからエクスポートされたものはすべてモジュール自体からのエクスポートになります。もし、`AudioPlayer.svelte` から `stopAll` 関数をエクスポートすると...
+`context="module"` スクリプトブロックからエクスポートされたものはすべてモジュール自体からのエクスポートになります。もし、`AudioPlayer.svelte` から `stopAll` 関数をエクスポートすると…
 
 ```html
 <script context="module">
@@ -16,7 +16,7 @@ title: Exports
 </script>
 ```
 
-...そしてそれを `App.svelte` からインポートすることができます...
+…そしてそれを `App.svelte` からインポートすることができます…
 
 ```html
 <script>
@@ -24,7 +24,7 @@ title: Exports
 </script>
 ```
 
-... さらにそれをイベントハンドラで使うことができます。
+…さらにそれをイベントハンドラで使うことができます。
 
 ```html
 <button on:click={stopAll}>

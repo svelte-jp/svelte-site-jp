@@ -24,7 +24,7 @@ title: Media elements
 
 > 通常、 web 上では `timeupdate` イベントを検知することで `currentTime` を追跡しますが、これらのイベントはそれほど頻繁に発生しないため、結果的にぎこちない UI になってしまいます。それを Svelte は上手く処理しています — `requestAnimationFrame` を使用して `currentTime` をチェックすることで。
 
-`<audio>` と `<video>` のバインディングの全セットは以下の通りです。 — 6つの _読み込み専用_ バインディング...
+`<audio>` と `<video>` のバインディングの全セットは以下の通りです。 — 6つの _読み込み専用_ バインディング…
 
 - `duration` (読み込み専用) — 動画の総再生時間（秒単位）
 - `buffered` (読み込み専用) — `{start, end}` オブジェクトの配列
@@ -33,7 +33,7 @@ title: Media elements
 - `seeking` (読み込み専用) — 真偽値
 - `ended` (読み込み専用) — 真偽値
 
-...と5つの _双方向_ バインディングです:
+…と5つの _双方向_ バインディングです:
 
 - `currentTime` — 動画内の現在のポイント（秒単位）
 - `playbackRate` — 動画の再生速度（`1` が 'normal'）
