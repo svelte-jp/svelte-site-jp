@@ -7,7 +7,7 @@ Svelte チュートリアルへようこそ。ここでは高速で小さいWeb�
 [API docs](docs) や [examples](examples) を参照することもできます。また、すぐにローカルで動かしたい場合は [60-second quickstart](blog/the-easiest-way-to-get-started) をご参照ください。
 
 
-## Svelteとは?
+## Svelteとは？
 
 Svelteは速いWebアプリケーションを構築するためのツールです。
 
