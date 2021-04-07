@@ -20,7 +20,7 @@ DOM イベントハンドラには、それらの動作を変更する修飾子�
 
 * `preventDefault` — ハンドラを実行する前に `event.preventDefault()` を呼び出します。たとえば、クライアントのフォーム処理に役立ちます。
 * `stopPropagation` — 次の要素にイベントが伝播しないように `event.stopPropagation()` を呼び出します。
-* `passive` — タッチ/ホイールイベントでスクロールのパフォーマンスを向上させます。（Svelte が安全な場所に自動的に追加します。）
+* `passive` — タッチ/ホイールイベントでスクロールのパフォーマンスを向上させます（Svelte が安全な場所に自動的に追加します）。
 * `nonpassive` — `passive: false` を明示的に設定します。
 * `capture` — *バブリング* フェーズではなく、*キャプチャ* フェーズ中にハンドラを起動します。([MDN docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture))
 * `once` — ハンドラを最初に実行した後に削除します。
