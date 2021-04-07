@@ -2,7 +2,7 @@
 title: <svelte:component>
 ---
 
-コンポーネントは `<svelte:component>` でカテゴリを完全に変更することができます。一連の `if` ブロック
+コンポーネントは `<svelte:component>` でカテゴリを完全に変更することができます。一連の `if` ブロックの代わりに…
 
 ```html
 {#if selected.color === 'red'}
@@ -14,7 +14,7 @@ title: <svelte:component>
 {/if}
 ```
 
-の代わりに、単一の動的なコンポーネントを持つことができます。
+…我々は単一の動的なコンポーネントを持つことができます。
 
 ```html
 <svelte:component this={selected.component}/>
