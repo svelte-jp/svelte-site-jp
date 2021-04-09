@@ -20,4 +20,4 @@ title: <svelte:component>
 <svelte:component this={selected.component}/>
 ```
 
-`this` 値には任意のコンポーネントコンストラクタ、または falsy な値を指定できます -- falsy の値を指定した場合、コンポーネントはレンダリングされません。
+`this` 値には任意のコンポーネントコンストラクタ、または falsy な値を指定できます。falsy の値を指定した場合、コンポーネントはレンダリングされません。

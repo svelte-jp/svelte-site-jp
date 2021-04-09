@@ -22,9 +22,9 @@ title: Media elements
 
 このとき動画をクリックすると、`time`、`duration`、`paused` が適宜更新されます。つまり、それらを使ってカスタムコントロールを構築することができるということです。
 
-> 通常、 web 上では `timeupdate` イベントを検知することで `currentTime` を追跡しますが、これらのイベントはそれほど頻繁に発生しないため、結果的にぎこちない UI になってしまいます。それを Svelte は上手く処理しています — `requestAnimationFrame` を使用して `currentTime` をチェックすることで。
+> 通常、 web 上では `timeupdate` イベントを検知することで `currentTime` を追跡しますが、これらのイベントはそれほど頻繁に発生しないため、結果的にぎこちない UI になってしまいます。それを Svelte は上手く処理しています。`requestAnimationFrame` を使用して `currentTime` をチェックすることで。
 
-`<audio>` と `<video>` のバインディングの全セットは以下の通りです。 — 6つの _読み込み専用_ バインディング…
+`<audio>` と `<video>` のバインディングの全セットは以下の通りです。6つの _読み込み専用_ バインディング…
 
 - `duration` (読み込み専用) — 動画の総再生時間（秒単位）
 - `buffered` (読み込み専用) — `{start, end}` オブジェクトの配列

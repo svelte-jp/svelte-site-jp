@@ -6,7 +6,7 @@ title: The animate directive
 
 この錯覚を完成させるには、遷移して *いない* 要素にもモーションを適用する必要があります。このために、`animate` ディレクティブを使用します。
 
-最初に `flip` 関数を — flip は ['First, Last, Invert, Play'](https://aerotwist.com/blog/flip-your-animations/) の略です — `svelte/animate` からインポートします
+最初に `flip` 関数（flip は ['First, Last, Invert, Play'](https://aerotwist.com/blog/flip-your-animations/) の略です）を `svelte/animate` からインポートします
 
 ```js
 import { flip } from 'svelte/animate';
