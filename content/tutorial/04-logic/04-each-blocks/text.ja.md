@@ -26,4 +26,4 @@ title: Each blocks
 {/each}
 ```
 
-お好みであれば、分割代入を使うことができます — `each cats as { id, name }` — そして `cat.id` と `cat.name` を `id` と `name` に置き換えることができます。
+お好みであれば、分割代入（`each cats as { id, name }`）を使い、`cat.id` と `cat.name` を `id` と `name` に置き換えることができます。

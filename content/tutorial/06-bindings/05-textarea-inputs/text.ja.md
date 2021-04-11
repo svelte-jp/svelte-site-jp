@@ -2,7 +2,7 @@
 title: Textarea inputs
 ---
 
-Svelteでは、`<textarea>`要素はテキストinputと同じように振る舞います — `bind:value`を使ってみましょう。
+Svelteでは、`<textarea>`要素はテキストinputと同じように振る舞います。`bind:value`を使ってみましょう。
 
 ```html
 <textarea bind:value={value}></textarea>
