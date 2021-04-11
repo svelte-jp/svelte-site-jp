@@ -8,4 +8,4 @@ title: This
 <canvas bind:this="{canvas}" width="{32}" height="{32}"></canvas>
 ```
 
-注意 `canvas` の値はコンポーネントがマウントされるまで `undefined` になるので、`onMount` という[ライフサイクル関数](tutorial/onmount)内にロジックを含めます。
+注意 `canvas` の値はコンポーネントがマウントされるまで `undefined` になるので、`onMount` という[ライフサイクル関数](tutorial/onmount)内にロジックを含めていることに注意してください。
