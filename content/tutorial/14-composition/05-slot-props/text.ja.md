@@ -28,7 +28,7 @@ title: Slot props
 </Hoverable>
 ```
 
-必要に応じて変数の名前を変更することができます -- 親コンポーネントでは `active` と呼ぶようにしましょう。
+必要に応じて変数の名前を変更することができます。親コンポーネントでは `active` と呼ぶようにしましょう。
 
 ```html
 <Hoverable let:hovering={active}>
