@@ -2,9 +2,7 @@
 title: Await blocks
 ---
 
-ほとんどの webアプリケーションでは、どこかの時点で非同期のデータを扱わなければなりません。
-Svelte ではマークアップの中で直接 [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) の値
-を簡単に *await* することができます。
+ほとんどの webアプリケーションでは、どこかの時点で非同期のデータを扱わなければなりません。Svelte ではマークアップの中で直接 [promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) の値を簡単に *await* することができます。
 
 ```html
 {#await promise}

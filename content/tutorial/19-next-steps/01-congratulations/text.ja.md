@@ -2,9 +2,7 @@
 title: Congratulations!
 ---
 
-これでSvelteチュートリアルは終了し、アプリの構築を始める準備が整いました。各章はいつでも参照することができます(上のタイトルをクリックするとドロップダウンが表示されます)。または [API リファレンス](docs)、[例題](examples)、[ブログ](blog) で学習を続けてください。
-
-あなたがTwitterユーザーであれば、[@sveltejs](https://twitter.com/sveltejs)を介して更新情報を得ることができます。
+これでSvelteチュートリアルは終了し、アプリの構築を始める準備が整いました。各章はいつでも参照することができます(上のタイトルをクリックするとドロップダウンが表示されます)。または [API リファレンス](docs)、[例題](examples)、[ブログ](blog) で学習を続けてください。あなたがTwitterユーザーであれば、[@sveltejs](https://twitter.com/sveltejs)を介して更新情報を得ることができます。
 
 ローカルの開発環境で設定するには、[クイックスタートガイド](blog/the-easiest-way-to-get-started)を確認してみてください。
 
