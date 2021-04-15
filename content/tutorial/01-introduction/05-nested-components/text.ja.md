@@ -4,7 +4,7 @@ title: Nested components
 
 アプリ全体を単一のコンポーネントにまとめるのは現実的ではありません。代わりに、他のファイルからコンポーネントをインポートして、HTML要素を使用するのと同じようにコンポーネントを使用することができます。
 
-`<script>`タグを追加して`Nested.svelte`をインポートします・・・
+`<script>`タグを追加して`Nested.svelte`をインポートします…
 
 ```html
 <script>
@@ -12,7 +12,7 @@ title: Nested components
 </script>
 ```
 
-・・・そしてそれを追加します。
+…そしてそれを追加します。
 
 ```html
 <p>This is a paragraph.</p>
