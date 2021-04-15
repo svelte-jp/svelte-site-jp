@@ -15,7 +15,7 @@ title: Making an app
 
 また、テキストエディタの設定もしておくと良いでしょう。もし VS Codeをお使いでしたら、[Svelte extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)をインストールしてください。それ以外の場合は[this guide](blog/setting-up-your-editor)に従って`.svelte`ファイルと`.html`ファイルを同じように扱うよう設定し、シンタックスハイライトをできるようにすると良いでしょう。
 
-そして、プロジェクトのセットアップが完了したら、Svelteのコンポーネントを使うのは簡単です。コンパイラは各コンポーネントを通常のJavaScript classに変換します - コンポーネントをインポートして `new` でインスタンス化するだけです。
+そして、プロジェクトのセットアップが完了したら、Svelteのコンポーネントを使うのは簡単です。コンパイラは各コンポーネントを通常のJavaScript classに変換します。コンポーネントをインポートして `new` でインスタンス化するだけです。
 
 ```js
 import App from './App.svelte';

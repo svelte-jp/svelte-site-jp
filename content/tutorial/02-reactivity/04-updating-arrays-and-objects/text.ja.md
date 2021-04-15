@@ -23,7 +23,7 @@ function addNumber() {
 
 `pop`, `shift`, `unshift`, `splice` の代わりに、似たようなパターンを使うことができます。
 
-配列やオブジェクトの *プロパティ* への代入 - 例：`obj.foo += 1` または `array[i] = x` - はそれらの値への代入と同じように動作します。
+配列やオブジェクトの *プロパティ* への代入（例：`obj.foo += 1` または `array[i] = x`）はそれらの値への代入と同じように動作します。
 
 ```js
 function addNumber() {
