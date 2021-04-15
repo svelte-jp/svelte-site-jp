@@ -10,7 +10,7 @@ title: Dynamic attributes
 <img src={src}>
 ```
 
-良いですね。ですが、まだ警告が表示され続けています。
+これでよくなりました。ただし、まだ警告が表示され続けています。
 
 > A11y: &lt;img&gt; element should have an alt attribute
 
