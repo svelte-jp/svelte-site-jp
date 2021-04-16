@@ -8,4 +8,4 @@ question: サポートはどこで受けられますか？
 
 ベストプラクティスやアプリケーションアーキテクチャについて議論したり、他のSvelteユーザーと交流する場所としてオンラインやチャットの場があります。例えば [私達のDiscord](https://svelte.dev/chat) または [Redditのチャンネル](https://www.reddit.com/r/sveltejs/) などです。コードレベルの質問がある場合は、Stack Overflowの方が適切です。
 
->日本語翻訳版 追記：上記のDiscordはSvelte本体のもので、英語でコミュニケーションが行われています。もし日本語で質問したり交流したいのであれば、Svelte日本のDiscordにどうぞ！
+> 日本語翻訳版 追記：上記のDiscordはSvelte本体のもので、英語でコミュニケーションが行われています。もし日本語で質問したり交流したいのであれば、Svelte日本のDiscordにどうぞ！
