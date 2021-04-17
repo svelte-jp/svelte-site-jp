@@ -1328,8 +1328,8 @@ bind:this={component_instance}
 </Widget>
 ```
 
-Components can be placed in a named slot using the syntax `<Component slot="name" />`.
-In order to place content in a slot without using a wrapper element, you can use the special element `<svelte:fragment>`.
+コンポーネントは、`<Component slot="name" />`という構文を使って、名前付きスロットに入れることができます。
+ラッパー要素を使うことなくスロットに内容を入れるために、特殊な要素`<svelte:fragment>`を使うことができます。
 
 ```sv
 <!-- Widget.svelte -->
@@ -1562,7 +1562,7 @@ In order to place content in a slot without using a wrapper element, you can use
 
 ### `<svelte:fragment>`
 
-The `<svelte:fragment>` element allows you to place content in a [named slot](docs#slot_name) without wrapping it in a container DOM element. This keeps the flow layout of your document intact.
+`<svelte:fragment>`要素によって、コンテナとなるDOM要素でラップすることなく[名前付きスロット](docs#slot_name)に内容を入れることができます。
 
 ```sv
 <!-- Widget.svelte -->
