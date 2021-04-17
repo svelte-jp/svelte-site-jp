@@ -28,7 +28,7 @@ title: Tweened
 </script>
 ```
 
->`svelte/easing` モジュールには [Penner easing equations](https://web.archive.org/web/20190805215728/http://robertpenner.com/easing/) が含まれています、あるいは `p` と `t` の両方が 0 から 1 の間の値を取る独自の `p => t` 関数を指定することもできます。
+> `svelte/easing` モジュールには [Penner easing equations](https://web.archive.org/web/20190805215728/http://robertpenner.com/easing/) が含まれています、あるいは `p` と `t` の両方が 0 から 1 の間の値を取る独自の `p => t` 関数を指定することもできます。
 
 `tweened` で利用可能なオプションの一覧です。
 
