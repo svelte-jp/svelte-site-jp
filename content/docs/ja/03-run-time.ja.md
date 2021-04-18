@@ -904,7 +904,7 @@ const app = new App({
 | `target` | **none** | レンダリング先の `HTMLElement`。このオプションは必須です
 | `anchor` | `null` | `target` の子要素。これのすぐ前にコンポーネントがレンダリングされます
 | `props` | `{}` | コンポーネントに渡すプロパティのオブジェクト
-| `context` | `new Map()` | A `Map` of root-level context key-value pairs to supply to the component
+| `context` | `new Map()` | コンポーネントに提供するルートレベルのコンテキストのキーと値のペアの `Map`
 | `hydrate` | `false` | 下記参照
 | `intro` | `false` | `true` なら、その後の状態変化を待つのではなく、初回レンダリング時にトランジションを再生します。
 
@@ -1085,18 +1085,18 @@ const { head, html, css } = App.render({
 
 ---
 
-The `.render()` method accepts the following parameters:
+`.render()` メソッドは以下のパラメータを受け付けます:
 
-| parameter | default | description |
+| オプション | デフォルト | 説明 |
 | --- | --- | --- |
-| `props` | `{}` | An object of properties to supply to the component
-| `options` | `{}` | An object of options
+| `props` | `{}` | 	コンポーネントに渡すプロパティのオブジェクト
+| `options` | `{}` | オプションのオブジェクト
 
-The `options` object takes in the following options:
+`options` オブジェクトは、以下のオプションを取ります:
 
-| option | default | description |
+| オプション | デフォルト | 説明 |
 | --- | --- | --- |
-| `context` | `new Map()` | A `Map` of root-level context key-value pairs to supply to the component
+| `context` | `new Map()` | コンポーネントに提供するルートレベルのコンテキストのキーと値のペアの `Map`
 
 ```js
 const { head, html, css } = App.render(
