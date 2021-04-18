@@ -25,8 +25,7 @@ title: <svelte:fragment>
 
 しかしながら、footer のコンテンツは新たなフローレイアウトを生成した div 要素でラップされているため、このリズムに沿った配置がされていません。
 
-これは `App` コンポーネントの `<div slot="footer">` を書き換えることで解決できます。
-この `<div>` を `<svelte:fragment>` に書き換えます。
+これは `App` コンポーネントの `<div slot="footer">` を書き換えることで解決できます。この `<div>` を `<svelte:fragment>` に書き換えます。
 
 ```sv
 <svelte:fragment slot="footer">
