@@ -665,7 +665,7 @@ bind:property={variable}
 * `currentTime` — 動画の現在の再生時間、秒単位です。
 * `playbackRate` — どれぐらい早く、または遅く動画を再生するか、1 が '通常値' です。
 * `paused` — これは自明のはずです。
-* `volume` — 値は 0 から 1 の間です。
+* `volume` — 0 から 1 の間の値です。
 * `muted` — Booleanの値で、`true` はミュートになります。
 
 動画にはさらに、`videoWidth` と `videoHeight` という読み取り専用のバインディングがあります。
