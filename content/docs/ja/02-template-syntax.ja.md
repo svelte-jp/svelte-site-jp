@@ -177,7 +177,7 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US
 
 ---
 
-条件付きでレンダリングされるコンテンツは、if ブロックでラップできます。
+条件付きでレンダリングされるコンテンツは、if ブロックで囲むことができます。
 
 ```sv
 {#if answer === 42}
