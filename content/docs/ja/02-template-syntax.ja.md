@@ -122,7 +122,7 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US
 ```
 
 
-> `input` 要素やその子要素である `option` 要素の `value` 属性は、`bind:group` や `bind:checked` を使用している場合、スプレッド属性で設定してはいけません。Svelte はこのような場合、要素の `value` をマークアップで直接見ることができるようにして、バインドされた変数にリンクさせる必要があります。
+> `input` 要素やその子要素である `option` 要素の `value` 属性は、`bind:group` や `bind:checked` を使用している場合、スプレッド属性で設定してはいけません。このような場合、バインドされる変数にリンクできるように、Svelteがその要素の`value`をマークアップの中で直接見ることができる必要があります。
 
 ---
 
