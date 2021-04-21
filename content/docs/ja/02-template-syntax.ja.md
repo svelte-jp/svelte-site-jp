@@ -58,7 +58,7 @@ HTMLのように、値は引用符で囲まれていない場合があります�
 
 ---
 
-Boolean な属性は、その値が [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) であれば要素に含まれ、[falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) であれば除外されます。
+Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) であれば要素に含まれ、[falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy) であれば除外されます。
 
 それ以外の属性は、その値が [nullish](https://developer.mozilla.org/en-US/docs/Glossary/Nullish) (`null` または `undefined`) でない限り含まれます。
 
