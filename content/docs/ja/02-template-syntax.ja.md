@@ -641,7 +641,7 @@ bind:property={variable}
 
 ---
 
-`contenteditable` 属性をもつ要素は `innerHTML` と `textContent` のバインディングをサポートします。
+`contenteditable` 属性を持つ要素は `innerHTML` と `textContent` のバインディングをサポートします。
 
 ```sv
 <div contenteditable="true" bind:innerHTML={html}></div>
