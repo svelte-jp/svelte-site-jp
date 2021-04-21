@@ -585,7 +585,7 @@ bind:property={variable}
 
 ---
 
-`type="file"` のついた `<input>` 要素では、[選択ファイルの `FileList`](https://developer.mozilla.org/en-US/docs/Web/API/FileList) を取得するために `bind:files` を使用できます。
+`type="file"` である `<input>` 要素では、[選択ファイルの `FileList`](https://developer.mozilla.org/en-US/docs/Web/API/FileList) を取得するために `bind:files` を使用できます。
 
 ```sv
 <label for="avatar">Upload a picture:</label>
