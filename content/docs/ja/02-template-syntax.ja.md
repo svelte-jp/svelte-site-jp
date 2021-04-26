@@ -1261,7 +1261,7 @@ bind:this={component_instance}
 
 コンポーネントは `bind:this` もサポートしており、これを用いることでコンポーネントのインスタンスをプログラムで操作できるようになります。
 
-> 注意 ボタンが最初にレンダリングされた際 `cart` は `undefined` となりエラーを投げるため、`{cart.empty}` は実行できません。
+> ボタンが最初にレンダリングされるときには `cart` が `undefined` であり、エラーを投げるので`{cart.empty}`を実行できないことに注意してください。
 
 ```sv
 <ShoppingCart bind:this={cart}/>
