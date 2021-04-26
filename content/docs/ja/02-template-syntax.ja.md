@@ -1222,7 +1222,7 @@ on:eventname={handler}
 
 ---
 
-コンポーネントは [createEventDispatcher](docs#createEventDispatcher) を用いるか、または DOM イベントをフォワーディングすることでイベントを発火することができます。コンポーネントのイベントをリッスンすることは、DOM イベントをリッスンすることと同義です:
+コンポーネントは [createEventDispatcher](docs#createEventDispatcher) を用いるか、または DOM イベントをフォワードすることでイベントを発火することができます。コンポーネントのイベントをリッスンすることは、DOM イベントをリッスンすることと同義です:
 
 ```sv
 <SomeComponent on:whatever={handler}/>
