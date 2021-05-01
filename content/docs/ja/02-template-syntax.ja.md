@@ -1222,7 +1222,7 @@ on:eventname={handler}
 
 ---
 
-コンポーネントは [createEventDispatcher](docs#createEventDispatcher) を用いるか、または DOM イベントをフォワーディングすることでイベントを発火することができます。コンポーネントのイベントをリッスンすることは、DOM イベントをリッスンすることと同義です:
+コンポーネントは [createEventDispatcher](docs#createEventDispatcher) を用いるか、または DOM イベントをフォワードすることでイベントを発火することができます。コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
 
 ```sv
 <SomeComponent on:whatever={handler}/>
@@ -1259,9 +1259,9 @@ bind:this={component_instance}
 
 ---
 
-またコンポーネントは `bind:this` をサポートしており、これを用いることでコンポーネントのインスタンスをプログラムで操作できるようになります。
+コンポーネントは `bind:this` もサポートしており、これを用いることでコンポーネントのインスタンスをプログラムで操作できるようになります。
 
-> 注意 ボタンが最初にレンダリングされた際 `cart` は `undefined` となりエラーを投げるため、`{cart.empty}` は実行できません。
+> ボタンが最初にレンダリングされるときには `cart` が `undefined` であり、エラーを投げるので`{cart.empty}`を実行できないことに注意してください。
 
 ```sv
 <ShoppingCart bind:this={cart}/>
