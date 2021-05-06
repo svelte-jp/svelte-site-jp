@@ -1530,7 +1530,7 @@ bind:this={component_instance}
 
 ---
 
-この要素は `document.head` に要素を挿入します。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
+この要素を使うと、 `document.head` に要素を挿入することができます。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
 
 ```sv
 <svelte:head>
