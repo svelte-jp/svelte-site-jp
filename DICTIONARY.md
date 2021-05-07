@@ -55,7 +55,7 @@ handler|ハンドラ|長音(ー)を省略する。
 import|インポート|但し`import`キーワードそのものを指している場合は`import`。
 listen|リッスン|「リスン」としない。Vueでは「リッスン」が使用され、MDNでも「リッスン」のほうが多く使用されているため。
 mount|マウント|
-promise|promise|
+promise|promise|JavaScript の Promise API を指している場合は、そのまま使用する、`resolve`,`reject` も同様
 prop/props|prop/props|英語のままで統一する。「プロップ」「プロップス」としない。
 property/properties|プロパティ|文脈に応じて使い分ける。
 reactive|リアクティブ|「反応的」「反応する」ではなく、「リアクティブである」「リアクティブになる」など
