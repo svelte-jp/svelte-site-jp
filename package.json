@@ -9,7 +9,7 @@
     "build": "npm run copy-workers && sapper build --legacy",
     "update": "node scripts/update_template.js && node scripts/get-contributors.js && node scripts/update_whos_using.js",
     "start": "node __sapper__/build",
-    "lint": "node -e \"var shell=require('shelljs');var files=shell.find(['./CONTRIBUTING.md','./content/tutorial/**/*.ja.md']).join(' ');if(shell.exec('textlint -f pretty-error '+files).code!==0){shell.exit(1)};\"",
+    "lint": "node -e \"var shell=require('shelljs');var files=shell.find(['./CONTRIBUTING.md','./content/**/**/*.ja.md']).join(' ');if(shell.exec('textlint -f pretty-error '+files).code!==0){shell.exit(1)};\"",
     "test": "mocha -r esm test/**",
     "deploy": "make deploy"
   },
