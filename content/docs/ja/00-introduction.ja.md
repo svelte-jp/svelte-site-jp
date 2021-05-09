@@ -8,6 +8,6 @@ title: 始める前に
 
 恥ずかしがらずに[Discord chatroom](chat)で助けを求めましょう。
 
-古いバージョンのSvelteをお使いですか? [v2 docs](https://v2.svelte.dev)をご覧ください。
+古いバージョンのSvelteをお使いですか？ [v2 docs](https://v2.svelte.dev)をご覧ください。
 
 > 日本語翻訳版 追記：上記のDiscordはSvelte本体のもので、英語でコミュニケーションが行われています。もし日本語で質問したり交流したいのであれば、Svelte日本のDiscordにどうぞ！
