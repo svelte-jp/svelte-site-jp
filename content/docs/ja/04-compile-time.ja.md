@@ -98,7 +98,7 @@ const {
 } = svelte.compile(source);
 ```
 
-* `js` と `css` は以下のプロパティを持つオブジェクトである。
+* `js` と `css` は以下のプロパティを持つオブジェクトです。
 	* `code` は JavaScript の文字列です。
 	* `map` はソースマップに `toString()` と `toUrl()` の便利なメソッドを追加したものです。
 * `ast` はコンポーネントの構造を表す抽象構文ツリーです。
@@ -243,7 +243,7 @@ const { code } = await svelte.preprocess(source, {
 
 関数 `script` と `style` はそれぞれ `<script>` と `<style>` 要素の内容を受け取ります。これらの関数は `filename` に加えて要素の属性のオブジェクトを取得します。
 
-`依存関係`の配列が返された場合、それが結果オブジェクトに含まれます。これは（例えば） [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなパッケージで、`<style>` タグに `@import` がある場合などに、追加ファイルの変更を監視するために使われます。
+`依存関係`の配列が返された場合、それが結果オブジェクトに含まれます。これは（例えば）[rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなパッケージで、`<style>` タグに `@import` がある場合などに、追加ファイルの変更を監視するために使われます。
 
 ```js
 const svelte = require('svelte/compiler');

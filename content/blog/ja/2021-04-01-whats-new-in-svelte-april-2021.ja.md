@@ -12,13 +12,13 @@ authorURL: https://desandoval.net
 > - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
 > - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-数ヶ月(数年)かけて進めてきた2つのプロジェクトが公開されました。SvelteKitは現在パブリックベータとなり、slotted components はSvelteで使えるようになりました!
+数ヶ月(数年)かけて進めてきた2つのプロジェクトが公開されました。SvelteKitは現在パブリックベータとなり、slotted components はSvelteで使えるようになりました！
 
-## SvelteKitはどう?(What's up with SvelteKit?)
-[SvelteKit](https://kit.svelte.dev/) - SSR、サーバーレスアプリケーション、SPAなどを構築するためのSvelteの汎用的なフレームワーク - が正式にパブリックベータになりました。バグがあるかも! 詳細は[最新のブログ記事](https://svelte.dev/blog/sveltekit-beta)をご覧ください。1.0がいつリリースされるか知りたいですか? [github](https://github.com/sveltejs/kit/milestone/2)のマイルストーンをチェックしてみてください。
+## SvelteKitはどう？(What's up with SvelteKit?)
+[SvelteKit](https://kit.svelte.dev/) - SSR、サーバーレスアプリケーション、SPAなどを構築するためのSvelteの汎用的なフレームワーク - が正式にパブリックベータになりました。バグがあるかも！　詳細は[最新のブログ記事](https://svelte.dev/blog/sveltekit-beta)をご覧ください。1.0がいつリリースされるか知りたいですか？ [github](https://github.com/sveltejs/kit/milestone/2)のマイルストーンをチェックしてみてください。
 > 訳注 : `最新のブログ記事`の日本語翻訳版は[こちら](https://sveltejp.dev/blog/sveltekit-beta)です。
 
-始め方、Sapperとの違い、新しい機能や移行方法を学びたいですか? 今週の[Svelte Radioのエピソード](https://www.svelteradio.com/episodes/svelte-kit-public-beta)で、AntonyとKevとSwyxが深く掘り下げているのでチェックしてみてください。
+始め方、Sapperとの違い、新しい機能や移行方法を学びたいですか？　今週の[Svelte Radioのエピソード](https://www.svelteradio.com/episodes/svelte-kit-public-beta)で、AntonyとKevとSwyxが深く掘り下げているのでチェックしてみてください。
 
 ## SvelteとLanguageツールの新着情報(New in Svelte & Language Tools)
 - Slotted components (`<svelte:fragment slot="...">`を含む) を使用すると、コンポーネントの利用者が特定のスロットにリッチなコンテンツを割り当てることができます (**Svelte 3.35.0, Language Tools [104.5.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-104.5.0)**, [docs](https://svelte.dev/docs#svelte_fragment) と [tutorial](https://svelte.dev/tutorial/svelte-fragment) をチェックしてみてください)
@@ -41,7 +41,7 @@ authorURL: https://desandoval.net
 - [foxql](https://github.com/foxql) はブラウザ上で動作するピアツーピアの全文検索エンジンです。
 
 
-**デモ, ライブラリ, ツール & コンポーネント**
+**デモ、ライブラリ、ツール & コンポーネント**
 
 - [svelte-nodegui](https://github.com/nodegui/svelte-nodegui) はパフォーマンスの良いネイティブでクロスプラットフォームなデスクトップアプリケーションをNode.jsとSvelteで構築する方法です。
 - [Svelte Story Format](https://www.npmjs.com/package/@storybook/addon-svelte-csf) は、Svelteの構文でStorybookの "ストーリー(stories)" を書くことができます。詳しくは [Storybook blog](https://storybook.js.org/blog/storybook-for-svelte/) をご覧ください。
@@ -52,7 +52,7 @@ authorURL: https://desandoval.net
 - [svelte-formly](https://github.com/arabdevelop/svelte-formly) はSvelteとSapper向けに動的なフォームを生成します。
 - [7ty](https://www.npmjs.com/package/@jamcart/7ty) はSvelteを使用した静的サイトジェネレーターで、コンポーネントの部分的なハイドレーションをサポートし、Sapperや11tyに似たファイルベースルーティングを使用します。
 
-**自分のコンポーネントを投稿してみたいですか?** [このファイルに対するPR](https://github.com/svelte-society/sveltesociety.dev/blob/master/src/pages/components/components.json) を作成し、[コンポーネント](https://sveltesociety.dev/components) を Svelte Society site に提出してください。
+**自分のコンポーネントを投稿してみたいですか？** [このファイルに対するPR](https://github.com/svelte-society/sveltesociety.dev/blob/master/src/pages/components/components.json) を作成し、[コンポーネント](https://sveltesociety.dev/components) を Svelte Society site に提出してください。
 
 
 **スターター(Starters)**
@@ -62,7 +62,7 @@ authorURL: https://desandoval.net
 - [Sapper Netlify](https://www.npmjs.com/package/sapper-netlify) は Netlify functions 上で動作するSapper Projectです。
 
 
-**特定のスターターをお探しですか?** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、インテグレーション例を [sveltejs/integrations](https://github.com/sveltejs/integrations) からチェックしてみてください。
+**特定のスターターをお探しですか？** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、インテグレーション例を [sveltejs/integrations](https://github.com/sveltejs/integrations) からチェックしてみてください。
 
 **学習リソース**
 - [How to Build a Website with Svelte and SvelteKit](https://prismic.io/blog/svelte-sveltekit-tutorial) は新しいSvelteKitのセットアップを順を追って説明するチュートリアルです。
@@ -76,6 +76,6 @@ authorURL: https://desandoval.net
 - [Creating Social Sharing Images with Cloudinary and Svelte](https://www.youtube.com/watch?v=-Si5o-R7KHY) はJAMstackのWebサイト向けのOpen GraphのイメージやTwitterカードを動的に開発する方法を説明するCloudinaryのビデオです。
 
 
-## また来月お会いしましょう!(See you next month!)
+## また来月お会いしましょう！(See you next month!)
 
-なにかご意見がありますか? [Svelte Society](https://sveltesociety.dev/)、[Reddit](https://www.reddit.com/r/sveltejs/)、[Discord](https://discord.com/invite/yy75DKs)にジョインしてください!
+なにかご意見がありますか？ [Svelte Society](https://sveltesociety.dev/)、[Reddit](https://www.reddit.com/r/sveltejs/)、[Discord](https://discord.com/invite/yy75DKs)にジョインしてください！

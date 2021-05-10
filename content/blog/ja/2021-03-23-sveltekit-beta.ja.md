@@ -14,7 +14,7 @@ authorURL: https://twitter.com/rich_harris
 
 <aside><p>前回: <a href="/blog/whats-the-deal-with-sveltekit">What's the deal with SvelteKit?</a></p></aside>
 
-お待たせしました。5ヶ月という期間、何百ものコミットを経て、ついにSvelteKitのベータ版をお試し頂けるようになりました。まだ完成はしていません — いくつか既知のバグや、不足している機能がありますが — 私たちは出来栄えにとても満足しており、皆様に試して頂くのが待ちきれません。
+お待たせしました。5か月という期間、何百ものコミットを経て、ついにSvelteKitのベータ版をお試し頂けるようになりました。まだ完成はしていません — いくつか既知のバグや、不足している機能がありますが — 私たちは出来栄えにとても満足しており、皆様に試して頂くのが待ちきれません。
 
 新しいプロジェクトの開始は簡単です:
 
@@ -57,7 +57,7 @@ Vite は Snowpack と同じカテゴリーに属します。Vite 1 はVue中心 
 
 SvelteKit はまだベータ版ですが、プロダクションで使われていないわけではありません。
 
-私の本業は New York Times で、過去12ヶ月のほとんどを [coronavirus tracker](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) の開発に費やしてきました。これは Times のグラフィックの大半を担うワークフローのカスタマイズバージョンを使用していますが、大規模な複数ページのプロジェクト向けには設計されていません。昨年末、アメリカの~3,000もの郡ごとにページを作成することを決めたとき、プロジェクトを完全に再構築する必要があると気付きました。
+私の本業は New York Times で、過去12か月のほとんどを [coronavirus tracker](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) の開発に費やしてきました。これは Times のグラフィックの大半を担うワークフローのカスタマイズバージョンを使用していますが、大規模な複数ページのプロジェクト向けには設計されていません。昨年末、アメリカの~3,000もの郡ごとにページを作成することを決めたとき、プロジェクトを完全に再構築する必要があると気付きました。
 
 SvelteKitは、まだ完成していないにもかかわらず、私たちの難解な要件にマッチする唯一のフレームワークでした(ニュースルームで働き、CMSと格闘したことが有る人なら、私が言っていることがわかると思います)。現在では、[county risk pages](https://www.nytimes.com/interactive/2021/us/tom-green-texas-covid-cases.html) にも使用されており、既存のページをSvelteKitアプリに移行しているところです。
 
