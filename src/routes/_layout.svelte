@@ -61,7 +61,7 @@
 		<NavItem segment="blog">Blog</NavItem>
 		<NavItem segment="faq">FAQ</NavItem>
 
-		<NavItem external="https://sapper.svelte.dev">Sapper</NavItem>
+		<NavItem external="https://kit.svelte.dev">SvelteKit</NavItem>
 
 		<NavItem external="https://github.com/sveltejs/svelte" title="GitHub Repo">
 			<Icon name="github"/>
