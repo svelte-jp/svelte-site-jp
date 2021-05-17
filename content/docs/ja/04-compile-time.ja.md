@@ -174,6 +174,7 @@ ast: object = svelte.parse(
 
 `parse` 関数はコンポーネントを解析し、その抽象構文木のみを返します。`generate: false` オプションを指定してコンパイルするのとは異なり、これはコンポーネントを解析する以外の検証やその他の解析を行いません。
 
+
 ```js
 const svelte = require('svelte/compiler');
 
@@ -198,11 +199,11 @@ result: {
 			code: string,
 			dependencies?: Array<string>
 		}>,
-		script?: (input: { content: string, attributes: Record<string, string>, filename: string }) => Promise<{
+		script?: (input: { content: string, markup: string, attributes: Record<string, string>, filename: string }) => Promise<{
 			code: string,
 			dependencies?: Array<string>
 		}>,
-		style?: (input: { content: string, attributes: Record<string, string>, filename: string }) => Promise<{
+		style?: (input: { content: string, markup: string, attributes: Record<string, string>, filename: string }) => Promise<{
 			code: string,
 			dependencies?: Array<string>
 		}>
@@ -241,7 +242,7 @@ const { code } = await svelte.preprocess(source, {
 
 ---
 
-関数 `script` と `style` はそれぞれ `<script>` と `<style>` 要素の内容を受け取ります。これらの関数は `filename` に加えて要素の属性のオブジェクトを取得します。
+`script`関数と`style`関数はそれぞれ `<script>` と `<style>` 要素の内容(`content`)とコンポーネントのソーステキスト全体(`markup`)を受け取ります。これらの関数は `filename` に加えて要素の属性のオブジェクトを取得します。
 
 `依存関係`の配列が返された場合、それが結果オブジェクトに含まれます。これは（例えば）[rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなパッケージで、`<style>` タグに `@import` がある場合などに、追加ファイルの変更を監視するために使われます。
 
