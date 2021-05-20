@@ -791,7 +791,7 @@ SVG 要素のストロークを蛇が管の中を進むようにアニメーシ�
 animate:flip={params}
 ```
 
-`flip` 関数は要素の開始位置と終了位置を計算し、その間で `x` と `y` の値を変換してアニメーションを行います。`flip` は [First, Last, Invert, Play] の略です(https://aerotwist.com/blog/flip-your-animations/)。
+`flip` 関数は要素の開始位置と終了位置を計算し、その間で `x` と `y` の値を変換してアニメーションを行います。`flip` は [First, Last, Invert, Play](https://aerotwist.com/blog/flip-your-animations/) の略です。
 
 `flip` は以下のパラメータを受け付けます。
 
