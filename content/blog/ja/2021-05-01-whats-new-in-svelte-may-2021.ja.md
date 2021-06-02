@@ -5,7 +5,7 @@ author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
 
-先週、Svelte Summitの大量のコンテンツにとても感激しました! [フルレコーディングをご覧いただけますし](https://www.youtube.com/watch?v=fnr9XWvjJHw)、音声のみの(プ)レビューを[Svelte Radio](https://www.svelteradio.com/episodes/svelte-summit-party-episode)でお聞きいただけます。それでは今月のニュースに参りましょう…
+先週、Svelte Summitの大量のコンテンツにとても感激しました！ [フルレコーディングをご覧いただけますし](https://www.youtube.com/watch?v=fnr9XWvjJHw)、音声のみの(プ)レビューを[Svelte Radio](https://www.svelteradio.com/episodes/svelte-summit-party-episode)でお聞きいただけます。それでは今月のニュースに参りましょう…
 
 ## New features in the Svelte Compiler
 - `:global()` が合成CSSセレクター(compound CSS selectors)の一部としてサポートされました (**3.38.0**, [Example](https://svelte.dev/repl/54148fd2af484f2c84977c94e523c7c5?version=3.38.0))
