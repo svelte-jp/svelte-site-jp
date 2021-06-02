@@ -393,7 +393,7 @@ key ブロックは式の値が変更されたときに、その中身を破棄�
 
 テキスト式（`{式}` の構文）では、 `<` や `>` のような文字はエスケープされますが、HTML 式ではエスケープされません。
 
-式は単独で正しい HTML になっている必要があります。`{@html "<div>"}content{@html "</div>"}` は `</div>` の部分が正しい HTML ではないため、動作*しません*。
+式は単独で正しい HTML になっている必要があります。`{@html "<div>"}content{@html "</div>"}` は `</div>` の部分が正しい HTML ではないため、動作*しません*。また、Svelteコードをコンパイルすることもできません。
 
 > Svelte は HTML を挿入する前に式をサニタイズしません。データが信頼できないソースからのものである場合は自分でサニタイズする必要があります。そうしないと、ユーザーを XSS の脆弱性にさらしてしまいます。
 
@@ -585,7 +585,7 @@ bind:property={variable}
 
 ---
 
-`type="file"` である `<input>` 要素では、[選択ファイルの `FileList`](https://developer.mozilla.org/en-US/docs/Web/API/FileList) を取得するために `bind:files` を使用できます。
+`type="file"` である `<input>` 要素では、[選択ファイルの `FileList`](https://developer.mozilla.org/en-US/docs/Web/API/FileList) を取得するために `bind:files` を使用できます。これは読み取り専用です。
 
 ```sv
 <label for="avatar">Upload a picture:</label>
@@ -1376,7 +1376,7 @@ bind:this={component_instance}
 </Card>
 ```
 
-#### [`<slot let:`*name*`={`*value*`}>`](slot_let)
+#### [`<slot key={`*value*`}>`](slot_let)
 
 ---
 
@@ -1475,6 +1475,8 @@ bind:this={component_instance}
 
 `<svelte:window>` 要素を使うと、コンポーネントが破棄されたときにイベントリスナを削除したり、サーバサイドでレンダリングするときに `window` が存在するかどうかをチェックしたりすることなく、`window` オブジェクトにイベントリスナを追加することができます。
 
+`<svelte:self>`とは逆に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
+
 ```sv
 <script>
 	function handleKeydown(event) {
@@ -1512,7 +1514,7 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。
+`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、コンポーネントのトップレベルに表示する必要があります。
 
 ```sv
 <svelte:body
@@ -1531,6 +1533,8 @@ bind:this={component_instance}
 ---
 
 この要素を使うと、 `document.head` に要素を挿入することができます。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
+
+`<svelte:window>` や `<svelte:head>` と同様に、この要素はコンポーネントのトップレベルに表示する必要があり、ブロックや他の要素の中に置くことはできません。
 
 ```sv
 <svelte:head>

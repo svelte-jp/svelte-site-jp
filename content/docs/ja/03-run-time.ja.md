@@ -245,10 +245,10 @@ dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
 #### `writable`
 
 ```js
-store = writable(value: any)
+store = writable(value?: any)
 ```
 ```js
-store = writable(value: any, (set: (value: any) => void) => () => void)
+store = writable(value?: any, start?: (set: (value: any) => void) => () => void)
 ```
 
 ---
@@ -297,14 +297,12 @@ unsubscribe(); // logs 'no more subscribers'
 #### `readable`
 
 ```js
-store = readable(value: any, (set: (value: any) => void) => () => void)
+store = readable(value?: any, start?: (set: (value: any) => void) => () => void)
 ```
 
 ---
 
-「外側」から値を設定できないストアを作成します。第1引数はストアの初期値です。
-
-`readable` の第2引数は、必須であることを除いて `writable` の第2引数と同じです（仮に必須でないとすると、ストア値を更新する方法がなくなってしまうため）。
+「外側」から値を設定できないストアを作成します。第1引数はストアの初期値です。`readable` の第2引数は `writable` の第2引数と同じです。
 
 ```js
 import { readable } from 'svelte/store';

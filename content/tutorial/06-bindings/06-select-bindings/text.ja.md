@@ -2,7 +2,7 @@
 title: Select bindings
 ---
 
-`<select>`要素にも`bind:value`を使用できます。24行目を更新してください。
+`<select>`要素にも`bind:value`を使用できます。20行目を更新してください。
 
 ```html
 <select bind:value={selected} on:change="{() => answer = ''}">
