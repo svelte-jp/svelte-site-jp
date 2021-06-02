@@ -180,6 +180,13 @@ Fork元にPull Requestを提出してください。Pull Requestのコメント�
 例えば翻訳で不自然なところがあれば「〇〇の翻訳が不自然です」だけでもいいですし、良い言い回しや正しい翻訳があれば「{良い言い回し・正しい翻訳}ではどうですか」くらいで構いません。
 
 
+## その他
+
+- Svelte本体の変更は大体月に1度のペースで日本語サイトにも反映を行います。これは、Svelte本体のサイトが大体月に1度(月初、毎月のNewsletterが入るタイミング)で更新されるためです。
+  Svelte本体のサイトに緊急で更新がある場合はなるべくそれに追従したいと考えています。
+  - 反映の方法は Wikiの [How to fork from Svelte site, and How to follow Svelte site](https://github.com/svelte-jp/svelte-site-jp/wiki/How-to-fork-from-Svelte-site,-and-How-to-follow-Svelte-site) に記載しています。
+
+
 ## 備考
 
 翻訳の進め方やCONTRIBUTING.mdに記載する内容などは、各フロントエンドフレームワーク及びライブラリの日本語化プロジェクトである、[angular/angular-ja](https://github.com/angular/angular-ja)、[vuejs
