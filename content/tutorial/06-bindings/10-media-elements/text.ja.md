@@ -4,7 +4,7 @@ title: Media elements
 
 `<audio>` と `<video>` 要素にはいくつかバインドできるプロパティがあります。この例では、その内のいくつかをお見せします。
 
-116 行目に `currentTime={time}`、`duration`、`paused` プロパティを追加しバインドします:
+58 行目に `currentTime={time}`、`duration`、`paused` プロパティを追加しバインドします:
 
 ```html
 <video

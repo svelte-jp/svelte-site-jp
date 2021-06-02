@@ -2,9 +2,17 @@
 title: 自動サブスクリプション
 ---
 
-前の例でアプリは動きましたが、微妙なバグがあります。`unsubscribe` 関数が決して呼び出されません。仮に、コンポーネントが何度もインスタンス化および破棄されるなら、*メモリリーク* が発生することになるでしょう。
+前の例でアプリは動きましたが、微妙なバグがあります。ストアはサブスクライブされますが、決してアンサブスクライブされません。仮に、コンポーネントが何度もインスタンス化および破棄されるなら、*メモリリーク* が発生することになるでしょう。
 
-これを修正する1つの方法は、`onDestroy` [ライフサイクルフック](tutorial/ondestroy)を使うことです。
+まず、`App.svelte` で `unsubscribe` を宣言します。
+
+```js
+const unsubscribe = count.subscribe(value => {
+	count_value = value;
+});
+```
+
+`unsubscribe` が宣言されましたが、さらに、例えば `onDestroy` [lifecycle hook](tutorial/ondestroy) などで呼び出される必要があります。
 
 ```html
 <script>
