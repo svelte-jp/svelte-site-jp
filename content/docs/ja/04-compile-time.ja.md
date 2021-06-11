@@ -70,7 +70,7 @@ const result = svelte.compile(source, {
 | `immutable` | `false` | `true` の場合、オブジェクトを変更させないことをコンパイラに伝えます。これにより、値が変更されたかどうかのチェックをより控えめにすることができます。
 | `hydratable` | `false` | `true` を指定すると、DOMコードを生成する際に `hydrate: true` ランタイムオプションが有効になり、新しいDOMをゼロから生成するのではなく、既存のDOMをアップグレードすることができます。これにより、SSRコードを生成する際に `<head>` 要素にマーカーが追加され、ハイドレーションがどれを置き換えるべきかを知ることができるようになります。
 | `legacy` | `false` | `true` ならば、`element.dataset` のようなものをサポートしていないIE9とIE10で動作するコードを生成します。
-| `accessors` | `false` | `true` の場合、ゲッターとセッターはコンポーネントの props に対して作成されます。`false` の場合、それらは読み書きされた値に対してのみ作成されます。 (つまり`const`, `class`, `function` で宣言されたもの) `customElement: true` でコンパイルした場合、このオプションのデフォルトは `true` です。
+| `accessors` | `false` | `true` の場合、ゲッターとセッターはコンポーネントのプロパティ(props)に対して作成されます。`false` の場合、それらは読み書きされた値に対してのみ作成されます。 (つまり`const`, `class`, `function` で宣言されたもの) `customElement: true` でコンパイルした場合、このオプションのデフォルトは `true` です。
 | `customElement` | `false` | `true` ならば、コンパイラに通常のSvelteコンポーネントの代わりにカスタム要素のコンストラクタを生成するように指示します。
 | `tag` | `null` | Svelteにカスタム要素を登録するタグ名を指定する `string`。文字列は小文字の英数字で、少なくとも1つのハイフンを含んだ文字列でなければなりません。例えば `"my-element"`.
 | `css` | `true` | `true` の場合、スタイルはJavaScriptクラスに含まれ、実行時に注入されます。これを `false` に設定して静的に生成されたCSSを使うと、JavaScriptのバンドルが小さくなり、パフォーマンスが向上するのでおすすめです。
