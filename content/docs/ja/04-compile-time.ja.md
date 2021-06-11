@@ -12,7 +12,7 @@ title: Compile time
 
 
 
-### `svelte.compile
+### `svelte.compile`
 
 ```js
 result: {
