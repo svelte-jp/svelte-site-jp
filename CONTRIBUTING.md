@@ -14,8 +14,8 @@ Svelte公式のCONTRIBUTING.mdはこちらです、是非ご一読ください�
 
 Svelte Site JPに貢献する方法はたくさんあり、その多くはコードを書く必要もなければ、いきなり翻訳する必要もありません。
 
-- [日本語化されたドキュメントサイト](https://svelte-jp.herokuapp.com/)を使ってみてください。気になるところや改善点があれば[Issueを開いて](#issueを作成する)お知らせください。
-- 翻訳で貢献されたい場合は[翻訳作業について](#翻訳作業について)をチェックしてみてください。翻訳にはみなさんの協力が必要です。完璧な翻訳は望んでいません。誤訳があっても誤字・脱字があっても単語が統一できていなくても構いません、後からみんなで良くしていければと考えています。
+- 日本語ドキュメントサイト(https://sveltejp.dev/)を使ってみてください。気になるところや改善点があれば[Issueを開いて](#issueを作成する)お知らせください。
+- 翻訳で貢献されたい場合は[翻訳作業について](#翻訳作業について)をチェックしてみてください。翻訳にはみなさんの協力が必要です。誤訳があっても誤字・脱字があっても単語が統一できていなくても構いません、後からみんなで良くしていければと考えています。
 
 貢献は大歓迎です！もし貢献を迷っていたり、貢献に助けが必要であれば[Svelte日本のDiscord](https://discord.com/invite/YTXq3ZtBbx)で知らせてください。
 
@@ -222,8 +222,7 @@ PRに間違いや誤字・脱字、ガイドライン違反があっても大丈
 
 ## 備考
 
-翻訳の進め方やCONTRIBUTING.mdに記載する内容などは、各フロントエンドフレームワーク及びライブラリの日本語化プロジェクトである、[angular/angular-ja](https://github.com/angular/angular-ja)、[vuejs
-/jp.vuejs.org](https://github.com/vuejs/jp.vuejs.org), [reactjs/ja.reactjs.org](https://github.com/reactjs/ja.reactjs.org)を参考にさせて頂きました。
+翻訳の進め方やCONTRIBUTING.mdに記載する内容などは、各フロントエンドフレームワーク及びライブラリの日本語化プロジェクトである、[angular/angular-ja](https://github.com/angular/angular-ja)、[vuejs/jp.vuejs.org](https://github.com/vuejs/jp.vuejs.org), [reactjs/ja.reactjs.org](https://github.com/reactjs/ja.reactjs.org)を参考にさせて頂きました。
 
 
 ## ライセンス
