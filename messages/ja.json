@@ -1,84 +1,82 @@
 {
-    "languages": {
-        "en": "English",
-        "en-US": "English",
-        "en-us": "English",
-        "ja": "日本語",
-        "ja-JP": "日本語",
-        "ja-jp": "日本語"
-    },
-    "direction": "ltr",
-    "attention": {
-        "1": "このサイトはSvelte日本コミュニティによるSvelteの日本語サイトです",
-        "2": "（リポジトリは",
-        "3_link": "こちら",
-        "4": "）。",
-        "5": "記載されている内容は古くなっているか、または誤りがある可能性がございます。",
-        "6": "公式サイトをお探しの場合は",
-        "7_link": "svelte.dev",
-        "8": "へどうぞ。"
-    },
-    "title": "Svelte • サイバネティクスで強化されたWebアプリ",
-    "description": "サイバネティクスで強化されたWebアプリ",
-    "tagline": "サイバネティクスで強化されたWebアプリ",
-    "top": {
-        "blurb": {
-            "one": {
-                "title": "Write less code",
-                "content": "あなたが既に知っている言語（HTML、CSS、JavaScript）で、ボイラープレートのないコンポーネントを作成することができます",
-                "learn-more": "さらに詳しく"
-            },
-            "two": {
-                "title": "No virtual DOM",
-                "content": "Svelteは、あなたのコードをフレームワークが含まれない小さいvanilla JSにコンパイルします - アプリケーションは高速に起動し、そのスピードを維持します",
-                "learn-more": "さらに詳しく"
-            },
-            "three": {
-                "title": "Truly reactive",
-                "content": "もう複雑な状態管理ライブラリは必要ありません - SvelteはJavaScriptそのものにリアクティビティをもたらします",
-                "learn-more": "さらに詳しく"
-            },
-            "what": {
-                "p1": {
-                    "first": "Svelteはユーザーインタフェースを構築する先鋭的で新しいアプローチです。ReactやVueのような従来のフレームワークがその作業の大部分を",
-                    "second_em": "ブラウザー",
-                    "third": "で行うのに対し、Svelteは、その作業をアプリをビルドする際の",
-                    "fourth_em": "コンパイル時",
-                    "fifth": "に行います。"
-                },
-                "p2": "Svelteは、仮想DOMによる差分検出のようなテクニックを使用する代わりに、アプリケーションの状態が変化したときにDOMを外科的に更新するコードを生成します。",
-                "p3": {
-                    "first_link": "もっと詳しく知りたい方はこちらの紹介ブログ記事",
-                    "second": "をご覧ください。"
-                }
-            },
-            "how": {
-                "terminal": {
-                    "dl": {
-                        "first": "または、こちらのzipファイルをダウンロードして解凍してください:",
-                        "link": "zip file"
-                    },
-                    "ts": {
-                        "first": "もし",
-                        "second_link": "TypeScript",
-                        "third": "を使用する場合はこちらを実行してください"
-                    }
-                },
-                "p1": {
-                    "first": "もっと詳しく知りたい方はこちらの",
-                    "second_link": "quickstart guide",
-                    "third": "をご覧ください。"
-                },
-                "learn_link": "Svelteを学ぶ"
-            }
+  "languages": {
+    "en": "English",
+    "en-US": "English",
+    "en-us": "English",
+    "ja": "日本語",
+    "ja-JP": "日本語",
+    "ja-jp": "日本語"
+  },
+  "direction": "ltr",
+  "attention": {
+    "1": "ここはSvelte日本コミュニティによるSvelteの日本語サイトです",
+    "2": "(リポジトリは",
+    "3_link": "こちら",
+    "4": ")。",
+    "5": "公式サイトをお探しの場合は",
+    "6": "へどうぞ。"
+  },
+  "title": "Svelte • サイバネティクスで強化されたWebアプリ",
+  "description": "サイバネティクスで強化されたWebアプリ",
+  "tagline": "サイバネティクスで強化されたWebアプリ",
+  "top": {
+    "blurb": {
+      "one": {
+        "title": "Write less code",
+        "content": "あなたが既に知っている言語（HTML、CSS、JavaScript）で、ボイラープレートのないコンポーネントを作成することができます",
+        "learn-more": "さらに詳しく"
+      },
+      "two": {
+        "title": "No virtual DOM",
+        "content": "Svelteは、あなたのコードをフレームワークが含まれない小さいvanilla JSにコンパイルします - アプリケーションは高速に起動し、そのスピードを維持します",
+        "learn-more": "さらに詳しく"
+      },
+      "three": {
+        "title": "Truly reactive",
+        "content": "もう複雑な状態管理ライブラリは必要ありません - SvelteはJavaScriptそのものにリアクティビティをもたらします",
+        "learn-more": "さらに詳しく"
+      },
+      "what": {
+        "p1": {
+          "first": "Svelteはユーザーインタフェースを構築する先鋭的で新しいアプローチです。ReactやVueのような従来のフレームワークがその作業の大部分を",
+          "second_em": "ブラウザー",
+          "third": "で行うのに対し、Svelteは、その作業をアプリをビルドする際の",
+          "fourth_em": "コンパイル時",
+          "fifth": "に行います。"
+        },
+        "p2": "Svelteは、仮想DOMによる差分検出のようなテクニックを使用する代わりに、アプリケーションの状態が変化したときにDOMを外科的に更新するコードを生成します。",
+        "p3": {
+          "first_link": "もっと詳しく知りたい方はこちらの紹介ブログ記事",
+          "second": "をご覧ください。"
         }
-    },
-    "docs": {
-        "owner": "svelte-jp",
-        "project": "svelte-site-jp",
-        "path": "/content"
-    },
-    "tutorial": {
-        "repo_link": "https://github.com/svelte-jp/svelte-site-jp/tree/master/content/tutorial"
+      },
+      "how": {
+        "terminal": {
+          "dl": {
+            "first": "または、こちらのzipファイルをダウンロードして解凍してください:",
+            "link": "zip file"
+          },
+          "ts": {
+            "first": "もし",
+            "second_link": "TypeScript",
+            "third": "を使用する場合はこちらを実行してください"
+          }
+        },
+        "p1": {
+          "first": "もっと詳しく知りたい方はこちらの",
+          "second_link": "quickstart guide",
+          "third": "をご覧ください。"
+        },
+        "learn_link": "Svelteを学ぶ"
+      }
     }
+  },
+  "docs": {
+    "owner": "svelte-jp",
+    "project": "svelte-site-jp",
+    "path": "/content"
+  },
+  "tutorial": {
+    "repo_link": "https://github.com/svelte-jp/svelte-site-jp/tree/master/content/tutorial"
+  }
 }
