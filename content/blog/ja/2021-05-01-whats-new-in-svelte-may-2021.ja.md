@@ -4,6 +4,14 @@ description: SvelteKit 1.0に向けた取り組みとSvelteKitサイトでいっ
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-may-2021
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
 先週、Svelte Summitの大量のコンテンツにとても感激しました！ [フルレコーディングをご覧いただけますし](https://www.youtube.com/watch?v=fnr9XWvjJHw)、音声のみの(プ)レビューを[Svelte Radio](https://www.svelteradio.com/episodes/svelte-summit-party-episode)でお聞きいただけます。それでは今月のニュースに参りましょう…
 

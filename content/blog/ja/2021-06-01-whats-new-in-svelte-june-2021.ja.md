@@ -4,6 +4,14 @@ description: SvelteKit 1.0に向けた進捗と language tools における Type
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-june-2021
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
 今月は、SvelteKit とそのドキュメントに多くの貢献がありました。language tools にもいくつか新機能が追加され、特に注目すべきは JavaScript または TypeScript ファイルと Svelte ファイルの深い統合です。それではアップデートに参りましょう…
 
