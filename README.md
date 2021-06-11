@@ -1,22 +1,24 @@
 
 # Svelte Site JP
 
-[Svelte](https://github.com/sveltejs/svelte)の公式ページ[svelte.dev](https://svelte.dev/)を日本語に翻訳するプロジェクトです。
+[Svelte](https://github.com/sveltejs/svelte)の公式ドキュメントサイト [svelte.dev](https://svelte.dev/) を日本語に翻訳するプロジェクトです。
+
+**日本語ドキュメントサイトURL : https://sveltejp.dev/**
 
 Svelteは素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。
-
-翻訳はまだまだ進行中ですが、[https://sveltejp.dev/](https://sveltejp.dev/)で閲覧することができます。
-
-進捗は[Milestones](https://github.com/svelte-jp/svelte-site-jp/milestones)で確認できます。
 
 
 ## 貢献(Contribution)について
 
 この翻訳プロジェクトではみなさんの貢献を歓迎しています！
 
+貢献の形は様々で、翻訳はもちろん、誤字・脱字・誤訳の報告、よりよい翻訳文の提案、翻訳してほしいページのリクエスト、その他翻訳だけでなくSvelte Japan Communityを良くするためのご意見なども大歓迎です！
+
 興味がある方は[CONTRIBUTING.md](https://github.com/svelte-jp/svelte-site-jp/blob/master/CONTRIBUTING.md)をご参照ください。
 
-意見や気が付いたことがあれば、お気軽にIssueを作成ください。もしくは[Svelte日本のDiscord](https://discord.com/invite/YTXq3ZtBbx)の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
+ご意見や気が付いたことがあれば、お気軽にIssueを作成して知らせてください。  
+もしくは[Svelte日本のDiscord](https://discord.com/invite/YTXq3ZtBbx)の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
+
 
 ## Running locally
 
