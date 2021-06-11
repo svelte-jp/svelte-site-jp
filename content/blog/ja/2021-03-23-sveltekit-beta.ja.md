@@ -5,10 +5,11 @@ author: Rich Harris
 authorURL: https://twitter.com/rich_harris
 ---
 > 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/sveltekit-beta
 > 
-> 日本語版はオリジナルをよりよく理解するための参考となることを目的としています。  
-> 正確な内容についてはオリジナルである英語版を参照してください。  
-> また、日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。  
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
 > - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
 > - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 

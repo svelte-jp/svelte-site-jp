@@ -132,17 +132,16 @@ npm run dev
 
 ##### 3-1. ブログの翻訳について
 
-ブログ記事は長文になることが多く、オピニオネイテッドな意見もあり、言い回しや誤訳によって誤解を招く可能性があります。  
+ブログ記事は長文になることが多く、opinionatedな意見もあり、言い回しや誤訳によって誤解を招く可能性があります。  
 オリジナルの著者の方にご迷惑をかけるのを防ぐ目的で、翻訳された文書であることを特に強調するために下記のテンプレートを追記してください。
 
 ```markdown
 > 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/sveltekit-beta
 > 
-> 日本語版はオリジナルをよりよく理解するための参考となることを目的としています。  
-> 正確な内容についてはオリジナルである英語版を参照してください。  
-> - オリジナル [SvelteKit is in public beta](https://svelte.dev/blog/sveltekit-beta)
-> 
-> また、日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。  
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
 > - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
 > - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 ```
