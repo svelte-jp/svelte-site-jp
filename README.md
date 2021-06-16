@@ -3,7 +3,7 @@
 
 [Svelte](https://github.com/sveltejs/svelte)の公式ドキュメントサイト [svelte.dev](https://svelte.dev/) を日本語に翻訳するプロジェクトです。
 
-**日本語ドキュメントサイトURL : https://sveltejp.dev/**
+**日本語ドキュメントサイトURL : https://svelte.jp/**
 
 Svelteは素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。
 
