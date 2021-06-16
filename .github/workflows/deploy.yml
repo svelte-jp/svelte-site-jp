@@ -17,7 +17,7 @@ jobs:
       - name: Create .env file
         run: |
           cp .env.example .env
-          sed -i -e '/MAPBOX_ACCESS_TOKEN/s/$/${{ secrets.MAPBOX_ACCESS_TOKEN }}' .env
+          sed -i -e "/MAPBOX_ACCESS_TOKEN/s/$/${{ secrets.MAPBOX_ACCESS_TOKEN }}" .env
 
       - name: Login to Heroku Container registry
         env: 
