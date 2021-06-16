@@ -73,6 +73,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://portfolio.mouse484.tk/"><img src="https://avatars.githubusercontent.com/u/38714187?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mouse_484</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=mouse484" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://dynamis.jp/"><img src="https://avatars.githubusercontent.com/u/188166?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dynamis</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/issues/441#issuecomment-858282862" title="Financial">💵</a> <a href="https://github.com/svelte-jp/svelte-site-jp/issues/441#issuecomment-858282862" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 

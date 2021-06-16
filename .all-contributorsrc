@@ -144,6 +144,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "dynamis",
+      "name": "dynamis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/188166?v=4",
+      "profile": "http://dynamis.jp/",
+      "contributions": [
+        "financial",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7
