@@ -27,20 +27,35 @@
 	}
 
 	.attention {
-		width: 100%;
-		max-width: 120rem;
-		padding: 2em var(--side-nav);
-		margin: 0 auto;
+		position: absolute;
+		top: var(--nav-h);
+		left: 0px;
+		padding: 1rem var(--side-nav);
 		font-size: var(--h6);
 	}
 	.attention div {
-		padding: 1em var(--side-nav);
+		padding: 0.5rem 1rem;
+		max-width: 58rem;
 		background: #eeeeee;
 		border-radius: var(--border-r);
 	}
 	.attention div p {
 		margin-bottom: 0;
 	}
+
+	@media (max-width: 440px) {
+		.attention {
+			padding: 1rem 0rem;
+			font-size: var(--code-fs);
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.attention {
+			left: calc((100% - 120rem) / 2);
+		}
+	}
+
 </style>
 
 <svelte:head>
@@ -54,12 +69,9 @@
 <section class="attention">
 	<div>
 		<p>
-			{$_('attention.1', { default: 'This is an unofficial site for Japanese translation by volunteers in Svelte Japan ' })}
+			{$_('attention.1', { default: 'This is a site for Japanese translation by Svelte Japan Community' })}
 			{$_('attention.2', { default: '(The repository is ' })}<a href="https://github.com/svelte-jp/svelte-site-jp">{$_('attention.3_link', { default: 'here' })}</a>{$_('attention.4', { default: '). ' })}
-			<br/>
-			{$_('attention.5', { default: 'The content on this unofficial site may be out of date or incorrect.' })}
-			<br/>
-			{$_('attention.6', { default: 'If you are looking for the official website, please visit ' })}<a href="https://svelte.dev/">{$_('attention.7_link', { default: 'svelte.dev' })}</a>{$_('attention.8', { default: '.' })}
+			{$_('attention.5', { default: 'If you are looking for the official website, please visit ' })}<a href="https://svelte.dev/">svelte.dev</a>{$_('attention.6', { default: '.' })}
 		</p>
 	</div>
 </section>
