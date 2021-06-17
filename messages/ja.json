@@ -23,12 +23,12 @@
     "blurb": {
       "one": {
         "title": "Write less code",
-        "content": "あなたが既に知っている言語（HTML、CSS、JavaScript）で、ボイラープレートのないコンポーネントを作成することができます",
+        "content": "既に広く知られている言語（HTML、CSS、JavaScript）で、ボイラープレートのないコンポーネントを作成することができます",
         "learn-more": "さらに詳しく"
       },
       "two": {
         "title": "No virtual DOM",
-        "content": "Svelteは、あなたのコードをフレームワークが含まれない小さいvanilla JSにコンパイルします - アプリケーションは高速に起動し、そのスピードを維持します",
+        "content": "Svelteは、コードをフレームワークが含まれない小さいvanilla JSにコンパイルします - アプリケーションは高速に起動し、そのスピードを維持します",
         "learn-more": "さらに詳しく"
       },
       "three": {
