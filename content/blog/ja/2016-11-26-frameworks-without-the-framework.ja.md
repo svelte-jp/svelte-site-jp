@@ -20,7 +20,7 @@ authorURL: https://twitter.com/Rich_Harris
 
 しかし、私は間違っていました。100kb の .js は 100kb の .jpg と同じではありません。アプリの起動時のパフォーマンスを低下させるのはネットワークの時間だけではありません。script の解析と評価にも時間がかかり、その間ブラウザーは完全に無反応になります。モバイルでは、このミリ秒単位の時間があっという間に積み上がります。
 
-これが問題であることに納得できないなら、Twitter で [Alex Russell](https://twitter.com/slightlylate) をフォローしてください。Alex は [最近、フレームワークコミュニティで多くの友人を作ろうとしませんが]、彼は間違っていません。しかし、Angular、React、Ember などのフレームワークの代替として提案されている Polymer は、フロントエンドの世界ではまだ普及していませんし、それは決してマーケティングが不足しているからではありません。
+これが問題であることに納得できないなら、Twitter で [Alex Russell](https://twitter.com/slightlylate) をフォローしてください。Alex は [最近、フレームワークコミュニティで多くの友人を作ろうとしませんが](https://twitter.com/slightlylate/status/728355959022587905)、彼は間違っていません。しかし、Angular、React、Ember などのフレームワークの代替として提案されている [Polymer](https://www.polymer-project.org/1.0/) は、フロントエンドの世界ではまだ普及していませんし、それは決してマーケティングが不足しているからではありません。
 
 おそらく、全てを再考する必要があります。
 
