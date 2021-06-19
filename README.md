@@ -1,24 +1,21 @@
-
 # Svelte Site JP
 
 [Svelte](https://github.com/sveltejs/svelte)の公式ドキュメントサイト [svelte.dev](https://svelte.dev/) を日本語に翻訳するプロジェクトです。
 
-**日本語ドキュメントサイトURL : https://svelte.jp/**
+**日本語ドキュメントサイト URL : https://svelte.jp/**
 
-Svelteは素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。
-
+Svelte は素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。
 
 ## 貢献(Contribution)について
 
 この翻訳プロジェクトではみなさんの貢献を歓迎しています！
 
-貢献の形は様々で、翻訳はもちろん、誤字・脱字・誤訳の報告、よりよい翻訳文の提案、翻訳してほしいページのリクエスト、その他翻訳だけでなくSvelte Japan Communityを良くするためのご意見なども大歓迎です！
+貢献の形は様々で、翻訳はもちろん、誤字・脱字・誤訳の報告、よりよい翻訳文の提案、翻訳してほしいページのリクエスト、その他翻訳だけでなく Svelte Japan Community を良くするためのご意見なども大歓迎です！
 
 興味がある方は[CONTRIBUTING.md](https://github.com/svelte-jp/svelte-site-jp/blob/master/CONTRIBUTING.md)をご参照ください。
 
-ご意見や気が付いたことがあれば、お気軽にIssueを作成して知らせてください。  
-もしくは[Svelte日本のDiscord](https://discord.com/invite/YTXq3ZtBbx)の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
-
+ご意見や気が付いたことがあれば、お気軽に Issue を作成して知らせてください。  
+もしくは[Svelte 日本の Discord](https://discord.com/invite/YTXq3ZtBbx)の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
 
 ## Running locally
 
@@ -34,7 +31,6 @@ npm run dev
 
 and navigate to [localhost:3000](http://localhost:3000).
 
-
 ## Building the site
 
 To build the website, run `npm run build`. The output can be found in `__sapper__/build`.
@@ -42,7 +38,6 @@ To build the website, run `npm run build`. The output can be found in `__sapper_
 ## Testing
 
 Tests can be run using `npm run test`.
-
 
 ## Contributors ✨
 
@@ -74,6 +69,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://portfolio.mouse484.tk/"><img src="https://avatars.githubusercontent.com/u/38714187?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mouse_484</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=mouse484" title="Documentation">📖</a></td>
     <td align="center"><a href="http://dynamis.jp/"><img src="https://avatars.githubusercontent.com/u/188166?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dynamis</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/issues/441#issuecomment-858282862" title="Financial">💵</a> <a href="https://github.com/svelte-jp/svelte-site-jp/issues/441#issuecomment-858282862" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/Murayu0225"><img src="https://avatars.githubusercontent.com/u/37988559?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yu Muramatsu</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=Murayu0225" title="Documentation">📖</a></td>
   </tr>
 </table>
 
