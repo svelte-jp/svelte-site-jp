@@ -6,7 +6,11 @@ import { sanitize_user, authenticate } from './utils/auth';
 
 import { i18nMiddleware } from './i18n.js';
 
-const { PORT = 3000 } = process.env;
+if (!process.env.PORT) {
+	process.env.PORT = 3000;
+}
+
+const { PORT } = process.env;
 
 const app = polka({
 	onError: (err, req, res) => {
