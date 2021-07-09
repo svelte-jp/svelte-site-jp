@@ -1,5 +1,5 @@
 ---
-title: フレームワークの無いフレームワーク: なぜもっと早く思いつかなかったのか (Frameworks without the framework: why didn't we think of this sooner?)
+title: "フレームワークの無いフレームワーク: なぜもっと早く思いつかなかったのか"
 description: 純粋なJavaScriptでは、複雑さの壁にぶつかることなく本格的なアプリケーションを書くことはできません。しかしコンパイラならそれができます。
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris

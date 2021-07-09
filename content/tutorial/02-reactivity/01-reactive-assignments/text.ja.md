@@ -7,13 +7,13 @@ Svelteの中心には、DOMを（例えば、イベントに応じて）アプ�
 これを実演するには、まずイベントハンドラを定義する必要があります。9行目をこれに置き換えてください。
 
 ```html
-<button on:click={handleClick}>
+<button on:click={incrementCount}>
 ```
 
-関数 `handleClick` の内部で必要なのは `count` の値を変更することだけです。
+関数 `incrementCount` の内部で必要なのは `count` の値を変更することだけです。
 
 ```js
-function handleClick() {
+function incrementCount() {
 	count += 1;
 }
 ```

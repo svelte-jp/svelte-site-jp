@@ -1,5 +1,5 @@
 ---
-title: Svelte 3: リアクティビティ再考
+title: "Svelte 3: リアクティビティ再考"
 description: ついにここまで来ました
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris

@@ -294,6 +294,8 @@ const unsubscribe = count.subscribe(value => {
 unsubscribe(); // logs 'no more subscribers'
 ```
 
+Note that the value of a `writable` is lost when it is destroyed, for example when the page is refreshed. However, you can write your own logic to sync the value to for example the `localStorage`.
+
 #### `readable`
 
 ```js
@@ -775,8 +777,36 @@ SVG 要素のストロークを蛇が管の中を進むようにアニメーシ�
 ```
 
 
-<!-- Crossfade is coming soon... -->
+#### `crossfade`
 
+The `crossfade` function creates a pair of [transitions](docs#transition_fn) called `send` and `receive`. When an element is 'sent', it looks for a corresponding element being 'received', and generates a transition that transforms the element to its counterpart's position and fades it out. When an element is 'received', the reverse happens. If there is no counterpart, the `fallback` transition is used.
+
+---
+
+`crossfade` accepts the following parameters:
+
+* `delay` (`number`, default 0) — milliseconds before starting
+* `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
+* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
+* `fallback` (`function`) — A fallback [transition](docs#transition_fn) to use for send when there is no matching element being received, and for receive when there is no element being sent. 
+
+```sv
+<script>
+	import { crossfade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+
+	const [send, receive] = crossfade({
+		duration:1500,
+		easing: quintOut
+	});
+</script>
+
+{#if condition}
+	<h1 in:send={{key}} out:receive={{key}}>BIG ELEM</h1>
+{:else}
+	<small in:send={{key}} out:receive={{key}}>small elem</small>
+{/if}
+```
 
 
 ### `svelte/animate`
