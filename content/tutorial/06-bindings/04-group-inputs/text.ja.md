@@ -7,7 +7,7 @@ title: Group inputs
 各inputに`bind:group`を追加しましょう。
 
 ```html
-<input type=radio bind:group={scoops} value={1}>
+<input type=radio bind:group={scoops} name="scoops" value={1}>
 ```
 
 この場合、チェックボックスinputを`each`ブロックに移動させることでコードをよりシンプルにすることができます。まず、`<script>`ブロックに`menu`変数を追加します。
@@ -27,7 +27,7 @@ let menu = [
 
 {#each menu as flavour}
 	<label>
-		<input type=checkbox bind:group={flavours} value={flavour}>
+		<input type=checkbox bind:group={flavours} name="flavours" value={flavour}>
 		{flavour}
 	</label>
 {/each}

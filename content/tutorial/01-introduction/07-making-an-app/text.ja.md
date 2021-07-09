@@ -4,8 +4,9 @@ title: Making an app
 
 このチュートリアルは、コンポーネントを書くプロセスに慣れることを目的としています。しかしいつかは、ご自身のテキストエディタで快適にコンポーネントを書きたいと思うでしょう。
 
-まず最初に、Svelteとビルドツールを統合する必要があります。公式にメンテナンスされている、[Rollup](https://rollupjs.org)と[webpack](https://webpack.js.org/)のプラグインが用意されています。
+まず最初に、Svelteとビルドツールを統合する必要があります。公式にメンテナンスされている、[Vite](https://vitejs.dev/)、[Rollup](https://rollupjs.org)と[webpack](https://webpack.js.org/)のプラグインが用意されています。
 
+* [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte)
 * [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte)
 * [svelte-loader](https://github.com/sveltejs/svelte-loader)
 

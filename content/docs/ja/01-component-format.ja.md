@@ -57,6 +57,8 @@ development モード（[コンパイラオプション](docs#svelte_compile)を
 
 `const` や `class`、`function` をエクスポートすると、コンポーネントの外からは読み取り専用になります。ただし、関数*式*は有効なプロパティです。
 
+Readonly props can be accessed as properties on the element, tied to the component using [`bind:this` syntax](docs#bind_element).
+
 ```sv
 <script>
 	// これらは読み取り専用です
@@ -273,8 +275,18 @@ RxJSのObservablesとの相互運用性のため、`.subscribe` メソッドは�
 
 	div :global(strong) {
 		/* これは、このコンポーネント内の <div> 要素の中にある
-		   任意のコンポーネント内の <strong> 要素に適用されます */
+			 任意のコンポーネント内の <strong> 要素に
+			 適用されます */
 		color: goldenrod;
+	}
+
+	p:global(.red) {
+		/* this will apply to all <p> elements belonging to this 
+			 component with a class of red, even if class="red" does
+			 not initially appear in the markup, and is instead 
+			 added at runtime. This is useful when the class 
+			 of the element is dynamically applied, for instance 
+			 when updating the element's classList property directly. */
 	}
 </style>
 ```
@@ -289,4 +301,24 @@ RxJSのObservablesとの相互運用性のため、`.subscribe` メソッドは�
 <style>
 	@keyframes -global-my-animation-name {...}
 </style>
+```
+
+---
+
+There should only be 1 top-level `<style>` tag per component.
+
+However, it is possible to have `<style>` tag nested inside other elements or logic blocks.
+
+In that case, the `<style>` tag will be inserted as-is into the DOM, no scoping or processing will be done on the `<style>` tag.
+
+```html
+<div>
+	<style>
+		/* this style tag will be inserted as-is */
+		div {
+			/* this will apply to all `<div>` elements in the DOM */
+			color: red;
+		}
+	</style>
+</div>
 ```

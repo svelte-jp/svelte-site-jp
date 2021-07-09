@@ -1,5 +1,5 @@
 ---
-title: What's new in Svelte: 2021年4月
+title: "What's new in Svelte: 2021年4月"
 description: SvelteKitベータとslotの新しい使い方
 author: Daniel Sandoval
 authorURL: https://desandoval.net
