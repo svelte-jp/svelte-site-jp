@@ -2,18 +2,18 @@
 title: Accessibility warnings
 ---
 
-Accessibility (shortened to a11y) isn't always easy to get right, but Svelte will help by warning you if you write inaccessible markup.
+アクセシビリティ（a11yと略されます）を正しく理解することは容易ではありませんが、Svelteはアクセシブルではないマークアップを書いたときに警告してくれます。
 
-Here is a list of accessibility checks Svelte will do it for you.
+Svelteが行うアクセシビリティチェックのリストは以下の通りです。
 
 ---
 
 ### `a11y-accesskey`
 
-Enforce no `accesskey` on element. Access keys are HTML attributes that allow web developers to assign keyboard shortcuts to elements. Inconsistencies between keyboard shortcuts and keyboard commands used by screenreader and keyboard only users create accessibility complications so to avoid complications, access keys should not be used.
+要素に`accesskey`を設定しないように強制します。アクセスキーとは、Web開発者が要素にキーボードのショートカットを割り当てることができるHTML属性です。キーボードショートカットと、スクリーンリーダーやキーボードのみのユーザが使用するキーボードコマンドの間に不整合があるとアクセシビリティ対応が複雑になるので、複雑さを避けるためにもアクセスキーを使用してはいけません。
 
 ```sv
-<!-- A11y: Avoid using accesskey -->
+<!-- A11y: accesskeyの使用を避けましょう -->
 <div accessKey='z'></div>
 ```
 
@@ -21,10 +21,10 @@ Enforce no `accesskey` on element. Access keys are HTML attributes that allow we
 
 ### `a11y-aria-attributes`
 
-Certain reserved DOM elements do not support ARIA roles, states and properties. This is often because they are not visible, for example `meta`, `html`, `script`, `style`. This rule enforces that these DOM elements do not contain the `aria-*` props.
+一部の予約されたのDOM要素の中には、ARIAロールやステート、プロパティをサポートしていないものがあります。これは`meta`、`html`、`script`、`style`などのように、表示されないものがあるからです。このルールは、これらのDOM要素が`aria-*`プロパティを含まないことを強制します。
 
 ```sv
-<!-- A11y: <meta> should not have aria-* attributes -->
+<!-- A11y: <meta>はaria-*属性を持つべきではありません -->
 <meta aria-hidden="false">
 ```
 
@@ -32,10 +32,10 @@ Certain reserved DOM elements do not support ARIA roles, states and properties. 
 
 ### `a11y-autofocus`
 
-Enforce that `autofocus` is not used on elements. Autofocusing elements can cause usability issues for sighted and non-sighted users, alike.
+要素で`autofocus`が使われないよう強制します。オートフォーカス要素は、目の見える人にも見えない人にもユーザビリティの問題を引き起こす可能性があります。
 
 ```sv
-<!-- A11y: Avoid using autofocus -->
+<!-- A11y: autofocusの使用を避けましょう -->
 <input autofocus>
 ```
 
@@ -43,12 +43,12 @@ Enforce that `autofocus` is not used on elements. Autofocusing elements can caus
 
 ### `a11y-distracting-elements`
 
-Enforces that no distracting elements are used. Elements that can be visually distracting can cause accessibility issues with visually impaired users. Such elements are most likely deprecated, and should be avoided.
+気が散るような要素が使われていないかを確認します。視覚的に邪魔になる要素は、視覚障害のあるユーザにアクセシビリティ上の問題を引き起こす可能性があります。このような要素は、ほとんどの場合非推奨であり、避けるべきです。
 
-The following elements are visually distracting: `<marquee>` and `<blink>`.
+以下の要素は視覚的に気を散らす要素の`<marquee>`と`<blink>`です。
 
 ```sv
-<!-- A11y: Avoid <marquee> elements -->
+<!-- A11y: <marquee>要素の使用を避けましょう -->
 <marquee />
 ```
 
@@ -56,10 +56,10 @@ The following elements are visually distracting: `<marquee>` and `<blink>`.
 
 ### `a11y-hidden`
 
-Certain DOM elements are useful for screen readers navigation and should not be hidden.
+一部のDOM要素は、スクリーンリーダーのナビゲーションに有用であるため、非表示にすべきではありません。
 
 ```sv
-<!-- A11y: <h2> element should not be hidden -->
+<!-- A11y: <h2>要素を非表示にしてはなりません -->
 <h2 aria-hidden>invisible header</h2>
 ```
 
@@ -67,21 +67,21 @@ Certain DOM elements are useful for screen readers navigation and should not be 
 
 ### `a11y-img-redundant-alt`
 
-Enforce img alt attribute does not contain the word image, picture, or photo. Screenreaders already announce `img` elements as an image. There is no need to use words such as _image_, _photo_, and/or _picture_.
+imgのalt属性には、image、picture、またはphotoという単語は含んではいけません。スクリーンリーダーは、すでに`img`要素を画像として認識しています。_image_、_photo_、または _picture_ のような単語を使う必要はありません。
 
 ```sv
 <img src="foo" alt="Foo eating a sandwich." />
 
-<!-- aria-hidden, won't be announced by screen reader -->
+<!-- aria-hiddenによりスクリーンリーダーでは読み上げられません -->
 <img src="bar" aria-hidden alt="Picture of me taking a photo of an image" />
 
-<!-- A11y: Screenreaders already announce <img> elements as an image. -->
+<!-- A11y: スクリーンリーダーでは、すでに<img>要素を「画像」として読み上げています -->
 <img src="foo" alt="Photo of foo being weird." />
 
-<!-- A11y: Screenreaders already announce <img> elements as an image. -->
+<!-- A11y: スクリーンリーダーでは、すでに<img>要素を「画像」として読み上げています -->
 <img src="bar" alt="Image of me at a bar!" />
 
-<!-- A11y: Screenreaders already announce <img> elements as an image. -->
+<!-- A11y: スクリーンリーダーでは、すでに<img>要素を「画像」として読み上げています -->
 <img src="foo" alt="Picture of baz fixing a bug." />
 ```
 
@@ -89,10 +89,10 @@ Enforce img alt attribute does not contain the word image, picture, or photo. Sc
 
 ### `a11y-invalid-attribute`
 
-Enforce that accessibility attribute should have valid value
+アクセシビリティ属性が有効な値であることを強制します。
 
 ```sv
-<!-- A11y: '' is not a valid href attribute -->
+<!-- A11y: ''は有効なhref属性ではありません -->
 <a href=''>invalid</a>
 ```
 
@@ -100,19 +100,19 @@ Enforce that accessibility attribute should have valid value
 
 ### `a11y-label-has-associated-control`
 
-Enforce that a label tag has a text label and an associated control.
+ラベルタグは、テキストラベルと関連するコントロールを持つことを強制します。
 
-There are two supported ways to associate a label with a control:
+ラベルとコントロールの関連付けには、次の2つの方法があります。
 
-- Wrapping a control in a label tag.
-- Adding `for` to a label and assigning it a DOM ID string that indicates an input on the page.
+- コントロールをラベルタグで囲む。
+- ラベルに`for`を追加し、ページ上の入力を示すDOM ID文字列を割り当てます。
 
 ```sv
 <label for="id">B</label>
 
 <label>C <input type="text" /></label>
 
-<!-- A11y: A form label must be associated with a control. -->
+<!-- A11y: フォームラベルは、コントロールに関連付ける必要があります -->
 <label>A</label>
 ```
 
@@ -120,19 +120,19 @@ There are two supported ways to associate a label with a control:
 
 ### `a11y-media-has-caption`
 
-Providing captions for media is essential for deaf users to follow along. Captions should be a transcription or translation of the dialogue, sound effects, relevant musical cues, and other relevant audio information. Not only is this important for accessibility, but can also be useful for all users in the case that the media is unavailable (similar to `alt` text on an image when an image is unable to load).
+メディアにキャプションを提供することは、耳の不自由なユーザが情報を得るために不可欠です。キャプションは、ダイアログ、サウンドエフェクト、関連する音楽のキュー、およびその他の関連するオーディオ情報の転写または翻訳がなければなりません。これはアクセシビリティ上重要であるだけでなく、メディアが利用できない場合にすべてのユーザにとって有用です（画像が読み込めない場合に画像上に`alt`テキストを表示するのと同様です）。
 
-The captions should contain all important and relevant information to understand the corresponding media. This may mean that the captions are not a 1:1 mapping of the dialogue in the media content. However, captions are not necessary for video components with the `muted` attribute.
+キャプションには、対応するメディアを理解するための重要な関連情報をすべて含める必要があります。これは、キャプションがメディアコンテンツのダイアログと1対1で対応していないことを意味します。ただし、キャプションは`muted`属性を持つビデオコンポーネントには必要ありません。
 
 ```sv
 <video><track kind="captions"/></video>
 
 <audio muted></audio>
 
-<!-- A11y: Media elements must have a <track kind=\"captions\"> -->
+<!-- A11y: メディア要素には、<track kind=\"captions\">が必要です -->
 <video></video>
 
-<!-- A11y: Media elements must have a <track kind=\"captions\"> -->
+<!-- A11y: メディア要素には、<track kind=\"captions\">が必要です -->
 <video><track /></video>
 ```
 
@@ -140,10 +140,10 @@ The captions should contain all important and relevant information to understand
 
 ### `a11y-misplaced-role`
 
-Certain reserved DOM elements do not support ARIA roles, states and properties. This is often because they are not visible, for example `meta`, `html`, `script`, `style`. This rule enforces that these DOM elements do not contain the `role` props.
+一部の予約されたのDOM要素の中には、ARIAロールやステート、プロパティをサポートしていないものがあります。これは`meta`、`html`、`script`、`style`などのように、表示されないものがあるからです。このルールは、これらのDOM要素が`role`プロパティを含んでいないことを強制します。
 
 ```sv
-<!-- A11y: <meta> should not have role attribute -->
+<!-- A11y: <meta>はrole属性を持つべきではありません -->
 <meta role="tooltip">
 ```
 
@@ -151,10 +151,10 @@ Certain reserved DOM elements do not support ARIA roles, states and properties. 
 
 ### `a11y-misplaced-scope`
 
-The scope scope should be used only on `<th>` elements.
+scopeは、`<th>`要素でのみ使用してください。
 
 ```sv
-<!-- A11y: The scope attribute should only be used with <th> elements -->
+<!-- A11y: scope属性は、<th>要素でのみ使用されます -->
 <div scope/>
 ```
 
@@ -162,16 +162,16 @@ The scope scope should be used only on `<th>` elements.
 
 ### `a11y-missing-attribute`
 
-Enforce that element should have required accessibility attribute
+要素に必須のアクセシビリティ属性を持たせることを強制します。
 
 ```sv
-<!-- A11y: <input type=\"image\"> element should have an alt, aria-label or aria-labelledby attribute -->
+<!-- A11y: <input type=\"image\">要素にはalt、aria-label、aria-labelledby属性が必要です -->
 <input type="image">
 
-<!-- A11y: <html> element should have a lang attribute -->
+<!-- A11y: <html>要素は、lang属性を持つ必要があります -->
 <html></html>
 
-<!-- A11y: <a> element should have an href attribute -->
+<!-- A11y: <a>要素にはhref属性が必要です -->
 <a>text</a>
 ```
 
@@ -179,13 +179,13 @@ Enforce that element should have required accessibility attribute
 
 ### `a11y-missing-content`
 
-Enforce that heading elements (`h1`, `h2`, etc.) and anchors have content and that the content is accessible to screen readers
+見出し要素（`h1`、`h2`など）やアンカーにコンテンツがあり、そのコンテンツがスクリーンリーダーからアクセス可能であることを強制します。
 
 ```sv
-<!-- A11y: <a> element should have child content -->
+<!-- A11y: <a>要素は子コンテンツを持つべきです -->
 <a href='/foo'></a>
 
-<!-- A11y: <h1> element should have child content -->
+<!-- A11y: <h1>要素は子コンテンツを持つべきです -->
 <h1></h1>
 ```
 
@@ -193,10 +193,10 @@ Enforce that heading elements (`h1`, `h2`, etc.) and anchors have content and th
 
 ### `a11y-positive-tabindex`
 
-Avoid positive `tabIndex` property values to synchronize the flow of the page with keyboard tab order.
+ページの流れとキーボードのタブ順を同期させるために、`tabIndex`プロパティを正の値にすることは避けてください。
 
 ```sv
-<!-- A11y: avoid tabindex values above zero -->
+<!-- A11y: tabindexの値が0を超えないようにする -->
 <div tabindex='1'/>
 ```
 
@@ -204,10 +204,10 @@ Avoid positive `tabIndex` property values to synchronize the flow of the page wi
 
 ### `a11y-structure`
 
-Warns when accessibility related elements are not in a right structure.
+アクセシビリティに関する要素が正しい構造になっていない場合に警告します。
 
 ```sv
-<!-- A11y: <figcaption> must be an immediate child of <figure> -->
+<!-- A11y: <figcaption>は、<figure>の直接の子でなければなりません -->
 <div>
 	<figcaption>Image caption</figcaption>
 </div>
@@ -217,10 +217,10 @@ Warns when accessibility related elements are not in a right structure.
 
 ### `a11y-unknown-aria-attribute`
 
-Invalid aria attribute. Enforces valid `aria-*` property based on [WAI-ARIA States and Properties spec](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties)
+aria属性が無効です。[WAI-ARIA States and Properties spec](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties)に基づいて、有効な`aria-*`プロパティを強制します。
 
 ```sv
-<!-- A11y: Unknown aria attribute 'aria-labeledby' (did you mean 'labelledby'?) -->
+<!-- A11y: 不明なaria属性 'aria-labeledby'（'labelledby'ではないでしょうか） -->
 <input type="image" aria-labeledby="foo">
 ```
 
@@ -228,9 +228,9 @@ Invalid aria attribute. Enforces valid `aria-*` property based on [WAI-ARIA Stat
 
 ### `a11y-unknown-role`
 
-Elements with ARIA roles must use a valid, non-abstract ARIA role. A reference to role definitions can be found at [WAI-ARIA](https://www.w3.org/TR/wai-aria/#role_definitions) site.
+ARIAロールを持つ要素は有効で、抽象的でないARIAロールを使用しなければなりません。ロールの定義については、[WAI-ARIA](https://www.w3.org/TR/wai-aria/#role_definitions)サイトを参照してください。
 
 ```sv
-<!-- A11y: Unknown role 'toooltip' (did you mean 'tooltip'?) -->
+<!-- A11y: 不明な'toooltip'ロール（'tooltip'ではないでしょうか） -->
 <div role="toooltip"></div>
 ```
