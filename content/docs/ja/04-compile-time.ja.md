@@ -67,7 +67,7 @@ const result = svelte.compile(source, {
 | `name` | `"Component"` | 結果として得られるJavaScriptクラスの名前を設定する `string` です (ただし、スコープ内の他の変数と競合する場合はコンパイラが名前を変更します)、通常は `filename` から推測されます。
 | `format` | `"esm"` | `"esm"` の場合、JavaScriptモジュールを作成します (`import` と `export` を指定します)、`"cjs"` の場合、CommonJSモジュールを作成します(`require` と `module.exports` を指定します)、これは、いくつかのサーバーサイドのレンダリング状況やテストに便利です。
 | `generate` | `"dom"` | `"dom"` の場合、SvelteはDOMにマウントするためのJavaScriptクラスを生成します。`"ssr"`の場合、サーバサイドのレンダリングに適した `render` メソッドを持つオブジェクトを出力します。`false` の場合、JavaScriptやCSSは返されず、メタデータだけが返されます。
-| `varsReport` | `"strict"` | If `"strict"`, Svelte returns a variables report with only variables that are not globals nor internals. If `"full"`, Svelte returns a variables report with all detected variables. If `false`, no variables report is returned.
+| `varsReport` | `"strict"` | `"strict"` の場合、Svelteはグローバルまたはインターナルな変数以外のみの変数レポートを返します。`"full"` の場合は検出された全ての変数を返します、`false` の場合は変数レポートは返しません。
 | `dev` | `false` | `true` の場合、コンポーネントに特別なコードを追加します。これは、ランタイムチェックを実行し、開発中にデバッグ情報を提供するためのものです。
 | `immutable` | `false` | `true` の場合、オブジェクトを変更させないことをコンパイラに伝えます。これにより、値が変更されたかどうかのチェックをより控えめにすることができます。
 | `hydratable` | `false` | `true` を指定すると、DOMコードを生成する際に `hydrate: true` ランタイムオプションが有効になり、新しいDOMをゼロから生成するのではなく、既存のDOMをアップグレードすることができます。これにより、SSRコードを生成する際に `<head>` 要素にマーカーが追加され、ハイドレーションがどれを置き換えるべきかを知ることができるようになります。
