@@ -42,4 +42,4 @@ export function onInterval(callback, milliseconds) {
 </script>
 ```
 
-Open and close the timer a few times and make sure the counter keeps ticking and the CPU load increases. This is due to a memory leak as the previous timers are not deleted. Don't forget to refresh the page before solving the example.
+何度かタイマーを開いたり閉じたりして、カウンターが動き続けCPU負荷が上昇することを確認してみてください。これは古いタイマーが削除されていないため、メモリリークが発生しているからです。例題を解く前にこのページを更新するのを忘れないでくださいね。
