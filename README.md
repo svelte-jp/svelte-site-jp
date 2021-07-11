@@ -70,6 +70,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://portfolio.mouse484.tk/"><img src="https://avatars.githubusercontent.com/u/38714187?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mouse_484</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=mouse484" title="Documentation">📖</a></td>
     <td align="center"><a href="http://dynamis.jp/"><img src="https://avatars.githubusercontent.com/u/188166?v=4?s=100" width="100px;" alt=""/><br /><sub><b>dynamis</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/issues/441#issuecomment-858282862" title="Financial">💵</a> <a href="https://github.com/svelte-jp/svelte-site-jp/issues/441#issuecomment-858282862" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     <td align="center"><a href="https://github.com/Murayu0225"><img src="https://avatars.githubusercontent.com/u/37988559?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yu Muramatsu</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=Murayu0225" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://qiita.com/fuwasegu"><img src="https://avatars.githubusercontent.com/u/52437973?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HirosuguTakeshita</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=lunain84" title="Documentation">📖</a></td>
   </tr>
 </table>
 
