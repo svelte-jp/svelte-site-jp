@@ -46,11 +46,11 @@ authorURL: https://desandoval.net
 
 
 **Educational Content**
-- [Svelte Radio: A Jolly Good Svelte Summer](https://share.transistor.fm/s/60880542) は、 Svelte の最新情報や Svelte Radio 1周年を祝うトーク。
+- [Svelte Radio: A Jolly Good Svelte Summer](https://share.transistor.fm/s/60880542) は、 Svelte の最新情報や Svelte Radio 1周年を祝うトークです。
 - [Class properties in Svelte](https://navillus.dev/blog/svelte-class-props) は、 React から Svelte に乗り換える開発者のために、 `class` の力を再確認します。
 - [Sveltekit Tutorial for Beginners](https://www.youtube.com/playlist?list=PLm_Qt4aKpfKjf77S8UD79Ockhwp_699Ms) は、 WebJeda による SvelteKit を学ぶためのビデオプレイリストです。
 - [How To Cache Dynamic Pages On Demand With A Service Worker In SvelteKit](https://jochemvogel.medium.com/how-to-cache-dynamic-pages-on-demand-with-a-service-worker-in-sveltekit-4b4a7652583d) は、 SvelteKit でオンデマンドキャッシングに使用されるサービスワーカーの力を説明します。
-- [Vue vs Svelte: Comparing Framework Internals](https://www.vuemastery.com/blog/vue-vs-svelte-comparing-framework-internals/) は、 Vue と Svelte の違いを内側から深く掘り下げる
+- [Vue vs Svelte: Comparing Framework Internals](https://www.vuemastery.com/blog/vue-vs-svelte-comparing-framework-internals/) は、 Vue と Svelte の違いを内側から深く掘り下げます。
 - [Setting up a development environment for SvelteKit with Docker and Docker Compose](https://jenyus.web.app/blog/2021-05-30-setting-up-a-development-environment-for-sveltekit-with-docker-and-compose) は、どんなデバイスでコードを実行しても、再利用可能な開発環境を作るために Docker を使用する方法を説明します。
 - Scalable Scripts は今月、 Docker 化された Svelte アプリを [AWS](https://youtu.be/VOs2Od5jYOc), [Azure](https://youtu.be/gdg4ne_uDm8), [Google Cloud](https://youtu.be/_-uBb61Tikw) にデプロイする方法を説明した3つのビデオを公開しました。
 - [Render Katex with Svelte from zero to hero](https://www.youtube.com/watch?v=euowJs9CblA) は、 Svelte プロジェクトに Katex を導入する方法を紹介します。
