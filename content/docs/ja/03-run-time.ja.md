@@ -294,7 +294,7 @@ const unsubscribe = count.subscribe(value => {
 unsubscribe(); // logs 'no more subscribers'
 ```
 
-Note that the value of a `writable` is lost when it is destroyed, for example when the page is refreshed. However, you can write your own logic to sync the value to for example the `localStorage`.
+`writable` の値は、ページが更新されたときなど破棄されると失われるので注意してください。ただし、`localStorage` などに値を同期する独自ロジックを作ることはできます。
 
 #### `readable`
 
@@ -779,16 +779,16 @@ SVG 要素のストロークを蛇が管の中を進むようにアニメーシ�
 
 #### `crossfade`
 
-The `crossfade` function creates a pair of [transitions](docs#transition_fn) called `send` and `receive`. When an element is 'sent', it looks for a corresponding element being 'received', and generates a transition that transforms the element to its counterpart's position and fades it out. When an element is 'received', the reverse happens. If there is no counterpart, the `fallback` transition is used.
+`crossfade` 関数は `send` と `receive` という [トランジション](docs#transition_fn)のペアを作成します。ある要素が「送信」されると、それに対応する「受信」される要素を探し、その要素を相手の位置に変換してフェードアウトさせるトランジションを生成します。要素が「受信」されると、その逆が起こります。対応する要素がない場合は、`fallback` トランジションが使用されます。
 
 ---
 
-`crossfade` accepts the following parameters:
+`crossfade` は下のパラメータを受け付けます:
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `fallback` (`function`) — A fallback [transition](docs#transition_fn) to use for send when there is no matching element being received, and for receive when there is no element being sent. 
+* `delay` (`number`, デフォルト 0) — 開始するまでのミリ秒
+* `duration` (`number` | `function`, デフォルト 800) — トランジションが継続するミリ秒
+* `easing` (`function`, デフォルト `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `fallback` (`function`) — 受信している要素に一致するものがない場合の送信時や、送信している要素がない場合の受信時に使用するフォールバック[トランジション](docs#transition_fn)です。
 
 ```sv
 <script>
