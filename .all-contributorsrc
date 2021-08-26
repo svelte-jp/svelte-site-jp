@@ -163,6 +163,24 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "lunain84",
+      "name": "HirosuguTakeshita",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52437973?v=4",
+      "profile": "https://qiita.com/fuwasegu",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "yamanoku",
+      "name": "Okuto Oyama",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1996642?v=4",
+      "profile": "https://yamanoku.net/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
