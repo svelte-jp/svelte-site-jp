@@ -57,7 +57,7 @@ development モード（[コンパイラオプション](docs#svelte_compile)を
 
 `const` や `class`、`function` をエクスポートすると、コンポーネントの外からは読み取り専用になります。ただし、関数*式*は有効なプロパティです。
 
-Readonly props can be accessed as properties on the element, tied to the component using [`bind:this` syntax](docs#bind_element).
+読み取り専用のプロパティは、[`bind:this` 構文](docs#bind_element)を使ってコンポーネントに関連付けられた要素のプロパティとしてアクセスできます。
 
 ```sv
 <script>
@@ -281,12 +281,12 @@ RxJSのObservablesとの相互運用性のため、`.subscribe` メソッドは�
 	}
 
 	p:global(.red) {
-		/* this will apply to all <p> elements belonging to this 
-			 component with a class of red, even if class="red" does
-			 not initially appear in the markup, and is instead 
-			 added at runtime. This is useful when the class 
-			 of the element is dynamically applied, for instance 
-			 when updating the element's classList property directly. */
+		/* これは、このコンポーネントに属し、red クラスを持つ
+			 すべての <p> 要素に適用されます（class="red" が
+			 最初のマークアップに現れず、実行時に追加された場合
+			 でも）。これは要素の classList プロパティを直接
+			 更新するなど、要素のクラスが動的に適用されるときに
+			 便利です。 */
 	}
 </style>
 ```
@@ -305,18 +305,18 @@ RxJSのObservablesとの相互運用性のため、`.subscribe` メソッドは�
 
 ---
 
-There should only be 1 top-level `<style>` tag per component.
+トップレベルの `<style>` タグは、1 つのコンポーネントにつき 1 つだけでなければなりません。
 
-However, it is possible to have `<style>` tag nested inside other elements or logic blocks.
+ただし、他の要素や論理ブロックの中に `<style>` タグを入れ子にすることは可能です。
 
-In that case, the `<style>` tag will be inserted as-is into the DOM, no scoping or processing will be done on the `<style>` tag.
+その場合、 `<style>` タグはそのまま DOM に挿入され、 `<style>` タグのスコープや処理は行われません。
 
 ```html
 <div>
 	<style>
-		/* this style tag will be inserted as-is */
+		/* この style タグはそのまま挿入されます */
 		div {
-			/* this will apply to all `<div>` elements in the DOM */
+			/* これは DOM 内のすべての `<div>` 要素に適用されます */
 			color: red;
 		}
 	</style>
