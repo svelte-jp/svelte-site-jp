@@ -8,8 +8,8 @@ title: Media elements
 
 ```html
 <video
-  poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
-  src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4"
+	poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
+	src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4"
 	on:mousemove={handleMove}
 	on:touchmove|preventDefault={handleMove}
 	on:mousedown={handleMousedown}
