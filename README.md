@@ -25,11 +25,16 @@ Set up the site project:
 git clone https://github.com/svelte-jp/svelte-site-jp.git
 cd svelte-site-jp
 npm ci
-npm run update
 npm run dev
 ```
 
 and navigate to [localhost:3000](http://localhost:3000).
+
+The first time you run the site locally, it will update the list of Contributors and REPL dependencies. After this it won't run again unless you force it by running:
+
+```bash
+npm run update
+```
 
 ## Building the site
 

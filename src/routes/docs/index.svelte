@@ -2,9 +2,26 @@
 	import { waitLocale } from 'svelte-i18n';
 	import { getLocaleFromQueryOrStore } from '../../i18n.js';
 
+	const title_replacements = {
+		'1_export_creates_a_component_prop': 'props',
+		'2_Assignments_are_reactive': 'reactive assignments',
+		'3_$_marks_a_statement_as_reactive': 'reactive statements ($:)',
+		'4_Prefix_stores_with_$_to_access_their_values': 'accessing stores ($)'
+	};
+
 	export async function preload({ query }) {
 		await waitLocale();
 		const sections = await this.fetch(`docs.json?locale=${getLocaleFromQueryOrStore(query.lang)}`).then(r => r.json());
+		for (const section of sections) {
+			for (const subsection of section.subsections) {
+				const { slug } = subsection;
+				// show abbreviated title in the table of contents
+				if (slug in title_replacements) {
+					subsection.title = title_replacements[slug];
+				}
+			}
+		}
+
 		return { sections };
 	}
 </script>

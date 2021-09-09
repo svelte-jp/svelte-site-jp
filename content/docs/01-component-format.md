@@ -13,18 +13,18 @@ All three sections — script, styles and markup — are optional.
 	// logic goes here
 </script>
 
+<!-- markup (zero or more items) goes here -->
+
 <style>
 	/* styles go here */
 </style>
-
-<!-- markup (zero or more items) goes here -->
 ```
 
 ### &lt;script&gt;
 
 A `<script>` block contains JavaScript that runs when a component instance is created. Variables declared (or imported) at the top level are 'visible' from the component's markup. There are four additional rules:
 
-##### 1. `export` creates a component prop
+#### 1. `export` creates a component prop
 
 ---
 
@@ -87,15 +87,13 @@ You can use reserved words as prop names.
 </script>
 ```
 
-##### 2. Assignments are 'reactive'
+#### 2. Assignments are 'reactive'
 
 ---
 
 To change component state and trigger a re-render, just assign to a locally declared variable.
 
 Update expressions (`count += 1`) and property assignments (`obj.x = y`) have the same effect.
-
-Because Svelte's reactivity is based on assignments, using array methods like `.push()` and `.splice()` won't automatically trigger updates. Options for getting around this can be found in the [tutorial](tutorial/updating-arrays-and-objects).
 
 ```sv
 <script>
@@ -109,7 +107,25 @@ Because Svelte's reactivity is based on assignments, using array methods like `.
 </script>
 ```
 
-##### 3. `$:` marks a statement as reactive
+---
+
+Because Svelte's reactivity is based on assignments, using array methods like `.push()` and `.splice()` won't automatically trigger updates. A subsequent assignment is required to trigger the update. This and more details can also be found in the [tutorial](tutorial/updating-arrays-and-objects).
+
+```sv
+<script>
+	let arr = [0, 1];
+
+	function handleClick () {
+		// this method call does not trigger an update
+		arr.push(2);
+		// this assignment will trigger an update
+		// if the markup references `arr`
+		arr = arr
+	}
+</script>
+```
+
+#### 3. `$:` marks a statement as reactive
 
 ---
 
@@ -171,13 +187,13 @@ If a statement consists entirely of an assignment to an undeclared variable, Sve
 </script>
 ```
 
-##### 4. Prefix stores with `$` to access their values
+#### 4. Prefix stores with `$` to access their values
 
 ---
 
 A *store* is an object that allows reactive access to a value via a simple *store contract*. The [`svelte/store` module](docs#svelte_store) contains minimal store implementations which fulfil this contract.
 
-Any time you have a reference to a store, you can access its value inside a component by prefixing it with the `$` character. This causes Svelte to declare the prefixed variable, and set up a store subscription that will be unsubscribed when appropriate.
+Any time you have a reference to a store, you can access its value inside a component by prefixing it with the `$` character. This causes Svelte to declare the prefixed variable, subscribe to the store at component initialization and unsubscribe when appropriate.
 
 Assignments to `$`-prefixed variables require that the variable be a writable store, and will result in a call to the store's `.set` method.
 
