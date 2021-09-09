@@ -10,7 +10,7 @@ title: Making an app
 * [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte)
 * [svelte-loader](https://github.com/sveltejs/svelte-loader)
 
-…また、[コミュニティがメンテナンスしているプラグイン](https://github.com/sveltejs/integrations#bundler-plugins)も数多くあります。
+…また、[コミュニティがメンテナンスしているプラグイン](https://sveltesociety.dev/tooling)も数多くあります。
 
 もしWeb開発にあまり慣れておらずこういったツールを使ったことがなくてもご安心ください。順を追って段階的に進められるシンプルなガイド[Svelte for new developers](blog/svelte-for-new-developers)をご用意しています。
 

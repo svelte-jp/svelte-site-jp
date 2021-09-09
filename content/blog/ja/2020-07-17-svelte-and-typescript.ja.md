@@ -49,7 +49,7 @@ Svelte が TypeScript をサポートするようになったということは�
 * コンポーネントを書いているときに、マークアップ内の式でも自動補完のヒントや型チェックを得ることができます。
 * TypeScript ファイルは Svelte コンポーネント API を理解しています -- `.ts` モジュールに `.svelte` ファイルをインポートしても、赤い四角い線はもうありません。
 
-#### どのような仕組みになっていますか？(How does it work?)
+### どのような仕組みになっていますか？(How does it work?)
 
 TypeScript のサポートの 2 つの主要な部分を理解するために、TypeScript が開発ツールを提供するために使用している技術と比較してみましょう。それはコマンドラインで実行し `*.ts` を `*.js` に変換する `tsc` コンパイラと、テキストエディタからのリクエストに応答するノードAPI である `TSServer` です。`TSServer` は、コーディング中のエディタに JavaScript と TypeScript のリアルタイムイントロスペクションを提供するもので、その中にコンパイラのコードのほとんどが含まれています。
 
@@ -60,7 +60,7 @@ TypeScript のための Svelte コンパイラのサポートは、[Christian Ka
 エディタについては、[Pine's](https://github.com/octref) による [Vue](https://vuejs.org) エコシステムの [Vetur](https://github.com/vuejs/vetur) からインスピレーションを得ました。Vetur は [LSP](https://github.com/vuejs/vetur/blob/master/server)、VS Code 拡張機能、[CLI](https://github.com/vuejs/vetur/blob/master/vti) を提供します。Svelteも現在、[LSP](https://github.com/sveltejs/language-tools/blob/master/packages/language-server)、[VS Code 拡張機能](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-vscode)、[CLI](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check) を提供しています。
 
 
-#### `*.svelte` イントロスペクション(`*.svelte` Introspection)
+### `*.svelte` イントロスペクション(`*.svelte` Introspection)
 
 公式の Svelte VS Code 拡張機能では、[James Birtles](https://github.com/UnwrittenFun) 氏が[`UnwrittenFun/svelte-vscode`](https://github.com/UnwrittenFun/svelte-vscode) と [`UnwrittenFun/svelte-language-server`](https://github.com/UnwrittenFun/svelte-language-server/) で作成した基盤を基に構築しました。
 
@@ -75,7 +75,7 @@ TypeScript のための Svelte コンパイラのサポートは、[Christian Ka
 npm install --save-dev @tsconfig/svelte typescript svelte-preprocess svelte-check
 ```
 
-##### 1. Typescriptのコンパイル(Compiling TypeScript)
+### 1. Typescriptのコンパイル(Compiling TypeScript)
 
 まず最初に、`<script lang="ts">` ブロックの内容を TypeScript コンパイラに渡す [`svelte-preprocess`](https://github.com/sveltejs/svelte-preprocess#svelte-preprocess) を設定する必要があります。
 
@@ -111,7 +111,7 @@ TypeScriptを設定するには、プロジェクトのルートに `tsconfig.js
 
 `include`/`exclude` はあなたのプロジェクトによって異なります。-- これらは、ほとんどの Svelte プロジェクトで動作するデフォルト値です。
 
-##### 2. エディタサポート(Editor Support)
+### 2. エディタサポート(Editor Support)
 
 [LSPを使用](https://langserver.org/#implementations-client) しているエディタであれば、どのようなエディタでも対応可能です。[VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) 拡張機能は、私たちが最も優先してきたものです。しかし、[Atom上](https://github.com/sveltejs/language-tools/pull/160)では作業が進行中で、[coc-svelte](https://github.com/coc-extensions/coc-svelte) 経由の Vim は最新の LSPでアップデートされています。
 
@@ -119,7 +119,7 @@ TypeScriptを設定するには、プロジェクトのルートに `tsconfig.js
 
 `<script>` を TypeScript を使うように切り替えるには、`<script lang="ts">` を使ってください。願わくば、赤い四角い線の海を見ることがないことを願っています。
 
-##### 3. CIでのチェック(CI Checks)
+### 3. CIでのチェック(CI Checks)
 
 赤い四角いマークがあるのは素晴らしいことですが、まあ、ちょっとしたことです。しかし、長期的には、コードにエラーがないことを確認できるようにしたいものです。プロジェクトにエラーがないことを確認するには、CLI ツールの [`svelte-check`](https://www.npmjs.com/package/svelte-check) を使うことができます。これはエディタのように動作し、すべての `.svelte` ファイルに対してエラーを確認します。
 

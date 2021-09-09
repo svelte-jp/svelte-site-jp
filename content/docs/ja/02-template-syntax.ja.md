@@ -136,11 +136,14 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US
 
 テキストにもJavaScriptの式を含めることができます。
 
+> 正規表現 (`RegExp`) の [リテラル記法](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#literal_notation_and_constructor)、括弧で囲う必要があります。
+
 ```sv
 <h1>Hello {name}!</h1>
 <p>{a} + {b} = {a + b}.</p>
-```
 
+<div>{(/^[A-Za-z ]+$/).test(value) ? x : y}</div>
+```
 
 ### Comments
 
@@ -347,7 +350,7 @@ promise が失敗した時に何もレンダリングする必要がない場合
 
 ---
 
-逆にエラー状態のみを表示したい場合は `then` ブロックを省略できます。
+同様に、エラー状態のみを表示したい場合は `then` ブロックを省略できます。
 
 ```sv
 {#await promise catch error}
@@ -513,6 +516,7 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 * `capture` — *バブリング*フェーズではなく*キャプチャ*フェーズ中にハンドラを実行します
 * `once` — ハンドラが最初に実行された後、削除します
 * `self` — event.target がその要素自体だった場合のみハンドラをトリガします
+* `trusted` — only trigger handler if `event.isTrusted` is `true`. I.e. if the event is triggered by a user action.
 
 修飾子は連鎖させることができます。例 `on:click|once|capture={...}`
 
@@ -959,20 +963,22 @@ transition = (node: HTMLElement, params: any) => {
 <script>
 	export let visible = false;
 
-	function typewriter(node, { speed = 50 }) {
+	function typewriter(node, { speed = 1 }) {
 		const valid = (
 			node.childNodes.length === 1 &&
 			node.childNodes[0].nodeType === Node.TEXT_NODE
 		);
 
-		if (!valid) return {};
+		if (!valid) {
+			throw new Error(`This transition only works on elements with a single text node child`);
+		}
 
 		const text = node.textContent;
-		const duration = text.length * speed;
+		const duration = text.length / (speed * 0.01);
 
 		return {
 			duration,
-			tick: (t, u) => {
+			tick: t => {
 				const i = ~~(text.length * t);
 				node.textContent = text.slice(0, i);
 			}
@@ -981,7 +987,7 @@ transition = (node: HTMLElement, params: any) => {
 </script>
 
 {#if visible}
-	<p in:typewriter="{{ speed: 20 }}">
+	<p in:typewriter="{{ speed: 1 }}">
 		The quick brown fox jumps over the lazy dog
 	</p>
 {/if}
@@ -1582,12 +1588,15 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、コンポーネントのトップレベルに表示する必要があります。
+`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](docs#use_action) を使用することもできます。
+
+`<svelte:body>` コンポーネントのトップレベルに表示する必要があります。
 
 ```sv
 <svelte:body
 	on:mouseenter={handleMouseenter}
 	on:mouseleave={handleMouseleave}
+	use:someAction
 />
 ```
 

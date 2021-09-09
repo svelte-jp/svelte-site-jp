@@ -2,7 +2,7 @@
 title: Accessibility warnings
 ---
 
-アクセシビリティ（a11yと略されます）を正しく理解することは容易ではありませんが、Svelteはアクセシブルではないマークアップを書いたときに警告してくれます。
+アクセシビリティ（a11yと略されます）を正しく理解することは容易ではありませんが、Svelteは、アクセシブルではないマークアップを書くとコンパイル時に警告してくれます。However, keep in mind that many accessibility issues can only be identified at runtime using other automated tools and by manually testing your application.
 
 Svelteが行うアクセシビリティチェックのリストは以下の通りです。
 
@@ -60,7 +60,7 @@ DOM要素の中には、ARIAロールやステート、プロパティをサポ�
 
 ```sv
 <!-- A11y: <h2>要素を非表示にしてはなりません -->
-<h2 aria-hidden>invisible header</h2>
+<h2 aria-hidden="true">invisible header</h2>
 ```
 
 ---
@@ -73,7 +73,7 @@ imgのalt属性には、image、picture、またはphotoという単語は含ん
 <img src="foo" alt="Foo eating a sandwich." />
 
 <!-- aria-hiddenによりスクリーンリーダーでは読み上げられません -->
-<img src="bar" aria-hidden alt="Picture of me taking a photo of an image" />
+<img src="bar" aria-hidden="true" alt="Picture of me taking a photo of an image" />
 
 <!-- A11y: スクリーンリーダーでは、すでに<img>要素を「画像」として読み上げています -->
 <img src="foo" alt="Photo of foo being weird." />
@@ -89,7 +89,7 @@ imgのalt属性には、image、picture、またはphotoという単語は含ん
 
 ### `a11y-invalid-attribute`
 
-アクセシビリティ属性が有効な値であることを強制します。
+アクセシビリティ属性が有効な値であることを強制します。例えば `href` を空にすべきではないし、`'#'` や `javascript:` にすべきではありません。
 
 ```sv
 <!-- A11y: ''は有効なhref属性ではありません -->
@@ -105,7 +105,7 @@ imgのalt属性には、image、picture、またはphotoという単語は含ん
 ラベルとコントロールの関連付けには、次の2つの方法があります。
 
 - コントロールをラベルタグで囲む。
-- ラベルに`for`を追加し、ページ上の入力を示すDOM ID文字列を割り当てます。
+- ラベルに`for`を追加し、ページ上の入力を示すID文字列を割り当てます。
 
 ```sv
 <label for="id">B</label>
@@ -151,18 +151,26 @@ DOM要素の中には、ARIAロールやステート、プロパティをサポ�
 
 ### `a11y-misplaced-scope`
 
-scopeは、`<th>`要素でのみ使用してください。
+scope 属性は、`<th>`要素でのみ使用してください。
 
 ```sv
 <!-- A11y: scope属性は、<th>要素でのみ使用されます -->
-<div scope/>
+<div scope="row" />
 ```
 
 ---
 
 ### `a11y-missing-attribute`
 
-要素に必須のアクセシビリティ属性を持たせることを強制します。
+アクセシビリティに必要な属性が要素上に存在することを強制します。以下のチェックが含まれます。
+
+- `<a>` should have an href (unless it's a [fragment-defining tag](https://github.com/sveltejs/svelte/issues/4697))
+- `<area>` should have alt, aria-label, or aria-labelledby
+- `<html>` should have lang
+- `<iframe>` should have title
+- `<img>` should have alt
+- `<object>` should have title, aria-label, or aria-labelledby
+- `<input type="image">` should have alt, aria-label, or aria-labelledby
 
 ```sv
 <!-- A11y: <input type=\"image\">要素にはalt、aria-label、aria-labelledby属性が必要です -->
@@ -191,9 +199,23 @@ scopeは、`<th>`要素でのみ使用してください。
 
 ---
 
+### `a11y-mouse-events-have-key-events`
+
+Enforce that `on:mouseover` and `on:mouseout` are accompanied by `on:focus` and `on:blur`, respectively. This helps to ensure that any functionality triggered by these mouse events is also accessible to keyboard users.
+
+```sv
+<!-- A11y: on:mouseover must be accompanied by on:focus -->
+<div on:mouseover={handleMouseover} />
+
+<!-- A11y: on:mouseout must be accompanied by on:blur -->
+<div on:mouseout={handleMouseout} />
+```
+
+---
+
 ### `a11y-positive-tabindex`
 
-ページの流れとキーボードのタブ順を同期させるために、`tabIndex`プロパティを正の値にすることは避けてください。
+`tabIndex`プロパティを正の値にすることは避けてください。要素が期待されるタブの順序から外れてしまい、キーボードユーザーに混乱を招くことになります。
 
 ```sv
 <!-- A11y: tabindexの値が0を超えないようにする -->
@@ -204,7 +226,7 @@ scopeは、`<th>`要素でのみ使用してください。
 
 ### `a11y-structure`
 
-アクセシビリティに関する要素が正しい構造になっていない場合に警告します。
+特定のDOM要素が正しい構造を持つことを強制します。
 
 ```sv
 <!-- A11y: <figcaption>は、<figure>の直接の子でなければなりません -->
@@ -217,7 +239,7 @@ scopeは、`<th>`要素でのみ使用してください。
 
 ### `a11y-unknown-aria-attribute`
 
-aria属性が無効です。[WAI-ARIA States and Properties spec](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties)に基づいて、有効な`aria-*`プロパティを強制します。
+[WAI-ARIA States and Properties spec](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties)に基づいて、既知のARIA属性のみを使用することを強制します。
 
 ```sv
 <!-- A11y: 不明なaria属性 'aria-labeledby'（'labelledby'ではないでしょうか） -->

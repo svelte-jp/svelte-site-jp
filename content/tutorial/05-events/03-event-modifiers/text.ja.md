@@ -25,5 +25,6 @@ DOM イベントハンドラには、それらの動作を変更する修飾子�
 * `capture` — *バブリング* フェーズではなく、*キャプチャ* フェーズ中にハンドラを起動します。([MDN docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture))
 * `once` — ハンドラを最初に実行した後に削除します。
 * `self` — 設定した要素が event.target の場合にのみ、ハンドラをトリガします。
+* `trusted` — only trigger handler if `event.isTrusted` is `true`. I.e. if the event is triggered by a user action.
 
 イベント修飾子を連結することができます。（例）`on:click|once|capture={...}`

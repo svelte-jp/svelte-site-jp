@@ -63,7 +63,7 @@ authorURL: https://desandoval.net
 - [Sapper Netlify](https://www.npmjs.com/package/sapper-netlify) は Netlify functions 上で動作するSapper Projectです。
 
 
-**特定のスターターをお探しですか？** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、インテグレーション例を [sveltejs/integrations](https://github.com/sveltejs/integrations) からチェックしてみてください。
+**特定のスターターをお探しですか？** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、その他多数のテンプレート例をコミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates/) からチェックしてみてください。
 
 **学習リソース**
 - [How to Build a Website with Svelte and SvelteKit](https://prismic.io/blog/svelte-sveltekit-tutorial) は新しいSvelteKitのセットアップを順を追って説明するチュートリアルです。

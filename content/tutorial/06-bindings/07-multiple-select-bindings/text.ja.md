@@ -17,3 +17,5 @@ select は `multiple` 属性を持つことができ、その場合は単一の�
 	{/each}
 </select>
 ```
+
+> 複数のオプションを選択するには `control` キー (MacOSの場合は `command` キー) を押したままにしてください。

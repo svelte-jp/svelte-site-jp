@@ -4,18 +4,21 @@ title: Media elements
 
 `<audio>` と `<video>` 要素にはいくつかバインドできるプロパティがあります。この例では、その内のいくつかをお見せします。
 
-58 行目に `currentTime={time}`、`duration`、`paused` プロパティを追加しバインドします:
+62行目に `currentTime={time}`、`duration`、`paused` プロパティを追加しバインドします:
 
 ```html
 <video
   poster="https://sveltejs.github.io/assets/caminandes-llamigos.jpg"
   src="https://sveltejs.github.io/assets/caminandes-llamigos.mp4"
-  on:mousemove="{handleMousemove}"
-  on:mousedown="{handleMousedown}"
-  bind:currentTime="{time}"
-  bind:duration
-  bind:paused
-></video>
+	on:mousemove={handleMove}
+	on:touchmove|preventDefault={handleMove}
+	on:mousedown={handleMousedown}
+	on:mouseup={handleMouseup}
+	bind:currentTime={time}
+	bind:duration
+	bind:paused>
+	<track kind="captions">
+</video>
 ```
 
 > `bind:duration` は `bind:duration={duration}` に相当します

@@ -6,7 +6,7 @@ title: Compile time
 
 * [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) は [Rollup](https://rollupjs.org) のユーザー向けです
 * [svelte-loader](https://github.com/sveltejs/svelte-loader) は [webpack](https://webpack.js.org) のユーザー向けです
-* もしくは [コミュニティでメンテナンスされているプラグイン](https://github.com/sveltejs/integrations#bundler-plugins) のどれか
+* もしくは [コミュニティでメンテナンスされているプラグイン](https://sveltesociety.dev/tooling) のどれか
 
 とはいえ、バンドルプラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
 
@@ -44,8 +44,9 @@ const result = svelte.compile(source, {
 | `filename` | string | `null`
 | `name` | string | `"Component"`
 | `format` | `"esm"` or `"cjs"` | `"esm"`
-| `generate` | `"dom"` or `"ssr" or false` | `"dom"`
-| `varsReport` | `"strict"` or `"full" or false` | `"strict"`
+| `generate` | `"dom"` or `"ssr"` or `false` | `"dom"`
+| `errorMode` | `"throw"` or `"warn"` | `"throw"`
+| `varsReport` | `"strict"` or `"full"` or `false` | `"strict"`
 | `dev` | boolean | `false`
 | `immutable` | boolean | `false`
 | `hydratable` | boolean | `false`
@@ -67,6 +68,7 @@ const result = svelte.compile(source, {
 | `name` | `"Component"` | 結果として得られるJavaScriptクラスの名前を設定する `string` です (ただし、スコープ内の他の変数と競合する場合はコンパイラが名前を変更します)、通常は `filename` から推測されます。
 | `format` | `"esm"` | `"esm"` の場合、JavaScriptモジュールを作成します (`import` と `export` を指定します)、`"cjs"` の場合、CommonJSモジュールを作成します(`require` と `module.exports` を指定します)、これは、いくつかのサーバーサイドのレンダリング状況やテストに便利です。
 | `generate` | `"dom"` | `"dom"` の場合、SvelteはDOMにマウントするためのJavaScriptクラスを生成します。`"ssr"`の場合、サーバサイドのレンダリングに適した `render` メソッドを持つオブジェクトを出力します。`false` の場合、JavaScriptやCSSは返されず、メタデータだけが返されます。
+| `errorMode` | `"throw"` | If `"throw"`, Svelte throws when a compilation error occurred. If `"warn"`, Svelte will treat errors as warnings and add them to the warning report.
 | `varsReport` | `"strict"` | `"strict"` の場合、Svelteはグローバルまたはインターナルな変数以外のみの変数レポートを返します。`"full"` の場合は検出された全ての変数を返します、`false` の場合は変数レポートは返しません。
 | `dev` | `false` | `true` の場合、コンポーネントに特別なコードを追加します。これは、ランタイムチェックを実行し、開発中にデバッグ情報を提供するためのものです。
 | `immutable` | `false` | `true` の場合、オブジェクトを変更させないことをコンパイラに伝えます。これにより、値が変更されたかどうかのチェックをより控えめにすることができます。
@@ -334,8 +336,7 @@ walk(ast: Node, {
 
 ---
 
-`walk` 関数はパーサーによって生成された抽象構文木をウォークする方法を提供します。
-コンパイラの組み込みインスタンスである[estree-walker](https://github.com/Rich-Harris/estree-walker)を使用します。
+`walk` 関数はパーサーによって生成された抽象構文木をウォークする方法を提供します。コンパイラの組み込みインスタンスである[estree-walker](https://github.com/Rich-Harris/estree-walker)を使用します。
 
 ウォーカーは歩くための抽象構文木と、オプションの2つのメソッド `enter` と `leave` を持つオブジェクトを受け取ります。各ノードに対して、(存在すれば) `enter` が呼び出されます。そして `enter` を実行している間に `this.skip()` が呼ばれない限り、各子プロセスを巡回した後、ノード上で `leave` が呼ばれます。
 
