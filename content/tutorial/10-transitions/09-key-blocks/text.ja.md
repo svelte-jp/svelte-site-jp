@@ -2,7 +2,7 @@
 title: Key blocks
 ---
 
-Key blocks destroy and recreate their contents when the value of an expression changes.
+Key ブロックは、式の値が変更されたときにその中身を破棄して再作成します。
 
 ```html
 {#key value}
@@ -10,7 +10,6 @@ Key blocks destroy and recreate their contents when the value of an expression c
 {/key}
 ```
 
-This is useful if you want an element to play its transition whenever a value changes instead of only when the element enters or leaves the DOM.
+要素をDOMに出入りしたときだけでなく、値が変化したときにトランジションしたい場合に便利です。
 
-Wrap the `<span>` element in a key block depending on `number`. This will make the
-animation play whenever you press the increment button.
+`number` に依存したキーブロックで `<span>` を囲みます。これにより、increment ボタンを押すたびにアニメーションが再生されるようになります。

@@ -516,7 +516,7 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 * `capture` — *バブリング*フェーズではなく*キャプチャ*フェーズ中にハンドラを実行します
 * `once` — ハンドラが最初に実行された後、削除します
 * `self` — event.target がその要素自体だった場合のみハンドラをトリガします
-* `trusted` — only trigger handler if `event.isTrusted` is `true`. I.e. if the event is triggered by a user action.
+* `trusted` — `event.isTrusted` が `true` の場合にのみハンドラをトリガします。つまり、ユーザーのアクションによってイベントがトリガされた場合です。
 
 修飾子は連鎖させることができます。例 `on:click|once|capture={...}`
 
@@ -1590,7 +1590,7 @@ bind:this={component_instance}
 
 `<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](docs#use_action) を使用することもできます。
 
-`<svelte:body>` コンポーネントのトップレベルに表示する必要があります。
+`<svelte:body>` はコンポーネントのトップレベルに表示する必要があります。
 
 ```sv
 <svelte:body

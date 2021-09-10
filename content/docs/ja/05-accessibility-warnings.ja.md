@@ -2,7 +2,7 @@
 title: Accessibility warnings
 ---
 
-アクセシビリティ（a11yと略されます）を正しく理解することは容易ではありませんが、Svelteは、アクセシブルではないマークアップを書くとコンパイル時に警告してくれます。However, keep in mind that many accessibility issues can only be identified at runtime using other automated tools and by manually testing your application.
+アクセシビリティ（a11yと略されます）を正しく理解することは容易ではありませんが、Svelteは、アクセシブルではないマークアップを書くとコンパイル時に警告してくれます。しかし、多くのアクセシビリティの問題は、他の自動化されたツールを使用したり、手動でアプリケーションをテストするなど、実行時に特定できることを忘れないでください。
 
 Svelteが行うアクセシビリティチェックのリストは以下の通りです。
 
@@ -164,13 +164,13 @@ scope 属性は、`<th>`要素でのみ使用してください。
 
 アクセシビリティに必要な属性が要素上に存在することを強制します。以下のチェックが含まれます。
 
-- `<a>` should have an href (unless it's a [fragment-defining tag](https://github.com/sveltejs/svelte/issues/4697))
-- `<area>` should have alt, aria-label, or aria-labelledby
-- `<html>` should have lang
-- `<iframe>` should have title
-- `<img>` should have alt
-- `<object>` should have title, aria-label, or aria-labelledby
-- `<input type="image">` should have alt, aria-label, or aria-labelledby
+- `<a>` には href が必要です ([fragment-defining tag](https://github.com/sveltejs/svelte/issues/4697) ではない限り)
+- `<area>` には alt、aria-label または aria-labelledby が必要です
+- `<html>` には lang が必要です
+- `<iframe>` には title が必要です
+- `<img>` には alt が必要です
+- `<object>` には title、aria-label または aria-labelledby が必要です
+- `<input type="image">` には alt、aria-label または aria-labelledby が必要です。
 
 ```sv
 <!-- A11y: <input type=\"image\">要素にはalt、aria-label、aria-labelledby属性が必要です -->
@@ -201,7 +201,7 @@ scope 属性は、`<th>`要素でのみ使用してください。
 
 ### `a11y-mouse-events-have-key-events`
 
-Enforce that `on:mouseover` and `on:mouseout` are accompanied by `on:focus` and `on:blur`, respectively. This helps to ensure that any functionality triggered by these mouse events is also accessible to keyboard users.
+`on:mouseover` と `on:mouseout` に対し、それぞれ `on:focus` と `on:blur` を付けることを強制します。これにより、こららのマウスイベントによってトリガされる機能が、キーボードユーザーもアクセス可能であることが保証されます。
 
 ```sv
 <!-- A11y: on:mouseover must be accompanied by on:focus -->
