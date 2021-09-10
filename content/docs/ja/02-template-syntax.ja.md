@@ -1250,9 +1250,9 @@ DOM イベントと同様に、`on:` ディレクティブが値なしに使わ�
 
 ---
 
-As of [Svelte 3.38](https://github.com/sveltejs/svelte/issues/6268) ([RFC](https://github.com/sveltejs/rfcs/pull/13)), you can pass styles as props to components for the purposes of theming, using CSS custom properties. 
+[Svelte 3.38](https://github.com/sveltejs/svelte/issues/6268) ([RFC](https://github.com/sveltejs/rfcs/pull/13)) から、テーマ設定のためにスタイルをプロパティとしてコンポーネントに渡すことができます。これには CSS カスタムプロパティを使用します。
 
-Svelte's implementation is essentially syntactic sugar for adding a wrapper element. This example:
+Svelte の実装は、基本的にラッパー要素を追加するためのシンタックスシュガー(糖衣構文)です。この例では:
 
 ```sv
 <Slider
@@ -1265,7 +1265,7 @@ Svelte's implementation is essentially syntactic sugar for adding a wrapper elem
 
 ---
 
-Desugars to this:
+デシュガー(脱糖)すると:
 
 ```sv
 <div style="display: contents; --rail-color: black; --track-color: rgb(0, 0, 255)">
@@ -1277,11 +1277,11 @@ Desugars to this:
 </div>
 ```
 
-**Note**: Since this is an extra div, beware that your CSS structure might accidentally target this. Be mindful of this added wrapper element when using this feature. Also note that not all browsers support `display: contents`: https://caniuse.com/css-display-contents 
+**注意**: 余分なdivが追加されるため、あなたのCSS構造が誤ってこれをターゲットにしてしまう可能性があるので注意してください。この機能を使用する際は、この追加されるラッパー要素に気をつけてください。また、全てのブラウザが `display: contents` をサポートしているわけではないことに注意してください: https://caniuse.com/css-display-contents 
 
 ---
 
-Svelte's CSS Variables support allows for easily themable components:
+Svelte の CSS Variables サポートによって、テーマに沿ったコンポーネントを作るのは容易です。
 
 ```sv
 <!-- Slider.svelte -->
@@ -1294,7 +1294,7 @@ Svelte's CSS Variables support allows for easily themable components:
 
 ---
 
-So you can set a high level theme color:
+ハイレベルなテーマカラーを設定できますし、
 
 ```css
 /* global.css */
@@ -1305,7 +1305,7 @@ html {
 
 ---
 
-Or override it at the consumer level:
+コンシューマーレベルでそれをオーバーライドできます。
 
 ```sv
 <Slider --rail-color="goldenrod"/>
