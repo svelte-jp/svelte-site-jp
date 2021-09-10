@@ -84,6 +84,8 @@ afterUpdate(callback: () => void)
 
 コンポーネントが更新された直後に実行するコールバックをスケジュールします。
 
+> コールバック実行が最初に実行されるのは、最初の `onMount` の後です
+
 ```sv
 <script>
 	import { afterUpdate } from 'svelte';
@@ -195,6 +197,24 @@ hasContext: boolean = hasContext(key: any)
 	if (hasContext('answer')) {
 		// do something
 	}
+</script>
+```
+
+#### `getAllContexts`
+
+```js
+contexts: Map<any, any> = getAllContexts()
+```
+
+---
+
+最も近い親コンポーネントにある全てのコンテキストマップを取得します。これはコンポーネントの初期化中に呼び出す必要があります。例えば、プログラムでコンポーネントを作成し、既存のコンテキストを渡したい場合などに便利です。
+
+```sv
+<script>
+	import { getAllContexts } from 'svelte';
+
+	const contexts = getAllContexts();
 </script>
 ```
 
@@ -929,7 +949,7 @@ const app = new App({
 
 | オプション | デフォルト | 説明 |
 | --- | --- | --- |
-| `target` | **none** | レンダリング先の `HTMLElement`。このオプションは必須です
+| `target` | **none** | レンダリング先の `HTMLElement` または `ShadowRoot`。このオプションは必須です
 | `anchor` | `null` | `target` の子要素。これのすぐ前にコンポーネントがレンダリングされます
 | `props` | `{}` | コンポーネントに渡すプロパティのオブジェクト
 | `context` | `new Map()` | コンポーネントに提供するルートレベルのコンテキストのキーと値のペアの `Map`

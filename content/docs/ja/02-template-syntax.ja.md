@@ -136,11 +136,14 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US
 
 テキストにもJavaScriptの式を含めることができます。
 
+> 正規表現 (`RegExp`) の [リテラル記法](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#literal_notation_and_constructor)、括弧で囲う必要があります。
+
 ```sv
 <h1>Hello {name}!</h1>
 <p>{a} + {b} = {a + b}.</p>
-```
 
+<div>{(/^[A-Za-z ]+$/).test(value) ? x : y}</div>
+```
 
 ### Comments
 
@@ -347,7 +350,7 @@ promise が失敗した時に何もレンダリングする必要がない場合
 
 ---
 
-逆にエラー状態のみを表示したい場合は `then` ブロックを省略できます。
+同様に、エラー状態のみを表示したい場合は `then` ブロックを省略できます。
 
 ```sv
 {#await promise catch error}
@@ -513,6 +516,7 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 * `capture` — *バブリング*フェーズではなく*キャプチャ*フェーズ中にハンドラを実行します
 * `once` — ハンドラが最初に実行された後、削除します
 * `self` — event.target がその要素自体だった場合のみハンドラをトリガします
+* `trusted` — `event.isTrusted` が `true` の場合にのみハンドラをトリガします。つまり、ユーザーのアクションによってイベントがトリガされた場合です。
 
 修飾子は連鎖させることができます。例 `on:click|once|capture={...}`
 
@@ -959,20 +963,22 @@ transition = (node: HTMLElement, params: any) => {
 <script>
 	export let visible = false;
 
-	function typewriter(node, { speed = 50 }) {
+	function typewriter(node, { speed = 1 }) {
 		const valid = (
 			node.childNodes.length === 1 &&
 			node.childNodes[0].nodeType === Node.TEXT_NODE
 		);
 
-		if (!valid) return {};
+		if (!valid) {
+			throw new Error(`This transition only works on elements with a single text node child`);
+		}
 
 		const text = node.textContent;
-		const duration = text.length * speed;
+		const duration = text.length / (speed * 0.01);
 
 		return {
 			duration,
-			tick: (t, u) => {
+			tick: t => {
 				const i = ~~(text.length * t);
 				node.textContent = text.slice(0, i);
 			}
@@ -981,7 +987,7 @@ transition = (node: HTMLElement, params: any) => {
 </script>
 
 {#if visible}
-	<p in:typewriter="{{ speed: 20 }}">
+	<p in:typewriter="{{ speed: 1 }}">
 		The quick brown fox jumps over the lazy dog
 	</p>
 {/if}
@@ -1244,9 +1250,9 @@ DOM イベントと同様に、`on:` ディレクティブが値なしに使わ�
 
 ---
 
-As of [Svelte 3.38](https://github.com/sveltejs/svelte/issues/6268) ([RFC](https://github.com/sveltejs/rfcs/pull/13)), you can pass styles as props to components for the purposes of theming, using CSS custom properties. 
+[Svelte 3.38](https://github.com/sveltejs/svelte/issues/6268) ([RFC](https://github.com/sveltejs/rfcs/pull/13)) から、テーマ設定のためにスタイルをプロパティとしてコンポーネントに渡すことができます。これには CSS カスタムプロパティを使用します。
 
-Svelte's implementation is essentially syntactic sugar for adding a wrapper element. This example:
+Svelte の実装は、基本的にラッパー要素を追加するためのシンタックスシュガー(糖衣構文)です。この例では:
 
 ```sv
 <Slider
@@ -1259,7 +1265,7 @@ Svelte's implementation is essentially syntactic sugar for adding a wrapper elem
 
 ---
 
-Desugars to this:
+デシュガー(脱糖)すると:
 
 ```sv
 <div style="display: contents; --rail-color: black; --track-color: rgb(0, 0, 255)">
@@ -1271,11 +1277,11 @@ Desugars to this:
 </div>
 ```
 
-**Note**: Since this is an extra div, beware that your CSS structure might accidentally target this. Be mindful of this added wrapper element when using this feature. Also note that not all browsers support `display: contents`: https://caniuse.com/css-display-contents 
+**注意**: 余分なdivが追加されるため、あなたのCSS構造が誤ってこれをターゲットにしてしまう可能性があるので注意してください。この機能を使用する際は、この追加されるラッパー要素に気をつけてください。また、全てのブラウザが `display: contents` をサポートしているわけではないことに注意してください: https://caniuse.com/css-display-contents 
 
 ---
 
-Svelte's CSS Variables support allows for easily themable components:
+Svelte の CSS Variables サポートによって、テーマに沿ったコンポーネントを作るのは容易です。
 
 ```sv
 <!-- Slider.svelte -->
@@ -1288,7 +1294,7 @@ Svelte's CSS Variables support allows for easily themable components:
 
 ---
 
-So you can set a high level theme color:
+ハイレベルなテーマカラーを設定できますし、
 
 ```css
 /* global.css */
@@ -1299,7 +1305,7 @@ html {
 
 ---
 
-Or override it at the consumer level:
+コンシューマーレベルでそれをオーバーライドできます。
 
 ```sv
 <Slider --rail-color="goldenrod"/>
@@ -1582,12 +1588,15 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、コンポーネントのトップレベルに表示する必要があります。
+`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](docs#use_action) を使用することもできます。
+
+`<svelte:body>` はコンポーネントのトップレベルに表示する必要があります。
 
 ```sv
 <svelte:body
 	on:mouseenter={handleMouseenter}
 	on:mouseleave={handleMouseleave}
+	use:someAction
 />
 ```
 

@@ -13,11 +13,11 @@ title: Component format
 	// ロジックを記述
 </script>
 
+<!-- 0個以上のマークアップを記述 -->
+
 <style>
 	/* styleを記述 */
 </style>
-
-<!-- 0個以上のマークアップを記述 -->
 ```
 
 ### &lt;script&gt;

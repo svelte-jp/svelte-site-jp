@@ -65,7 +65,7 @@ authorURL: https://desandoval.net
 - [Adds Supabase to Svelte](https://github.com/joshnuss/svelte-supabase) は、SvelteKit プロジェクトに Spabase を追加する実験的なコマンドです
 - [svelte-babylon](https://github.com/SectorXUSA/svelte-babylon) はリアクティブな Svelte コンポーネントを通して BabylonJS を A-Frame のように使用することができます
 
-**特定のスターターをお探しですか？** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、インテグレーション例を [sveltejs/integrations](https://github.com/sveltejs/integrations) からチェックしてみてください。
+**特定のスターターをお探しですか？** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、その他多数のテンプレート例をコミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates/) からチェックしてみてください。
 
 
 **Learning Resources**

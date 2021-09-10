@@ -38,4 +38,4 @@ const foo = obj.foo;
 foo.bar = 'baz';
 ```
 
-… `obj = obj` を追記しない限り、`obj.foo.bar` への参照は更新されません。
+… `obj = obj` を追記しない限り、`obj.foo.bar` のリアクティビティはトリガーされません。
