@@ -41,7 +41,7 @@ Svelte のホームページやドキュメントでは [degit](https://github.c
 
 ## Why are we migrating to something new?
 
-まず最初に、[sveltejs/template](https://github.com/sveltejs/template) と [sveltejs/sapper-template](https://github.com/sveltejs/sapper-template) の区別は混乱を招きます、特に Svelte を初めて利用する人には。Svelte でアプリを構築し始めるのに、推奨する方法が1つであれば、大きなメリットがもたらされるでしょう。オンボーディングをシンプルにし、メンテナンスとサポートの負担を減らし、潜在的には予測しやすいプロジェクト構造によって解き放たれる新しい可能性を探り始めることができます。(最後の部分は、その可能性を完全に理解するには時間がかかるため、意図的に曖昧にしています。)
+まず最初に、[sveltejs/template](https://github.com/sveltejs/template) と [sveltejs/sapper-template](https://github.com/sveltejs/sapper-template) の区別は混乱を招きます、特に Svelte を初めて利用する人には。Svelte でアプリを構築し始めるのに、推奨する方法が1つであれば、大きなメリットがもたらされるでしょう。オンボーディングをシンプルにし、メンテナンスとサポートの負担を減らし、潜在的には予測しやすいプロジェクト構造によって解き放たれる新しい可能性を探り始めることができます。(最後の部分は、その可能性を完全に理解するには時間がかかるため、意図的に曖昧にしています)
 
 それはさておき、私たちはしばらくの間 Sapper を書き直すという考えに惹かれていました。長年に渡りコードベースが少し荒れてきたというのもありますが ([Sapper は2017年にスタート](/blog/sapper-towards-the-ideal-web-app-framework))、大きな理由は、ここ最近 Web に多くの変化があったからで、基本的な前提をいくつか再考する時期が来ています。
 
@@ -103,7 +103,7 @@ npm init svelte@next
 
 ## How can I contribute?
 
-パブリックベータのローンチやリポジトリの公開の時期に関する発表をお見逃しなく。(また、ブログ記事に書く予定ですが、私たちは [OpenCollective](https://opencollective.com/svelte) を開始しており、もしこのプロジェクトがあなたにとって価値がある場合に財政的な貢献ができることをお伝えしておかなければなりません。すでに寄付してくださった方々にはとても、とても感謝しています。)
+パブリックベータのローンチやリポジトリの公開の時期に関する発表をお見逃しなく。(また、ブログ記事に書く予定ですが、私たちは [OpenCollective](https://opencollective.com/svelte) を開始しており、もしこのプロジェクトがあなたにとって価値がある場合に財政的な貢献ができることをお伝えしておかなければなりません。すでに寄付してくださった方々にはとても、とても感謝しています)
 
 
 ## Where can I learn more?
