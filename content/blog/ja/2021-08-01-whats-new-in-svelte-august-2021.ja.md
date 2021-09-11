@@ -5,6 +5,15 @@ author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
 
+> 翻訳 : Svelte日本コミュニティ
+> 原文 : https://svelte.dev/blog/sveltekit-beta
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。
+> 正確な内容についてはsvelte.devの原文を参照してください。
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
+
 Changelog（[JS Party Ep. 182](https://changelog.com/jsparty/182)）から Svelte Radio（エピソード [29](https://share.transistor.fm/s/adc23e84) と [30](https://share.transistor.fm/s/6316622d)）まで、今月は Svelte のことを話さずにはいられなかったようですね。また、Svelte では、shadow DOM のサポートと、新たに export や await 機能が追加されました。
 
 ## New in Svelte
