@@ -25,7 +25,7 @@ Changelog（[JS Party Ep. 182](https://changelog.com/jsparty/182)）から Svelt
 [#6416](https://github.com/sveltejs/svelte/pull/6416)）。
 - TypeScript ファイルの前処理を改善するための新しい `errorMode` コンパイラオプション（[#6194](https://github.com/sveltejs/svelte/pull/6194)）。
 - コンポーネント作成時に `target` として `ShadowRoot` を指定できるようになり、Svelte コンポーネントを shadow DOM 内でレンダリングできるようになりました（[#5869](https://github.com/sveltejs/svelte/issues/5869)）。
-- `export { ... } from` （[#2214](https://github.com/sveltejs/svelte/issues/2214)）、`export let { ... } =` （[#5612](https://github.com/sveltejs/svelte/issues/5612)）と `{#await ... then/catch}` （[#6270](https://github.com/sveltejs/svelte/issues/6270)）の構文がすべて Svelte コンポーネントでサポートされました。
+- `export { ... } from`（[#2214](https://github.com/sveltejs/svelte/issues/2214)）、`export let { ... } =`（[#5612](https://github.com/sveltejs/svelte/issues/5612)）と `{#await ... then/catch}`（[#6270](https://github.com/sveltejs/svelte/issues/6270)）の構文がすべて Svelte コンポーネントでサポートされました。
 
 機能とバグ修正の全リストは、[Svelte の Changelog](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md) をご覧ください。
 
