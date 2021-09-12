@@ -21,8 +21,7 @@ Changelog（[JS Party Ep. 182](https://changelog.com/jsparty/182)）から Svelt
 7月は、未解決の PR の数を減らすために本当に努力し、Svelte 3.39.0、3.40.0、3.41.0がリリースされたように、Svelte コアリポジトリにとって2019年後半から最も活発な月でした。大量のバグ修正に加えて、以下の新機能が追加されました。
 
 - イベント修飾子 `|trusted` は、イベントが呼び出される前に、そのイベントが信頼できるかどうかをチェックすることができます（[#6137](https://github.com/sveltejs/svelte/issues/6137)）。
-- SvelteKit SSR の改善作業をサポートする新しい `svelte/ssr` パッケージです（
-[#6416](https://github.com/sveltejs/svelte/pull/6416)）。
+- SvelteKit SSR の改善作業をサポートする新しい `svelte/ssr` パッケージです（[#6416](https://github.com/sveltejs/svelte/pull/6416)）。
 - TypeScript ファイルの前処理を改善するための新しい `errorMode` コンパイラオプション（[#6194](https://github.com/sveltejs/svelte/pull/6194)）。
 - コンポーネント作成時に `target` として `ShadowRoot` を指定できるようになり、Svelte コンポーネントを shadow DOM 内でレンダリングできるようになりました（[#5869](https://github.com/sveltejs/svelte/issues/5869)）。
 - `export { ... } from`（[#2214](https://github.com/sveltejs/svelte/issues/2214)）、`export let { ... } =`（[#5612](https://github.com/sveltejs/svelte/issues/5612)）と `{#await ... then/catch}`（[#6270](https://github.com/sveltejs/svelte/issues/6270)）の構文がすべて Svelte コンポーネントでサポートされました。
