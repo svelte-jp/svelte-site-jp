@@ -12,7 +12,7 @@ title: Keyed each blocks
 
 ```html
 {#each things as thing (thing.id)}
-	<Thing current={thing.color}/>
+	<Thing name={thing.name}/>
 {/each}
 ```
 
