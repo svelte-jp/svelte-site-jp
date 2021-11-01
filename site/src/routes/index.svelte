@@ -28,17 +28,17 @@
 </style>
 
 <svelte:head>
-	<title>Svelte • Cybernetically enhanced web apps</title>
+	<title>Svelte • サイバネティクスで強化されたWebアプリ</title>
 
 	<meta name="twitter:title" content="Svelte">
-	<meta name="twitter:description" content="Cybernetically enhanced web apps">
-	<meta name="Description" content="Cybernetically enhanced web apps">
+	<meta name="twitter:description" content="サイバネティクスで強化されたWebアプリ">
+	<meta name="Description" content="サイバネティクスで強化されたWebアプリ">
 </svelte:head>
 
 <h1 class="visually-hidden">Svelte</h1>
 <Hero
 	title="Svelte"
-	tagline="Cybernetically enhanced web apps"
+	tagline="サイバネティクスで強化されたWebアプリ"
 	outline="svelte-logo-outline.svg"
 	logotype="svelte-logotype.svg"
 />
@@ -46,48 +46,48 @@
 <Blurb>
 	<a href="blog/write-less-code" slot="one">
 		<h2>Write less code</h2>
-		<p>Build boilerplate-free components using languages you already know — HTML, CSS and JavaScript</p>
+		<p>既に広く知られている言語（HTML、CSS、JavaScript）で、ボイラープレートのないコンポーネントを作成することができます</p>
 
-		<span class="learn-more">learn more</span>
+		<span class="learn-more">さらに詳しく</span>
 	</a>
 
 	<a href="blog/virtual-dom-is-pure-overhead" slot="two">
 		<h2>No virtual DOM</h2>
-		<p>Svelte compiles your code to tiny, framework-less vanilla JS — your app starts fast and stays fast</p>
+		<p>Svelteはコードを、フレームワークを含まない小さいvanilla JSにコンパイルします - アプリケーションは高速に起動し、そのスピードを維持します</p>
 
-		<span class="learn-more">learn more</span>
+		<span class="learn-more">さらに詳しく</span>
 	</a>
 
 	<a href="blog/svelte-3-rethinking-reactivity" slot="three">
 		<h2>Truly reactive</h2>
-		<p>No more complex state management libraries — Svelte brings reactivity to JavaScript itself</p>
+		<p>もう複雑な状態管理ライブラリは必要ありません - SvelteはJavaScriptそのものにリアクティビティをもたらします</p>
 
-		<span class="learn-more">learn more</span>
+		<span class="learn-more">さらに詳しく</span>
 	</a>
 
 	<div class="description" slot="what">
-		<p>Svelte is a radical new approach to building user interfaces. Whereas traditional frameworks like React and Vue do the bulk of their work in the <em>browser</em>, Svelte shifts that work into a <em>compile step</em> that happens when you build your app.</p>
+		<p>Svelteはユーザーインタフェースを構築する先鋭的で新しいアプローチです。ReactやVueのような従来のフレームワークがその作業の大部分を <em>ブラウザ</em> で行うのに対し、Svelteはその作業をアプリをビルドする際の <em>コンパイル時</em> に行います。</p>
 
-		<p>Instead of using techniques like virtual DOM diffing, Svelte writes code that surgically updates the DOM when the state of your app changes.</p>
+		<p>Svelteは仮想DOMによる差分検出のようなテクニックを使用する代わりに、アプリケーションの状態が変化したときにDOMを外科的に更新するコードを生成します。</p>
 
-		<p>We're proud that Svelte was recently voted the <a href="https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-web-frameworks">most loved web framework</a> with the <a href="https://2020.stateofjs.com/en-US/technologies/front-end-frameworks/">most satisfied developers</a> in a pair of industry surveys. We think you'll love it too. <a href="blog/svelte-3-rethinking-reactivity">Read the introductory blog post</a> to learn more.</p>
+		<p>Svelteが最近行われた2つの調査で <a href="https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-web-frameworks">最も愛されているWebフレームワーク</a>、<a href="https://2020.stateofjs.com/en-US/technologies/front-end-frameworks/">最も開発者を満足させるフレームワーク</a> にそれぞれ選出されたことを誇りに思います。あなたにもきっと気に入って頂けると思います。もっと詳しく知りたい方は <a href="blog/svelte-3-rethinking-reactivity">こちらの紹介記事</a> をご覧ください。</p>
 	</div>
 
 	<div style="grid-area: start; display: flex; flex-direction: column; min-width: 0" slot="how">
 		<pre class="language-bash" style="margin: 0 0 1em 0; min-width: 0; min-height: 0">
 npx degit <a href="https://github.com/sveltejs/template" style="user-select: initial;">sveltejs/template</a> my-svelte-project
-<span class="token comment"># or download and extract <a href="https://github.com/sveltejs/template/archive/master.zip">this .zip file</a></span>
+<span class="token comment"># または、<a href="https://github.com/sveltejs/template/archive/master.zip">こちらの.zipファイル</a> をダウンロードし、解凍します</span>
 cd my-svelte-project
-<span class="token comment"># to use <a href="blog/svelte-and-typescript">TypeScript</a> run:</span>
+<span class="token comment"># <a href="blog/svelte-and-typescript">TypeScript</a> を使用する場合はこちらを実行してください:</span>
 <span class="token comment"># node scripts/setupTypeScript.js</span>
 
 npm install
 npm run dev
 		</pre>
 
-		<p style="flex: 1">See the <a href="blog/the-easiest-way-to-get-started">quickstart guide</a> for more information.</p>
+		<p style="flex: 1">もっと詳しく知りたい方はこちらの<a href="blog/the-easiest-way-to-get-started">クイックスタートガイド</a>をご覧ください。</p>
 
-		<p class="cta"><a sveltekit:prefetch href="tutorial">Learn Svelte</a></p>
+		<p class="cta"><a sveltekit:prefetch href="tutorial">Svelteを学ぶ</a></p>
 	</div>
 </Blurb>
 
