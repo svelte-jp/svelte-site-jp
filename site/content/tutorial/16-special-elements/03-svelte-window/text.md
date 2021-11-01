@@ -2,12 +2,12 @@
 title: <svelte:window>
 ---
 
-Just as you can add event listeners to any DOM element, you can add event listeners to the `window` object with `<svelte:window>`.
+イベントリスナーを任意の DOM 要素に追加できるのと同じように、`window` オブジェクトにも `<svelte:window>` でイベントリスナーを追加できます。
 
-On line 11, add the `keydown` listener:
+11行目に `keydown` リスナーを追加します。
 
 ```html
 <svelte:window on:keydown={handleKeydown}/>
 ```
 
-> As with DOM elements, you can add [event modifiers](tutorial/event-modifiers) like `preventDefault`.
+> DOM要素と同様に `preventDefault` のような[イベント修飾子](tutorial/event-modifiers)を追加することができます。

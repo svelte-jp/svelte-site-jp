@@ -2,9 +2,9 @@
 title: Nested components
 ---
 
-It would be impractical to put your entire app in a single component. Instead, we can import components from other files and include them as though we were including elements.
+アプリ全体を単一のコンポーネントにまとめるのは現実的ではありません。代わりに、他のファイルからコンポーネントをインポートして、HTML要素を使用するのと同じようにコンポーネントを使用することができます。
 
-Add a `<script>` tag that imports `Nested.svelte`...
+`<script>`タグを追加して`Nested.svelte`をインポートします…
 
 ```html
 <script>
@@ -12,13 +12,13 @@ Add a `<script>` tag that imports `Nested.svelte`...
 </script>
 ```
 
-...then add it to the markup:
+…そしてそれを追加します。
 
 ```html
 <p>This is a paragraph.</p>
 <Nested/>
 ```
 
-Notice that even though `Nested.svelte` has a `<p>` element, the styles from `App.svelte` don't leak in.
+`Nested.svelte`には`p`要素がありますが、`App.svelte`のスタイルが適用されていないことに注目してください。
 
-Also notice that the component name `Nested` is capitalised. This convention has been adopted to allow us to differentiate between user-defined components and regular HTML tags.
+またコンポーネント名`Nested`が大文字で始まっていることにも注目してください。この命名規則は、ユーザーが定義したコンポーネントと、通常のHTMLタグを区別するために採用されました。

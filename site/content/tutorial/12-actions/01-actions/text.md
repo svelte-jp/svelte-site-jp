@@ -2,20 +2,20 @@
 title: The use directive
 ---
 
-Actions are essentially element-level lifecycle functions. They're useful for things like:
+アクションは基本的に要素レベルのライフサイクル関数です。これらは以下のような場合に便利です。
 
-* interfacing with third-party libraries
-* lazy-loaded images
-* tooltips
-* adding custom event handlers
+* サードパーティライブラリとの連携
+* 画像の遅延読み込み
+* ツールチップ
+* カスタムイベントハンドラの追加
 
-In this app, we want to make the orange box 'pannable'. It has event handlers for the `panstart`, `panmove` and `panend` events, but these aren't native DOM events. We have to dispatch them ourselves. First, import the `pannable` function...
+このアプリでは、オレンジ色のボックスを「pannable」にしたいと考えています。このアプリには `panstart`, `panmove`, そして `panend` イベント用のイベントハンドラがあります。しかしこれらはネイティブの DOM イベントではありません。これらのイベントは自分たちで送信しなければなりません。まず、`pannable` 関数をインポートします…
 
 ```js
 import { pannable } from './pannable.js';
 ```
 
-...then use it with the element:
+…そして、それを要素と一緒に使用します。
 
 ```html
 <div class="box"
@@ -29,9 +29,9 @@ import { pannable } from './pannable.js';
 ></div>
 ```
 
-Open the `pannable.js` file. Like transition functions, an action function receives a `node` and some optional parameters, and returns an action object. That object can have a `destroy` function, which is called when the element is unmounted.
+`pannable.js` ファイルを開きます。トランジション関数と同様に、アクション関数は `node` といくつかのオプションのパラメータを受け取り、アクションオブジェクトを返します。このオブジェクトは `destroy` 関数を持つことができ、要素がマウントされていないときに呼び出されます。
 
-We want to fire `panstart` event when the user mouses down on the element, `panmove` events (with `dx` and `dy` properties showing how far the mouse moved) when they drag it, and `panend` events when they mouse up. One possible implementation looks like this:
+ユーザが要素の上でマウスダウンしたときに `panstart` イベントを、ドラッグしたときに `panmove` イベント (マウスがどのくらい移動したかを示す `dx` と `dy` プロパティを持つ) を、マウスアップしたときに `panend` イベントを発生させたいと考えています。考えられる実装の1つは以下のようになります。
 
 ```js
 export function pannable(node) {
@@ -83,6 +83,6 @@ export function pannable(node) {
 }
 ```
 
-Update the `pannable` function and try moving the box around.
+`pannable` 関数を更新して、ボックスを移動させてみてください。
 
-> This implementation is for demonstration purposes — a more complete one would also consider touch events.
+> この実装はデモ用のものです。-- より完全なものは、タッチイベントも考慮しています。

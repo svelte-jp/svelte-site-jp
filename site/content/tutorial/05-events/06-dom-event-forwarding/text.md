@@ -2,9 +2,9 @@
 title: DOM event forwarding
 ---
 
-Event forwarding works for DOM events too.
+イベントフォワーディングは DOM イベントでも機能します。
 
-We want to get notified of clicks on our `<CustomButton>` — to do that, we just need to forward `click` events on the `<button>` element in `CustomButton.svelte`:
+`<CustomButton>` でのクリックの通知を受け取るためには、`CustomButton.svelte` にある `<button>` 要素の `click` イベントをフォワードする必要があります。
 
 ```html
 <button on:click>

@@ -2,9 +2,9 @@
 title: <svelte:fragment>
 ---
 
-The `<svelte:fragment>` element allows you to place content in a named slot without wrapping it in a container DOM element. This keeps the flow layout of your document intact.
+`<svelte:fragment>` 要素はコンテナ DOM 要素でラップすることなく、名前のついたスロットにコンテンツを配置する事ができます。これによりドキュメントのフローレイアウトが維持されます。
 
-In the example notice how we applied a flex layout with a gap of `1em` to the box.
+例では box クラスに `1em` の gap を持つ flex レイアウトを適用しています。
 
 ```sv
 <!-- Box.svelte -->
@@ -15,7 +15,7 @@ In the example notice how we applied a flex layout with a gap of `1em` to the bo
 </div>
 
 <style>
-	.box {		
+	.box {
 		display: flex;
 		flex-direction: column;
 		gap: 1em;
@@ -23,9 +23,9 @@ In the example notice how we applied a flex layout with a gap of `1em` to the bo
 </style>
 ```
 
-However, the content in the footer is not spaced out according to this rhythm because wrapping it in a div created a new flow layout.
+しかしながら、footer のコンテンツは新たなフローレイアウトを生成した div 要素でラップされているため、このリズムに沿った配置がされていません。
 
-We can solve this by changing `<div slot="footer">` in the `App` component. Replace the `<div>` with `<svelte:fragment>`:
+これは `App` コンポーネントの `<div slot="footer">` を書き換えることで解決できます。この `<div>` を `<svelte:fragment>` に書き換えます。
 
 ```sv
 <svelte:fragment slot="footer">

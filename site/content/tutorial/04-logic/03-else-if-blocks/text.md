@@ -2,7 +2,7 @@
 title: Else-if blocks
 ---
 
-Multiple conditions can be 'chained' together with `else if`:
+複数の条件を `else if` と一緒に '連結' することができます。
 
 ```html
 {#if x > 10}

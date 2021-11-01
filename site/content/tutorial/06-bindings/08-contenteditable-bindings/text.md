@@ -2,7 +2,7 @@
 title: Contenteditable bindings
 ---
 
-Elements with a `contenteditable="true"` attribute support `textContent` and `innerHTML` bindings:
+`contenteditable="true"` 属性を持つ要素は、`textContent` と `innerHTML` のバインディングをサポートします。
 
 ```html
 <div

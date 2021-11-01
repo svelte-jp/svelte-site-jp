@@ -1,5 +1,5 @@
 ---
-question: How can I get VS Code to syntax-highlight my .svelte files?
+question: VS Codeで.svelteファイルにシンタックスハイライトを行うにはどうすればよいですか?
 ---
 
-There is an [official VS Code extension for Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+[Svelteの公式VS Code拡張](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)があります。

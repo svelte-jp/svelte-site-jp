@@ -2,7 +2,7 @@
 title: Each block bindings
 ---
 
-You can even bind to properties inside an `each` block.
+`each` ブロック内のプロパティにバインドすることもできます。
 
 ```html
 {#each todos as todo}
@@ -18,4 +18,4 @@ You can even bind to properties inside an `each` block.
 {/each}
 ```
 
-> Note that interacting with these `<input>` elements will mutate the array. If you prefer to work with immutable data, you should avoid these bindings and use event handlers instead.
+> これらの `<input>` 要素と互いに作用すると、配列が突然変化することに注意してください。不変のデータを扱いたい場合は、バインディングを避け、代わりにイベントハンドラを使用する必要があります。

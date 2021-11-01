@@ -2,13 +2,13 @@
 title: Compile time
 ---
 
-Typically, you won't interact with the Svelte compiler directly, but will instead integrate it into your build system using a bundler plugin:
+通常、Svelte コンパイラと直接やりとりすることはなく、代わりにバンドルプラグインを使ってビルドシステムに統合することになります。
 
-* [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) for users of [Rollup](https://rollupjs.org)
-* [svelte-loader](https://github.com/sveltejs/svelte-loader) for users of [webpack](https://webpack.js.org)
-* or one of the [community-maintained plugins](https://sveltesociety.dev/tooling)
+* [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) は [Rollup](https://rollupjs.org) のユーザー向けです
+* [svelte-loader](https://github.com/sveltejs/svelte-loader) は [webpack](https://webpack.js.org) のユーザー向けです
+* もしくは [コミュニティでメンテナンスされているプラグイン](https://sveltesociety.dev/tooling) のどれか
 
-Nonetheless, it's useful to understand how to use the compiler, since bundler plugins generally expose compiler options to you.
+とはいえ、バンドルプラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
 
 
 
@@ -27,7 +27,7 @@ result: {
 
 ---
 
-This is where the magic happens. `svelte.compile` takes your component source code, and turns it into a JavaScript module that exports a class.
+ここでマジックが起こります。`svelte.compile` はコンポーネントのソースコードを受け取ります。そしてそれを使用して、クラスをエクスポートするJavaScriptモジュールに変えます。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -37,7 +37,7 @@ const result = svelte.compile(source, {
 });
 ```
 
-The following options can be passed to the compiler. None are required:
+以下のオプションをコンパイラに渡すことができます。どれも必須ではありません。
 
 <!-- | option | type | default
 | --- | --- | --- |
@@ -62,36 +62,36 @@ The following options can be passed to the compiler. None are required:
 | `cssOutputFilename` | string | `null`
 | `sveltePath` | string | `"svelte"` -->
 
-| option | default | description |
-| --- | --- | --- |
-| `filename` | `null` | `string` used for debugging hints and sourcemaps. Your bundler plugin will set it automatically.
-| `name` | `"Component"` | `string` that sets the name of the resulting JavaScript class (though the compiler will rename it if it would otherwise conflict with other variables in scope). It will normally be inferred from `filename`.
-| `format` | `"esm"` | If `"esm"`, creates a JavaScript module (with `import` and `export`). If `"cjs"`, creates a CommonJS module (with `require` and `module.exports`), which is useful in some server-side rendering situations or for testing.
-| `generate` | `"dom"` | If `"dom"`, Svelte emits a JavaScript class for mounting to the DOM. If `"ssr"`, Svelte emits an object with a `render` method suitable for server-side rendering. If `false`, no JavaScript or CSS is returned; just metadata.
-| `errorMode` | `"throw"` | If `"throw"`, Svelte throws when a compilation error occurred. If `"warn"`, Svelte will treat errors as warnings and add them to the warning report.
-| `varsReport` | `"strict"` | If `"strict"`, Svelte returns a variables report with only variables that are not globals nor internals. If `"full"`, Svelte returns a variables report with all detected variables. If `false`, no variables report is returned.
-| `dev` | `false` | If `true`, causes extra code to be added to components that will perform runtime checks and provide debugging information during development.
-| `immutable` | `false` | If `true`, tells the compiler that you promise not to mutate any objects. This allows it to be less conservative about checking whether values have changed.
-| `hydratable` | `false` | If `true` when generating DOM code, enables the `hydrate: true` runtime option, which allows a component to upgrade existing DOM rather than creating new DOM from scratch. When generating SSR code, this adds markers to `<head>` elements so that hydration knows which to replace.
-| `legacy` | `false` | If `true`, generates code that will work in IE9 and IE10, which don't support things like `element.dataset`.
-| `accessors` | `false` | If `true`, getters and setters will be created for the component's props. If `false`, they will only be created for readonly exported values (i.e. those declared with `const`, `class` and `function`). If compiling with `customElement: true` this option defaults to `true`.
-| `customElement` | `false` | If `true`, tells the compiler to generate a custom element constructor instead of a regular Svelte component.
-| `tag` | `null` | A `string` that tells Svelte what tag name to register the custom element with. It must be a lowercase alphanumeric string with at least one hyphen, e.g. `"my-element"`.
-| `css` | `true` | If `true`, styles will be included in the JavaScript class and injected at runtime. It's recommended that you set this to `false` and use the CSS that is statically generated, as it will result in smaller JavaScript bundles and better performance.
-| `cssHash` | See right | A function that takes a `{ hash, css, name, filename }` argument and returns the string that is used as a classname for scoped CSS. It defaults to returning `svelte-${hash(css)}`
-| `loopGuardTimeout` | 0 | A `number` that tells Svelte to break the loop if it blocks the thread for more than `loopGuardTimeout` ms. This is useful to prevent infinite loops. **Only available when `dev: true`**
-| `preserveComments` | `false` | If `true`, your HTML comments will be preserved during server-side rendering. By default, they are stripped out.
-| `preserveWhitespace` | `false` | If `true`, whitespace inside and between elements is kept as you typed it, rather than removed or collapsed to a single space where possible.
+
+The returned `result` object contains the code for your component, along with useful bits of metadata.
+| `filename` | `null` | デバッグのヒントやソースマップに使われる `string` です。バンドルプラグインが自動的に設定します。
+| `name` | `"Component"` | 結果として得られるJavaScriptクラスの名前を設定する `string` です (ただし、スコープ内の他の変数と競合する場合はコンパイラが名前を変更します)、通常は `filename` から推測されます。
+| `format` | `"esm"` | `"esm"` の場合、JavaScriptモジュールを作成します (`import` と `export` を指定します)、`"cjs"` の場合、CommonJSモジュールを作成します(`require` と `module.exports` を指定します)、これは、いくつかのサーバーサイドのレンダリング状況やテストに便利です。
+| `generate` | `"dom"` | `"dom"` の場合、SvelteはDOMにマウントするためのJavaScriptクラスを生成します。`"ssr"`の場合、サーバサイドのレンダリングに適した `render` メソッドを持つオブジェクトを出力します。`false` の場合、JavaScriptやCSSは返されず、メタデータだけが返されます。
+| `errorMode` | `"throw"` | `"throw"` の場合、Svelteはコンパイルエラーが発生したときにエラーをスローします。`"warn"` の場合、Svelteはエラーを警告として扱い、その警告をwarning reportに追加します。
+| `varsReport` | `"strict"` | `"strict"` の場合、Svelteはグローバルまたはインターナルな変数以外のみの変数レポートを返します。`"full"` の場合は検出された全ての変数を返します、`false` の場合は変数レポートは返しません。
+| `dev` | `false` | `true` の場合、コンポーネントに特別なコードを追加します。これは、ランタイムチェックを実行し、開発中にデバッグ情報を提供するためのものです。
+| `immutable` | `false` | `true` の場合、オブジェクトを変更させないことをコンパイラに伝えます。これにより、値が変更されたかどうかのチェックをより控えめにすることができます。
+| `hydratable` | `false` | `true` を指定すると、DOMコードを生成する際に `hydrate: true` ランタイムオプションが有効になり、新しいDOMをゼロから生成するのではなく、既存のDOMをアップグレードすることができます。これにより、SSRコードを生成する際に `<head>` 要素にマーカーが追加され、ハイドレーションがどれを置き換えるべきかを知ることができるようになります。
+| `legacy` | `false` | `true` ならば、`element.dataset` のようなものをサポートしていないIE9とIE10で動作するコードを生成します。
+| `accessors` | `false` | `true` の場合、ゲッターとセッターはコンポーネントのプロパティ(props)に対して作成されます。`false` の場合、それらは読み書きされた値に対してのみ作成されます。 (つまり`const`, `class`, `function` で宣言されたもの) `customElement: true` でコンパイルした場合、このオプションのデフォルトは `true` です。
+| `customElement` | `false` | `true` ならば、コンパイラに通常のSvelteコンポーネントの代わりにカスタム要素のコンストラクタを生成するように指示します。
+| `tag` | `null` | Svelteにカスタム要素を登録するタグ名を指定する `string`。文字列は小文字の英数字で、少なくとも1つのハイフンを含んだ文字列でなければなりません。例えば `"my-element"`.
+| `css` | `true` | `true` の場合、スタイルはJavaScriptクラスに含まれ、実行時に注入されます。これを `false` に設定して静的に生成されたCSSを使うと、JavaScriptのバンドルが小さくなり、パフォーマンスが向上するのでおすすめです。
+| `cssHash` | 右記 | `{ hash, css, name, filename }`を引数に取り、スコープ付きCSSのクラス名として使われる文字列を返す関数。デフォルトでは、`svelte-${hash(css)}`を返します。
+| `loopGuardTimeout` | 0 | `loopGuardTimeout` msを超えてスレッドがブロックされた場合にループを解除するようにSvelteに指示する `数値` です。これは無限ループを防ぐのに便利です。**利用可能なのは `dev: true` の場合のみです**
+| `preserveComments` | `false` | `true` の場合、サーバサイドでのレンダリング中に HTML コメントが保存されます。デフォルトではコメントは削除されます。
+| `preserveWhitespace` | `false` | `true` の場合、要素内や要素間の空白は、可能であれば削除されたり単一の空白になったりするのではなく、入力したとおりに保持されます。
 | `sourcemap` | `object \| string` | An initial sourcemap that will be merged into the final output sourcemap. This is usually the preprocessor sourcemap.
 | `enableSourcemap` | `boolean \| { js: boolean; css: boolean; }` | If `true`, Svelte generate sourcemaps for components. Use an object with `js` or `css` for more granular control of sourcemap generation. By default, this is `true`.
-| `outputFilename` | `null` | A `string` used for your JavaScript sourcemap.
-| `cssOutputFilename` | `null` | A `string` used for your CSS sourcemap.
-| `sveltePath` | `"svelte"` | The location of the `svelte` package. Any imports from `svelte` or `svelte/[module]` will be modified accordingly.
-| `namespace` | `"html"` | The namespace of the element; e.g., `"mathml"`, `"svg"`, `"foreign"`.
+| `outputFilename` | `null` | JavaScriptのソースマップに使われる `文字列` です。
+| `cssOutputFilename` | `null` | CSSのソースマップに使われる `文字列` です。
+| `sveltePath` | `"svelte"` | `svelte` パッケージの場所。`svelte` または `svelte/[module]` からのインポートは、それに応じて変更されます。
+| `namespace` | `"html"` | 要素の名前空間。例えば、`"mathml"`, `"svg"`, `"foreign"`
 
 ---
 
-The returned `result` object contains the code for your component, along with useful bits of metadata.
+返ってきた `result` オブジェクトには、有用なメタデータとともにコンポーネントのコードが含まれます。
 
 ```js
 const {
@@ -104,26 +104,26 @@ const {
 } = svelte.compile(source);
 ```
 
-* `js` and `css` are objects with the following properties:
-	* `code` is a JavaScript string
-	* `map` is a sourcemap with additional `toString()` and `toUrl()` convenience methods
-* `ast` is an abstract syntax tree representing the structure of your component.
-* `warnings` is an array of warning objects that were generated during compilation. Each warning has several properties:
-	* `code` is a string identifying the category of warning
-	* `message` describes the issue in human-readable terms
-	* `start` and `end`, if the warning relates to a specific location, are objects with `line`, `column` and `character` properties
-	* `frame`, if applicable, is a string highlighting the offending code with line numbers
-* `vars` is an array of the component's declarations, used by [eslint-plugin-svelte3](https://github.com/sveltejs/eslint-plugin-svelte3) for example. Each variable has several properties:
-	* `name` is self-explanatory
-	* `export_name` is the name the value is exported as, if it is exported (will match `name` unless you do `export...as`)
-	* `injected` is `true` if the declaration is injected by Svelte, rather than in the code you wrote
-	* `module` is `true` if the value is declared in a `context="module"` script
-	* `mutated` is `true` if the value's properties are assigned to inside the component
-	* `reassigned` is `true` if the value is reassigned inside the component
-	* `referenced` is `true` if the value is used in the template
-	* `referenced_from_script` is `true` if the value is used in the `<script>` outside the declaration
-	* `writable` is `true` if the value was declared with `let` or `var` (but not `const`, `class` or `function`)
-* `stats` is an object used by the Svelte developer team for diagnosing the compiler. Avoid relying on it to stay the same!
+* `js` と `css` は以下のプロパティを持つオブジェクトです。
+	* `code` は JavaScript の文字列です。
+	* `map` はソースマップに `toString()` と `toUrl()` の便利なメソッドを追加したものです。
+* `ast` はコンポーネントの構造を表す抽象構文ツリーです。
+* `warnings` はコンパイル時に生成された警告オブジェクトの配列です。各警告にはいくつかのプロパティがあります。
+	* `code` は警告のカテゴリを識別する文字列です。
+	* `message` は人間が読みやすい言葉で問題を説明したものです。
+	* `start` and `end` はもしも警告が特定の場所に関連している場合には `line`, `column`, `character` プロパティを持つオブジェクトです。
+	* `frame` は該当する場合に問題のあるコードを行番号で強調表示する文字列です。
+* `vars` はコンポーネントの宣言の配列です、例えば [eslint-plugin-svelte3](https://github.com/sveltejs/eslint-plugin-svelte3) で使用されているように、各変数はいくつかのプロパティを持っています。
+	* `name` はそのままの意味です
+	* `export_name` は、エクスポートされた場合に使用される名前です。 (`export...as` でない限り、`name` と一致します)
+	* `injected` が `true` なのは、宣言はあなたが書いたコードではなく、Svelteによって注入されている場合です。
+	* `module` が `true` なのは、モジュールの値が `context="module"`スクリプトで宣言されている場合です。
+	* `mutated` が `true` なのは、値のプロパティがコンポーネント内部に割り当てられている場合です。
+	* `reassigned` が `true` なのは、コンポーネント内で値が再割り当てされている場合です。
+	* `referenced` が `true` なのは、テンプレート内で値が使われている場合です。
+	* `referenced_from_script` が `true` なのは、宣言外の `<script>` の中で値が使われている場合です。
+	* `writable` が `true` なのは、値が `let` または `var` で宣言されている場合です。 (ただし`const`, `class` と `function` は除きます)
+* `stats` はSvelte開発チームがコンパイラを診断するために使用するオブジェクトです。これに依存してはいけません！
 
 
 <!--
@@ -178,7 +178,7 @@ ast: object = svelte.parse(
 
 ---
 
-The `parse` function parses a component, returning only its abstract syntax tree. Unlike compiling with the `generate: false` option, this will not perform any validation or other analysis of the component beyond parsing it.
+`parse` 関数はコンポーネントを解析し、その抽象構文木のみを返します。`generate: false` オプションを指定してコンパイルするのとは異なり、これはコンポーネントを解析する以外の検証やその他の解析を行いません。
 
 
 ```js
@@ -190,9 +190,9 @@ const ast = svelte.parse(source, { filename: 'App.svelte' });
 
 ### `svelte.preprocess`
 
-A number of [community-maintained preprocessing plugins](https://github.com/sveltejs/integrations#preprocessors) are available to allow you to use Svelte with tools like TypeScript, PostCSS, SCSS, and Less.
+Svelte を TypeScript, PostCSS, SCSS, Less などのツールで利用できるようにするための [コミュニティが管理するプリプロセッサプラグイン](https://github.com/sveltejs/integrations#preprocessors) が多数用意されています。
 
-You can write your own preprocessor using the `svelte.preprocess` API.
+`svelte.preprocess` APIを使って独自のプリプロセッサを書くことができます。
 
 ```js
 result: {
@@ -222,15 +222,15 @@ result: {
 
 ---
 
-The `preprocess` function provides convenient hooks for arbitrarily transforming component source code. For example, it can be used to convert a `<style lang="sass">` block into vanilla CSS.
+`preprocess` 関数は、コンポーネントのソースコードを任意に変換するための便利なフックを提供します。例えば、`<style lang="sass">` ブロックを純粋なCSSに変換するために使うことができます。
 
-The first argument is the component source code. The second is an array of *preprocessors* (or a single preprocessor, if you only have one), where a preprocessor is an object with `markup`, `script` and `style` functions, each of which is optional.
+最初の引数はコンポーネントのソースコードです。2番目の引数は、*プリプロセッサ* の配列です (1つしかない場合は単独のプリプロセッサになります)。このプリプロセッサは `markup`, `script`, `style` 関数を持つオブジェクトであり、これらは全てオプションです。
 
-Each `markup`, `script` or `style` function must return an object (or a Promise that resolves to an object) with a `code` property, representing the transformed source code, and an optional array of `dependencies`.
+各 `markup`, `script`, `style` 関数は、変換されたソースコードを表す `code` プロパティと、任意で `dependencies` の配列を含んだオブジェクト (またはオブジェクトを resolve する promise) を返さなければなりません。
 
-The `markup` function receives the entire component source text, along with the component's `filename` if it was specified in the third argument.
+`markup` 関数は、コンポーネントのソーステキスト全体と、第3引数にコンポーネントの `filename` が指定されている場合はそのコンポーネントの `filename` を受け取ります。
 
-> Preprocessor functions should additionally return a `map` object alongside `code` and `dependencies`, where `map` is a sourcemap representing the transformation.
+> プリプロセッサ関数は、`code` や `dependencies` に加えて `map` オブジェクトを返すことがあります。この `map` は変換を表すソースマップです。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -256,9 +256,9 @@ const { code } = await svelte.preprocess(source, {
 
 ---
 
-The `script` and `style` functions receive the contents of `<script>` and `<style>` elements respectively (`content`) as well as the entire component source text (`markup`). In addition to `filename`, they get an object of the element's attributes.
+`script`関数と`style`関数はそれぞれ `<script>` と `<style>` 要素の内容(`content`)とコンポーネントのソーステキスト全体(`markup`)を受け取ります。これらの関数は `filename` に加えて要素の属性のオブジェクトを取得します。
 
-If a `dependencies` array is returned, it will be included in the result object. This is used by packages like [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) to watch additional files for changes, in the case where your `<style>` tag has an `@import` (for example).
+`依存関係`の配列が返された場合、それが結果オブジェクトに含まれます。これは（例えば）[rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなパッケージで、`<style>` タグに `@import` がある場合などに、追加ファイルの変更を監視するために使われます。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -293,7 +293,7 @@ const { code, dependencies } = await svelte.preprocess(source, {
 
 ---
 
-Multiple preprocessors can be used together. The output of the first becomes the input to the second. `markup` functions run first, then `script` and `style`.
+複数のプリプロセッサを併用することができます。最初のプリプロセッサの出力は、2番目のプリプロセッサへの入力になります。最初に `markup` 関数が実行され、次に `script` と `style` が実行されます。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -338,9 +338,9 @@ walk(ast: Node, {
 
 ---
 
-The `walk` function provides a way to walk the abstract syntax trees generated by the parser, using the compiler's own built-in instance of [estree-walker](https://github.com/Rich-Harris/estree-walker).
+`walk` 関数はパーサーによって生成された抽象構文木をウォークする方法を提供します。コンパイラの組み込みインスタンスである[estree-walker](https://github.com/Rich-Harris/estree-walker)を使用します。
 
-The walker takes an abstract syntax tree to walk and an object with two optional methods: `enter` and `leave`. For each node, `enter` is called (if present). Then, unless `this.skip()` is called during `enter`, each of the children are traversed, and then `leave` is called on the node.
+ウォーカーは歩くための抽象構文木と、オプションの2つのメソッド `enter` と `leave` を持つオブジェクトを受け取ります。各ノードに対して、(存在すれば) `enter` が呼び出されます。そして `enter` を実行している間に `this.skip()` が呼ばれない限り、各子プロセスを巡回した後、ノード上で `leave` が呼ばれます。
 
 
 ```js
@@ -363,7 +363,7 @@ svelte.walk(ast, {
 
 ---
 
-The current version, as set in package.json.
+package.json で設定されている現在のバージョンです。
 
 ```js
 const svelte = require('svelte/compiler');

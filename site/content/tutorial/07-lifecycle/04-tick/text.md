@@ -2,17 +2,17 @@
 title: tick
 ---
 
-The `tick` function is unlike other lifecycle functions in that you can call it any time, not just when the component first initialises. It returns a promise that resolves as soon as any pending state changes have been applied to the DOM (or immediately, if there are no pending state changes).
+`tick` 関数は他のライフサイクル関数とは異なり、コンポーネントが最初に初期化されたときだけでなく、いつでも呼び出すことができます。この関数は、保留中の状態変更が DOM に適用されるとすぐに (保留中の状態変更がない場合はすぐに) resolve する promise を返します。
 
-When you update component state in Svelte, it doesn't update the DOM immediately. Instead, it waits until the next *microtask* to see if there are any other changes that need to be applied, including in other components. Doing so avoids unnecessary work and allows the browser to batch things more effectively.
+Svelte でコンポーネントの状態を更新しても、すぐに DOM を更新するわけではありません。その代わりに、次の *マイクロタスク* まで待って、他のコンポーネントも含めて適用する必要のある変更があるかどうかを確認します。そうすることで不要な作業を回避し、ブラウザはより効果的にバッチ処理を行うことができます。
 
-You can see that behaviour in this example. Select a range of text and hit the tab key. Because the `<textarea>` value changes, the current selection is cleared and the cursor jumps, annoyingly, to the end. We can fix this by importing `tick`...
+この例では、その動作を見ることができます。テキストの範囲を選択してタブキーを押します。`<textarea>` の値が変更されるため、現在の選択範囲がクリアされ、カーソルが最後までジャンプしてしまいます。これは `tick` をインポートすることで修正できます…
 
 ```js
 import { tick } from 'svelte';
 ```
 
-...and running it immediately before we set `this.selectionStart` and `this.selectionEnd` at the end of `handleKeydown`:
+…そして `handleKeydown` の最後に `this.selectationStart` と `this.selectationEnd` を設定する直前に実行します。
 
 ```js
 await tick();

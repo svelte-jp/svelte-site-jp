@@ -1,5 +1,5 @@
 ---
-question: How can I update my components written in Svelte v2?
+question: Svelte v2で作成したコンポーネントを更新するにはどうすればよいですか？
 ---
 
-svelte-upgrade isn't fully working for v2->v3 yet, [but it's close](https://github.com/sveltejs/svelte-upgrade/pull/12).
+svelte-upgradeは v2→v3 ではまだ完全には動作しません、[しかし、もう間もなくです](https://github.com/sveltejs/svelte-upgrade/pull/12)。

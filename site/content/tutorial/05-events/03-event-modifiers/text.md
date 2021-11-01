@@ -2,7 +2,7 @@
 title: Event modifiers
 ---
 
-DOM event handlers can have *modifiers* that alter their behaviour. For example, a handler with a `once` modifier will only run a single time:
+DOM イベントハンドラには、それらの動作を変更する修飾子（*modifiers*）を設定することができます。たとえば、`once` 修飾子をハンドラに設定すると、1回だけ実行します。
 
 ```html
 <script>
@@ -16,15 +16,15 @@ DOM event handlers can have *modifiers* that alter their behaviour. For example,
 </button>
 ```
 
-The full list of modifiers:
+イベント修飾子の一覧:
 
-* `preventDefault` — calls `event.preventDefault()` before running the handler. Useful for client-side form handling, for example.
-* `stopPropagation` — calls `event.stopPropagation()`, preventing the event reaching the next element
-* `passive` — improves scrolling performance on touch/wheel events (Svelte will add it automatically where it's safe to do so)
-* `nonpassive` — explicitly set `passive: false`
-* `capture` — fires the handler during the *capture* phase instead of the *bubbling* phase ([MDN docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture))
-* `once` — remove the handler after the first time it runs
-* `self` — only trigger handler if event.target is the element itself
-* `trusted` — only trigger handler if `event.isTrusted` is `true`. I.e. if the event is triggered by a user action.
+* `preventDefault` — ハンドラを実行する前に `event.preventDefault()` を呼び出します。たとえば、クライアントのフォーム処理に役立ちます。
+* `stopPropagation` — 次の要素にイベントが伝播しないように `event.stopPropagation()` を呼び出します。
+* `passive` — タッチ/ホイールイベントでスクロールのパフォーマンスを向上させます（Svelte が安全な場所に自動的に追加します）。
+* `nonpassive` — `passive: false` を明示的に設定します。
+* `capture` — *バブリング* フェーズではなく、*キャプチャ* フェーズ中にハンドラを起動します。([MDN docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture))
+* `once` — ハンドラを最初に実行した後に削除します。
+* `self` — 設定した要素が event.target の場合にのみ、ハンドラをトリガします。
+* `trusted` — `event.isTrusted` が `true` の場合にのみハンドラをトリガします。つまり、ユーザーのアクションによってイベントがトリガされた場合です。
 
-You can chain modifiers together, e.g. `on:click|once|capture={...}`.
+イベント修飾子を連結することができます。（例）`on:click|once|capture={...}`

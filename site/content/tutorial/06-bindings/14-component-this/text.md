@@ -2,13 +2,13 @@
 title: Binding to component instances
 ---
 
-Just as you can bind to DOM elements, you can bind to component instances themselves. For example, we can bind the instance of `<InputField>` to a prop named `field` in the same way we did when binding DOM Elements
+DOM要素にバインドできるのと同じように、コンポーネントのインスタンス自体にもバインドできます。たとえば、DOM要素をバインドするときと同じように、`<InputField>` のインスタンスを `field` という名前のプロパティにバインドすることができます。
 
 ```html
 <InputField bind:this={field} />
 ```
 
-Now we can programmatically interact with this component using `field`.
+これで、`field` を使って、このコンポーネントをプログラムで操作できるようになりました。
 
 ```html
 <button on:click="{() => field.focus()}">
@@ -16,4 +16,4 @@ Now we can programmatically interact with this component using `field`.
 </button>
 ```
 
-> Note that we can't do `{field.focus}` since field is undefined when the button is first rendered and throws an error.
+> なお、ボタンが最初にレンダリングされたとき、fieldは未定義であり、エラーが発生するため、`{field.focus}` をすることはできません。

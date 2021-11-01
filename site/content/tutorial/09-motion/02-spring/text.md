@@ -2,9 +2,9 @@
 title: Spring
 ---
 
-The `spring` function is an alternative to `tweened` that often works better for values that are frequently changing.
+関数 `spring` は `tweened` の代替であり、頻繁に変化する値に対してよりよく機能することが多いです。
 
-In this example we have two stores — one representing the circle's coordinates, and one representing its size. Let's convert them to springs:
+この例では、2つのストアがあります。1つは円の座標を表し、もう1つはサイズを表します。それらをスプリングに変換してみましょう。
 
 ```html
 <script>
@@ -15,7 +15,7 @@ In this example we have two stores — one representing the circle's coordinates
 </script>
 ```
 
-Both springs have default `stiffness` and `damping` values, which control the spring's, well... springiness. We can specify our own initial values:
+両方のスプリングは、デフォルトの `stiffness` と `damping` の値を持っています。これはスプリングの、まあ…スプリング性を制御するものです。私達は、自分の初期値を指定することができます。
 
 ```js
 let coords = spring({ x: 50, y: 50 }, {
@@ -24,4 +24,4 @@ let coords = spring({ x: 50, y: 50 }, {
 });
 ```
 
-Waggle your mouse around, and try dragging the sliders to get a feel for how they affect the spring's behaviour. Notice that you can adjust the values while the spring is still in motion.
+マウスを振り回して、スライダーをドラッグしてみて、スプリングの動作にどのように影響するかを感じてみてください。スプリングがまだ動いている間に値を調整することができることに注目してください。

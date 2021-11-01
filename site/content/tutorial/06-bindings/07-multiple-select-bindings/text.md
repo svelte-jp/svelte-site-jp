@@ -2,9 +2,9 @@
 title: Select multiple
 ---
 
-A select can have a `multiple` attribute, in which case it will populate an array rather than selecting a single value.
+select は `multiple` 属性を持つことができ、その場合は単一の値を選択するのではなく配列を追加します。
 
-Returning to our [earlier ice cream example](tutorial/group-inputs), we can replace the checkboxes with a `<select multiple>`:
+[先ほどのアイスクリームの例](tutorial/group-inputs)に戻り、チェックボックスを `<select multiple>` で置き換えることができます。
 
 ```html
 <h2>Flavours</h2>
@@ -18,4 +18,4 @@ Returning to our [earlier ice cream example](tutorial/group-inputs), we can repl
 </select>
 ```
 
-> Press and hold the `control` key (or the `command` key on MacOS) for selecting multiple options.
+> 複数のオプションを選択するには `control` キー (MacOSの場合は `command` キー) を押したままにしてください。

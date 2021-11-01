@@ -2,7 +2,7 @@
 title: Derived stores
 ---
 
-You can create a store whose value is based on the value of one or more *other* stores with `derived`. Building on our previous example, we can create a store that derives the time the page has been open:
+`derived` を使用して、1つまたはそれ以上の*他の*ストアに基づいた値のストアを作成することができます。前の例を利用して、ページが開かれている時間を取得するストアを作成することができます。
 
 ```js
 export const elapsed = derived(
@@ -11,4 +11,4 @@ export const elapsed = derived(
 );
 ```
 
-> It's possible to derive a store from multiple inputs, and to explicitly `set` a value instead of returning it (which is useful for deriving values asynchronously). Consult the [API reference](docs#derived) for more information.
+> 複数の入力からストアを作成したり、値を返す代わりに `set` を使用して明示的に値をセットすることができます。（これは非同期で値を取得する場合に役立ちます。）詳細については [API reference](docs#derived) を参照してください。

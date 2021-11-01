@@ -5,7 +5,7 @@ title: Run time
 
 ### `svelte`
 
-The `svelte` package exposes [lifecycle functions](tutorial/onmount) and the [context API](tutorial/context-api).
+`svelte` パッケージは、[ライフサイクル関数](tutorial/onmount) と [コンテキストAPI](tutorial/context-api) を公開します。
 
 #### `onMount`
 
@@ -18,9 +18,9 @@ onMount(callback: () => () => void)
 
 ---
 
-The `onMount` function schedules a callback to run as soon as the component has been mounted to the DOM. It must be called during the component's initialisation (but doesn't need to live *inside* the component; it can be called from an external module).
+`onMount` 関数は、コンポーネントが DOM にマウントされるとすぐに実行されるコールバックをスケジュールします。これはコンポーネントの初期化中に呼び出されなければなりません (ただし、コンポーネントの *内部* に存在する必要はありません。外部モジュールから呼び出すことができます)。
 
-`onMount` does not run inside a [server-side component](docs#Server-side_component_API).
+`onMount` は [サーバーサイドコンポーネント](docs#Server-side_component_API) の内部では実行されません。
 
 ```sv
 <script>
@@ -34,7 +34,7 @@ The `onMount` function schedules a callback to run as soon as the component has 
 
 ---
 
-If a function is returned from `onMount`, it will be called when the component is unmounted.
+`onMount` から関数が返された場合、コンポーネントがアンマウントされたときに呼び出されます。
 
 ```sv
 <script>
@@ -50,7 +50,7 @@ If a function is returned from `onMount`, it will be called when the component i
 </script>
 ```
 
-> This behaviour will only work when the function passed to `onMount` *synchronously* returns a value. `async` functions always return a `Promise`, and as such cannot *synchronously* return a function.
+> この挙動は、`onMount` に渡された関数が *同期的に* 値を返す場合にのみ動作します。`async` の関数は常に `Promise` を返すため、*同期的に* 値を返すことはできません。
 
 #### `beforeUpdate`
 
@@ -60,9 +60,9 @@ beforeUpdate(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately before the component is updated after any state change.
+state が変化した後、コンポーネントが更新される直前に実行されるコールバックをスケジュールします。
 
-> The first time the callback runs will be before the initial `onMount`
+> コールバックが最初に実行されるのは、初回の `onMount` の前になります。
 
 ```sv
 <script>
@@ -82,9 +82,9 @@ afterUpdate(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately after the component has been updated.
+コンポーネントが更新された直後に実行するコールバックをスケジュールします。
 
-> The first time the callback runs will be after the initial `onMount`
+> コールバック実行が最初に実行されるのは、最初の `onMount` の後です
 
 ```sv
 <script>
@@ -104,9 +104,9 @@ onDestroy(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately before the component is unmounted.
+コンポーネントがアンマウントされる直前に実行するコールバックをスケジュールします。
 
-Out of `onMount`, `beforeUpdate`, `afterUpdate` and `onDestroy`, this is the only one that runs inside a server-side component.
+`onMount`, `beforeUpdate`, `afterUpdate`, `onDestroy` のうち、サーバサイドコンポーネントの中で動作するのはこれだけです。
 
 ```sv
 <script>
@@ -126,7 +126,7 @@ promise: Promise = tick()
 
 ---
 
-Returns a promise that resolves once any pending state changes have been applied, or in the next microtask if there are none.
+保留中の state の変更が適用されると resolve する promise を返します。もしくは何も保留していない場合に、その次のマイクロタスクで実行されます。
 
 ```sv
 <script>
@@ -148,9 +148,9 @@ setContext(key: any, context: any)
 
 ---
 
-Associates an arbitrary `context` object with the current component and the specified `key`. The context is then available to children of the component (including slotted content) with `getContext`.
+任意の `context` オブジェクトを現在のコンポーネントと指定された `key` に関連付けます。context は、コンポーネントの子 (スロットコンテンツを含む) が `getContext` で利用できるようになります。
 
-Like lifecycle functions, this must be called during component initialisation.
+ライフサイクル関数と同様に、これはコンポーネントの初期化時に呼ばれなければなりません。
 
 ```sv
 <script>
@@ -160,7 +160,7 @@ Like lifecycle functions, this must be called during component initialisation.
 </script>
 ```
 
-> Context is not inherently reactive. If you need reactive values in context then you can pass a store into context, which *will* be reactive.
+> context は本質的にリアクティブではありません。リアクティブな値が必要な場合は、context にストアを渡すことができます。これはリアクティブになります。
 
 #### `getContext`
 
@@ -170,7 +170,7 @@ context: any = getContext(key: any)
 
 ---
 
-Retrieves the context that belongs to the closest parent component with the specified `key`. Must be called during component initialisation.
+指定された `key` を持つ、最も近い親コンポーネントに属する context を取得します。コンポーネントの初期化中に呼び出されなければなりません。
 
 ```sv
 <script>
@@ -188,7 +188,7 @@ hasContext: boolean = hasContext(key: any)
 
 ---
 
-Checks whether a given `key` has been set in the context of a parent component. Must be called during component initialisation.
+与えられた `key` が親コンポーネントの context に設定されているかどうかをチェックします。コンポーネントの初期化時に呼び出されなければなりません。
 
 ```sv
 <script>
@@ -208,7 +208,7 @@ contexts: Map<any, any> = getAllContexts()
 
 ---
 
-Retrieves the whole context map that belongs to the closest parent component. Must be called during component initialisation. Useful, for example, if you programmatically create a component and want to pass the existing context to it.
+最も近い親コンポーネントにある全てのコンテキストマップを取得します。これはコンポーネントの初期化中に呼び出す必要があります。例えば、プログラムでコンポーネントを作成し、既存のコンテキストを渡したい場合などに便利です。
 
 ```sv
 <script>
@@ -226,9 +226,9 @@ dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
 
 ---
 
-Creates an event dispatcher that can be used to dispatch [component events](docs#on_component_event). Event dispatchers are functions that can take two arguments: `name` and `detail`.
+[コンポーネントイベント](docs＃on_component_event) のディスパッチに使用できるイベントディスパッチャーを作成します。 イベントディスパッチャーは、 `name` と ` detail` の2つの引数を取る関数です。 
 
-Component events created with `createEventDispatcher` create a [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent). These events do not [bubble](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture) and are not cancellable with `event.preventDefault()`. The `detail` argument corresponds to the [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) property and can contain any type of data.
+`createEventDispatcher` で作成されたコンポーネントイベントは [カスタムイベント](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) を作成します。これらのイベントは、[バブリング](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture) せず、`event.preventDefault()` でキャンセルできません。引数 `detail` は [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) プロパティに対応し、任意のタイプのデータを含むことができます。
 
 ```sv
 <script>
@@ -242,7 +242,7 @@ Component events created with `createEventDispatcher` create a [CustomEvent](htt
 
 ---
 
-Events dispatched from child components can be listened to in their parent. Any data provided when the event was dispatched is available on the `detail` property of the event object.
+子コンポーネントからディスパッチされたイベントは、親でリッスンできます。 イベントがディスパッチされたときに提供されたデータはすべて、イベントオブジェクトの `detail`プロパティで利用できます。 
 
 ```sv
 <script>
@@ -256,11 +256,11 @@ Events dispatched from child components can be listened to in their parent. Any 
 
 ### `svelte/store`
 
-The `svelte/store` module exports functions for creating [readable](docs#readable), [writable](docs#writable) and [derived](docs#derived) stores.
+`svelte/store` モジュールは、[readable](docs#readable)、[writable](docs#writable)、 [derived](docs#derived) ストアを作成するための関数をエクスポートします。
 
-Keep in mind that you don't *have* to use these functions to enjoy the [reactive `$store` syntax](docs#4_Prefix_stores_with_$_to_access_their_values) in your components. Any object that correctly implements `.subscribe`, unsubscribe, and (optionally) `.set` is a valid store, and will work both with the special syntax, and with Svelte's built-in [`derived` stores](docs#derived).
+コンポーネントで[リアクティブな `$store` 構文](docs#4_$)を便利に使うために、これらの関数を使用する必要がないことを覚えておいてください。`.subscribe` とそのサブスクライブの解除、（オプションで）`.set` を正しく実装したオブジェクトは有効なストアであり、その特殊な構文と Svelte に組み込まれた [`derived` ストア](docs#derived)の両方で機能します。
 
-This makes it possible to wrap almost any other reactive state handling library for use in Svelte. Read more about the [store contract](docs#Store_contract) to see what a correct implementation looks like.
+これにより、Svelte で使用するための、ほぼすべての他のリアクティブ状態を扱うライブラリをラップすることが可能になります。続いて説明する正しい実装がどのようなものか理解するために、[store contract](docs#Store_contract) も読んでみてください。
 
 #### `writable`
 
@@ -273,11 +273,11 @@ store = writable(value?: any, start?: (set: (value: any) => void) => () => void)
 
 ---
 
-Function that creates a store which has values that can be set from 'outside' components. It gets created as an object with additional `set` and `update` methods.
+「外部」コンポーネントから設定できる値を持つストアを作成する関数。これは、`set` と `update` 関数を併せ持つオブジェクトを作成します。
 
-`set` is a method that takes one argument which is the value to be set. The store value gets set to the value of the argument if the store value is not already equal to it.
+`set` は、設定する値である1つの引数を受け取る関数です。ストア値が引数の値とまだ等しくない場合、ストア値は引数の値に設定されます。
 
-`update` is a method that takes one argument which is a callback. The callback takes the existing store value as its argument and returns the new value to be set to the store.
+`update` は、コールバックである1つの引数を受け取る関数です。コールバックは、既存のストア値を引数として受け取り、ストアに設定される新しい値を返します。
 
 ```js
 import { writable } from 'svelte/store';
@@ -295,7 +295,7 @@ count.update(n => n + 1); // logs '2'
 
 ---
 
-If a function is passed as the second argument, it will be called when the number of subscribers goes from zero to one (but not from one to two, etc). That function will be passed a `set` function which changes the value of the store. It must return a `stop` function that is called when the subscriber count goes from one to zero.
+関数が第2引数として渡された場合、サブスクライバーの数が0から1になると呼び出されます（ただし、1から2になった場合などには呼び出されません）。その関数には、ストアの値を変更する `set` 関数が渡されます。その関数は、サブスクライバーの数が1から0になったときに呼び出される `stop` 関数を返す必要があります。
 
 ```js
 import { writable } from 'svelte/store';
@@ -314,7 +314,7 @@ const unsubscribe = count.subscribe(value => {
 unsubscribe(); // logs 'no more subscribers'
 ```
 
-Note that the value of a `writable` is lost when it is destroyed, for example when the page is refreshed. However, you can write your own logic to sync the value to for example the `localStorage`.
+`writable` の値は、ページが更新されたときなど破棄されると失われるので注意してください。ただし、`localStorage` などに値を同期する独自ロジックを作ることはできます。
 
 #### `readable`
 
@@ -324,7 +324,7 @@ store = readable(value?: any, start?: (set: (value: any) => void) => () => void)
 
 ---
 
-Creates a store whose value cannot be set from 'outside', the first argument is the store's initial value, and the second argument to `readable` is the same as the second argument to `writable`.
+「外側」から値を設定できないストアを作成します。第1引数はストアの初期値です。`readable` の第2引数は `writable` の第2引数と同じです。
 
 ```js
 import { readable } from 'svelte/store';
@@ -357,9 +357,9 @@ store = derived([a, ...b], callback: ([a: any, ...b: any[]], set: (value: any) =
 
 ---
 
-Derives a store from one or more other stores. The callback runs initially when the first subscriber subscribes and then whenever the store dependencies change.
+1つ以上の他のストアからストアを派生させます。これらの依存しているものが変化するたびに、コールバックが実行されます。
 
-In the simplest version, `derived` takes a single store, and the callback returns a derived value.
+最もシンプルな例だと、`derived` は単一のストアを受け取り、コールバックは派生値を返します。
 
 ```js
 import { derived } from 'svelte/store';
@@ -369,9 +369,9 @@ const doubled = derived(a, $a => $a * 2);
 
 ---
 
-The callback can set a value asynchronously by accepting a second argument, `set`, and calling it when appropriate.
+コールバックは、第2引数に `set` を受け取り、しかるべき時にそれを呼び出すことで非同期に値を設定できます。
 
-In this case, you can also pass a third argument to `derived` — the initial value of the derived store before `set` is first called.
+この場合、`derived` に第3引数として、`set` が初めて呼び出される前の派生ストアの初期値を渡すこともできます。
 
 ```js
 import { derived } from 'svelte/store';
@@ -383,7 +383,7 @@ const delayed = derived(a, ($a, set) => {
 
 ---
 
-If you return a function from the callback, it will be called when a) the callback runs again, or b) the last subscriber unsubscribes.
+コールバックから関数を返すと、a）コールバックが再度実行される時や b）最後のサブスクライバーがサブスクライブを解除する時に呼び出されます。
 
 ```js
 import { derived } from 'svelte/store';
@@ -401,7 +401,7 @@ const tick = derived(frequency, ($frequency, set) => {
 
 ---
 
-In both cases, an array of arguments can be passed as the first argument instead of a single store.
+どちらの場合も、第1引数として、ストア1つではなく、引数の配列を渡すことができます。
 
 ```js
 import { derived } from 'svelte/store';
@@ -421,9 +421,9 @@ value: any = get(store)
 
 ---
 
-Generally, you should read the value of a store by subscribing to it and using the value as it changes over time. Occasionally, you may need to retrieve the value of a store to which you're not subscribed. `get` allows you to do so.
+通常は、ストアをサブスクライブして、ストア値が切り替わるたびに使用する方法で読み取るほうがよいでしょう。しかし、場合によっては、サブスクライブしていないストア値を取得する必要があります。`get` はそれを可能にします。
 
-> This works by creating a subscription, reading the value, then unsubscribing. It's therefore not recommended in hot code paths.
+> これは、サブスクリプションを作成し、値を読み取ってから、サブスクリプションを解除することで機能します。したがって、ホットコードパスではお勧めしません。
 
 ```js
 import { get } from 'svelte/store';
@@ -434,7 +434,7 @@ const value = get(store);
 
 ### `svelte/motion`
 
-The `svelte/motion` module exports two functions, `tweened` and `spring`, for creating writable stores whose values change over time after `set` and `update`, rather than immediately.
+`svelte/motion` モジュールは、`tweened` と `spring` という2つの関数をエクスポートします。これは書き込み可能なストアを作成するためのもので、値がすぐにではなく、`set` と `update` の後に時間の経過とともに変化するものです。
 
 #### `tweened`
 
@@ -442,20 +442,20 @@ The `svelte/motion` module exports two functions, `tweened` and `spring`, for cr
 store = tweened(value: any, options)
 ```
 
-Tweened stores update their values over a fixed duration. The following options are available:
+トゥイーンされたストアは、一定の期間にわたって値を更新します。以下のオプションが利用可能です。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the tween lasts
-* `easing` (`function`, default `t => t`) — an [easing function](docs#svelte_easing)
-* `interpolate` (`function`) — see below
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トゥイーンの持続時間のミリ秒
+* `easing` (`function`, default `t => t`) — [イージング関数](docs#svelte_easing)
+* `interpolate` (`function`) — 下記を参照してください。
 
-`store.set` and `store.update` can accept a second `options` argument that will override the options passed in upon instantiation.
+`store.set` と `store.update` は、インスタンス化時に渡されたオプションを上書きする第2引数 `options` を受け取ることができます。
 
-Both functions return a Promise that resolves when the tween completes. If the tween is interrupted, the promise will never resolve.
+どちらの関数も、トゥイーンが完了すると resolve する promise を返します。トゥイーンが中断されると、promise は resolve されません。
 
 ---
 
-Out of the box, Svelte will interpolate between two numbers, two arrays or two objects (as long as the arrays and objects are the same 'shape', and their 'leaf' properties are also numbers).
+Svelte は2つの数値、2つの配列、または2つのオブジェクトの間を補間します(配列とオブジェクトが同じ '形状' であり、それらの '子孫' プロパティも数値である限り)。
 
 ```sv
 <script>
@@ -468,7 +468,7 @@ Out of the box, Svelte will interpolate between two numbers, two arrays or two o
 	});
 
 	function handleClick() {
-		// this is equivalent to size.update(n => n + 1)
+		// これは size.update(n => n + 1) と等価です
 		$size += 1;
 	}
 </script>
@@ -481,7 +481,7 @@ Out of the box, Svelte will interpolate between two numbers, two arrays or two o
 
 ---
 
-If the initial value is `undefined` or `null`, the first value change will take effect immediately. This is useful when you have tweened values that are based on props, and don't want any motion when the component first renders.
+初期値が `undefined` または `null` の場合、最初の値の変更はすぐに有効になります。これは、プロパティをベースにしたトゥイーン値を設定していて、コンポーネントの最初のレンダリング時にモーションをかけたくない場合に便利です。
 
 ```js
 const size = tweened(undefined, {
@@ -494,7 +494,7 @@ $: $size = big ? 100 : 10;
 
 ---
 
-The `interpolate` option allows you to tween between *any* arbitrary values. It must be an `(a, b) => t => value` function, where `a` is the starting value, `b` is the target value, `t` is a number between 0 and 1, and `value` is the result. For example, we can use the [d3-interpolate](https://github.com/d3/d3-interpolate) package to smoothly interpolate between two colours.
+`interpolate` オプションを指定すると、*任意の* 値の間でトゥイーンを行うことができます。関数 `(a, b) => t => value` で、`a` は開始値、`b` は目標値、`t` は 0 から 1 の間の数値、`value` は結果です。例えば、[d3-interpolate](https://github.com/d3/d3-interpolate) パッケージを使えば、2つの色の間をスムーズに補間することができます。
 
 ```sv
 <script>
@@ -529,19 +529,19 @@ The `interpolate` option allows you to tween between *any* arbitrary values. It 
 store = spring(value: any, options)
 ```
 
-A `spring` store gradually changes to its target value based on its `stiffness` and `damping` parameters. Whereas `tweened` stores change their values over a fixed duration, `spring` stores change over a duration that is determined by their existing velocity, allowing for more natural-seeming motion in many situations. The following options are available:
+`spring` ストアは、`stiffness` と `damping` パラメータに基づいて目標値まで徐々に変化します。`tweened` ストアが一定のタイミングで値を変化させるのに対し、`spring` ストアは既存の速度によって決定されるタイミングで変化するため、多くの状況でより自然に見える動きを可能にします。以下のオプションが利用可能です。
 
-* `stiffness` (`number`, default `0.15`) — a value between 0 and 1 where higher means a 'tighter' spring
-* `damping` (`number`, default `0.8`) — a value between 0 and 1 where lower means a 'springier' spring
-* `precision` (`number`, default `0.01`) — determines the threshold at which the spring is considered to have 'settled', where lower means more precise
+* `stiffness` (`number`, default `0.15`) — 0 から 1 の間の値で、高い方が「よりタイトな」スプリングを意味します。
+* `damping` (`number`, default `0.8`) — 0 から 1 の間の値で、少ない方が「より弾力のある」スプリングを意味します。
+* `precision` (`number`, default `0.001`) — は、スプリングが「止まった」とみなされる閾値を決定します。少ない方がより精密であることを意味します。
 
 ---
 
-As with [`tweened`](docs#tweened) stores, `set` and `update` return a Promise that resolves if the spring settles. The `store.stiffness` and `store.damping` properties can be changed while the spring is in motion, and will take immediate effect.
+[`tweened`](docs#tweened) ストアと同様に、`set` と `update` はスプリングが止まれば resolve する promise を返します。`store.stiffness` と `store.damping` プロパティはスプリングが動いている間に変更することができ、すぐに効果を発揮します。
 
-Both `set` and `update` can take a second argument — an object with `hard` or `soft` properties. `{ hard: true }` sets the target value immediately; `{ soft: n }` preserves existing momentum for `n` seconds before settling. `{ soft: true }` is equivalent to `{ soft: 0.5 }`.
+`set` と `update` はどちらも第2引数として `hard` または `soft` プロパティを持つオブジェクトを取ることができます。`{ hard: true }` は対象の値を即座に設定します。`{ soft: n }` は既存の運動量を `n` 秒間保持してから止まります。`{ soft: true }` は `{ soft: 0.5 }` と同等です。
 
-[See a full example on the spring tutorial.](tutorial/spring)
+[スプリングチュートリアルの例を参照してください。](tutorial/spring)
 
 ```sv
 <script>
@@ -556,7 +556,7 @@ Both `set` and `update` can take a second argument — an object with `hard` or 
 
 ---
 
-If the initial value is `undefined` or `null`, the first value change will take effect immediately, just as with `tweened` values (see above).
+初期値が `undefined` または `null` の場合、最初の値の変更は `tweened` の場合と同様に即座に有効になります (上記を参照)。
 
 ```js
 const size = spring();
@@ -565,7 +565,7 @@ $: $size = big ? 100 : 10;
 
 ### `svelte/transition`
 
-The `svelte/transition` module exports seven functions: `fade`, `blur`, `fly`, `slide`, `scale`, `draw` and `crossfade`. They are for use with Svelte [`transitions`](docs#transition_fn).
+`svelte/transition` モジュールは7つの関数をエクスポートします。`fade`、`blur`、`fly`、 `slide`、`scale`、`draw`、`crossfade` の7つの関数をエクスポートします。これらは Svelte [`transitions`](docs#transition_fn) で使用します。
 
 #### `fade`
 
@@ -581,15 +581,15 @@ out:fade={params}
 
 ---
 
-Animates the opacity of an element from 0 to the current opacity for `in` transitions and from the current opacity to 0 for `out` transitions.
+要素の opacity を、`in` トランジションでは 0 から現在の opacity まで、`out` トランジションでは現在の opacity から 0 までアニメーションします。
 
-`fade` accepts the following parameters:
+`fade` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `linear`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `linear`) — [イージング関数](docs#svelte_easing)
 
-You can see the `fade` transition in action in the [transition tutorial](tutorial/transition).
+[トランジション チュートリアル](tutorial/transition) で `fade` トランジションの動作を見ることができます。
 
 ```sv
 <script>
@@ -617,15 +617,15 @@ out:blur={params}
 
 ---
 
-Animates a `blur` filter alongside an element's opacity.
+要素の opacity で `blur` フィルタをアニメーション化します。
 
-`blur` accepts the following parameters:
+`blur` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicInOut`) — an [easing function](docs#svelte_easing)
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
-* `amount` (`number`, default 5) - the size of the blur in pixels
+* `delay` (`number`, default 0) —開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — アニメーションの持続時間のミリ秒
+* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#svelte_easing)
+* `opacity` (`number`, default 0) - アニメーション化する opacity の値
+* `amount` (`number`, default 5) - ぼかしのサイズをピクセル単位で表します
 
 ```sv
 <script>
@@ -653,18 +653,18 @@ out:fly={params}
 
 ---
 
-Animates the x and y positions and the opacity of an element. `in` transitions animate from an element's current (default) values to the provided values, passed as parameters. `out` transitions animate from the provided values to an element's default values.
+要素の x と y の位置と opacity をアニメーション化します。`in` トランジションは、要素の現在の(デフォルトの)値からパラメータとして渡された値にアニメーションします。`out` トランジションは、指定された値から要素のデフォルト値にアニメーションします。
 
-`fly` accepts the following parameters:
+`fly` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `x` (`number`, default 0) - the x offset to animate out to and in from
-* `y` (`number`, default 0) - the y offset to animate out to and in from
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `x` (`number`, default 0) - アニメーションで移動する x 位置のオフセット 
+* `y` (`number`, default 0) - アニメーションで移動する y 位置のオフセット
+* `opacity` (`number`, default 0) - アニメーションで変化する opacity のオフセット
 
-You can see the `fly` transition in action in the [transition tutorial](tutorial/adding-parameters-to-transitions).
+`fly` トランジションの動作は [トランジション チュートリアル](tutorial/adding-parameters-to-transitions) で見ることができます。
 
 ```sv
 <script>
@@ -693,13 +693,13 @@ out:slide={params}
 
 ---
 
-Slides an element in and out.
+要素をスライドさせて出し入れします。
 
-`slide` accepts the following parameters:
+`slide` は下記のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
 
 ```sv
 <script>
@@ -728,15 +728,15 @@ out:scale={params}
 
 ---
 
-Animates the opacity and scale of an element. `in` transitions animate from an element's current (default) values to the provided values, passed as parameters. `out` transitions animate from the provided values to an element's default values.
+要素の opacity と scale をアニメーション化します。`in` トランジションは、要素の現在の(デフォルトの)値からパラメータとして渡された値にアニメーションします。`out` トランジションは、指定された値から要素のデフォルト値にアニメーションします。
 
-`scale` accepts the following parameters:
+`scale` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `start` (`number`, default 0) - the scale value to animate out to and in from
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `start` (`number`, default 0) - アニメーションで変化する scale の値
+* `opacity` (`number`, default 0) - アニメーションで変化する opacity の値
 
 ```sv
 <script>
@@ -765,16 +765,16 @@ out:draw={params}
 
 ---
 
-Animates the stroke of an SVG element, like a snake in a tube. `in` transitions begin with the path invisible and draw the path to the screen over time. `out` transitions start in a visible state and gradually erase the path. `draw` only works with elements that have a `getTotalLength` method, like `<path>` and `<polyline>`.
+SVG 要素のストロークを蛇が管の中を進むようにアニメーション化します。`in` トランジションはパスが見えない状態から始まり、時間の経過とともにパスが画面に描画されます。`out` トランジションはパスが見える状態から始まり、徐々にパスを消していきます。`draw` は `<path>` や `<polyline>` のように `getTotalLength` メソッドを持つ要素でのみ動作します。
 
-`draw` accepts the following parameters:
+`draw` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `speed` (`number`, default undefined) - the speed of the animation, see below.
-* `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicInOut`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `speed` (`number`, default undefined) - アニメーションの速度、下記を参照してください
+* `duration` (`number` | `function`, default 800) — トランジションの持続時間のミリ秒
+* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#svelte_easing)
 
-The `speed` parameter is a means of setting the duration of the transition relative to the path's length. It is a modifier that is applied to the length of the path: `duration = length / speed`. A path that is 1000 pixels with a speed of 1 will have a duration of `1000ms`, setting the speed to `0.5` will double that duration and setting it to `2` will halve it.
+速度パラメータ `speed` はパスの長さに対する遷移の持続時間を設定する手段です。これはパスの長さに適用される修飾子で `duration = length / speed` となります。1000ピクセルで速度が1のパスの持続時間は `1000ms` であり、速度を `0.5` に設定すると持続時間は2倍になり、`2` に設定すると半分になります。
 
 ```sv
 <script>
@@ -799,16 +799,16 @@ The `speed` parameter is a means of setting the duration of the transition relat
 
 #### `crossfade`
 
-The `crossfade` function creates a pair of [transitions](docs#transition_fn) called `send` and `receive`. When an element is 'sent', it looks for a corresponding element being 'received', and generates a transition that transforms the element to its counterpart's position and fades it out. When an element is 'received', the reverse happens. If there is no counterpart, the `fallback` transition is used.
+`crossfade` 関数は `send` と `receive` という [トランジション](docs#transition_fn)のペアを作成します。ある要素が「送信」されると、それに対応する「受信」される要素を探し、その要素を相手の位置に変換してフェードアウトさせるトランジションを生成します。要素が「受信」されると、その逆が起こります。対応する要素がない場合は、`fallback` トランジションが使用されます。
 
 ---
 
-`crossfade` accepts the following parameters:
+`crossfade` は下のパラメータを受け付けます:
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `fallback` (`function`) — A fallback [transition](docs#transition_fn) to use for send when there is no matching element being received, and for receive when there is no element being sent. 
+* `delay` (`number`, デフォルト 0) — 開始するまでのミリ秒
+* `duration` (`number` | `function`, デフォルト 800) — トランジションが継続するミリ秒
+* `easing` (`function`, デフォルト `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `fallback` (`function`) — 受信している要素に一致するものがない場合の送信時や、送信している要素がない場合の受信時に使用するフォールバック[トランジション](docs#transition_fn)です。
 
 ```sv
 <script>
@@ -831,7 +831,7 @@ The `crossfade` function creates a pair of [transitions](docs#transition_fn) cal
 
 ### `svelte/animate`
 
-The `svelte/animate` module exports one function for use with Svelte [animations](docs#animate_fn).
+`svelte/animate` モジュールは、Svelte [animations](docs#animate_fn) で使用するための関数を1つエクスポートします。
 
 #### `flip`
 
@@ -839,23 +839,23 @@ The `svelte/animate` module exports one function for use with Svelte [animations
 animate:flip={params}
 ```
 
-The `flip` function calculates the start and end position of an element and animates between them, translating the `x` and `y` values. `flip` stands for [First, Last, Invert, Play](https://aerotwist.com/blog/flip-your-animations/).
+`flip` 関数は要素の開始位置と終了位置を計算し、その間で `x` と `y` の値を変換してアニメーションを行います。`flip` は [First, Last, Invert, Play](https://aerotwist.com/blog/flip-your-animations/) の略です。
 
-`flip` accepts the following parameters:
+`flip` は以下のパラメータを受け付けます。
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number` | `function`, default `d => Math.sqrt(d) * 120`) — see below
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+* `duration` (`number` | `function`, default `d => Math.sqrt(d) * 120`) — 下記を参照してください
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
 
 
-`duration` can be be provided as either:
+`duration` は、以下のいずれかを指定することができます。
 
-- a `number`, in milliseconds.
-- a function, `distance: number => duration: number`, receiving the distance the element will travel in pixels and returning the duration in milliseconds. This allows you to assign a duration that is relative to the distance travelled by each element.
+- `number` はミリ秒単位です。
+- 関数 `distance: number => duration: number` は、要素の移動距離をピクセル単位で受け取り、ミリ秒単位で返します。これにより、各要素の持続時間に対する移動距離を割り当てることができます。
 
 ---
 
-You can see a full example on the [animations tutorial](tutorial/animate)
+[アニメーションのチュートリアル](tutorial/animate) で全ての例を見ることができます。
 
 
 ```sv
@@ -877,9 +877,9 @@ You can see a full example on the [animations tutorial](tutorial/animate)
 
 ### `svelte/easing`
 
-Easing functions specify the rate of change over time and are useful when working with Svelte's built-in transitions and animations as well as the tweened and spring utilities. `svelte/easing` contains 31 named exports, a `linear` ease and 3 variants of 10 different easing functions: `in`, `out` and `inOut`.
+イージング関数は、時間の経過とともに変化する速度を指定するもので、Svelte に組み込まれたトランジションやアニメーション、tweened や spring ユーティリティの作業をする際に便利です。`svelte/easing` には、31の名前付きエクスポートが含まれています。`linear` イージング、10種類のイージング関数の3つのバリエーション `in`, `out`, `inOut` です。
 
-You can explore the various eases using the [ease visualiser](examples#easing) in the [examples section](examples).
+[examples section](examples) の [ease visualiser](examples#easing) で様々なイージングを試してみることができます。
 
 
 | ease | in | out | inOut |
@@ -898,7 +898,7 @@ You can explore the various eases using the [ease visualiser](examples#easing) i
 
 ### `svelte/register`
 
-To render Svelte components in Node.js without bundling, use `require('svelte/register')`. After that, you can use `require` to include any `.svelte` file.
+Svelteコンポーネントをビルドせずに Node.js でレンダリングするには、`require('svelte/register')`を使います。その後 `require` を使って `.svelte` ファイルをインクルードすることができます。
 
 ```js
 require('svelte/register');
@@ -910,9 +910,9 @@ const App = require('./App.svelte').default;
 const { html, css, head } = App.render({ answer: 42 });
 ```
 
-> The `.default` is necessary because we're converting from native JavaScript modules to the CommonJS modules recognised by Node. Note that if your component imports JavaScript modules, they will fail to load in Node and you will need to use a bundler instead.
+> `.default`は、ネイティブの JavaScript モジュールから Node が認識する CommonJS モジュールに変換するために必要です。コンポーネントが JavaScript モジュールをインポートすると、Node での読み込みに失敗するので、代わりにバンドラを使う必要があることに注意してください。
 
-To set compile options, or to use a custom file extension, call the `register` hook as a function:
+コンパイルオプションを設定したり、カスタムファイルの拡張子を使用したりするには、`register` フックを関数として呼び出します。
 
 ```js
 require('svelte/register')({
@@ -930,7 +930,7 @@ require('svelte/register')({
 const component = new Component(options)
 ```
 
-A client-side component — that is, a component compiled with `generate: 'dom'` (or the `generate` option left unspecified) is a JavaScript class.
+クライアントサイドのコンポーネント、つまり `generate: 'dom'`（もしくは `generate` オプションを指定しないまま）でコンパイルされたコンポーネントは JavaScript のクラスです。
 
 ```js
 import App from './App.svelte';
@@ -938,34 +938,34 @@ import App from './App.svelte';
 const app = new App({
 	target: document.body,
 	props: {
-		// assuming App.svelte contains something like
-		// `export let answer`:
+		// App.svelte に `export let answer` のようなものが
+		// 含まれていると仮定:
 		answer: 42
 	}
 });
 ```
 
-The following initialisation options can be provided:
+以下の初期化オプションを与えることができます。
 
-| option | default | description |
+| オプション | デフォルト | 説明 |
 | --- | --- | --- |
-| `target` | **none** | An `HTMLElement` or `ShadowRoot` to render to. This option is required
-| `anchor` | `null` | A child of `target` to render the component immediately before
-| `props` | `{}` | An object of properties to supply to the component
-| `context` | `new Map()` | A `Map` of root-level context key-value pairs to supply to the component
-| `hydrate` | `false` | See below
-| `intro` | `false` | If `true`, will play transitions on initial render, rather than waiting for subsequent state changes
+| `target` | **none** | レンダリング先の `HTMLElement` または `ShadowRoot`。このオプションは必須です
+| `anchor` | `null` | `target` の子要素。これのすぐ前にコンポーネントがレンダリングされます
+| `props` | `{}` | コンポーネントに渡すプロパティのオブジェクト
+| `context` | `new Map()` | コンポーネントに提供するルートレベルのコンテキストのキーと値のペアの `Map`
+| `hydrate` | `false` | 下記参照
+| `intro` | `false` | `true` なら、その後の状態変化を待つのではなく、初回レンダリング時にトランジションを再生します。
 
-Existing children of `target` are left where they are.
+`target` の既存の子要素はそのまま残されます。
 
 
 ---
 
-The `hydrate` option instructs Svelte to upgrade existing DOM (usually from server-side rendering) rather than creating new elements. It will only work if the component was compiled with the [`hydratable: true` option](docs#svelte_compile). Hydration of `<head>` elements only works properly if the server-side rendering code was also compiled with `hydratable: true`, which adds a marker to each element in the `<head>` so that the component knows which elements it's responsible for removing during hydration.
+`hydrate` オプションは、新しい要素を作成するのではなく、既存の DOM を（大抵はサーバーサイドレンダリングから）アップグレードするよう Svelte に指示します。これはコンポーネントが [`hydratable: true` のオプション](docs#svelte_compile) でコンパイルされた場合にのみ機能します。`<head>` 要素のハイドレーションは、サーバーサイドレンダリングのコードも `hydratable: true` を使ってコンパイルされた場合にのみ適切に動作します。これは `head` 内の各要素にマーカーを追加して、コンポーネントがハイドレーション中にどの要素を除去すべきかを認識できるようにします。
 
-Whereas children of `target` are normally left alone, `hydrate: true` will cause any children to be removed. For that reason, the `anchor` option cannot be used alongside `hydrate: true`.
+通常、`target` の子要素はそのまま残されますが、`hydrate: true` ではすべての子要素が削除されます。そのため `anchor` オプションは `hydrate: true` と一緒に使用できません。
 
-The existing DOM doesn't need to match the component — Svelte will 'repair' the DOM as it goes.
+既存の DOM はコンポーネントと一致している必要はありません。Svelte は DOM をそのまま「修復」します。
 
 ```js
 import App from './App.svelte';
@@ -984,9 +984,9 @@ component.$set(props)
 
 ---
 
-Programmatically sets props on an instance. `component.$set({ x: 1 })` is equivalent to `x = 1` inside the component's `<script>` block.
+プログラムでインスタンスにプロパティ(props)をセットします。`component.$set({ x: 1 })` はコンポーネントの `<script>` ブロック内の `x = 1` と同じです。
 
-Calling this method schedules an update for the next microtask — the DOM is *not* updated synchronously.
+このメソッドを呼ぶと次のマイクロタスクに更新がスケジュールされます。DOM は同期的に更新*されません*。
 
 ```js
 component.$set({ answer: 42 });
@@ -1000,9 +1000,9 @@ component.$on(event, callback)
 
 ---
 
-Causes the `callback` function to be called whenever the component dispatches an `event`.
+コンポーネントが `event` をディスパッチするたびに、`callback` 関数が呼び出されるようにします。
 
-A function is returned that will remove the event listener when called.
+呼び出されたときにイベントリスナーを削除する関数が返されます。
 
 ```js
 const off = app.$on('selected', event => {
@@ -1018,7 +1018,7 @@ off();
 component.$destroy()
 ```
 
-Removes a component from the DOM and triggers any `onDestroy` handlers.
+DOM からコンポーネントを削除し、すべての `onDestroy` ハンドラをトリガします。
 
 #### Component props
 
@@ -1031,9 +1031,9 @@ component.prop = value
 
 ---
 
-If a component is compiled with `accessors: true`, each instance will have getters and setters corresponding to each of the component's props. Setting a value will cause a *synchronous* update, rather than the default async update caused by `component.$set(...)`.
+コンポーネントが `accessors: true` でコンパイルされている場合、各インスタンスはコンポーネントの各プロパティ(props)に対するゲッターとセッターを持ちます。値をセットすると（`component.$set(...)` によって起こるデフォルトの非同期更新ではなく）、*同期的な*更新が起こります。
 
-By default, `accessors` is `false`, unless you're compiling as a custom element.
+カスタム要素としてコンパイルする場合を除き、デフォルトでは `accessors` は `false` です。
 
 ```js
 console.log(app.count);
@@ -1045,7 +1045,7 @@ app.count += 1;
 
 ---
 
-Svelte components can also be compiled to custom elements (aka web components) using the `customElement: true` compiler option. You should specify a tag name for the component using the `<svelte:options>` [element](docs#svelte_options).
+Svelte コンポーネントは、`customElement: true` コンパイラオプションを使ってカスタム要素 (別名Webコンポーネント) にコンパイルすることもできます。コンポーネントのタグ名は `<svelte:options>` [element](docs#svelte_options) で指定する必要があります。
 
 ```sv
 <svelte:options tag="my-element" />
@@ -1060,7 +1060,7 @@ Svelte components can also be compiled to custom elements (aka web components) u
 
 ---
 
-Alternatively, use `tag={null}` to indicate that the consumer of the custom element should name it.
+あるいは、`tag={null}` を使って、カスタム要素の利用者がそれに名前を付けるべきであることを示します。
 
 ```js
 import MyElement from './MyElement.svelte';
@@ -1070,7 +1070,7 @@ customElements.define('my-element', MyElement);
 
 ---
 
-Once a custom element has been defined, it can be used as a regular DOM element:
+一度カスタム要素が定義されると、それを通常の DOM 要素として使用することができます。
 
 ```js
 document.body.innerHTML = `
@@ -1082,9 +1082,9 @@ document.body.innerHTML = `
 
 ---
 
-By default, custom elements are compiled with `accessors: true`, which means that any [props](docs#Attributes_and_props) are exposed as properties of the DOM element (as well as being readable/writable as attributes, where possible).
+デフォルトでは、カスタム要素は `accessors: true` でコンパイルされます。これは、任意の [プロパティ](docs#Attributes_and_props) が DOM 要素のプロパティとして公開されることを意味します (また、可能であれば属性として読み書き可能です)。
 
-To prevent this, add `accessors={false}` to `<svelte:options>`.
+これを防ぐには、`<svelte:options>` に `accessors={false}` を追加します。
 
 ```js
 const el = document.querySelector('my-element');
@@ -1096,14 +1096,14 @@ console.log(el.name);
 el.name = 'everybody';
 ```
 
-Custom elements can be a useful way to package components for consumption in a non-Svelte app, as they will work with vanilla HTML and JavaScript as well as [most frameworks](https://custom-elements-everywhere.com/). There are, however, some important differences to be aware of:
+カスタム要素は、非Svelteアプリで利用するためのコンポーネントをパッケージ化するのに便利な方法です。それらは純粋な HTML と JavaScript の同様に、[ほとんどのフレームワーク](https://custom-elements-everywhere.com/) でも動作します。しかし、注意すべき重要な違いがいくつかあります。
 
-* Styles are *encapsulated*, rather than merely *scoped*. This means that any non-component styles (such as you might have in a `global.css` file) will not apply to the custom element, including styles with the `:global(...)` modifier
-* Instead of being extracted out as a separate .css file, styles are inlined into the component as a JavaScript string
-* Custom elements are not generally suitable for server-side rendering, as the shadow DOM is invisible until JavaScript loads
-* In Svelte, slotted content renders *lazily*. In the DOM, it renders *eagerly*. In other words, it will always be created even if the component's `<slot>` element is inside an `{#if ...}` block. Similarly, including a `<slot>` in an `{#each ...}` block will not cause the slotted content to be rendered multiple times
-* The `let:` directive has no effect
-* Polyfills are required to support older browsers
+* スタイルは単なる *scoped* ではなく *encapsulated（カプセル化）* です。これは、`:global(...)` 修飾子を持つスタイルを含む、コンポーネントにはないスタイル (`global.css` ファイルにあるような) はカスタム要素には適用されないことを意味します。
+* スタイルは、別の .css ファイルとして抽出されるのではなく、JavaScript の文字列としてコンポーネントにインライン化されます。
+* JavaScript が読み込まれるまでシャドウ DOM は見えないので、カスタム要素は一般的にサーバーサイドのレンダリングには適していません。
+* Svelte では、スロットコンテンツは *遅延して* レンダリングされます。DOMでは *先行して* レンダリングします。言い換えれば、コンポーネントの `<slot>` 要素が `{#if ...}` ブロックの中にあっても、常に作成されます。同様に、`{#each ...}` ブロックの中に `<slot>` 要素を含めても、スロットの内容が何度もレンダリングされることはありません。
+* `let:` ディレクティブは何の効果もありません。
+* 古いブラウザをサポートするにはポリフィルが必要です。
 
 
 
@@ -1115,11 +1115,11 @@ const result = Component.render(...)
 
 ---
 
-Unlike client-side components, server-side components don't have a lifespan after you render them — their whole job is to create some HTML and CSS. For that reason, the API is somewhat different.
+クライアント側のコンポーネントとは異なり、サーバー側のコンポーネントはレンダリングしてもライフサイクルがありません。-- それらは HTML と CSS を作成するのが仕事です。そのため API が多少異なります。
 
-A server-side component exposes a `render` method that can be called with optional props. It returns an object with `head`, `html`, and `css` properties, where `head` contains the contents of any `<svelte:head>` elements encountered.
+サーバーサイドコンポーネントは任意のプロパティ(props)と一緒に呼びだせる `render` メソッドを公開しています。これは `head`、 `html`、 `css` プロパティを持つオブジェクトを返します。この `head` は見つけた `<svelte:head>` 要素の内容を含みます。
 
-You can import a Svelte component directly into Node using [`svelte/register`](docs#svelte_register).
+Svelte コンポーネントを直接 Node にインポートするには、[`svelte/register`](docs#svelte_register) を使ってください。
 
 ```js
 require('svelte/register');
@@ -1133,18 +1133,18 @@ const { head, html, css } = App.render({
 
 ---
 
-The `.render()` method accepts the following parameters:
+`.render()` メソッドは以下のパラメータを受け付けます:
 
-| parameter | default | description |
+| パラメータ | デフォルト | 説明 |
 | --- | --- | --- |
-| `props` | `{}` | An object of properties to supply to the component
-| `options` | `{}` | An object of options
+| `props` | `{}` | コンポーネントに渡すプロパティのオブジェクト
+| `options` | `{}` | オプションのオブジェクト
 
-The `options` object takes in the following options:
+`options` オブジェクトは、以下のオプションを取ります:
 
-| option | default | description |
+| オプション | デフォルト | 説明 |
 | --- | --- | --- |
-| `context` | `new Map()` | A `Map` of root-level context key-value pairs to supply to the component
+| `context` | `new Map()` | コンポーネントに提供するルートレベルのコンテキストのキーと値のペアの `Map`
 
 ```js
 const { head, html, css } = App.render(

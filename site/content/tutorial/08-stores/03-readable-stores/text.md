@@ -2,9 +2,9 @@
 title: Readable stores
 ---
 
-Not all stores should be writable by whoever has a reference to them. For example, you might have a store representing the mouse position or the user's geolocation, and it doesn't make sense to be able to set those values from 'outside'. For those cases, we have *readable* stores.
+すべてのストアが、それらを参照しているものによって書き込み可能であるべきではありません。たとえば、マウスの位置やユーザーの地理的位置を表すストアがあり、それらの値を「外部」から設定できるのは意味がありません。そのような場合のために、読み取り可能なストアがあります。
 
-Click over to the `stores.js` tab. The first argument to `readable` is an initial value, which can be `null` or `undefined` if you don't have one yet. The second argument is a `start` function that takes a `set` callback and returns a `stop` function. The `start` function is called when the store gets its first subscriber; `stop` is called when the last subscriber unsubscribes.
+`stores.js` タブをクリックしてください。`readable` の第1引数は初期値です。初期値がない場合は `null` や `undefined` をセットできます。第2引数は `set` コールバックを受け取り `stop` 関数を返す `start` 関数です。この `start` 関数は、ストアが最初のサブスクライバーを取得したときに呼び出されます。`stop` 関数は、最後のサブスクライバーがサブスクライブを解除したときに呼び出されます。
 
 ```js
 export const time = readable(new Date(), function start(set) {

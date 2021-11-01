@@ -2,17 +2,17 @@
 title: The animate directive
 ---
 
-In the [previous chapter](tutorial/deferred-transitions), we used deferred transitions to create the illusion of motion as elements move from one todo list to the other.
+[前の章](tutorial/deferred-transitions)では、要素が1つのToDoリストから別のリストに移動するときに、遷移の遅延を使用して動きの錯覚を作成しました。
 
-To complete the illusion, we also need to apply motion to the elements that *aren't* transitioning. For this, we use the `animate` directive.
+この錯覚を完成させるには、遷移して *いない* 要素にもモーションを適用する必要があります。このために、`animate` ディレクティブを使用します。
 
-First, import the `flip` function — flip stands for ['First, Last, Invert, Play'](https://aerotwist.com/blog/flip-your-animations/) — from `svelte/animate`:
+最初に `flip` 関数（flip は ['First, Last, Invert, Play'](https://aerotwist.com/blog/flip-your-animations/) の略です）を `svelte/animate` からインポートします
 
 ```js
 import { flip } from 'svelte/animate';
 ```
 
-Then add it to the `<label>` elements:
+次に、それを `<label>` 要素に追加します。 
 
 ```html
 <label
@@ -22,7 +22,7 @@ Then add it to the `<label>` elements:
 >
 ```
 
-The movement is a little slow in this case, so we can add a `duration` parameter:
+この場合、動きが少し遅いので、`duration` パラメータを追加することができます。
 
 ```html
 <label
@@ -32,6 +32,6 @@ The movement is a little slow in this case, so we can add a `duration` parameter
 >
 ```
 
-> `duration` can also be a `d => milliseconds` function, where `d` is the number of pixels the element has to travel
+> `duration` は `d => ミリ秒` 関数でもよいです。`d` は，要素が移動する必要があるピクセル数です。
 
-Note that all the transitions and animations are being applied with CSS, rather than JavaScript, meaning they won't block (or be blocked by) the main thread.
+すべてのトランジションとアニメーションが JavaScript ではなく CSS で適用されていて、メインスレッドをブロックすることはない（ブロックされることもない）という点に注意してください。

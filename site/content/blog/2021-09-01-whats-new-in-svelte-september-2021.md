@@ -1,39 +1,47 @@
 ---
-title: What's new in Svelte: September 2021
-description: StackOverflow's most loved web framework
+title: What's new in Svelte: 2021年9月
+description: StackOverflowで最も愛されているWebフレームワーク
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
 
-This month, Svelte was [voted StackOverflow's most loved web framework](https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-web-frameworks), Tan Li Hau [talked to Svelte Radio](https://share.transistor.fm/s/84c7521b) about his [Svelte-filled YouTube channel](https://www.youtube.com/channel/UCbmC3HP3FaAFdcZkui8YoMQ), and SvelteKit made even more progress towards its 1.0 release!
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-september-2021
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
+
+今月は、Svelteが[StackOverflowの最も愛されているWebフレームワーク](https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-web-frameworks)に選ばれたり、Tan Li Hau氏がSvelteのYouTubeチャンネルについて[Svelte Radio](https://share.transistor.fm/s/84c7521b)に出演したり、SvelteKitが1.0リリースに向けてさらに進化したりしました。
 
 ## New in Svelte
 
-- `use:actions` can now be used on `<svelte:body>` (**3.42.0**)
-- `HTMLElement`, `SVGElement` (**3.42.2**) and `BigInt` (**3.42.3**) are now known globals
-- There is less code in Svelte's output thanks to the following improvements in **3.42.2**:
-  - Whitespace is now collapsed in class and style attributes
-  - Hydrated components have been updated to only rely upon helpers for creating the types of elements present in the component
-- Scaling is now accounted for in `flip` animations (**3.42.2**)
-- All `<option>`s in a `<select>` are now deselected when the bound value doesn't match any of them (**3.42.2**)
+- `use:actions`が`<svelte:body>`で使用できるようになりました。(**3.42.0**)
+- `HTMLElement`, `SVGElement` (**3.42.2**) および `BigInt` (**3.42.3**) はグローバルに追加されました。
+- **3.42.2** では以下の点が改善され、Svelteの出力に含まれるコードが少なくなりました。
+  - クラスおよびスタイル属性で空白が折りたたまれるようになりました。
+  - ハイドレートを含んだコンポーネントは、コンポーネント内に存在する要素の種類を作成する際にヘルパーのみに依存するように更新されました。
+- スケーリングが `flip` アニメーションで考慮されるようになりました。 (**3.42.2**)
+- `<select>` の中のすべての `<option>` が、バインドされた値がそれらのどれにも一致しないときに、選択解除されるようになりました。 (**3.42.2**)
 
-For a full list of features and bug fixes, check out the [Svelte changelog](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md).
+機能やバグフィックスの全リストは、[Svelte changelog](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md)をご覧ください。
 
 ## SvelteKit Updates
 
-Svelte maintainers are [looking for help getting SvelteKit to 1.0](https://github.com/sveltejs/kit/issues/2100). We've knocked out over 100 issues that were on the 1.0 milestone. There's only a couple dozen left and we'd love a hand making that list a bit shorter!
+Svelteのメンテナは[SvelteKitを1.0にする手助けを探しています](https://github.com/sveltejs/kit/issues/2100) 1.0のマイルストーンにあった100以上の問題を解決しました。残りは数十個しかありませんが、そのリストを少しでも短くするために手を貸していただきたいと思っています。
+ご協力いただける方は、[1.0 milestone issues](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0)のいずれかの作業をご検討ください。
 
-If you'd like to help, please consider working on any of the [1.0 milestone issues](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0).
+この1ヶ月間は、あらゆる問題を解決することに注力し、100件以上のPRを統合しました。いくつかの新機能も追加されました...
 
-The focus this past month was on continuing to iron out any kinks, with well over 100 PRs merged. A few new features went in as well...
+- SvelteKitは、事前にレンダリングされたアプリがクエリパラメータにアクセスしようとしているかどうかを検出し、サイレントに失敗するのではなくエラーを返すようになりました。([#2104](https://github.com/sveltejs/kit/pull/2104))
+- `adapter-node` では、[Kitミドルウェアを自分のサーバーに追加して](https://kit.svelte.dev/faq#integrations) 他のミドルウェアと一緒に使うことができるようになりました。また、[開発モードでミドルウェアを追加](https://kit.svelte.dev/faq#how-do-i-use-x-with-sveltekit-how-do-i-use-middleware)することもできます。この分野ではさらに改良が加えられる予定です。
+- 新しい[`sequence`ヘルパーは、複数の`handle`コールを連鎖させることができます。](https://kit.svelte.dev/docs#modules-sveltejs-kit-hooks)
+- 新しい[`handleError`フック](https://kit.svelte.dev/docs#hooks-handleerror)では、エラー追跡サービスにデータを送信したり、コンソールにエラーを表示する前にフォーマットをカスタマイズしたりすることができます。
+- `adapter-node` がソケットパスをリッスンできるようになりました。([#2048](https://github.com/sveltejs/kit/pull/2048))
 
-- SvelteKit will now detect if a prerendered app is trying to access a query parameter and return an error instead of failing silently ([#2104](https://github.com/sveltejs/kit/pull/2104))
-- `adapter-node` now lets you [add the Kit middleware to your own server](https://kit.svelte.dev/faq#integrations) for use with other middleware. You can also [add middleware in dev mode](https://kit.svelte.dev/faq#how-do-i-use-x-with-sveltekit-how-do-i-use-middleware) with more improvements to come in this area
-- The new [`sequence` helper lets you chain together multiple `handle` calls](https://kit.svelte.dev/docs#modules-sveltejs-kit-hooks)
-- A new [`handleError` hook](https://kit.svelte.dev/docs#hooks-handleerror) gives you the option to send data to an error tracking service, or to customise the formatting before printing the error to the console.
-- `adapter-node` can now listen on socket path ([#2048](https://github.com/sveltejs/kit/pull/2048))
-
-To see all updates to SvelteKit, check out the [SvelteKit changelog](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md).
+SvelteKitのすべてのアップデートを確認するには、[SvelteKit changelog](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md)をご覧ください。
 
 
 ---
@@ -41,43 +49,43 @@ To see all updates to SvelteKit, check out the [SvelteKit changelog](https://git
 ## Community Showcase
 
 **Apps & Sites**
-- [macos-web](https://github.com/PuruVJ/macos-web) by @puruvjdev has been rebuilt with Svelte from the ground up. Check out all the details in this [Twitter thread](https://twitter.com/puruvjdev/status/1426267327687847939)
-- [Brave Search](https://search.brave.com/) is using Svelte
-- [exatorrent](https://github.com/varbhat/exatorrent) is a self-hostable, easy-to-use, lightweight and feature-rich torrent client written in Go and Svelte
-- [json2TsTypes](https://github.com/jatinhemnani01/json2TsTypes) is a simple tool which will convert your JSON to Typescript Types/Interfaces
-- [Histogram.dev](https://histogram.dev/) generates histograms for each feature in a CSV
-- [cybernetic.dev](https://cybernetic.dev/) is a collection of data-centric UI experiments made while learning Svelte
-- [LunaNotes](https://chrome.google.com/webstore/detail/lunanotes-youtube-video-n/oehoffnnkgcdacmbkhmlbjedinpampak?hl=en) is a Chrome extension to help with taking YouTube video notes
-- [theia.games](https://theia.games/#dev)'s built-in 3D environment editor lets you create a VR world with a menu built in Svelte
-- [Ferrum](https://github.com/probablykasper/ferrum) is a music library and player available for Mac, Windows or Linux
-- [Fluid Earth](https://github.com/byrd-polar/fluid-earth) is an interactive WebGL application for visualizing Earth's atmosphere and oceans
+- [macos-web](https://github.com/PuruVJ/macos-web) by @puruvjdev は、Svelteを使って、一から作り直しました。詳細はこの[Twitter スレッド](https://twitter.com/puruvjdev/status/1426267327687847939)をご覧ください。
+- [Brave Search](https://search.brave.com/) は、Svelteを使用しています。
+- [exatorrent](https://github.com/varbhat/exatorrent) は、GoとSvelteで書かれた、セルフホスティング可能で使いやすく、軽量で機能豊富なtorrentクライアントです。
+- [json2TsTypes](https://github.com/jatinhemnani01/json2TsTypes) は、JSONをTypescriptのTypes/Interfacesに変換するシンプルなツールです。
+- [Histogram.dev](https://histogram.dev/) は、CSVの各機能のヒストグラムを生成します。
+- [cybernetic.dev](https://cybernetic.dev/) は、Svelteの学習中に行われたデータ中心のUI実験のコレクションです。
+- [LunaNotes](https://chrome.google.com/webstore/detail/lunanotes-youtube-video-n/oehoffnnkgcdacmbkhmlbjedinpampak?hl=en) は、YouTube動画のメモを取るのに役立つChrome拡張機能です。
+- [theia.games](https://theia.games/#dev)に内蔵された3D環境エディタで、Svelteに組み込まれたメニューでVRの世界を作ることができます。
+- [Ferrum](https://github.com/probablykasper/ferrum) は、Mac、Windows、Linuxで利用可能な音楽ライブラリとプレーヤーです。
+- [Fluid Earth](https://github.com/byrd-polar/fluid-earth) は、地球の大気や海洋を可視化するためのインタラクティブなWebGLアプリケーションです。
 
-**Looking for a Svelte project to work on? Interested in helping make Svelte's presence on the web better?** Check out [the list of open issues](https://github.com/svelte-society/sveltesociety-2021/issues) if you'd like to contribute to the Svelte Society rewrite in SvelteKit.
+**作業するSvelteプロジェクトを探していますか？** SvelteKitでのSvelte Societyの書き換えに貢献したい方は、[the list of open issues](https://github.com/svelte-society/sveltesociety-2021/issues)をご覧ください。
 
 **Educational Content**
-- [Tauri with Standard Svelte or SvelteKit](https://medium.com/@cazanator/tauri-with-standard-svelte-or-sveltekit-ad7f103c37e7) walks through how to setup Svelte with Tauri, a new light-weight framework for developing cross-platform hybrid desktop applications
-- [Svelte - Web App Development Reimagined [An Intro to Svelte]](https://www.youtube.com/watch?v=4CGzFwHoD0A&list=PLEx5khR4g7PKSASVAXXiAhkyx02_OeruP) is a great intro talk from the goto; conference
-- [LevelUpTuts - Even More 5 Things I Like More In Svelte Than React](https://www.youtube.com/watch?v=ISmnG2sIOeM) highlights Svelte's approach to refs (don't need them), meta tags and more
-- [State Management in Svelte Applications](https://auth0.com/blog/state-management-in-svelte-applications/) is a tutorial on how to use the Svelte state management store to manage state in Svelte applications
-- [Migrating from Sapper to SvelteKit](https://shipbit.de/blog/migrating-from-sapper-to-svelte-kit/) is a review and retrospective of ShipBit's migration from Sapper
+- [Tauri with Standard Svelte or SvelteKit](https://medium.com/@cazanator/tauri-with-standard-svelte-or-sveltekit-ad7f103c37e7) は、クロスプラットフォームのハイブリッドデスクトップアプリケーションを開発するための新しい軽量フレームワークであるTauriでSvelteをセットアップする方法を説明しています。
+- [Svelte - Web App Development Reimagined [An Intro to Svelte]](https://www.youtube.com/watch?v=4CGzFwHoD0A&list=PLEx5khR4g7PKSASVAXXiAhkyx02_OeruP) は、goto; conferenceでの素晴らしいイントロトークです。
+- [LevelUpTuts - Even More 5 Things I Like More In Svelte Than React](https://www.youtube.com/watch?v=ISmnG2sIOeM) は、リファレンス(必要ありません) 、メタタグなどのSvelteのアプローチを紹介しています。
+- [State Management in Svelte Applications](https://auth0.com/blog/state-management-in-svelte-applications/) は、Svelteアプリケーションの状態を管理するために、Svelteの状態管理ストアを使用する方法についてのチュートリアルです。
+- [Migrating from Sapper to SvelteKit](https://shipbit.de/blog/migrating-from-sapper-to-svelte-kit/) は、ShipBitのSapperからの移行の評価と振り返りです。
 
 **Libraries, Tools & Components**
-- [svelte-stripe-js](https://github.com/joshnuss/svelte-stripe-js) is everything you need to add Stripe to your Svelte project. 100% SvelteKit compatible
-- [svelte-steps](https://github.com/shaozi/svelte-steps) is a customizable step component written in Svelte
-- [simple-optics-module](https://gitlab.com/Samzelot/simple-optics-module) is an online open source optics tool for experimenting and teaching geometrical optics
-- [inlang](https://github.com/samuelstroschein/inlang) is an internationalization (i18n) tool for SvelteKit apps
-- [Sveno](https://github.com/pocinnovation/sveno) is a component transpiler that transforms React components to Svelte components
-- [svelte-useactions](https://github.com/paolotiu/svelte-useactions) is a fully typed library for passing actions to components
-- [Svelte-Element-Query](https://github.com/leveluptuts/Svelte-Element-Query) is a 322b library/action for element queries
-- [svelte-meta-tags](https://github.com/oekazuma/svelte-meta-tags) is a plug-in that makes managing SEO easier in Svelte projects
-- [svelte-domtree](https://github.com/alex-knyaz/svelte-domtree) lets you visualize the DOM - similar to DOM tree in Chrome DevTools
-- [Diffx](https://github.com/jbjorge/diffx/tree/master/svelte), a cross-framework state management library, just added Svelte support
-- [svelte-ionic-starter](https://github.com/Zettexe/svelte-ionic-starter) a project template for Svelte + Ionic + CapacitorJS apps with live reload and iOS/Android build targets
-- [demo-sveltekit-sanity](https://github.com/stephane-vanraes/demo-sveltekit-sanity/) is a starter kit for SvelteKit and Sanity, an open source React CMS
+- [svelte-stripe-js](https://github.com/joshnuss/svelte-stripe-js) は、あなたのSvelteプロジェクトにStripeを追加するために必要なすべてです。100% SvelteKit互換
+- [svelte-steps](https://github.com/shaozi/svelte-steps) は、Svelteで書かれたカスタマイズ可能なステップコンポーネントです。
+- [simple-optics-module](https://gitlab.com/Samzelot/simple-optics-module) は、幾何学的光学の実験と教育のための、オンラインのオープンソース光学ツールです。
+- [inlang](https://github.com/samuelstroschein/inlang) は、SvelteKitアプリ用の国際化(i18n)ツールです。
+- [Sveno](https://github.com/pocinnovation/sveno) は、ReactコンポーネントをSvelteコンポーネントに変換するコンポーネントトランスファイラーです。
+- [svelte-useactions](https://github.com/paolotiu/svelte-useactions) は、アクションをコンポーネントに渡すための完全に型付けされたライブラリです。
+- [Svelte-Element-Query](https://github.com/leveluptuts/Svelte-Element-Query) は、322bのエレメントクエリ用のライブラリ/アクションです。
+- [svelte-meta-tags](https://github.com/oekazuma/svelte-meta-tags) は、SvelteプロジェクトでSEO管理を容易にするプラグインです。
+- [svelte-domtree](https://github.com/alex-knyaz/svelte-domtree) では、DOMを視覚化することができます。Chrome DevToolsのDOMツリーに似ています。
+- クロスフレームワークの状態管理ライブラリである[Diffx](https://github.com/jbjorge/diffx/tree/master/svelte) は、Svelteのサポートが追加されました。
+- [svelte-ionic-starter](https://github.com/Zettexe/svelte-ionic-starter) は、ライブリロードとiOS/Androidビルドターゲットを備えたSvelte + Ionic + CapacitorJSアプリ用のプロジェクトテンプレートです。
+- [demo-sveltekit-sanity](https://github.com/stephane-vanraes/demo-sveltekit-sanity/) は、オープンソースのReactCMSであるSvelteKitおよびSanityのスターターキットです。
 
-Check out the community site [sveltesociety.dev](https://sveltesociety.dev/templates/) for more templates, adders and adapters from across the Svelte ecosystem.
+コミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates/) では、Svelte エコシステム全体からの templates、adders、adapters をご覧いただけます。
 
 
 ## See you next month!
 
-Want more updates? Join us on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs)!
+もっと更新情報が欲しいですか？ [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs) に参加してください！

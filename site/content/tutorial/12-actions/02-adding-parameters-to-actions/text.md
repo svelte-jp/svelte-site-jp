@@ -2,11 +2,11 @@
 title: Adding parameters
 ---
 
-Like transitions and animations, an action can take an argument, which the action function will be called with alongside the element it belongs to.
+トランジションやアニメーションのように、アクションは引数を取ることができ、アクション関数はそれが属する要素と一緒に呼び出されます。
 
-Here, we're using a `longpress` action that fires an event with the same name whenever the user presses and holds the button for a given duration. Right now, if you switch over to the `longpress.js` file, you'll see it's hardcoded to 500ms.
+ここでは、ユーザがボタンを長押しするたびに同じ名前のイベントを発生させる `longpress` アクションを使っています。`longpress.js` ファイルに切り替えると、500msにハードコードされていることがわかります。
 
-We can change the action function to accept a `duration` as a second argument, and pass that `duration` to the `setTimeout` call:
+アクション関数を変更して、第2引数に `duration` を指定し、そしてその `duration` を `setTimeout` に渡すことができます。
 
 ```js
 export function longpress(node, duration) {
@@ -24,15 +24,15 @@ export function longpress(node, duration) {
 }
 ```
 
-Back in `App.svelte`, we can pass the `duration` value to the action:
+`App.svelte` に戻り、`duration` の値をアクションに渡すことができます。
 
 ```html
 <button use:longpress={duration}
 ```
 
-This *almost* works — the event now only fires after 2 seconds. But if you slide the duration down, it will still take two seconds.
+これは、*大体* 動作します。イベントは2秒後にのみ発生するようになりました。しかし、デュレーションを下にスライドさせても、まだ2秒かかります。
 
-To change that, we can add an `update` method in `longpress.js`. This will be called whenever the argument changes:
+これを変更するには、`longpress.js` に `update` メソッドを追加します。これは引数が変更されるたびに呼び出されます。
 
 ```js
 return {
@@ -43,4 +43,4 @@ return {
 };
 ```
 
-> If you need to pass multiple arguments to an action, combine them into a single object, as in `use:longpress={{duration, spiciness}}`
+> 複数の引数をアクションに渡す必要がある場合は、`use:longpress={{duration, spiciness}}` のように、それらを1つのオブジェクトに結合します。

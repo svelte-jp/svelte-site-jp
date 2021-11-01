@@ -2,11 +2,11 @@
 title: Sharing code
 ---
 
-In all the examples we've seen so far, the `<script>` block contains code that runs when each component instance is initialised. For the vast majority of components, that's all you'll ever need.
+これまで見てきたすべての例では、`<script>` ブロックには各コンポーネントのインスタンスが初期化されたときに実行されるコードが含まれています。大部分のコンポーネントでは、これだけで十分です。
 
-Very occasionally, you'll need to run some code outside of an individual component instance. For example, you can play all five of these audio players simultaneously; it would be better if playing one stopped all the others.
+ごく稀に、個々のコンポーネントのインスタンスの外でコードを実行する必要があることがあります。例えば、5つのオーディオプレーヤーを同時に再生することができますが、1つを再生すると他のすべてのオーディオプレーヤーが停止した方がより良いでしょう。
 
-We can do that by declaring a `<script context="module">` block. Code contained inside it will run once, when the module first evaluates, rather than when a component is instantiated. Place this at the top of `AudioPlayer.svelte`:
+これを実現するには、`<script context="module">` ブロックを宣言します。ここに含まれるコードは、コンポーネントがインスタンス化されたときではなく、モジュールが最初に評価されたときに一度だけ実行されます。これを `AudioPlayer.svelte` の先頭に配置してください。
 
 ```html
 <script context="module">
@@ -14,7 +14,7 @@ We can do that by declaring a `<script context="module">` block. Code contained 
 </script>
 ```
 
-It's now possible for the components to 'talk' to each other without any state management:
+これで状態を管理することなく、コンポーネント同士がお互いに「話す」ことが可能になりました。
 
 ```js
 function stopOthers() {

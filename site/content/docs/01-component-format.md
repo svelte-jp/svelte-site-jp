@@ -4,47 +4,47 @@ title: Component format
 
 ---
 
-Components are the building blocks of Svelte applications. They are written into `.svelte` files, using a superset of HTML.
+コンポーネントは、Svelteアプリケーションを構成するブロックです。これらは `.svelte` ファイルにHTMLのスーパーセットを使って記述されます。
 
-All three sections — script, styles and markup — are optional.
+ここで説明される script 、 style 、マークアップのいずれもコンポーネントに必須のものではありません。
 
 ```sv
 <script>
-	// logic goes here
+	// ロジックを記述
 </script>
 
-<!-- markup (zero or more items) goes here -->
+<!-- 0個以上のマークアップを記述 -->
 
 <style>
-	/* styles go here */
+	/* styleを記述 */
 </style>
 ```
 
 ### &lt;script&gt;
 
-A `<script>` block contains JavaScript that runs when a component instance is created. Variables declared (or imported) at the top level are 'visible' from the component's markup. There are four additional rules:
+`<script>` ブロックは、コンポーネントのインスタンスが生成されるときに実行される JavaScript を含みます。トップレベルで宣言（またはインポート）された変数は、そのコンポーネントのマークアップから '見る' ことができます。 `<script>` には、4つのルールがあります。
 
-#### 1. `export` creates a component prop
+##### 1. `export` creates a component prop
 
 ---
 
-Svelte uses the `export` keyword to mark a variable declaration as a *property* or *prop*, which means it becomes accessible to consumers of the component (see the section on [attributes and props](docs#Attributes_and_props) for more information).
+Svelte では、 変数の宣言を *プロパティ*（*prop*）としてマークするために `export` キーワードを使います。これによってそのコンポーネントを使用する際にその変数にアクセスできるようになります（より詳しい情報は [属性とプロパティ](docs#Attributes_and_props)を見てください）。
 
 ```sv
 <script>
 	export let foo;
 
-	// Values that are passed in as props
-	// are immediately available
+	// プロパティとして渡された変数は、
+	// 即座に使用可能になります
 	console.log({ foo });
 </script>
 ```
 
 ---
 
-You can specify a default initial value for a prop. It will be used if the component's consumer doesn't specify the prop on the component (or if its initial value is `undefined`) when instantiating the component. Note that whenever a prop is removed by the consumer, its value is set to `undefined` rather than the initial value.
+プロパティはデフォルトの初期値を指定することができます。これはコンポーネントの初期化時にプロパティが指定されていない場合（または初期値が `undefined` の場合）に使用されます。プロパティを削除すると、その値は初期値ではなく `undefined` になることに注意してください。
 
-In development mode (see the [compiler options](docs#svelte_compile)), a warning will be printed if no default initial value is provided and the consumer does not specify a value. To squelch this warning, ensure that a default initial value is specified, even if it is `undefined`.
+development モード（[コンパイラオプション](docs#svelte_compile)を参照）では、 デフォルトの初期値が指定されておらず、使用時に値を指定していない場合警告が表示されます。この警告を解消するためには、たとえ　`undefined` であってもデフォルトの初期値を指定してください。
 
 ```sv
 <script>
@@ -55,53 +55,53 @@ In development mode (see the [compiler options](docs#svelte_compile)), a warning
 
 ---
 
-If you export a `const`, `class` or `function`, it is readonly from outside the component. Function *expressions* are valid props, however.
+`const` や `class`、`function` をエクスポートすると、コンポーネントの外からは読み取り専用になります。ただし、関数*式*は有効なプロパティです。
 
-Readonly props can be accessed as properties on the element, tied to the component using [`bind:this` syntax](docs#bind_element).
+読み取り専用のプロパティは、[`bind:this` 構文](docs#bind_element)を使ってコンポーネントに関連付けられた要素のプロパティとしてアクセスできます。
 
 ```sv
 <script>
-	// these are readonly
+	// これらは読み取り専用です
 	export const thisIs = 'readonly';
 
 	export function greet(name) {
 		alert(`hello ${name}!`);
 	}
 
-	// this is a prop
+	// これはプロパティです
 	export let format = n => n.toFixed(2);
 </script>
 ```
 
 ---
 
-You can use reserved words as prop names.
+予約語もプロパティの名前として使用することができます。
 
 ```sv
 <script>
 	let className;
 
-	// creates a `class` property, even
-	// though it is a reserved word
+	// `class` は予約語ですが、
+	// `class` プロパティを作ることができます
 	export { className as class };
 </script>
 ```
 
-#### 2. Assignments are 'reactive'
+##### 2. 代入は'リアクティブ'
 
 ---
 
-To change component state and trigger a re-render, just assign to a locally declared variable.
+コンポーネントの状態を変更して再レンダリングをトリガーするために必要なのは、ローカルで宣言された変数に代入することだけです。
 
-Update expressions (`count += 1`) and property assignments (`obj.x = y`) have the same effect.
+更新式 (`count += 1`) とプロパティの代入 (`obj.x = y`) には同じ効果があります。
 
 ```sv
 <script>
 	let count = 0;
 
 	function handleClick () {
-		// calling this function will trigger an
-		// update if the markup references `count`
+		// マークアップが `count` を参照している場合、
+		// この関数を呼び出すと更新がトリガーされます
 		count = count + 1;
 	}
 </script>
@@ -109,7 +109,7 @@ Update expressions (`count += 1`) and property assignments (`obj.x = y`) have th
 
 ---
 
-Because Svelte's reactivity is based on assignments, using array methods like `.push()` and `.splice()` won't automatically trigger updates. A subsequent assignment is required to trigger the update. This and more details can also be found in the [tutorial](tutorial/updating-arrays-and-objects).
+Svelteのリアクティビティは代入に基づいているため、`.push()` や `.splice()` のような配列のメソッドを使用しても自動的に更新をトリガーしません。これを回避する方法は[チュートリアル](tutorial/updating-arrays-and-objects)に記載しています。
 
 ```sv
 <script>
@@ -125,30 +125,30 @@ Because Svelte's reactivity is based on assignments, using array methods like `.
 </script>
 ```
 
-#### 3. `$:` marks a statement as reactive
+##### 3. `$:` はステートメントがリアクティブであることを示す
 
 ---
 
-Any top-level statement (i.e. not inside a block or a function) can be made reactive by prefixing it with the `$:` [JS label syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/label). Reactive statements run immediately before the component updates, whenever the values that they depend on have changed.
+トップレベルの（つまりブロック内や関数内でない）ステートメントは `$:` という [JS ラベル構文](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/label) の接頭辞をつけることでリアクティブにできます。リアクティブステートメントは、依存する値が変更されるたびに、コンポーネント更新の直前に実行されます。
 
 ```sv
 <script>
 	export let title;
 
-	// this will update `document.title` whenever
-	// the `title` prop changes
+	// これは `title` プロパティが変わるたびに
+	// `document.title` を更新します
 	$: document.title = title;
 
 	$: {
-		console.log(`multiple statements can be combined`);
-		console.log(`the current title is ${title}`);
+		console.log(`複数のステートメントをまとめることができます`);
+		console.log(`現在のタイトルは ${title}`);
 	}
 </script>
 ```
 
 ---
 
-Only values which directly appear within the `$:` block will become dependencies of the reactive statement. For example, in the code below `total` will only update when `x` changes, but not `y`.
+`$:` のブロック内に直接現れる値だけが、リアクティブステートメントが依存しているものになります。例えば次のコードで `total` は `x` が変更された時にのみ更新され、`y` では更新されません。
 
 ```sv
 <script>
@@ -174,32 +174,32 @@ Total: {total}
 
 ---
 
-If a statement consists entirely of an assignment to an undeclared variable, Svelte will inject a `let` declaration on your behalf.
+宣言されていない変数への代入だけでステートメントが構成されている場合、Svelte はあなたの代わりに `let` 宣言を挿入します。
 
 ```sv
 <script>
 	export let num;
 
-	// we don't need to declare `squared` and `cubed`
-	// — Svelte does it for us
+	// `squared` や `cubed` を宣言する必要はありません
+	// — Svelte がやってくれます
 	$: squared = num * num;
 	$: cubed = squared * num;
 </script>
 ```
 
-#### 4. Prefix stores with `$` to access their values
+##### 4. ストアに`$`接頭辞を付けて値にアクセスする
 
 ---
 
-A *store* is an object that allows reactive access to a value via a simple *store contract*. The [`svelte/store` module](docs#svelte_store) contains minimal store implementations which fulfil this contract.
+*ストア*は、シンプルな*ストアコントラクト*(store contract)を介して値へのリアクティブなアクセスを可能にするオブジェクトです。[`svelte/store` モジュール](docs#svelte_store)にはこのコントラクト(contract)を満たす最小限のストア実装が含まれています。
 
-Any time you have a reference to a store, you can access its value inside a component by prefixing it with the `$` character. This causes Svelte to declare the prefixed variable, subscribe to the store at component initialization and unsubscribe when appropriate.
+ストアへの参照を持っているときはいつでも、`$`を接頭辞として付けることで、コンポーネント内からその値にアクセスできます。これによってSvelteは接頭辞付きの変数を宣言し、ストアのサブスクリプションを設定します。このサブスクリプションは適切なタイミングで解除されます。
 
-Assignments to `$`-prefixed variables require that the variable be a writable store, and will result in a call to the store's `.set` method.
+`$`接頭辞が付いた変数に代入するには、その変数が書き込み可能なストアである必要があります。また、代入時にはストアの `.set`メソッドが呼び出されます。 
 
-Note that the store must be declared at the top level of the component — not inside an `if` block or a function, for example.
+ストアはコンポーネントのトップレベルで宣言しなければいけないことに注意してください。例えば、`if`ブロックや関数の中では宣言できません。
 
-Local variables (that do not represent store values) must *not* have a `$` prefix.
+(ストア値を表すものではない)ローカル変数には、`$`接頭辞を付けてはいけません。
 
 ```sv
 <script>
@@ -216,32 +216,32 @@ Local variables (that do not represent store values) must *not* have a `$` prefi
 </script>
 ```
 
-##### Store contract
+##### ストアコントラクト(Store contract)
 
 ```js
 store = { subscribe: (subscription: (value: any) => void) => (() => void), set?: (value: any) => void }
 ```
 
-You can create your own stores without relying on [`svelte/store`](docs#svelte_store), by implementing the *store contract*:
+*ストアコントラクト*(store contract)を実装することで、[`svelte/store`](docs#svelte_store)に依存せずに独自のストアを作ることができます。
 
-1. A store must contain a `.subscribe` method, which must accept as its argument a subscription function. This subscription function must be immediately and synchronously called with the store's current value upon calling `.subscribe`. All of a store's active subscription functions must later be synchronously called whenever the store's value changes.
-2. The `.subscribe` method must return an unsubscribe function. Calling an unsubscribe function must stop its subscription, and its corresponding subscription function must not be called again by the store.
-3. A store may *optionally* contain a `.set` method, which must accept as its argument a new value for the store, and which synchronously calls all of the store's active subscription functions. Such a store is called a *writable store*.
+1. ストアは `.subscribe` メソッドを含まなければならず、その引数としてサブスクリプション関数を受けとる必要があります。このサブスクリプション関数は `.subscribe` が呼ばれたらストアの現在の値と同期して即座に呼び出されなければいけません。ストアのアクティブなサブスクリプション関数は全て、ストアの値が変更されるたびに同期して呼び出されなければいけません。
+2. `.subscribe` メソッドはサブスクリプションを解除する関数を返さなければいけません。サブスクリプションを解除する関数が呼ばれたら、そのサブスクリプションを停止してそれに対応するサブスクリプション関数がそのストアから再び呼び出されないようにしなければいけません。
+3. ストアは*オプションで* `.set` メソッドを含むことができます。`.set` メソッドは、引数としてストアの新しい値を受けとる必要があり、全てのアクティブなサブスクリプション関数を同期的に呼び出します。このようなストアは *書き込み可能なストア* (writable store) と呼ばれます。
 
-For interoperability with RxJS Observables, the `.subscribe` method is also allowed to return an object with an `.unsubscribe` method, rather than return the unsubscription function directly. Note however that unless `.subscribe` synchronously calls the subscription (which is not required by the Observable spec), Svelte will see the value of the store as `undefined` until it does.
+RxJSのObservablesとの相互運用性のため、`.subscribe` メソッドはサブスクリプションを解除する関数を直接返すのではなく、`.unsubscribe` メソッドを持つオブジェクトを返すこともできます。ただし、`.subscribe` が同期的にサブスクリプションを呼び出さない限り(これはObservableの仕様で要求されていませんが)、サブスクリプションを呼び出すまでは、Svelte がストアの値を `undefined` とみなすことに注意してください。
 
 
 ### &lt;script context="module"&gt;
 
 ---
 
-A `<script>` tag with a `context="module"` attribute runs once when the module first evaluates, rather than for each component instance. Values declared in this block are accessible from a regular `<script>` (and the component markup) but not vice versa.
+`context="module"` 属性をもつ `<script>` タグは、コンポーネントインスタンスごとではなく、モジュールが最初に評価するときに1回実行されます。このブロックで宣言された値は、通常の `<script>`（およびコンポーネントのマークアップ）からアクセスできますが、その逆はできません。
 
-You can `export` bindings from this block, and they will become exports of the compiled module.
+このブロックからバインディングを `export` でき、それらはコンパイルされたモジュールのエクスポートになります。
 
-You cannot `export default`, since the default export is the component itself.
+デフォルトのエクスポートはコンポーネント自体であるため、`export default` はできません。
 
-> Variables defined in `module` scripts are not reactive — reassigning them will not trigger a rerender even though the variable itself will update. For values shared between multiple components, consider using a [store](docs#svelte_store).
+> `module` スクリプトで定義された変数はリアクティブではありません。つまり、変数の再代入は、変数自体の更新はしますが、再レンダリングのトリガーにはなりません。複数のコンポーネント間で共有される値については、[ストア](docs#svelte_store)の使用を検討してください。
 
 ```sv
 <script context="module">
@@ -265,14 +265,14 @@ You cannot `export default`, since the default export is the component itself.
 
 ---
 
-CSS inside a `<style>` block will be scoped to that component.
+`<style>` ブロック内の CSS は、そのコンポーネントにスコープされます。
 
-This works by adding a class to affected elements, which is based on a hash of the component styles (e.g. `svelte-123xyz`).
+これは、影響を受ける要素にクラスを追加することで動作し、そのクラスはコンポーネントのスタイルのハッシュに基づいています (例えば `svelte-123xyz`)。
 
 ```sv
 <style>
 	p {
-		/* this will only affect <p> elements in this component */
+		/* これはこのコンポーネントの <p> 要素にのみ影響します */
 		color: burlywood;
 	}
 </style>
@@ -280,38 +280,38 @@ This works by adding a class to affected elements, which is based on a hash of t
 
 ---
 
-To apply styles to a selector globally, use the `:global(...)` modifier.
+スタイルをグローバルなセレクタに適用するには、`:global(...)`修飾子を使用します。
 
 ```sv
 <style>
 	:global(body) {
-		/* this will apply to <body> */
+		/* これは <body> に適用されます */
 		margin: 0;
 	}
 
 	div :global(strong) {
-		/* this will apply to all <strong> elements, in any
-			 component, that are inside <div> elements belonging
-			 to this component */
+		/* これは、このコンポーネント内の <div> 要素の中にある
+			 任意のコンポーネント内の <strong> 要素に
+			 適用されます */
 		color: goldenrod;
 	}
 
 	p:global(.red) {
-		/* this will apply to all <p> elements belonging to this 
-			 component with a class of red, even if class="red" does
-			 not initially appear in the markup, and is instead 
-			 added at runtime. This is useful when the class 
-			 of the element is dynamically applied, for instance 
-			 when updating the element's classList property directly. */
+		/* これは、このコンポーネントに属し、red クラスを持つ
+			 すべての <p> 要素に適用されます（class="red" が
+			 最初のマークアップに現れず、実行時に追加された場合
+			 でも）。これは要素の classList プロパティを直接
+			 更新するなど、要素のクラスが動的に適用されるときに
+			 便利です。 */
 	}
 </style>
 ```
 
 ---
 
-If you want to make @keyframes that are accessible globally, you need to prepend your keyframe names with `-global-`.
+グローバルにアクセスできる @keyframes を作りたい場合は、キーフレーム名の前に `-global-` を付ける必要があります。
 
-The `-global-` part will be removed when compiled, and the keyframe then be referenced using just `my-animation-name` elsewhere in your code.
+コンパイル時に `-global-` の部分は削除され、キーフレームはコード内の他の箇所では `my-animation-name` だけを使って参照されます。
 
 ```html
 <style>
@@ -321,18 +321,18 @@ The `-global-` part will be removed when compiled, and the keyframe then be refe
 
 ---
 
-There should only be 1 top-level `<style>` tag per component.
+トップレベルの `<style>` タグは、1 つのコンポーネントにつき 1 つだけでなければなりません。
 
-However, it is possible to have `<style>` tag nested inside other elements or logic blocks.
+ただし、他の要素や論理ブロックの中に `<style>` タグを入れ子にすることは可能です。
 
-In that case, the `<style>` tag will be inserted as-is into the DOM, no scoping or processing will be done on the `<style>` tag.
+その場合、 `<style>` タグはそのまま DOM に挿入され、 `<style>` タグのスコープや処理は行われません。
 
 ```html
 <div>
 	<style>
-		/* this style tag will be inserted as-is */
+		/* この style タグはそのまま挿入されます */
 		div {
-			/* this will apply to all `<div>` elements in the DOM */
+			/* これは DOM 内のすべての `<div>` 要素に適用されます */
 			color: red;
 		}
 	</style>

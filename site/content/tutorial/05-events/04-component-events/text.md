@@ -2,7 +2,7 @@
 title: Component events
 ---
 
-Components can also dispatch events. To do so, they must create an event dispatcher. Update `Inner.svelte`:
+コンポーネントはイベントを発信することもできます。そのためには、イベントディスパッチャを作成する必要があります。`Inner.svelte` を更新してください。
 
 ```html
 <script>
@@ -18,10 +18,10 @@ Components can also dispatch events. To do so, they must create an event dispatc
 </script>
 ```
 
-> `createEventDispatcher` must be called when the component is first instantiated — you can't do it later inside e.g. a `setTimeout` callback. This links `dispatch` to the component instance.
+> `createEventDispatcher` はコンポーネントを最初にインスタンス化するときに呼び出す必要があります。（後から `setTimeout` のコールバックなどの内側で呼び出すことはできません。）これにより `dispatch` をコンポーネントインスタンスに関連づけます。
 
-Notice that the `App` component is listening to the messages dispatched by `Inner` component thanks to the `on:message` directive. This directive is an attribute prefixed with `on:` followed by the event name that we are dispatching (in this case, `message`).
+`App` コンポーネントは `Inner` コンポーネントによってディスパッチされたメッセージを `on:message` ディレクティブによって受信していることに注目してください。このディレクティブは、`on:` の前にディスパッチするイベント名(この場合は `message`)を付加した属性です。
 
-Without this attribute, messages would still be dispatched, but the App would not react to it. You can try removing the `on:message` attribute and pressing the button again.
+この属性がない場合、メッセージはディスパッチされますが、アプリはそれに反応しません。`on:message`属性を削除して、もう一度ボタンを押してみてください。
 
-> You can also try changing the event name to something else. For instance, change `dispatch('message')` to `dispatch('myevent')` in `Inner.svelte` and change the attribute name from `on:message` to `on:myevent` in the `App.svelte` component.
+> イベント名を他のものに変更してみることもできます。例えば、`Inner.svelte` の `dispatch('message')` を `dispatch('myevent')` に変更し、`App.svelte` コンポーネントの属性名を `on:message` から `on:myevent` に変更します。

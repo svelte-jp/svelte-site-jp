@@ -2,7 +2,7 @@
 title: The class directive
 ---
 
-Like any other attribute, you can specify classes with a JavaScript attribute, seen here:
+他の属性と同じように、JavaScriptの属性でクラスを指定することができます。
 
 ```html
 <button
@@ -11,7 +11,7 @@ Like any other attribute, you can specify classes with a JavaScript attribute, s
 >foo</button>
 ```
 
-This is such a common pattern in UI development that Svelte includes a special directive to simplify it:
+これはUI開発ではよくあるパターンで、Svelteにはこれを単純化するための特別なディレクティブが含まれています。
 
 ```html
 <button
@@ -20,4 +20,4 @@ This is such a common pattern in UI development that Svelte includes a special d
 >foo</button>
 ```
 
-The `selected` class is added to the element whenever the value of the expression is truthy, and removed when it's falsy.
+`selected` クラスは、式の値が truthy の場合は要素に追加され、falsy の場合は削除されます。

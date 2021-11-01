@@ -2,15 +2,15 @@
 title: Assignments
 ---
 
-At the heart of Svelte is a powerful system of *reactivity* for keeping the DOM in sync with your application state — for example, in response to an event.
+Svelteの中心には、DOMを（例えば、イベントに応じて）アプリケーションの状態に同期し続けさせるための強力な *reactivity* システムがあります。
 
-To demonstrate it, we first need to wire up an event handler. Replace line 9 with this:
+これを実演するには、まずイベントハンドラを定義する必要があります。9行目をこれに置き換えてください。
 
 ```html
 <button on:click={incrementCount}>
 ```
 
-Inside the `incrementCount` function, all we need to do is change the value of `count`:
+関数 `incrementCount` の内部で必要なのは `count` の値を変更することだけです。
 
 ```js
 function incrementCount() {
@@ -18,4 +18,4 @@ function incrementCount() {
 }
 ```
 
-Svelte 'instruments' this assignment with some code that tells it the DOM will need to be updated.
+Svelteは、DOMが更新される必要があることを伝えるコードをこの代入に取り付け（instrument）ます。

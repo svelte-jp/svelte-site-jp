@@ -2,7 +2,7 @@
 title: <svelte:component>
 ---
 
-A component can change its category altogether with `<svelte:component>`. Instead of a sequence of `if` blocks...
+コンポーネントは `<svelte:component>` でカテゴリを完全に変更することができます。一連の `if` ブロックの代わりに…
 
 ```html
 {#if selected.color === 'red'}
@@ -14,10 +14,10 @@ A component can change its category altogether with `<svelte:component>`. Instea
 {/if}
 ```
 
-...we can have a single dynamic component:
+…我々は単一の動的なコンポーネントを持つことができます。
 
 ```html
 <svelte:component this={selected.component}/>
 ```
 
-The `this` value can be any component constructor, or a falsy value — if it's falsy, no component is rendered.
+`this` 値には任意のコンポーネントコンストラクタ、または falsy な値を指定できます。falsy の値を指定した場合、コンポーネントはレンダリングされません。

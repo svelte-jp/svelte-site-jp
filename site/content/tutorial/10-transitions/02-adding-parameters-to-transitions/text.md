@@ -2,7 +2,7 @@
 title: Adding parameters
 ---
 
-Transition functions can accept parameters. Replace the `fade` transition with `fly`...
+トランジション関数はパラメータを受け取ることができます。`fade` トランジションを `fly` に置き換えてください。
 
 ```html
 <script>
@@ -11,7 +11,7 @@ Transition functions can accept parameters. Replace the `fade` transition with `
 </script>
 ```
 
-...and apply it to the `<p>` along with some options:
+そして、`<p>` にいくつかのオプションと一緒にパラメータを設定してください。
 
 ```html
 <p transition:fly="{{ y: 200, duration: 2000 }}">
@@ -19,4 +19,4 @@ Transition functions can accept parameters. Replace the `fade` transition with `
 </p>
 ```
 
-Note that the transition is *reversible* — if you toggle the checkbox while the transition is ongoing, it transitions from the current point, rather than the beginning or the end.
+トランジションは可逆的であることに注意してください。つまり、トランジションの最中にチェックボックスを切り替えると、開始位置や終了位置からではなく、現在の位置からトランジションをします。

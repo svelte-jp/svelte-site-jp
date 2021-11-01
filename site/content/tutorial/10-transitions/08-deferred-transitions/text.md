@@ -2,13 +2,13 @@
 title: Deferred transitions
 ---
 
-A particularly powerful feature of Svelte's transition engine is the ability to *defer* transitions, so that they can be coordinated between multiple elements.
+Svelte のトランジションエンジンで特に強力な特徴は、トランジションを*遅延*させて複数の要素間でトランジションが調整されるように出来ることです。
 
-Take this pair of todo lists, in which toggling a todo sends it to the opposite list. In the real world, objects don't behave like that — instead of disappearing and reappearing in another place, they move through a series of intermediate positions. Using motion can go a long way towards helping users understand what's happening in your app.
+このペアのToDoリストを見てみましょう。ToDoを切り替えると反対側のリストに送られます。現実の世界ではオブジェクトはこのような振る舞いをしません。消えたり別の場所に現れたりするのではなく、一連の中間的な位置を移動します。モーションを使用することでアプリで何が起こっているのかをユーザーに理解してもらうことができます。
 
-We can achieve this effect using the `crossfade` function, which creates a pair of transitions called `send` and `receive`. When an element is 'sent', it looks for a corresponding element being 'received', and generates a transition that transforms the element to its counterpart's position and fades it out. When an element is 'received', the reverse happens. If there is no counterpart, the `fallback` transition is used.
+この効果は、`send` と `receive` というトランジションのペアを作成する`crossfade` 関数を使用することで実現できます。要素は、「send」されると、対応する「receive」される要素を探し、その要素を相手の位置に変換してフェードアウトするトランジションを生成します。要素が「receive」されると、逆のことが起こります。対応する要素がない場合は、`fallback` トランジションが使われます。
 
-Find the `<label>` element on line 65, and add the `send` and `receive` transitions:
+65行目にある `<label>` 要素を探して、`send` と `receive` トランジションを追加してください。
 
 ```html
 <label
@@ -17,7 +17,7 @@ Find the `<label>` element on line 65, and add the `send` and `receive` transiti
 >
 ```
 
-Do the same for the next `<label>` element:
+次の `<label>` 要素にも同じことをしましょう。
 
 ```html
 <label
@@ -27,4 +27,4 @@ Do the same for the next `<label>` element:
 >
 ```
 
-Now, when you toggle items, they move smoothly to their new location. The non-transitioning items still jump around awkwardly — we can fix that in the next chapter.
+これでアイテムを切り替えると、アイテムはスムーズに新しい場所に移動します。遷移していない項目は、まだ不器用に跳ね回っています。これは次の章で解決できます。

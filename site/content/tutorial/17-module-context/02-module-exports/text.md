@@ -2,7 +2,7 @@
 title: Exports
 ---
 
-Anything exported from a `context="module"` script block becomes an export from the module itself. If we export a `stopAll` function from `AudioPlayer.svelte`...
+`context="module"` スクリプトブロックからエクスポートされたものはすべてモジュール自体からのエクスポートになります。もし、`AudioPlayer.svelte` から `stopAll` 関数をエクスポートすると…
 
 ```html
 <script context="module">
@@ -16,7 +16,7 @@ Anything exported from a `context="module"` script block becomes an export from 
 </script>
 ```
 
-...we can then import it from `App.svelte`...
+…そしてそれを `App.svelte` からインポートすることができます…
 
 ```html
 <script>
@@ -24,7 +24,7 @@ Anything exported from a `context="module"` script block becomes an export from 
 </script>
 ```
 
-...and use it in an event handler:
+…さらにそれをイベントハンドラで使うことができます。
 
 ```html
 <button on:click={stopAll}>
@@ -32,4 +32,4 @@ Anything exported from a `context="module"` script block becomes an export from 
 </button>
 ```
 
-> You can't have a default export, because the component *is* the default export.
+> default export は使うことはできません、なぜならコンポーネント *が* default export だからです。

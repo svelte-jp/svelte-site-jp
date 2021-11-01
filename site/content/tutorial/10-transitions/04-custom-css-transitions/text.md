@@ -2,7 +2,7 @@
 title: Custom CSS transitions
 ---
 
-The `svelte/transition` module has a handful of built-in transitions, but it's very easy to create your own. By way of example, this is the source of the `fade` transition:
+`svelte/transition` モジュールにはいくつかのトランジションが組み込まれていますが、独自のトランジションを簡単に作成することができます。例として、これは `fade` トランジションのソースです。
 
 ```js
 function fade(node, {
@@ -19,19 +19,19 @@ function fade(node, {
 }
 ```
 
-The function takes two arguments — the node to which the transition is applied, and any parameters that were passed in — and returns a transition object which can have the following properties:
+この関数は、トランジションが適用されるノードと渡されたパラメータの2つの引数を取り、下記のプロパティをもつトランジションオブジェクトを返します。
 
-* `delay` — milliseconds before the transition begins
-* `duration` — length of the transition in milliseconds
-* `easing` — a `p => t` easing function (see the chapter on [tweening](tutorial/tweened))
-* `css` — a `(t, u) => css` function, where `u === 1 - t`
-* `tick` — a `(t, u) => {...}` function that has some effect on the node
+* `delay` — トランジション開始までのミリ秒
+* `duration` — ミリ秒単位でのトランジションの長さ
+* `easing` — `p => t` イージング関数 ( [tweening](tutorial/tweened) の章を参照)
+* `css` — `u === 1 - t` である `(t, u) => css` 関数
+* `tick` — ノードに何らかの影響を与える `(t, u) => {...}` 関数
 
-The `t` value is `0` at the beginning of an intro or the end of an outro, and `1` at the end of an intro or beginning of an outro.
+`t` 値は、イントロの開始やアウトロの終了時点では `0` であり、イントロの終了やアウトロの開始時点では `1` となります。
 
-Most of the time you should return the `css` property and *not* the `tick` property, as CSS animations run off the main thread to prevent jank where possible. Svelte 'simulates' the transition and constructs a CSS animation, then lets it run.
+ほとんどの場合、`css` プロパティを返すべきであり、`tick` プロパティを返すべき*ではない*です。なぜなら、CSSアニメーションは、UIが遅くなるのを防ぐために、可能であれば、メインスレッドとは別に動作するからです。Svelte は、トランジションを「シミュレート」し、 CSS アニメーションを作成してから実行させます。
 
-For example, the `fade` transition generates a CSS animation somewhat like this:
+たとえば、`fade` トランジションは次のような CSS アニメーションを生成します。
 
 ```css
 0% { opacity: 0 }
@@ -41,7 +41,7 @@ For example, the `fade` transition generates a CSS animation somewhat like this:
 100% { opacity: 1 }
 ```
 
-We can get a lot more creative though. Let's make something truly gratuitous:
+しかし、もっと独創的なものを作れます。本当に余計なトランジションを作ってみましょう。
 
 ```html
 <script>
@@ -69,4 +69,4 @@ We can get a lot more creative though. Let's make something truly gratuitous:
 </script>
 ```
 
-Remember: with great power comes great responsibility.
+忘れないで、大いなる力には大きな責任が伴います。

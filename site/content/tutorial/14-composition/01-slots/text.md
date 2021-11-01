@@ -2,7 +2,7 @@
 title: Slots
 ---
 
-Just like elements can have children...
+HTML要素が子を持つことができるように…
 
 ```html
 <div>
@@ -10,7 +10,7 @@ Just like elements can have children...
 </div>
 ```
 
-...so can components. Before a component can accept children, though, it needs to know where to put them. We do this with the `<slot>` element. Put this inside `Box.svelte`:
+…コンポーネントもそうすることができます。しかしコンポーネントが子を受け入れる前に、どこに子を置くかを知っておく必要があります。これを `<slot>` 要素で行います。これを `Box.svelte` の中に入れてください。
 
 ```html
 <div class="box">
@@ -18,7 +18,7 @@ Just like elements can have children...
 </div>
 ```
 
-You can now put things in the box:
+これで box に物を入れることができるようになりました。
 
 ```html
 <Box>

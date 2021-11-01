@@ -2,18 +2,18 @@
 title: Auto-subscriptions
 ---
 
-The app in the previous example works, but there's a subtle bug — the store is subscribed to, but never unsubscribed. If the component was instantiated and destroyed many times, this would result in a *memory leak*.
+前の例でアプリは動きましたが、微妙なバグがあります。ストアはサブスクライブされますが、決してアンサブスクライブされません。仮に、コンポーネントが何度もインスタンス化および破棄されるなら、*メモリリーク* が発生することになるでしょう。
 
-Start by declaring `unsubscribe` in `App.svelte`:
+まず、`App.svelte` で `unsubscribe` を宣言します。
 
 ```js
 const unsubscribe = count.subscribe(value => {
 	count_value = value;
 });
 ```
-> Calling a `subscribe` method returns an `unsubscribe` function.
+> `subscribe` メソッドを呼ぶと `unsubscribe` 関数が返ります.
 
-You now declared `unsubscribe`, but it still needs to be called, for example through the `onDestroy` [lifecycle hook](tutorial/ondestroy):
+`unsubscribe` が宣言されましたが、さらに、例えば `onDestroy` [lifecycle hook](tutorial/ondestroy) などで呼び出される必要があります。
 
 ```html
 <script>
@@ -35,7 +35,7 @@ You now declared `unsubscribe`, but it still needs to be called, for example thr
 <h1>The count is {count_value}</h1>
 ```
 
-It starts to get a bit boilerplatey though, especially if your component subscribes to multiple stores. Instead, Svelte has a trick up its sleeve — you can reference a store value by prefixing the store name with `$`:
+ただし、このやり方は、特にコンポーネントが複数のストアにサブスクライブしている場合に、少し定型的になり始めます。代わりに、Svelte には巧妙な工夫が施されています。ストア名の前に `$` を付けることで、ストアの値を参照できます。
 
 ```html
 <script>
@@ -48,8 +48,8 @@ It starts to get a bit boilerplatey though, especially if your component subscri
 <h1>The count is {$count}</h1>
 ```
 
-> Auto-subscription only works with store variables that are declared (or imported) at the top-level scope of a component.
+> 自動サブスクリプションは、コンポーネントの最上位スコープで宣言（またはインポート）されたストア変数でのみ機能します。
 
-You're not limited to using `$count` inside the markup, either — you can use it anywhere in the `<script>` as well, such as in event handlers or reactive declarations.
+`$count` の使用はマークアップ内に限定されません。イベントハンドラやリアクティブ宣言など、`<script>` のどこでも使用できます。
 
-> Any name beginning with `$` is assumed to refer to a store value. It's effectively a reserved character — Svelte will prevent you from declaring your own variables with a `$` prefix.
+> `$` で始まる名前はストア値を参照していると見なされます。これは事実上の予約文字です。Svelte では `$` プレフィックスを使った独自変数を宣言できません。

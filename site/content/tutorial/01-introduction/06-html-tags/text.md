@@ -2,14 +2,14 @@
 title: HTML tags
 ---
 
-Ordinarily, strings are inserted as plain text, meaning that characters like `<` and `>` have no special meaning.
+通常、文字列はプレーンテキストとして挿入され、`<`や`>`のような文字は特別な意味を持ちません。
 
-But sometimes you need to render HTML directly into a component. For example, the words you're reading right now exist in a markdown file that gets included on this page as a blob of HTML.
+しかし、HTMLをコンポーネントに直接レンダリングする必要がある場合もあります。例えば、あなたが今読んでいる文章はマークダウンファイルに存在し、HTMLのblobとしてこのページに含まれています。
 
-In Svelte, you do this with the special `{@html ...}` tag:
+Svelteでは、`{@html ...}` という特別なタグを使ってこれを行います。
 
 ```html
 <p>{@html string}</p>
 ```
 
-> Svelte doesn't perform any sanitization of the expression inside `{@html ...}` before it gets inserted into the DOM. In other words, if you use this feature it's critical that you manually escape HTML that comes from sources you don't trust, otherwise you risk exposing your users to XSS attacks.
+> Svelte は DOM に挿入される前に `{@html ...}` 内の式のサニタイズを行いません。違う言い方をすれば、この機能を使用する場合は信頼できないソースから来た HTML を手動でエスケープすることが重要です、そうしなければユーザーをXSS攻撃にさらす危険性があります。

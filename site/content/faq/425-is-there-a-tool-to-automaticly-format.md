@@ -1,5 +1,5 @@
 ---
-question: Is there a tool to automatically format my .svelte files?
+question: .svelte ファイルを自動的にフォーマットするツールはありますか?
 ---
 
-You can use prettier with the [prettier-plugin-svelte](https://www.npmjs.com/package/prettier-plugin-svelte) plugin.
+[prettier-plugin-svelte](https://www.npmjs.com/package/prettier-plugin-svelte) プラグインで prettier を使用できます。

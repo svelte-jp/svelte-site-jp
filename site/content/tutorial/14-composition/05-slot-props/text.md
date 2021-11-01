@@ -2,9 +2,9 @@
 title: Slot props
 ---
 
-In this app, we have a `<Hoverable>` component that tracks whether the mouse is currently over it. It needs to pass that data *back* to the parent component, so that we can update the slotted contents.
+このアプリには、現在マウスがその上に乗ったかどうかを追跡する `<Hoverable>` コンポーネントがあります。スロットの中身を更新できるように、そのデータを親コンポーネントに *戻す* 必要があります。
 
-For this, we use *slot props*. In `Hoverable.svelte`, pass the `hovering` value into the slot:
+これには *slotプロパティ(slot props)* を使います。`Hoverable.svelte` の中で `hovering` の値をスロットに渡します。
 
 ```html
 <div on:mouseenter={enter} on:mouseleave={leave}>
@@ -12,9 +12,9 @@ For this, we use *slot props*. In `Hoverable.svelte`, pass the `hovering` value 
 </div>
 ```
 
-> Remember you can also use the `{hovering}` shorthand, if you prefer.
+> お好みであれば、`{hovering}` というショートハンドを使えるのを覚えておいてください。
 
-Then, to expose `hovering` to the contents of the `<Hoverable>` component, we use the `let` directive:
+そして `<Hoverable>` コンポーネントの内容に `hovering` を公開するには、`let` ディレクティブを使います。
 
 ```html
 <Hoverable let:hovering={hovering}>
@@ -28,7 +28,7 @@ Then, to expose `hovering` to the contents of the `<Hoverable>` component, we us
 </Hoverable>
 ```
 
-You can rename the variable, if you want — let's call it `active` in the parent component:
+必要に応じて変数の名前を変更することができます。親コンポーネントでは `active` と呼ぶようにしましょう。
 
 ```html
 <Hoverable let:hovering={active}>
@@ -42,6 +42,6 @@ You can rename the variable, if you want — let's call it `active` in the paren
 </Hoverable>
 ```
 
-You can have as many of these components as you like, and the slotted props will remain local to the component where they're declared.
+これらのコンポーネントは好きなだけ持つことができ、slotプロパティは、それらが宣言されているコンポーネントに対してローカルであり続けます。
 
-> Named slots can also have props; use the `let` directive on an element with a `slot="..."` attribute, instead of on the component itself.
+> 名前付きスロットはプロパティを持つこともできます。コンポーネント自身ではなく、`slot="...."` 属性を持つ要素に対して `let` ディレクティブを使用してください。

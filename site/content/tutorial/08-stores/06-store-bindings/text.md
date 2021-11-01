@@ -2,17 +2,17 @@
 title: Store bindings
 ---
 
-If a store is writable — i.e. it has a `set` method — you can bind to its value, just as you can bind to local component state.
+ストアが書き込み可能、つまり `set` メソッドを持っている場合は、ローカルコンポーネントの状態にバインドするのと同じように、ストアの値にバインドできます。
 
-In this example we have a writable store `name` and a derived store `greeting`. Update the `<input>` element:
+この例では、書き込み可能なストア `name` と派生ストア（derived store）の `greeting` があります。`<input>` 要素を以下のように更新してください:
 
 ```html
 <input bind:value={$name}>
 ```
 
-Changing the input value will now update `name` and all its dependents.
+入力値を変更すると `name` とそれに依存しているもの全てが更新されます。
 
-We can also assign directly to store values inside a component. Add a `<button>` element:
+また、コンポーネント内でストアの値に直接代入することもできます。以下の通り `<button>` 要素を追加してください:
 
 ```html
 <button on:click="{() => $name += '!'}">
@@ -20,4 +20,4 @@ We can also assign directly to store values inside a component. Add a `<button>`
 </button>
 ```
 
-The `$name += '!'` assignment is equivalent to `name.set($name + '!')`.
+`$name += '!'` の代入は `name.set($name + '!')` と同等です。

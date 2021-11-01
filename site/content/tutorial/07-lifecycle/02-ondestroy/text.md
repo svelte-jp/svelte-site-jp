@@ -2,9 +2,9 @@
 title: onDestroy
 ---
 
-To run code when your component is destroyed, use `onDestroy`.
+コンポーネントが破棄されたときにコードを実行するには、`onDestroy` を使いましょう。
 
-For example, we can add a `setInterval` function when our component initialises, and clean it up when it's no longer relevant. Doing so prevents memory leaks.
+例えば、コンポーネントの初期化時に `setInterval` 関数を追加し、それが不要になったらそれをクリーンアップすることができます。そうすることでメモリリークを防ぐことができます。
 
 ```html
 <script>
@@ -17,7 +17,7 @@ For example, we can add a `setInterval` function when our component initialises,
 </script>
 ```
 
-While it's important to call lifecycle functions during the component's initialisation, it doesn't matter *where* you call them from. So if we wanted, we could abstract the interval logic into a helper function in `utils.js`...
+コンポーネントの初期化中にライフサイクル関数を呼び出すことは重要ですが、それらを *どこ* から呼び出すかは重要ではありません。そのため、インターバルロジックを抽象化して `utils.js` のヘルパー関数にすることができます…
 
 ```js
 import { onDestroy } from 'svelte';
@@ -31,7 +31,7 @@ export function onInterval(callback, milliseconds) {
 }
 ```
 
-...and import it into our component:
+…そして、それをコンポーネントにインポートします。
 
 ```html
 <script>
@@ -42,4 +42,4 @@ export function onInterval(callback, milliseconds) {
 </script>
 ```
 
-Open and close the timer a few times and make sure the counter keeps ticking and the CPU load increases. This is due to a memory leak as the previous timers are not deleted. Don't forget to refresh the page before solving the example.
+何度かタイマーを開いたり閉じたりして、カウンターが動き続けCPU負荷が上昇することを確認してみてください。これは古いタイマーが削除されていないため、メモリリークが発生しているからです。例題を解く前にこのページを更新するのを忘れないでくださいね。

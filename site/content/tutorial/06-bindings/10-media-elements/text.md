@@ -2,9 +2,9 @@
 title: Media elements
 ---
 
-The `<audio>` and `<video>` elements have several properties that you can bind to. This example demonstrates a few of them.
+`<audio>` と `<video>` 要素にはいくつかバインドできるプロパティがあります。この例では、その内のいくつかをお見せします。
 
-On line 62, add `currentTime={time}`, `duration` and `paused` bindings:
+62行目に `currentTime={time}`、`duration`、`paused` プロパティを追加しバインドします:
 
 ```html
 <video
@@ -21,27 +21,27 @@ On line 62, add `currentTime={time}`, `duration` and `paused` bindings:
 </video>
 ```
 
-> `bind:duration` is equivalent to `bind:duration={duration}`
+> `bind:duration` は `bind:duration={duration}` に相当します
 
-Now, when you click on the video, it will update `time`, `duration` and `paused` as appropriate. This means we can use them to build custom controls.
+このとき動画をクリックすると、`time`、`duration`、`paused` が適宜更新されます。つまり、それらを使ってカスタムコントロールを構築することができるということです。
 
-> Ordinarily on the web, you would track `currentTime` by listening for `timeupdate` events. But these events fire too infrequently, resulting in choppy UI. Svelte does better — it checks `currentTime` using `requestAnimationFrame`.
+> 通常、 web 上では `timeupdate` イベントを検知することで `currentTime` を追跡しますが、これらのイベントはそれほど頻繁に発生しないため、結果的にぎこちない UI になってしまいます。それを Svelte は上手く処理しています。`requestAnimationFrame` を使用して `currentTime` をチェックすることで。
 
-The complete set of bindings for `<audio>` and `<video>` is as follows — six *readonly* bindings...
+`<audio>` と `<video>` のバインディングの全セットは以下の通りです。6つの _読み込み専用_ バインディング…
 
-* `duration` (readonly) — the total duration of the video, in seconds
-* `buffered` (readonly) — an array of `{start, end}` objects
-* `seekable` (readonly) — ditto
-* `played` (readonly) — ditto
-* `seeking` (readonly) — boolean
-* `ended` (readonly) — boolean
+- `duration` (読み込み専用) — 動画の総再生時間（秒単位）
+- `buffered` (読み込み専用) — `{start, end}` オブジェクトの配列
+- `seekable` (読み込み専用) — 同上
+- `played` (読み込み専用) — 同上
+- `seeking` (読み込み専用) — 真偽値
+- `ended` (読み込み専用) — 真偽値
 
-...and five *two-way* bindings:
+…と5つの _双方向_ バインディングです:
 
-* `currentTime` — the current point in the video, in seconds
-* `playbackRate` — how fast to play the video, where `1` is 'normal'
-* `paused` — this one should be self-explanatory
-* `volume` — a value between 0 and 1
-* `muted` — a boolean value where true is muted
+- `currentTime` — 動画内の現在のポイント（秒単位）
+- `playbackRate` — 動画の再生速度（`1` が 'normal'）
+- `paused` — これは自明のこと
+- `volume` — 0 から 1 の値
+- `muted` — true はミュートを意味するブーリアン値
 
-Videos additionally have readonly `videoWidth` and `videoHeight` bindings.
+動画には読み取り専用の `videoWidth` と `videoHeight` バインディングも存在します。

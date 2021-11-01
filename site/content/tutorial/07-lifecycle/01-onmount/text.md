@@ -2,11 +2,11 @@
 title: onMount
 ---
 
-Every component has a *lifecycle* that starts when it is created, and ends when it is destroyed. There are a handful of functions that allow you to run code at key moments during that lifecycle.
+すべてのコンポーネントには、作成される時を開始とし、破棄される時に終了とする *ライフサイクル* があります。その重要なタイミングにコードを実行できるようにする関数がいくつかあります。
 
-The one you'll use most frequently is `onMount`, which runs after the component is first rendered to the DOM. We briefly encountered it [earlier](tutorial/bind-this) when we needed to interact with a `<canvas>` element after it had been rendered.
+最も頻繁に使用するのは `onMount` で、これはコンポーネントが最初に DOM にレンダリングされた後に実行されます。[以前](tutorial/bind-this)、レンダリング後に `<canvas>` 要素を操作する必要があったときに、この話が少し出て来ました。
 
-We'll add an `onMount` handler that loads some data over the network:
+`onMount` ハンドラにネットワークからデータを読み込む処理を追加します。
 
 ```html
 <script>
@@ -21,8 +21,8 @@ We'll add an `onMount` handler that loads some data over the network:
 </script>
 ```
 
-> It's recommended to put the `fetch` in `onMount` rather than at the top level of the `<script>` because of server-side rendering (SSR). With the exception of `onDestroy`, lifecycle functions don't run during SSR, which means we can avoid fetching data that should be loaded lazily once the component has been mounted in the DOM.
+> このコンポーネントがDOMにレンダリングされた上で遅延して読み込まれるべきデータを、サーバーサイドレンダリング（SSR）中には取得せずに済むように、この`fetch`を、`<script>` の最上位ではなく、 `onMount` の中に入れることが推奨されます。なぜなら、`onDestroy`以外のライフサイクル関数がSSR中に動作することはないからです。
 
-Lifecycle functions must be called while the component is initialising so that the callback is bound to the component instance — not (say) in a `setTimeout`.
+ライフサイクル関数は、コールバックがコンポーネントのインスタンスにバインドされるように、コンポーネントの初期化中に呼び出されなければなりません。例えば、`setTimeout` の中で呼び出されてはいけません。
 
-If the `onMount` callback returns a function, that function will be called when the component is destroyed.
+もし `onMount` コールバックが関数を返す場合、その関数はコンポーネントが破棄されたときに呼び出されます。

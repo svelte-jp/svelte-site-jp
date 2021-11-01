@@ -1,18 +1,26 @@
 ---
-title: Virtual DOM is pure overhead
-description: Let's retire the 'virtual DOM is fast' myth once and for all
+title: 仮想DOMは純粋なオーバーヘッド(Virtual DOM is pure overhead)
+description: '仮想DOMは速い'という神話を完全に終わりにしよう
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/virtual-dom-is-pure-overhead
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-If you've used JavaScript frameworks in the last few years, you've probably heard the phrase 'the virtual DOM is fast', often said to mean that it's faster than the *real* DOM. It's a surprisingly resilient meme — for example people have asked how Svelte can be fast when it doesn't use a virtual DOM.
+ここ数年でJavaScriptフレームワークを使ったことがある人なら、'仮想DOMは速い' というフレーズを聞いたことがあるでしょう、これはしばしば、実際のDOMよりも速い、という意味で言われることがあります。これは驚くほどしぶといミームです — 例えば、どうやってSvelteは仮想DOMを使わずに高速にできるのかを尋ねられることがありました。
 
-It's time to take a closer look.
+では、じっくり見ていきましょう。
 
 
-## What is the virtual DOM?
+## 仮想DOMとは？(What is the virtual DOM?)
 
-In many frameworks, you build an app by creating `render()` functions, like this simple [React](https://reactjs.org/) component:
+多くのフレームワークで、`render()`関数を作ってアプリを構築します。例えばシンプルな [React](https://reactjs.org/) コンポーネントでは:
 
 ```js
 function HelloMessage(props) {
@@ -24,7 +32,7 @@ function HelloMessage(props) {
 }
 ```
 
-You can do the same thing without JSX...
+JSXを使わずに同じことをするなら…
 
 ```js
 function HelloMessage(props) {
@@ -37,21 +45,22 @@ function HelloMessage(props) {
 }
 ```
 
-...but the result is the same — an object representing how the page should now look. That object is the virtual DOM. Every time your app's state updates (for example when the `name` prop changes), you create a new one. The framework's job is to *reconcile* the new one against the old one, to figure out what changes are necessary and apply them to the real DOM.
+…しかし、結果は同じで — ページがどのように見えるかを表現するオブジェクトになります。このオブジェクトは仮想DOMです。アプリのstateが更新されるたびに(例えば `name` prop が変わったとき)、これが新たに作成されます。フレームワークの仕事は、新しいオブジェクトと古いオブジェクトを*調整*し、どのような変更が必要か把握して、実際のDOMにそれを適用することです。
 
 
-## How did the meme start?
+## このミームはどう始まった？(How did the meme start?)
 
-Misunderstood claims about virtual DOM performance date back to the launch of React. In [Rethinking Best Practices](https://www.youtube.com/watch?v=x7cQ3mrcKaY), a seminal 2013 talk by former React core team member Pete Hunt, we learned the following:
+仮想DOMのパフォーマンスに関する誤解された主張は、Reactの立ち上げまで遡ります。元ReactコアチームメンバーのPete Hunt氏による2013年の発展的な講演 [Rethinking Best Practices](https://www.youtube.com/watch?v=x7cQ3mrcKaY)で、私たちは次のことを学びました。
 
-> This is actually extremely fast, primarily because most DOM operations tend to be slow. There's been a lot of performance work on the DOM, but most DOM operations tend to drop frames.
+> これは実際には非常に高速で、主な理由は、ほとんどのDOM操作は遅くなる傾向があるからです。DOMには多くのパフォーマンス作業がありますが、ほとんどのDOM操作はフレームをドロップする傾向があります。  
+> ※原文 : This is actually extremely fast, primarily because most DOM operations tend to be slow. There's been a lot of performance work on the DOM, but most DOM operations tend to drop frames.
 
 <figure>
 	<img alt="Pete Hunt at JSConfEU 2013" src="media/rethinking-best-practices.jpg">
 	<figcaption>Screenshot from <a href="https://www.youtube.com/watch?v=x7cQ3mrcKaY">Rethinking Best Practices</a> at JSConfEU 2013</figcaption>
 </figure>
 
-But hang on a minute! The virtual DOM operations are *in addition to* the eventual operations on the real DOM. The only way it could be faster is if we were comparing it to a less efficient framework (there were plenty to go around back in 2013!), or arguing against a straw man — that the alternative is to do something no-one actually does:
+しかし、ちょっと待ってください！　仮想DOMの操作は、実際のDOMに対する最終的な操作に *加えて* 行われます。これを高速だと主張するには、より非効率なフレームワークと比較するか(2013年にはたくさんありました)、もしくは、実際には誰もやらないような架空の代替案に対して反論するしかありません。。
 
 ```js
 onEveryStateChange(() => {
@@ -59,32 +68,33 @@ onEveryStateChange(() => {
 });
 ```
 
-Pete clarifies soon after...
+Peteはすぐ後に明確にしました…
 
-> React is not magic. Just like you can drop into assembler with C and beat the C compiler, you can drop into raw DOM operations and DOM API calls and beat React if you wanted to. However, using C or Java or JavaScript is an order of magnitude performance improvement because you don't have to worry...about the specifics of the platform. With React you can build applications without even thinking about performance and the default state is fast.
+> Reactは魔法ではありません。C言語でアセンブラを使用してCコンパイラに勝つことができるのと同様に、必要に応じて生のDOMとDOM APIを使えばReactに勝つことができます。しかし、C や Java、JavaScript を使うと、プラットフォームの詳細について心配する必要がなくなるため、パフォーマンスが桁違いに向上します。Reactを使うことで、パフォーマンスを気にすることなくアプリケーションを構築することができますし、デフォルトの state は高速です。  
+> ※原文 : React is not magic. Just like you can drop into assembler with C and beat the C compiler, you can drop into raw DOM operations and DOM API calls and beat React if you wanted to. However, using C or Java or JavaScript is an order of magnitude performance improvement because you don't have to worry...about the specifics of the platform. With React you can build applications without even thinking about performance and the default state is fast.
 
-...but that's not the part that stuck.
-
-
-
-## So... is the virtual DOM *slow*?
-
-Not exactly. It's more like 'the virtual DOM is usually fast enough', but with certain caveats.
-
-The original promise of React was that you could re-render your entire app on every single state change without worrying about performance. In practice, I don't think that's turned out to be accurate. If it was, there'd be no need for optimisations like `shouldComponentUpdate` (which is a way of telling React when it can safely skip a component).
-
-Even with `shouldComponentUpdate`, updating your entire app's virtual DOM in one go is a lot of work. A while back, the React team introduced something called React Fiber which allows the update to be broken into smaller chunks. This means (among other things) that updates don't block the main thread for long periods of time, though it doesn't reduce the total amount of work or the time an update takes.
+…しかし、それは行き詰まった部分ではありません。
 
 
-## Where does the overhead come from?
 
-Most obviously, [diffing isn't free](https://twitter.com/pcwalton/status/1015694528857047040). You can't apply changes to the real DOM without first comparing the new virtual DOM with the previous snapshot. To take the earlier `HelloMessage` example, suppose the `name` prop changed from 'world' to 'everybody'.
+## それで…仮想DOMは遅い？(So... is the virtual DOM *slow*?)
 
-1. Both snapshots contain a single element. In both cases it's a `<div>`, which means we can keep the same DOM node
-2. We enumerate all the attributes on the old `<div>` and the new one to see if any need to be changed, added or removed. In both cases we have a single attribute — a `className` with a value of `"greeting"`
-3. Descending into the element, we see that the text has changed, so we'll need to update the real DOM
+その表現は正しくありません。'仮想DOMは大抵、十分に速い'というほうがより近いですが、いくつかの注意点があります。
 
-Of these three steps, only the third has value in this case, since — as is the case in the vast majority of updates — the basic structure of the app is unchanged. It would be much more efficient if we could skip straight to step 3:
+Reactの当初の約束は、パフォーマンスを心配することなく、state が1つ変更されるたびにアプリ全体を再レンダリングできる、というものでした。実際には、それは正確ではないと思います。もしそうなら、`shouldComponentUpdate` (コンポーネントを安全にスキップできるときにReactに伝える方法)のような最適化は必要ないはずです。
+
+`shouldComponentUpdate` を使ったとしても、アプリ全体の仮想DOMを一度に更新するのは大変な作業です。しばらく前に、ReactチームはReact Fiberと呼ばれるものを導入し、更新をより小さなチャンクに分割できるようになりました。これは (とりわけ) 更新によってメインスレッドが長時間ブロックされないことを意味しますが、総作業量や更新にかかる時間が減るわけではありません。
+
+
+## オーバーヘッドはどこから？(Where does the overhead come from?)
+
+ほぼ間違いなく、[差分検出のコストはゼロではありません](https://twitter.com/pcwalton/status/1015694528857047040)(原文 : diffing isn't free)。まず仮想DOMとその直前のスナップショットの比較をしないと、変更を実際のDOMに適用できません。先ほどの `HelloMessage` の例で言えば、`name` propが 'world' から 'everybody' に変わったとします。
+
+1. どちらのスナップショットにも単一の要素が含まれています。どちらの場合もそれは `<div>` であり、同じ DOM ノードを維持できることを意味します。
+2. 古い `<div>` と新しい `<div>` のすべての属性を列挙して、変更、追加、削除する必要があるか調べます。どちらも、値が `"greeting"` の `className` 属性だけがあります。
+3. 要素に降りていくと、テキストが変更されていることがわかるので、実際のDOMを更新する必要があります。
+
+この3つのステップのうち、今回のケースでは3番目のステップだけが価値を持ちます、というのも — ほとんどの更新がそうであるように — アプリの基本構造は変わっていないからです。3番目のステップに直接進むことができれば、より効率的です:
 
 ```js
 if (changed.name) {
@@ -92,12 +102,12 @@ if (changed.name) {
 }
 ```
 
-(This is almost exactly the update code that Svelte generates. Unlike traditional UI frameworks, Svelte is a compiler that knows at *build time* how things could change in your app, rather than waiting to do the work at *run time*.)
+(これはSvelteが生成する更新のコードとほぼ同じです。従来のUIフレームワークとは異なり、Svelteは、*実行時*にこの作業をするのを待つのではなく、どのように変更されるか*ビルド時*にわかるコンパイラです)
 
 
-## It's not just the diffing though
+## 差分検出だけではありません(It's not just the diffing though)
 
-The diffing algorithms used by React and other virtual DOM frameworks are fast. Arguably, the greater overhead is in the components themselves. You wouldn't write code like this...
+Reactや他の仮想DOMフレームワークで使われている差分検出アルゴリズムは高速です。議論の余地はありますが、より大きなオーバーヘッドはコンポーネント自体にあります。こんなコードは普通書かないと思います…
 
 ```js
 function StrawManComponent(props) {
@@ -109,7 +119,7 @@ function StrawManComponent(props) {
 }
 ```
 
-...because you'd be carelessly recalculating `value` on every update, regardless of whether `props.foo` had changed. But it's extremely common to do unnecessary computation and allocation in ways that seem much more benign:
+…なぜなら、`props.foo` が変更されたかどうかに関わらず、更新のたびに不注意に `value` を再計算してしまうからです。しかし、もっと無害に見える方法で、不必要な計算やアロケーションが行われてしまうことは非常に一般的です:
 
 ```js
 function MoreRealisticComponent(props) {
@@ -133,17 +143,17 @@ function MoreRealisticComponent(props) {
 }
 ```
 
-Here, we're generating a new array of virtual `<li>` elements — each with their own inline event handler — on every state change, regardless of whether `props.items` has changed. Unless you're unhealthily obsessed with performance, you're not going to optimise that. There's no point. It's plenty fast enough. But you know what would be even faster? *Not doing that.*
+ここでは、`props.items` が変化したかどうかに関わらず、仮想的な `<li>` 要素の新しい配列（それぞれがインラインのイベントハンドラを持つ）をそれぞれの状態が変化するたびに生成しています。よっぽどパフォーマンスにこだわっていない限り、これを最適化することはないでしょう。意味がありません。これで十分に速いのですから。しかし、さらに速い方法がわかりますか？ *こうしないことです*。
 
-<aside><p><a href="https://reactjs.org/docs/hooks-intro.html">React Hooks</a> doubles down on defaulting to doing unnecessary work, with <a href="https://twitter.com/thekitze/status/1078582382201131008">predictable results</a>.</p></aside>
+<aside><p><a href="https://reactjs.org/docs/hooks-intro.html">React Hooks</a>は不必要な作業をデフォルトにするという賭けに出て、<a href="https://twitter.com/thekitze/status/1078582382201131008">予想通りの結果</a>になりました。</p></aside>
 
-The danger of defaulting to doing unnecessary work, even if that work is trivial, is that your app will eventually succumb to 'death by a thousand cuts' with no clear bottleneck to aim at once it's time to optimise.
+デフォルトで不必要な作業を行うことは危険で、たとえその作業が些細なものであっても、最適化の際に明確なボトルネックがないためにアプリがやがて 'じわじわと破滅に向かう'(原文 : death by a thousand cuts)ことに屈してしまいます。
 
-Svelte is explicitly designed to prevent you from ending up in that situation.
+Svelteは、そのような状況に陥らないよう明示的に設計されています。
 
 
-## Why do frameworks use the virtual DOM then?
+## では、なぜフレームワークは仮想DOMを使うのか？(Why do frameworks use the virtual DOM then?)
 
-It's important to understand that virtual DOM *isn't a feature*. It's a means to an end, the end being declarative, state-driven UI development. Virtual DOM is valuable because it allows you to build apps without thinking about state transitions, with performance that is *generally good enough*. That means less buggy code, and more time spent on creative tasks instead of tedious ones.
+重要なのは、仮想DOMは*機能ではない*ということです。それは目的を達成するための手段であり、その目的とは宣言的で状態駆動型のUI開発です。仮想DOMは、状態遷移を考えることなくアプリケーションを開発できるようにし、*一般的には十分な*パフォーマンスを得られるという点で価値があります。つまり、バグを減らし、退屈な作業ではなく創造的な作業に多くの時間を費やすことができるようになります。
 
-But it turns out that we can achieve a similar programming model without using virtual DOM — and that's where Svelte comes in.
+しかし、仮想DOMを使用せずに同様のプログラミングモデルを実現できることがわかりました — つまりSvelteの登場です。

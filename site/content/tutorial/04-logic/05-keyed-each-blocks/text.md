@@ -2,13 +2,13 @@
 title: Keyed each blocks
 ---
 
-By default, when you modify the value of an `each` block, it will add and remove items at the *end* of the block, and update any values that have changed. That might not be what you want.
+デフォルトでは、`each` ブロックの値を変更すると、ブロックの *末尾* にアイテムを追加・削除し、変更された値を更新します。これはあなたが望むものではないかもしれません。
 
-It's easier to show why than to explain. Click the 'Remove first thing' button a few times, and notice what happens: It removes the first `<Thing>` component, but the *last* DOM node. Then it updates the `name` value in the remaining DOM nodes, but not the emoji. 
+説明するよりも理由を示す方が簡単です。「Remove first thing」ボタンを何度かクリックして、何が起きるか確認してください。先頭の `<Thing>` コンポーネントを削除しますが、*末尾*のDOMノードが削除されています。それから残ったDOMノードの `name` の値が更新されますが、絵文字は更新されません。
 
-Instead, we'd like to remove only the first `<Thing>` component and its DOM node, and leave the others unaffected.
+代わりに、先頭の `<Thing>` コンポーネントとそのDOMノードだけを削除して、残りには影響を与えないようにしたいと思います。
 
-To do that, we specify a unique identifier (or "key") for the `each` block:
+そのためには、`each` ブロックに一意な識別子 (または"key") を指定します。
 
 ```html
 {#each things as thing (thing.id)}
@@ -16,6 +16,6 @@ To do that, we specify a unique identifier (or "key") for the `each` block:
 {/each}
 ```
 
-Here, `(thing.id)` is the *key*, which tells Svelte how to figure out which DOM node to change when the component updates.
+ここで、`(thing.id)` は *key* であり、コンポーネントが更新されたときに変更するDOMノードを特定する方法を Svelte に伝えます。
 
-> You can use any object as the key, as Svelte uses a `Map` internally — in other words you could do `(thing)` instead of `(thing.id)`. Using a string or number is generally safer, however, since it means identity persists without referential equality, for example when updating with fresh data from an API server.
+> Svelte は内部的に `Map` を使用しているので、どんなオブジェクトでもキーとして使用できます。つまり `(thing.id)` の代わりに `(thing)` を使うことができます。しかし、文字列または数値を使用する方が一般的に安全です。なぜなら、例えばAPIサーバーからの新しいデータで更新する場合に、参照が等しくなくても同一性が持続することを意味するからです。

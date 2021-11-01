@@ -2,13 +2,13 @@
 title: Writable stores
 ---
 
-Not all application state belongs inside your application's component hierarchy. Sometimes, you'll have values that need to be accessed by multiple unrelated components, or by a regular JavaScript module.
+すべてのアプリケーションの状態がアプリケーションのコンポーネント階層の内部にあるわけではありません。場合によっては、関連のない複数のコンポーネントや、通常の JavaScript モジュールからアクセスする必要のある値があります。
 
-In Svelte, we do this with *stores*. A store is simply an object with a `subscribe` method that allows interested parties to be notified whenever the store value changes. In `App.svelte`, `count` is a store, and we're setting `count_value` in the `count.subscribe` callback.
+Svelte では、これを *ストア* で行います。ストアとは、単に、値が変化するたびに関係者に通知する`subscribe` メソッドを備えたオブジェクトです。`App.svelte` の `count` はストアであり、`count.subscribe` のコールバックの中で `count_value` を設定しています。
 
-Click the `stores.js` tab to see the definition of `count`. It's a *writable* store, which means it has `set` and `update` methods in addition to `subscribe`.
+`stores.js` タブをクリックして `count` の定義を見てください。これは書き込み可能なストアです。つまり、 `subscribe` メソッドに加えて、`set` と `update` メソッドも兼ね備えています。
 
-Now go to the `Incrementer.svelte` tab so that we can wire up the `+` button:
+次に、`Incrementer.svelte` タブに移動して、`+` ボタンと連動するようにします。
 
 ```js
 function increment() {
@@ -16,9 +16,9 @@ function increment() {
 }
 ```
 
-Clicking the `+` button should now update the count. Do the inverse for `Decrementer.svelte`.
+`+` ボタンをクリックすると、カウントが更新されます。`Decrementer.svelte` に戻す機能を実装してみてください。
 
-Finally, in `Resetter.svelte`, implement `reset`:
+最後に、`Resetter.svelte` で `reset` を実装します。
 
 ```js
 function reset() {

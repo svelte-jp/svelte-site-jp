@@ -1,5 +1,5 @@
 ---
-question: How do I do hot module reloading?
+question: ホットモジュールリロードをするにはどうすればよいですか？
 ---
 
-We recommend using [SvelteKit](https://kit.svelte.dev/), which supports HMR out of the box and is built on top of Vite and svelte-hmr. There are also community plugins for [rollup](https://github.com/rixo/rollup-plugin-svelte-hot) and [webpack](https://github.com/rixo/svelte-loader-hot).
+[SvelteKit](https://kit.svelte.dev/) の利用をお勧めします。SvelteKit は、すぐに利用可能な HMR をサポートし、Vite と svelte-hmr をもとに構築されています。[rollup](https://github.com/rixo/rollup-plugin-svelte-hot) や [webpack](https://github.com/rixo/svelte-loader-hot) のためのコミュニティプラグインもあります。

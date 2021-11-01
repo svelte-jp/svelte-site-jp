@@ -2,7 +2,7 @@
 title: Styling
 ---
 
-Just like in HTML, you can add a `<style>` tag to your component. Let's add some styles to the `<p>` element:
+HTMLと同じように、コンポーネントには`<style>`タグを置くことができます。`<p>`要素にいくつかスタイルを追加してみましょう。
 
 ```html
 <p>This is a paragraph.</p>
@@ -14,6 +14,8 @@ Just like in HTML, you can add a `<style>` tag to your component. Let's add some
 		font-size: 2em;
 	}
 </style>
+
+<p>This is a paragraph.</p>
 ```
 
-Importantly, these rules are *scoped to the component*. You won't accidentally change the style of `<p>` elements elsewhere in your app, as we'll see in the next step.
+重要なのは、これらのスタイルが*このコンポーネントにのみ適用されるということです*。次のステップで説明しますが、別の箇所の`<p>`要素のスタイルに影響を与えてしまうようなことはありません。

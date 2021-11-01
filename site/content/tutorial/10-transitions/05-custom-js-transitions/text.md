@@ -2,7 +2,7 @@
 title: Custom JS transitions
 ---
 
-While you should generally use CSS for transitions as much as possible, there are some effects that can't be achieved without JavaScript, such as a typewriter effect:
+一般に、トランジションには可能な限りCSSを用いるべきですが、いくつかのトランジション効果に関してはJavaScriptを用いないと実現できません。その一例がタイプライター効果です。
 
 ```js
 function typewriter(node, { speed = 1 }) {

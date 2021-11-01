@@ -2,9 +2,9 @@
 title: Adding data
 ---
 
-A component that just renders some static markup isn't very interesting. Let's add some data.
+静的なマークアップ(HTML)をレンダリングするだけでは面白くありません。いくつかデータを追加してみましょう。
 
-First, add a script tag to your component and declare a `name` variable:
+まず、`script`タグを追加してその中に`name`変数を宣言します。
 
 ```html
 <script>
@@ -14,10 +14,10 @@ First, add a script tag to your component and declare a `name` variable:
 <h1>Hello world!</h1>
 ```
 
-Then, we can refer to `name` in the markup:
+次に、マークアップから`name`を参照します。
 
 ```html
 <h1>Hello {name}!</h1>
 ```
 
-Inside the curly braces, we can put any JavaScript we want. Try changing `name` to `name.toUpperCase()` for a shoutier greeting.
+中括弧`{}`の中にはJavaScriptのコードを置くことができます。中括弧の中の`name`を`name.toUpperCase()`に置き換えてみましょう。

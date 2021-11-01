@@ -1,55 +1,63 @@
 ---
-title: "Frameworks without the framework: why didn't we think of this sooner?"
-description: You can't write serious applications in vanilla JavaScript without hitting a complexity wall. But a compiler can do it for you.
+title: "フレームワークの無いフレームワーク: なぜもっと早く思いつかなかったのか"
+description: 純粋なJavaScriptでは、複雑さの壁にぶつかることなく本格的なアプリケーションを書くことはできません。しかしコンパイラならそれができます。
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/frameworks-without-the-framework
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-> Wait, this new framework has a *runtime*? Ugh. Thanks, I'll pass.
+> 待って、この新しいフレームワークには*ランタイム*があるの？ うーん。ありがとう、やめておくよ。
 > **– front end developers in 2018**
 
-We're shipping too much code to our users. Like a lot of front end developers, I've been in denial about that fact, thinking that it was fine to serve 100kb of JavaScript on page load – just use [one less .jpg!](https://twitter.com/miketaylr/status/227056824275333120) – and that what *really* mattered was performance once your app was already interactive.
+私たちはあまりに多くのコードをユーザーに配布しています。多くのフロントエンド開発者と同じように私もこの事実を否定し、ページロードの際に 100kb の JavaScript を配布しても問題ないと考えていました。[.jpg を1つ減らせば](https://twitter.com/miketaylr/status/227056824275333120) 良いだけだと。そして*本当に*重要なのはアプリケーションがインタラクティブになった後のパフォーマンスだと考えていました。
 
-But I was wrong. 100kb of .js isn't equivalent to 100kb of .jpg. It's not just the network time that'll kill your app's startup performance, but the time spent parsing and evaluating your script, during which time the browser becomes completely unresponsive. On mobile, those milliseconds rack up very quickly.
+しかし、私は間違っていました。100kb の .js は 100kb の .jpg と同じではありません。アプリの起動時のパフォーマンスを低下させるのはネットワークの時間だけではありません。script の解析と評価にも時間がかかり、その間ブラウザーは完全に無反応になります。モバイルでは、このミリ秒単位の時間があっという間に積み上がります。
 
-If you're not convinced that this is a problem, follow [Alex Russell](https://twitter.com/slightlylate) on Twitter. Alex [hasn't been making many friends in the framework community lately](https://twitter.com/slightlylate/status/728355959022587905), but he's not wrong. But the proposed alternative to using frameworks like Angular, React and Ember – [Polymer](https://www.polymer-project.org/1.0/) – hasn't yet gained traction in the front end world, and it's certainly not for a lack of marketing.
+これが問題であることに納得できないなら、Twitter で [Alex Russell](https://twitter.com/slightlylate) をフォローしてください。Alex は [最近、フレームワークコミュニティで多くの友人を作ろうとしませんが](https://twitter.com/slightlylate/status/728355959022587905)、彼は間違っていません。しかし、Angular、React、Ember などのフレームワークの代替として提案されている [Polymer](https://www.polymer-project.org/1.0/) は、フロントエンドの世界ではまだ普及していませんし、それは決してマーケティングが不足しているからではありません。
 
-Perhaps we need to rethink the whole thing.
+おそらく、全てを再考する必要があります。
 
 
-## What problem do frameworks *really* solve?
+## フレームワークが *本当に* 解決すること (What problem do frameworks *really* solve?)
 
-The common view is that frameworks make it easier to manage the complexity of your code: the framework abstracts away all the fussy implementation details with techniques like virtual DOM diffing. But that's not really true. At best, frameworks *move the complexity around*, away from code that you had to write and into code you didn't.
+フレームワークはコードの複雑さを管理しやすくする、というのが一般的な認識です。フレームワークは仮想DOMの差分検出などの技術によって面倒な実装の詳細を抽象化する、というものです。しかし、実際にはそうではありません。せいぜい、あなたが書かなければならないコードからあなたが書いていないコードに*複雑さを移動させる*だけです。
 
-Instead, the reason that ideas like React are so wildly and deservedly successful is that they make it easier to manage the complexity of your *concepts*. Frameworks are primarily a tool for structuring your thoughts, not your code.
+むしろ、React のようなアイデアがこれほど成功した理由は、*コンセプト*の複雑さを管理しやすくしているからです。フレームワークはコードではなく思考を構造化するためのツールです。
 
-Given that, what if the framework *didn't actually run in the browser*? What if, instead, it converted your application into pure vanilla JavaScript, just like Babel converts ES2016+ to ES5? You'd pay no upfront cost of shipping a hefty runtime, and your app would get seriously fast, because there'd be no layers of abstraction between your app and the browser.
+そう考えると、もしそのフレームワークが*実際にはブラウザーで動かない*としたらどうでしょうか？　代わりに、Babel が ES2016+ から ES5 に変換するように、アプリケーションを純粋なJavaScriptに変換するとしたら？　重たいランタイムを配布するための初期コストを支払うことはなく、アプリは本当に高速になります。アプリとブラウザの間の抽象レイヤーがなくなるからです。
 
 
 ## Introducing Svelte
 
-Svelte is a new framework that does exactly that. You write your components using HTML, CSS and JavaScript (plus a few extra bits you can [learn in under 5 minutes](https://v2.svelte.dev/guide)), and during your build process Svelte compiles them into tiny standalone JavaScript modules. By statically analysing the component template, we can make sure that the browser does as little work as possible.
+Svelte はまさにそれを実現するフレームワークです。HTML、CSS、JavaScript (それと [5分以内に学べる](https://v2.svelte.dev/guide) ちょっとしたこと) でコンポーネントを書き、Svelte がそれをビルドプロセスで小さなスタンドアローンの JavaScript モジュールにコンパイルします。コンポーネントのテンプレートを静的に解析することで、ブラウザーの作業を可能な限り少なくなるようにすることができます。
 
-The [Svelte implementation of TodoMVC](https://svelte-todomvc.surge.sh/) weighs 3.6kb zipped. For comparison, React plus ReactDOM *without any app code* weighs about 45kb zipped. It takes about 10x as long for the browser just to evaluate React as it does for Svelte to be up and running with an interactive TodoMVC.
+[Svelte による TodoMVC の実装](https://svelte-todomvc.surge.sh/) は 3.6kb (zipped) です。比較として、*アプリコードを除いた* React と ReactDOM はおよそ 45kb (zipped) です。ブラウザーが React を評価するのにかかる時間は、Svelteがインタラクティブな TodoMVC を起動して実行するのにかかる時間の約10倍です。
 
-And once your app *is* up and running, according to [js-framework-benchmark](https://github.com/krausest/js-framework-benchmark) **Svelte is fast as heck**. It's faster than React. It's faster than Vue. It's faster than Angular, or Ember, or Ractive, or Preact, or Riot, or Mithril. It's competitive with Inferno, which is probably the fastest UI framework in the world, for now, because [Dominic Gannaway](https://twitter.com/trueadm) is a wizard. (Svelte is slower at removing elements. We're [working on it](https://github.com/sveltejs/svelte/issues/26).)
+そして [js-framework-benchmark](https://github.com/krausest/js-framework-benchmark) によれば、アプリが起動して実行されると **Svelte はとてもつもなく高速です**。React よりも速いです。Vue よりも速いです。Angular、Ember、Ractive、Preact、Riot、Mithrilよりも速いです。今のところ、おそらく世界で最も高速な UI フレームワークである Inferno ([Dominic Gannaway](https://twitter.com/trueadm) は魔法使い(a wizard)なので) に匹敵します。(Svelte は要素の削除が遅いですが、[それについては取り組んでいます](https://github.com/sveltejs/svelte/issues/26))
 
-It's basically as fast as vanilla JS, which makes sense because it *is* vanilla JS – just vanilla JS that you didn't have to write.
-
-
-## But that's not the important thing
-
-Well, it *is* important – performance matters a great deal. What's really exciting about this approach, though, is that we can finally solve some of the thorniest problems in web development.
-
-Consider interoperability. Want to `npm install cool-calendar-widget` and use it in your app? Previously, you could only do that if you were already using (a correct version of) the framework that the widget was designed for – if `cool-calendar-widget` was built in React and you're using Angular then, well, hard cheese. But if the widget author used Svelte, apps that use it can be built using whatever technology you like. (On the TODO list: a way to convert Svelte components into web components.)
-
-Or [code splitting](https://twitter.com/samccone/status/797528710085652480). It's a great idea (only load the code the user needs for the initial view, then get the rest later), but there's a problem – even if you only initially serve one React component instead of 100, *you still have to serve React itself*. With Svelte, code splitting can be much more effective, because the framework is embedded in the component, and the component is tiny.
-
-Finally, something I've wrestled with a great deal as an open source maintainer: your users always want *their* features prioritised, and underestimate the cost of those features to people who don't need them. A framework author must always balance the long-term health of the project with the desire to meet their users' needs. That's incredibly difficult, because it's hard to anticipate – much less articulate – the consequences of incremental bloat, and it takes serious soft skills to tell people (who may have been enthusiastically evangelising your tool up to that point) that their feature isn't important enough. But with an approach like Svelte's, many features can be added with absolutely no cost to people who don't use them, because the code that implements those features just doesn't get generated by the compiler if it's unnecessary.
+基本的には純粋な JS と同じくらい速いです。実際、それは*純粋な JS なので*当然です。ただ、純粋な JS を書く必要がないというだけです。
 
 
-## We're just getting started
+## 本当に重要なこと (But that's not the important thing)
 
-Svelte is very new. There's a lot of work still left to do – creating build tool integrations, adding a server-side renderer, hot reloading, transitions, more documentation and examples, starter kits, and so on.
+ええ、パフォーマンスはとても重要です。しかし、このアプローチの本当にエキサイティングなところは、Web 開発におけるいくつかの厄介な問題をついに解決できることです。
 
-But you can already build rich components with it, which is why we've gone straight to a stable 1.0.0 release. [Read the guide](https://v2.svelte.dev/guide), [try it out in the REPL](/repl), and head over to [GitHub](https://github.com/sveltejs/svelte) to help kickstart the next era of front end development.
+相互運用性について考えてみてください。`npm install cool-calendar-widget` を実行してアプリで使いたいですか？　これまでは、そのウィジェットがそのフレームワーク向けにデザインされていて、あなたがそのフレームワーク(の正しいバージョン)を使っているときに限りそれが可能でした。もし `cool-calendar-widget` が React で作られており、あなたが Angular を使っていたら、まあ、残念でしたね。しかし、もしそのウィジェットの作者が Svelte を使用した場合、そのウィジェットを使用するアプリを好きなテクノロジーで構築することができます。(TODOリスト : Svelte コンポーネントを Web Components に変換する方法)
+
+他には、[コード分割](https://twitter.com/samccone/status/797528710085652480) があります。これは素晴らしいアイデア (初期表示に必要なコードだけをロードし、残りは後で取得する) ですが、問題があります。100個の React コンポーネントではなく、最初に1個の React コンポーネントを配布するだけでも、*React自体を配布しなければなりません*。Svelteでは、フレームワークはコンポーネントに埋め込まれており、そのコンポーネントは小さいため、コード分割がより効果的です。
+
+最後に、オープンソースのメンテナーとして悪戦苦闘してきたこと。ユーザーは常に自分の機能を優先してほしいし、その機能を必要としていない人に対してその機能のコストを低く見積もります。フレームワークの作者は、プロジェクトの長期的な健全性と、ユーザーのニーズを満たしたいという欲求との間でバランスを常に取り続けなければなりません。これはとてつもなく難しいことです。なぜなら、少しずつ大きくなっていく成果・結果を予測したりすることはできないですし、ましてや明確にすることは不可能です。また、(それまで熱狂的にツールを伝道してきた)人たちに、それらの機能に重要な部分が足りていないと伝えるには本格的なソフトスキルが必要です。しかし Svelte のようなアプローチでは、使用していない機能のコードはコンパイラによって生成されないため、多くの機能を追加しても、その機能を必要としていない人にそのコストを与えることは全くありません。
+
+
+## まだ始まったばかり (We're just getting started)
+
+Svelteは非常に新しいです。ビルドツールのインテグレーション作成、サーバーサイドレンダラー、ホットリロード、トランジション、ドキュメントやサンプルの追加、スターターキットなど、まだまだやるべきことがたくさんあります。
+
+しかし、すでにリッチなコンポーネントを構築することができます。それが stable な 1.0.0 のリリースに至った理由です。[ガイドを読み](https://v2.svelte.dev/guide)、[REPL で試して](/repl)、そして [GitHub](https://github.com/sveltejs/svelte) にアクセスして、次世代のフロントエンド開発をスタートしてください。

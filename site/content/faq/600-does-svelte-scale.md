@@ -1,5 +1,5 @@
 ---
-question: Does Svelte scale?
+question: Svelteはスケールしますか?
 ---
 
-There will be a blog post about this eventually, but in the meantime, check out [this issue](https://github.com/sveltejs/svelte/issues/2546).
+いずれブログに書く予定ですが、それまでは[こちらのIssue](https://github.com/sveltejs/svelte/issues/2546)をご確認ください。

@@ -2,9 +2,9 @@
 title: The transition directive
 ---
 
-We can make more appealing user interfaces by gracefully transitioning elements into and out of the DOM. Svelte makes this very easy with the `transition` directive.
+要素を DOM に優美に追加したり削除したりすることで、より魅力的なユーザーインターフェイスを作成できます。Svelte は `transition` ディレクティブを使用してこれを非常に簡単にします。
 
-First, import the `fade` function from `svelte/transition`...
+まず、`svelte/transition` から `fade` 関数をインポートします。
 
 ```html
 <script>
@@ -13,7 +13,7 @@ First, import the `fade` function from `svelte/transition`...
 </script>
 ```
 
-...then add it to the `<p>` element:
+次に、それを `<p>` 要素に追加します。
 
 ```html
 <p transition:fade>Fades in and out</p>

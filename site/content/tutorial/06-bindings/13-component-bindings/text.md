@@ -2,12 +2,12 @@
 title: Component bindings
 ---
 
-Just as you can bind to properties of DOM elements, you can bind to component props. For example, we can bind to the `value` prop of this `<Keypad>` component as though it were a form element:
+DOM 要素のプロパティにバインドできるのと同様に、コンポーネントの props にもバインドできます。例えば、フォーム要素のように `<Keypad>` コンポーネントの `value` prop にバインドすることができます。
 
 ```html
 <Keypad bind:value={pin} on:submit={handleSubmit}/>
 ```
 
-Now, when the user interacts with the keypad, the value of `pin` in the parent component is immediately updated.
+これで、ユーザがキーパッドを操作すると、親コンポーネントの `pin` の値が即座に更新されるようになりました。
 
-> Use component bindings sparingly. It can be difficult to track the flow of data around your application if you have too many of them, especially if there is no 'single source of truth'.
+> コンポーネントバインディングは控えめに使用してください。それらが多すぎるとアプリケーションの周りのデータの流れを追跡するのが困難になります。特に「信頼できる唯一の情報源」が存在しない場合には。

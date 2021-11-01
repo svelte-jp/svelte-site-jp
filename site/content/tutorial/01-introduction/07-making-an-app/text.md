@@ -2,21 +2,21 @@
 title: Making an app
 ---
 
-This tutorial is designed to get you familiar with the process of writing components. But at some point, you'll want to start writing components in the comfort of your own text editor.
+このチュートリアルは、コンポーネントを書くプロセスに慣れることを目的としています。しかしいつかは、ご自身のテキストエディタで快適にコンポーネントを書きたいと思うでしょう。
 
-First, you'll need to integrate Svelte with a build tool. There are officially maintained plugins for [Vite](https://vitejs.dev/), [Rollup](https://rollupjs.org) and [webpack](https://webpack.js.org/)...
+まず最初に、Svelteとビルドツールを統合する必要があります。公式にメンテナンスされている、[Vite](https://vitejs.dev/)、[Rollup](https://rollupjs.org)と[webpack](https://webpack.js.org/)のプラグインが用意されています。
 
 * [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte)
 * [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte)
 * [svelte-loader](https://github.com/sveltejs/svelte-loader)
 
-...and a variety of [community-maintained ones](https://sveltesociety.dev/tooling).
+…また、[コミュニティがメンテナンスしているプラグイン](https://sveltesociety.dev/tooling)も数多くあります。
 
-Don't worry if you're relatively new to web development and haven't used these tools before. We've prepared a simple step-by-step guide, [Svelte for new developers](blog/svelte-for-new-developers), which walks you through the process.
+もしWeb開発にあまり慣れておらずこういったツールを使ったことがなくてもご安心ください。順を追って段階的に進められるシンプルなガイド[Svelte for new developers](blog/svelte-for-new-developers)をご用意しています。
 
-You'll also want to configure your text editor. If you're using VS Code, install the [Svelte extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode), otherwise follow [this guide](blog/setting-up-your-editor) to configure your text editor to treat `.svelte` files the same as `.html` for the sake of syntax highlighting.
+また、テキストエディタの設定もしておくと良いでしょう。もし VS Codeをお使いでしたら、[Svelte extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)をインストールしてください。それ以外の場合は[this guide](blog/setting-up-your-editor)に従って`.svelte`ファイルと`.html`ファイルを同じように扱うよう設定し、シンタックスハイライトをできるようにすると良いでしょう。
 
-Then, once you've got your project set up, using Svelte components is easy. The compiler turns each component into a regular JavaScript class — just import it and instantiate with `new`:
+そして、プロジェクトのセットアップが完了したら、Svelteのコンポーネントを使うのは簡単です。コンパイラは各コンポーネントを通常のJavaScript classに変換します。コンポーネントをインポートして `new` でインスタンス化するだけです。
 
 ```js
 import App from './App.svelte';
@@ -30,4 +30,4 @@ const app = new App({
 });
 ```
 
-You can then interact with `app` using the [component API](docs#Client-side_component_API) if you need to.
+必要に応じて、[component API](docs#Client-side_component_API)を使用して`app`を操作することもできます。

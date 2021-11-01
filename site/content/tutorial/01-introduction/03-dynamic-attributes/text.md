@@ -2,32 +2,32 @@
 title: Dynamic attributes
 ---
 
-Just like you can use curly braces to control text, you can use them to control element attributes.
+中括弧を使用してテキストをコントロールしましたが、同じように中括弧を使用して要素の属性をコントロールできます。
 
-Our image is missing a `src` — let's add one:
+`img`タグには`src`が足りないようです。追加してみましょう。
 
 ```html
 <img src={src}>
 ```
 
-That's better. But Svelte is giving us a warning:
+これでよくなりました。ただし、まだ警告が表示され続けています。
 
 > A11y: &lt;img&gt; element should have an alt attribute
 
-When building web apps, it's important to make sure that they're *accessible* to the broadest possible userbase, including people with (for example) impaired vision or motion, or people without powerful hardware or good internet connections. Accessibility (shortened to a11y) isn't always easy to get right, but Svelte will help by warning you if you write inaccessible markup.
+Webアプリケーションは、例えば視覚や動作に障害のある方や、高スペックな端末や高速なインターネット回線を持っていない方など、可能な限り幅広いユーザーにとって*使いやすいものである*ことが重要です。アクセシビリティ(Accessibility、略:a11y)を正しく行うことは簡単ではありませんが、Svelteは警告を表示してa11yを正しく行う手助けをしてくれます。
 
-In this case, we're missing the `alt` attribute that describes the image for people using screenreaders, or people with slow or flaky internet connections that can't download the image. Let's add one:
+この場合、スクリーンリーダー(画面読み上げソフト)を使用するユーザーやインターネット回線が低速・不安定で画像をダウンロードできないユーザーに必要な`alt`という画像を説明する属性が足りていません。追加しましょう。
 
 ```html
 <img src={src} alt="A man dances.">
 ```
 
-We can use curly braces *inside* attributes. Try changing it to `"{name} dances."` — remember to declare a `name` variable in the `<script>` block.
+要素の*中*でも中括弧を使用することができます。`<script>`ブロックの中に`name`変数を宣言し、`A man dances.`を`"{name} dances."`に変更してみましょう。
 
 
 ## Shorthand attributes
 
-It's not uncommon to have an attribute where the name and value are the same, like `src={src}`. Svelte gives us a convenient shorthand for these cases:
+`src={src}`のように、属性の名前と値の変数が一致することは珍しくありません。このような場合、Svelteでは省略して書くことができます。
 
 ```html
 <img {src} alt="A man dances.">

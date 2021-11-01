@@ -2,7 +2,7 @@
 title: Slot fallbacks
 ---
 
-A component can specify *fallbacks* for any slots that are left empty, by putting content inside the `<slot>` element:
+コンポーネントは、`<slot>` 要素の中にコンテンツを入れることで、空のままになっているスロットに対して *フォールバック* を指定することができます。
 
 ```html
 <div class="box">
@@ -12,7 +12,7 @@ A component can specify *fallbacks* for any slots that are left empty, by puttin
 </div>
 ```
 
-We can now create instances of `<Box>` without any children:
+これで、子を持たない `<Box>` のインスタンスを作成できるようになりました。
 
 ```html
 <Box>

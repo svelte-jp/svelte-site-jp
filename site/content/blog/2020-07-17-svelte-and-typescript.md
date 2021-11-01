@@ -1,13 +1,21 @@
 ---
 title: Svelte <3 TypeScript
-description: Typernetically enhanced web apps
+description: 型により強化されたWebアプリ
 author: Orta Therox
 authorURL: https://twitter.com/orta
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/svelte-and-typescript
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-It's been by far the most requested feature for a while, and it's finally here: Svelte officially supports TypeScript.
+以前から最も多く要望をもらっていた機能がついに実現しました、Svelte は正式に TypeScript をサポートします。
 
-We think it'll give you a much nicer development experience — one that also scales beautifully to larger Svelte code bases — regardless of whether you use TypeScript or JavaScript.
+これにより、より良い開発体験が得られると考えています。 -- また、より大きな Svelte コードベースにも美しくスケールします -- TypeScript と JavaScript のどちらを使用していても。
 
 <figure>
 	<img alt="Screenshot of TypeScript in Svelte" src="media/svelte-ts.png">
@@ -15,9 +23,9 @@ We think it'll give you a much nicer development experience — one that also sc
 </figure>
 
 
-## Try it now
+## 今すぐ試してみてください(Try it now)
 
-You can start a new Svelte TypeScript project using the [normal template](https://github.com/sveltejs/template) and by running `node scripts/setupTypeScript.js` before you do anything else:
+新しい Svelte TypeScript プロジェクトは [normal template](https://github.com/sveltejs/template) を利用して`node scripts/setupTypeScript.js` を実行することで開始できます。
 
 ```bash
 npx degit sveltejs/template svelte-typescript-app
@@ -25,53 +33,53 @@ cd svelte-typescript-app
 node scripts/setupTypeScript.js
 ```
 
-If you're a VS Code user, make sure you're using the (new) [official extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode), which replaces the popular extension by James Birtles.
-Later in this blog post, we'll detail the individual steps involved in using TypeScript in an existing Svelte project.
+VS Code ユーザーの方は、(新しい) [公式の拡張機能](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) を使用していることを確認してください。これは James Birtles による人気の高い拡張機能に取って代わるものです。
+この記事の後半では、既存の Svelte プロジェクトで TypeScript を使用するための個々のステップについて詳しく説明します。
 
-## What does it mean to support TypeScript in Svelte?
+## Svelte の TypeScript サポートとは何を意味しますか？(What does it mean to support TypeScript in Svelte?)
 
-TypeScript support in Svelte has been possible for a long time, but you had to mix a lot of disparate tools together and each project ran independently. Today, nearly all of these tools live under the Svelte organization and are maintained by a set of people who take responsibility over the whole pipeline and have common goals.
+Svelte で TypeScript に対応することはかなり前から可能でしたが、多くの異なるツールを組み合わせ、それぞれを個別に動作するようにしなければなりませんでした。今日では、これらのツールのほぼすべてが Svelte の組織の下にあり、パイプライン全体に責任を持ち、共通の目標を持った人たちによってメンテナンスされています。
 
-A week before COVID was declared a pandemic, [I pitched a consolidation](https://github.com/sveltejs/svelte/issues/4518) of the best Svelte tools and ideas from similar dev-ecosystems and provided a set of steps to get first class TypeScript support. Since then, many people have pitched in and written the code to get us there.
+COVID がパンデミックと宣言される前の週、私は類似の開発エコシステムによる最高の Svelte 用のツールとアイデアの[統合を提案](https://github.com/sveltejs/svelte/issues/4518)し、ファーストクラスの TypeScript サポートを得るための一連のステップを提供しました。それ以来、多くの人たちが協力してくれて、そこにたどり着くためのコードを書いてくれました。
 
-When we say that Svelte now supports TypeScript, we mean a few different things:
+Svelte が TypeScript をサポートするようになったということは、いくつかの異なる意味を持っています。
 
-* You can use TypeScript inside your `<script>` blocks — just add the `lang="ts"` attribute
-* Components with TypeScript can be type-checked with the `svelte-check` command
-* You get autocompletion hints and type-checking as you're writing components, even in expressions inside markup
-* TypeScript files understand the Svelte component API — no more red squiggles when you import a `.svelte` file into a `.ts` module
+* `<script>` ブロックの中で TypeScript を使うことができます -- `lang="ts"` 属性を追加するだけです。
+* TypeScript を持つコンポーネントは `svelte-check` コマンドでタイプチェックを行うことができます。
+* コンポーネントを書いているときに、マークアップ内の式でも自動補完のヒントや型チェックを得ることができます。
+* TypeScript ファイルは Svelte コンポーネント API を理解しています -- `.ts` モジュールに `.svelte` ファイルをインポートしても、赤い四角い線はもうありません。
 
-### How does it work?
+### どのような仕組みになっていますか？(How does it work?)
 
-To understand the two main parts of TypeScript support, we'll compare it to the technique TypeScript uses to provide dev tools. There is a compiler `tsc` which you run on the command-line to convert `*.ts` to `*.js`, then there is a `TSServer` which is a node API that responds to requests from text editors. The `TSServer` is what provides all the JavaScript and TypeScript realtime introspection for editors while coding, and it has most of the compiler's code inside it.
+TypeScript のサポートの 2 つの主要な部分を理解するために、TypeScript が開発ツールを提供するために使用している技術と比較してみましょう。それはコマンドラインで実行し `*.ts` を `*.js` に変換する `tsc` コンパイラと、テキストエディタからのリクエストに応答するノードAPI である `TSServer` です。`TSServer` は、コーディング中のエディタに JavaScript と TypeScript のリアルタイムイントロスペクションを提供するもので、その中にコンパイラのコードのほとんどが含まれています。
 
-For Svelte, we have the Svelte compiler, and now we have the [`svelte-language-server`](https://github.com/sveltejs/language-tools/tree/master/packages/language-server#svelte-language-server) which responds to text editor calls via the [Language Server Protocol standard](https://microsoft.github.io//language-server-protocol/overviews/lsp/overview/). First class TypeScript support means that _both_ of these two systems do a good job of handling TypeScript code.
+一方 Svelte には、Svelte コンパイラと、[Language Server Protocol standard](https://microsoft.github.io//language-server-protocol/overviews/lsp/overview/) を介してテキストエディタの呼び出しに応答する [`svelte-language-server`](https://github.com/sveltejs/language-tools/tree/master/packages/language-server#svelte-language-server) があります。ファーストクラスの TypeScript サポートというのは、これらの _両方_ のシステムが TypeScript コードをうまく扱えることを意味しています。
 
-The Svelte compiler support for TypeScript is handled by [Christian Kaisermann](https://github.com/kaisermann)'s [`svelte-preprocess`](https://github.com/sveltejs/svelte-preprocess#svelte-preprocess) which is now an official Svelte project.
+TypeScript のための Svelte コンパイラのサポートは、[Christian Kaisermann](https://github.com/kaisermann) の [`svelte-preprocess`](https://github.com/sveltejs/svelte-preprocess#svelte-preprocess) が担当しており、現在では公式の Svelte プロジェクトとなっています。
 
-For the editor level, we took inspiration from [Pine's](https://github.com/octref) work in the [Vue](https://vuejs.org) ecosystem via [Vetur](https://github.com/vuejs/vetur). Vetur provides an [LSP](https://github.com/vuejs/vetur/blob/master/server), a VS Code extension and a [CLI](https://github.com/vuejs/vetur/blob/master/vti). Svelte now also has an [LSP](https://github.com/sveltejs/language-tools/blob/master/packages/language-server), a [VS Code extension](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-vscode) and a [CLI](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check).
-
-
-### `*.svelte` Introspection
-
-For the official Svelte VS Code extension, we built off the foundations which [James Birtles](https://github.com/UnwrittenFun) has created in [`UnwrittenFun/svelte-vscode`](https://github.com/UnwrittenFun/svelte-vscode) and [`UnwrittenFun/svelte-language-server`](https://github.com/UnwrittenFun/svelte-language-server/).
-
-[Simon Holthausen](https://github.com/dummdidumm) and [Lyu, Wei-Da](https://github.com/jasonlyu123) have done great work improving the JavaScript and TypeScript introspection, including integrating [@halfnelson](https://github.com/halfnelson)'s [svelte2tsx](https://github.com/sveltejs/language-tools/tree/master/packages/svelte2tsx#svelte2tsx) which powers understanding the props on components in your codebase.
+エディタについては、[Pine's](https://github.com/octref) による [Vue](https://vuejs.org) エコシステムの [Vetur](https://github.com/vuejs/vetur) からインスピレーションを得ました。Vetur は [LSP](https://github.com/vuejs/vetur/blob/master/server)、VS Code 拡張機能、[CLI](https://github.com/vuejs/vetur/blob/master/vti) を提供します。Svelteも現在、[LSP](https://github.com/sveltejs/language-tools/blob/master/packages/language-server)、[VS Code 拡張機能](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-vscode)、[CLI](https://github.com/sveltejs/language-tools/blob/master/packages/svelte-check) を提供しています。
 
 
-## Adding TypeScript to an existing project
+### `*.svelte` イントロスペクション(`*.svelte` Introspection)
 
-Before getting started, add the dependencies:
+公式の Svelte VS Code 拡張機能では、[James Birtles](https://github.com/UnwrittenFun) 氏が[`UnwrittenFun/svelte-vscode`](https://github.com/UnwrittenFun/svelte-vscode) と [`UnwrittenFun/svelte-language-server`](https://github.com/UnwrittenFun/svelte-language-server/) で作成した基盤を基に構築しました。
+
+[Simon Holthausen](https://github.com/dummdidumm) と [Lyu, Wei-Da](https://github.com/jasonlyu123) は、JavaScript と TypeScript のイントロスペクションを改善する素晴らしい仕事をしてくれました。またコードベース内のコンポーネントの props を理解する力を強化する [@halfnelson](https://github.com/halfnelson) の [svelte2tsx](https://github.com/sveltejs/language-tools/tree/master/packages/svelte2tsx#svelte2tsx) を統合しました。
+
+
+## 既存のプロジェクトにTypeScriptを追加する(Adding TypeScript to an existing project)
+
+はじめる前に、依存関係を追加します。
 
 ```bash
 npm install --save-dev @tsconfig/svelte typescript svelte-preprocess svelte-check
 ```
 
-### 1. Compiling TypeScript
+### 1. Typescriptのコンパイル(Compiling TypeScript)
 
-You first need to set up [`svelte-preprocess`](https://github.com/sveltejs/svelte-preprocess#svelte-preprocess), which passes the contents of your `<script lang="ts">` blocks through the TypeScript compiler.
+まず最初に、`<script lang="ts">` ブロックの内容を TypeScript コンパイラに渡す [`svelte-preprocess`](https://github.com/sveltejs/svelte-preprocess#svelte-preprocess) を設定する必要があります。
 
-In a Rollup project, that would look like this — note that we also need to install `@rollup/plugin-typescript` so that Rollup can handle `.ts` files:
+Rollupプロジェクトでは、次のようになります -- Rollupが `.ts` ファイルを扱えるように `@rollup/plugin-typescript` をインストールする必要があることに注意してください。
 
 ```diff
 + import autoPreprocess from 'svelte-preprocess';
@@ -88,9 +96,9 @@ export default {
 }
 ```
 
-[Full instructions for other environments here](https://github.com/sveltejs/svelte-preprocess#usage).
+[他の環境のための説明はこちら](https://github.com/sveltejs/svelte-preprocess#usage).
 
-To configure TypeScript, you will need to create a `tsconfig.json` in the root of your project:
+TypeScriptを設定するには、プロジェクトのルートに `tsconfig.json` を作成する必要があります。
 
 ```json
 {
@@ -101,21 +109,21 @@ To configure TypeScript, you will need to create a `tsconfig.json` in the root o
 }
 ```
 
-Your `include`/`exclude` may differ per project — these are defaults that should work across most Svelte projects.
+`include`/`exclude` はあなたのプロジェクトによって異なります。-- これらは、ほとんどの Svelte プロジェクトで動作するデフォルト値です。
 
-### 2. Editor Support
+### 2. エディタサポート(Editor Support)
 
-Any editor [using an LSP](https://langserver.org/#implementations-client) can be supported. The [VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) extension has been our primary focus, but there is work in progress [on Atom](https://github.com/sveltejs/language-tools/pull/160), and Vim via [coc-svelte](https://github.com/coc-extensions/coc-svelte) has been updated with the latest LSP.
+[LSPを使用](https://langserver.org/#implementations-client) しているエディタであれば、どのようなエディタでも対応可能です。[VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) 拡張機能は、私たちが最も優先してきたものです。しかし、[Atom上](https://github.com/sveltejs/language-tools/pull/160)では作業が進行中で、[coc-svelte](https://github.com/coc-extensions/coc-svelte) 経由の Vim は最新の LSPでアップデートされています。
 
-These editor extensions will improve your coding experience even if you only use JavaScript. The editor won't offer errors, but it will offer inference and refactoring tools. You can [add `// @ts-check`](https://www.staging-typescript.org/docs/handbook/intro-to-js-ts.html) to the top of a `<script>` tag using JavaScript to get better error messages with no infra changes.
+これらのエディタ拡張機能は、JavaScript だけを使っていてもコーディング体験を向上させてくれます。エディタはエラーを提供してくれませんが、推論やリファクタリングツールを提供してくれます。JavaScript を使って `<script>` タグの先頭に [`// @ts-check` を追加](https://www.staging-typescript.org/docs/handbook/intro-to-js-ts.html)すると、インフラの変更なしでより良いエラーメッセージを得ることができます。
 
-To switch a `<script>` to use TypeScript, use `<script lang="ts">` and that should be it. Hopefully you won't be seeing an ocean of red squiggles.
+`<script>` を TypeScript を使うように切り替えるには、`<script lang="ts">` を使ってください。願わくば、赤い四角い線の海を見ることがないことを願っています。
 
-### 3. CI Checks
+### 3. CIでのチェック(CI Checks)
 
-Having red squiggles is great, well, kinda. On the long run though, you want to be able to verify that there are no errors in your code. To verify your project is error free, you can use the CLI tool [`svelte-check`](https://www.npmjs.com/package/svelte-check). It acts like an editor asking for errors against all of your `.svelte` files.
+赤い四角いマークがあるのは素晴らしいことですが、まあ、ちょっとしたことです。しかし、長期的には、コードにエラーがないことを確認できるようにしたいものです。プロジェクトにエラーがないことを確認するには、CLI ツールの [`svelte-check`](https://www.npmjs.com/package/svelte-check) を使うことができます。これはエディタのように動作し、すべての `.svelte` ファイルに対してエラーを確認します。
 
-You can add the dependency to your project and then add it to CI.
+依存関係をプロジェクトに追加し、CI に追加することができます。
 
 ```bash
 ❯ npx svelte-check
@@ -132,10 +140,10 @@ svelte-check found 1 error
 error Command failed with exit code 1.
 ```
 
-## What about TypeScript in Sapper projects?
+## SapperプロジェクトのTypeScriptについてはどうなってますか？(What about TypeScript in Sapper projects?)
 
-TypeScript support was added to Sapper in 0.28, so if you're using an older version be sure to [upgrade](https://sapper.svelte.dev/migrating#0_27_to_0_28).
+TypeScriptのサポートは 0.28 で Sapper に追加されましたので、古いバージョンをお使いの場合は [アップグレード](https://sapper.svelte.dev/migrating#0_27_to_0_28)をお勧めします。
 
-## How can I contribute?
+## どうすれば貢献できますか？(How can I contribute?)
 
-We're so glad you asked. The work is happening in the [sveltejs/language-tools](https://github.com/sveltejs/language-tools) repo and in the [#language-tools](https://discord.gg/enV6v8K) channel in the Svelte Discord. If you'd like to report issues, submit fixes, or help out with extensions for new editors and so on, that's where you can find us. See you there!
+ご質問ありがとうございます。作業は [sveltejs/language-tools](https://github.com/sveltejs/language-tools) リポジトリと Svelte Discord の [#language-tools](https://discord.gg/enV6v8K) チャンネルで行われています。問題を報告したり、修正を提出したり、新しいエディタのための拡張機能の開発を手伝ったりしたい場合は、こちらで作業を行っていますので、そこでお会いしましょう！

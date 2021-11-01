@@ -2,7 +2,7 @@
 title: Inline handlers
 ---
 
-You can also declare event handlers inline:
+イベントハンドラをインラインで宣言することもできます。
 
 ```html
 <div on:mousemove="{e => m = { x: e.clientX, y: e.clientY }}">
@@ -10,6 +10,6 @@ You can also declare event handlers inline:
 </div>
 ```
 
-The quote marks are optional, but they're helpful for syntax highlighting in some environments.
+`""` 引用符はオプションですが、一部の環境で構文を強調表示する場合に役立ちます。
 
-> In some frameworks you may see recommendations to avoid inline event handlers for performance reasons, particularly inside loops. That advice doesn't apply to Svelte — the compiler will always do the right thing, whichever form you choose.
+> 一部のフレームワークでは、パフォーマンス上の理由から、特にループ処理内で、イベントハンドラをインラインで宣言しないように推奨されています。しかし、この推奨事項はSvelteには当てはまりません。あなたがどのように書いたとしても、常に適切にコンパイルします。

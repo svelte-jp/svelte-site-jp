@@ -2,9 +2,9 @@
 title: The @debug tag
 ---
 
-Occasionally, it's useful to inspect a piece of data as it flows through your app.
+しばしば、アプリを流れるデータを検査するのに便利です。
 
-One approach is to use `console.log(...)` inside your markup. If you want to pause execution, though, you can use the `{@debug ...}` tag with a comma-separated list of values you want to inspect:
+1つの方法は、マークアップの中で `console.log(....)` を使用することです。しかし、実行を一時停止したい場合は、`{@debug ...}`タグを使用して、検査したい値をカンマで区切ったリストで指定することができます。
 
 ```html
 {@debug user}
@@ -12,4 +12,4 @@ One approach is to use `console.log(...)` inside your markup. If you want to pau
 <h1>Hello {user.firstname}!</h1>
 ```
 
-If you now open your devtools and start interacting with the `<input>` elements, you'll trigger the debugger as the value of `user` changes.
+新しく devtools を開いて `<input>` 要素とのやりとりを始めると、`user` の値が変わるとデバッガが動作します。

@@ -2,7 +2,7 @@
 title: Else blocks
 ---
 
-Since the two conditions — `if user.loggedIn` and `if !user.loggedIn` — are mutually exclusive, we can simplify this component slightly by using an `else` block:
+2つの条件（`if user.loggedIn` と `if !user.loggedIn`）は相互に排他的なので、`else` ブロックを使用することでこのコンポーネントを少しシンプルにすることができます。
 
 ```html
 {#if user.loggedIn}
@@ -16,4 +16,4 @@ Since the two conditions — `if user.loggedIn` and `if !user.loggedIn` — are 
 {/if}
 ```
 
-> A `#` character always indicates a *block opening* tag. A `/` character always indicates a *block closing* tag. A `:` character, as in `{:else}`, indicates a *block continuation* tag. Don't worry — you've already learned almost all the syntax Svelte adds to HTML.
+> `#` の文字は常に *ブロックの開始* タグを示します。 `/` の文字は常に *ブロックの終了* タグを示します。  `:` の文字は `{:else}` のように *ブロックの継続* タグを示します。心配しないでください。あなたは既にSvelteがHTMLに追加する構文のほとんどを学んでいます。

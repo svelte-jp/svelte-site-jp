@@ -2,13 +2,13 @@
 title: setContext and getContext
 ---
 
-The context API provides a mechanism for components to 'talk' to each other without passing around data and functions as props, or dispatching lots of events. It's an advanced feature, but a useful one.
+コンテキストAPIは、データや関数をプロパティとして渡したり、たくさんのイベントをディスパッチしたりすることなく、コンポーネント同士で'会話'するための仕組みを提供します。これは高度ですが、便利な機能です。
 
-Take this example app using a [Mapbox GL](https://docs.mapbox.com/mapbox-gl-js/overview/) map. We'd like to display the markers, using the `<MapMarker>` component, but we don't want to have to pass around a reference to the underlying Mapbox instance as a prop on each component.
+[Mapbox GL](https://docs.mapbox.com/mapbox-gl-js/overview/)のマップを使ったこのアプリの例を見てみましょう。`<MapMarker>`を使用してマーカーを表示したいのですが、ベースとなるMapboxインスタンスへの参照を各コンポーネントのプロパティとして渡したくありません。
 
-There are two halves to the context API — `setContext` and `getContext`. If a component calls `setContext(key, context)`, then any *child* component can retrieve the context with `const context = getContext(key)`.
+コンテキストAPIは`setContext`と`getContext`に分かれます。もしコンポーネントが`setContext(key, context)`を呼ぶと、どの*子*コンポーネントでも`const context = getContext(key)`でコンテキストを取得することができます。
 
-Let's set the context first. In `Map.svelte`, import `setContext` from `svelte` and `key` from `mapbox.js` and call `setContext`:
+まずはコンテキストを設定してみましょう。`Map.svelte`では、`svelte`から`setContext`をインポートし、`mapbox.js`から`key`をインポートして、`setContext`を呼び出します。
 
 ```js
 import { onMount, setContext } from 'svelte';
@@ -19,9 +19,9 @@ setContext(key, {
 });
 ```
 
-The context object can be anything you like. Like [lifecycle functions](tutorial/onmount), `setContext` and `getContext` must be called during component initialisation. Calling it afterwards - for example inside `onMount` - will throw an error. In this example, since `map` isn't created until the component has mounted, our context object contains a `getMap` function rather than `map` itself.
+コンテキストオブジェクトはなんでも構いません。[lifecycle functions](tutorial/onmount)のように、`setContext`と`getContext`はコンポーネントの初期化時に呼び出されなければいけません。それより後 (例えば `onMount` の中) で呼び出すとエラーをスローします。この例では、コンポーネントがマウントされるまで`map`は作成されないので、このコンテキストオブジェクトには`map`自体ではなく`getMap`関数が含まれています。
 
-On the other side of the equation, in `MapMarker.svelte`, we can now get a reference to the Mapbox instance:
+一方、`MapMarker.svelte`では、Mapboxインスタンスへの参照を取得できるようになりました。
 
 ```js
 import { getContext } from 'svelte';
@@ -31,25 +31,26 @@ const { getMap } = getContext(key);
 const map = getMap();
 ```
 
-The markers can now add themselves to the map.
+これでマーカーをマップに追加することができるようになりました。
 
-> A more finished version of `<MapMarker>` would also handle removal and prop changes, but we're only demonstrating context here.
+> `<MapMarker>`のより完成度の高いバージョンでは削除やプロパティの変更も扱えますが、この場ではコンテキストのデモンストレーションに留めておきます。
 
 ## Context keys
 
-In `mapbox.js` you'll see this line:
+`mapbox.js`にはこの一行が含まれています。
 
 ```js
 const key = {};
 ```
 
-We can use anything as a key — we could do `setContext('mapbox', ...)` for example. The downside of using a string is that different component libraries might accidentally use the same one; using an object literal means the keys are guaranteed not to conflict in any circumstance (since an object only has referential equality to itself, i.e. `{} !== {}` whereas `"x" === "x"`), even when you have multiple different contexts operating across many component layers.
+どんなものでもキーとして使うことができます（例えば`setContext('mapbox', ...)`のように）。文字列を使用することの欠点は、異なるコンポーネントライブラリが誤って同じものを使ってしまう可能性があることです。オブジェクトリテラルを使えば、どんな状況でもキーが衝突しないことが保証されます(オブジェクトは自身に対する参照の等価性しか持ちません。すなわち`{} !== {}`に対し`"x" === "x"`となります)。たとえ複数の異なるコンテキストが多くのコンポーネントレイヤーを超えて動作している場合であっても、です。
 
 ## Contexts vs. stores
 
-Contexts and stores seem similar. They differ in that stores are available to *any* part of an app, while a context is only available to *a component and its descendants*. This can be helpful if you want to use several instances of a component without the state of one interfering with the state of the others.
+コンテキストとストアは似ているように見えます。ストアはアプリの*どの*部分でも使用できるのに対し、コンテキストは*コンポーネントとその子孫*のみが利用できるという点で異なります。これは、ある状態が他の状態に干渉することなく、コンポーネントの複数のインスタンスを使用したい場合に便利です。
 
-In fact, you might use the two together. Since context is not reactive, values that change over time should be represented as stores:
+実際には、この2つを一緒に使うこともあるかもしれません。コンテキストはリアクティブではないので、時間の経過とともに変化する値はストアとして表現する必要があります。
+
 
 ```js
 const { these, are, stores } = getContext(...);

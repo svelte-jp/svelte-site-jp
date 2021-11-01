@@ -2,9 +2,9 @@
 title: Numeric inputs
 ---
 
-In the DOM, everything is a string. That's unhelpful when you're dealing with numeric inputs — `type="number"` and `type="range"` — as it means you have to remember to coerce `input.value` before using it.
+DOMの中では、全てが文字列(string)です。これは、数値のinput（`type="number"` と `type="range"`）を扱う際、その値を取り出す時に`input.value`を使わなければならないため、不便です。
 
-With `bind:value`, Svelte takes care of it for you:
+`bind:value`を使用すれば、Svelteがそれを代行してくれます。
 
 ```html
 <input type=number bind:value={a} min=0 max=10>

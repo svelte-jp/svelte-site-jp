@@ -1,84 +1,92 @@
 ---
-title: "Sapper: Towards the ideal web app framework"
-description: Taking the next-plus-one step
+title: "Sapper: 理想の Web アプリケーションフレームワークを目指して"
+description: 次の一歩を踏み出す
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.jp/blog/sapper-towards-the-ideal-web-app-framework
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-> Quickstart for the impatient: [the Sapper docs](https://sapper.svelte.dev), and the [starter template](https://github.com/sveltejs/sapper-template)
+> せっかちな人のためのクイックスタート: [Sapper のドキュメント](https://sapper.svelte.dev)、[スターターテンプレート](https://github.com/sveltejs/sapper-template)
 
-If you had to list the characteristics of the perfect Node.js web application framework, you'd probably come up with something like this:
+もし完璧な Node.js の Web アプリケーションフレームワークの特徴を挙げるとしたら、次のようなものを思いつくでしょう:
 
-1. It should do server-side rendering, for fast initial loads and no caveats around SEO
-2. As a corollary, your app's codebase should be universal — write once for server *and* client
-3. The client-side app should *hydrate* the server-rendered HTML, attaching event listeners (and so on) to existing elements rather than re-rendering them
-4. Navigating to subsequent pages should be instantaneous
-5. Offline, and other Progressive Web App characteristics, must be supported out of the box
-6. Only the JavaScript and CSS required for the first page should load initially. That means the framework should do automatic code-splitting at the route level, and support dynamic `import(...)` for more granular manual control
-7. No compromise on performance
-8. First-rate developer experience, with hot module reloading and all the trimmings
-9. The resulting codebase should be easy to grok and maintain
-10. It should be possible to understand and customise every aspect of the system — no webpack configs locked up in the framework, and as little hidden 'plumbing' as possible
-11. Learning the entire framework in under an hour should be easy, and not just for experienced developers
+1. 最初の読み込みの高速化や SEO 対策に支障をきたさないために、サーバーサイドレンダリングを行う
+2. 当然の結果として、アプリケーションのコードベースは普遍的である — サーバーとクライアント*共通*で1度だけコードを書く
+3. クライアントサイドのアプリは、サーバーでレンダリングされた HTML を再レンダリングすると言うより既存の要素にイベントリスナ（などなど）をアタッチして*ハイドレート*する
+4. 瞬時に次のページに移動できる
+5. オフラインや、その他のプログレッシブウェブアプリの特徴をすぐにサポートしている
+6. 最初のページに必要な JavaScript と CSS のみが最初に読み込まれる。 つまり、フレームワークはルートレベルで自動的にコード分割を行い、より細かい手動制御のために動的な `import(...)` をサポートしている
+7. パフォーマンスに妥協がない
+8. ホットモジュールリローディングやその他痒い所に手が届く様々な機能など、最高の開発環境を提供している
+9. 出来上がったコードベースは、理解しやすくメンテナンス性が高い
+10. システムのあらゆる側面を理解し、カスタマイズをすることができる — webpack の設定をフレームワークの中に閉じ込めず、できるだけ隠された「配管」を少なくしている
+11. フレームワーク全体を1時間以内に学習することは、経験豊富な開発者でなくても簡単にできる
 
-[Next.js](https://github.com/zeit/next.js) is close to this ideal. If you haven't encountered it yet, I strongly recommend going through the tutorials at [learnnextjs.com](https://learnnextjs.com). Next introduced a brilliant idea: all the pages of your app are files in a `your-project/pages` directory, and each of those files is just a React component.
+[Next.js](https://github.com/zeit/next.js) はこの理想に近いです。 もし Next.js に出会ったことがないなら、 [learnnextjs.com](https://learnnextjs.com) でチュートリアルを見てみることを強くおすすめします。 Next は素晴らしいアイディアをご紹介します: あなたのアプリケーションの全ページは `your-project/pages` ディレクトリにあるファイルで、それらのファイルのそれぞれが React のコンポーネントです。
 
-Everything else flows from that breakthrough design decision. Finding the code responsible for a given page is easy, because you can just look at the filesystem rather than playing 'guess the component name'. Project structure bikeshedding is a thing of the past. And the combination of SSR (server-side rendering) and code-splitting — something the React Router team [gave up on](https://reacttraining.com/react-router/web/guides/code-splitting), declaring 'Godspeed those who attempt the server-rendered, code-split apps' — is trivial.
+それ以外のことについては、この画期的な設計の方針に基づいています。「コンポーネント名推測ゲーム」をして遊ぶわけではなくファイルシステムを見るだけでいいので、特定のページを受け持つコードを見つけるのは簡単です。 プロジェクトの構造のことで無駄に細かいことを考える必要がある時代は終わりました。 また、 SSR（サーバーサイドレンダリング）とコード分割の組み合わせは (React Router チームが「サーバーでレンダリングされ、コード分割されたアプリに挑戦する人たちに神の祝福あれ」と言って[断念した](https://reacttraining.com/react-router/web/guides/code-splitting)ものではありますが) 些細なことです。
 
-But it's not perfect. As churlish as it might be to list the flaws in something *so, so good*, there are some:
+それでも、完璧なわけではありません。 *とても素晴らしいもの* の粗探しをするのは無粋かもしれませんが、いくつか挙げられます:
 
-* Next uses something called 'route masking' to create nice URLs (e.g. `/blog/hello-world` instead of `/post?slug=hello-world`). This undermines the guarantee about directory structure corresponding to app structure, and forces you to maintain configuration that translates between the two forms
-* All your routes are assumed to be universal 'pages'. But it's very common to need routes that only render on the server, such as a 301 redirect or an [API endpoint](/blog/sapper-towards-the-ideal-web-app-framework.json) that serves the data for your pages, and Next doesn't have a great solution for this. You can add logic to your `server.js` file to handle these cases, but it feels at odds with the declarative approach taken for pages
-* To use the client-side router, links can't be standard `<a>` tags. Instead, you have to use framework-specific `<Link>` components, which is impossible in the markdown content for a blog post such as this one, for example
+* Next は「ルートマスキング」と呼ばれる機能を使ってイケてる URL を生成します (例えば `/post?slug=hello-world` の代わりに `/blog/hello-world`)。 これは、アプリケーションの構造に対するディレクトリ構造の保証を損なうものであり、2つの構造の形式の間で変換する設定を維持する必要があります。
+* 全てのルーティングは普遍的な「ページ」であると想定されます。 しかしながら、 301 redirect やページにデータを提供する [API エンドポイント](/blog/sapper-towards-the-ideal-web-app-framework.json)のような、サーバーでのみレンダリングされるルーティングが必要になることは一般的にあることで、 Next はこれに関して良い解決策を持っていません。 こういったケースを処理するために `server.js` ファイルにロジックを追加することはできますが、これはページの宣言的なアプローチに相反するものです。
+* クライアントサイドのルーティングを利用する場合、リンクに標準的な `<a>` タグを使うことができません。 代わりに、例えば本ブログ記事のようなマークダウンコンテンツでは利用不可能な、フレームワーク固有の `<Link>` コンポーネントを使わなければいけません
 
-The real problem, though, is that all that goodness comes for a price. The simplest possible Next app — a single 'hello world' page that renders some static text — involves 66kb of gzipped JavaScript. Unzipped, it's 204kb, which is a non-trivial amount of code for a mobile device to parse at a time when performance is a critical factor determining whether or not your users will stick around. And that's the *baseline*.
+しかしながら、実際の問題として、これらのような良い機能には代償が伴います。 もっともシンプルな Next のアプリケーションは、 — 静的なテキストを表示する「hello world」ページですが — 66kb の 圧縮された JavaScript を含みます。 解凍すると 204kb になりますが、これは、パフォーマンスがユーザーの定着率を左右する重要な要素であるときに、モバイルデバイスが一度に解析するには大きく問題のあるコードの量です。 そして、これが *ベースライン* になります。
 
-We can do better!
-
-
-## The compiler-as-framework paradigm shift
-
-[Svelte introduced a radical idea](blog/frameworks-without-the-framework): what if your UI framework wasn't a framework at all, but a compiler that turned your components into standalone JavaScript modules? Instead of using a library like React or Vue, which knows nothing about your app and must therefore be a one-size-fits-all solution, we can ship highly-optimised vanilla JavaScript. Just the code your app needs, and without the memory and performance overhead of solutions based on a virtual DOM.
-
-The JavaScript world is [moving towards this model](https://tomdale.net/2017/09/compilers-are-the-new-frameworks/). [Stencil](https://stenciljs.com), a Svelte-inspired framework from the Ionic team, compiles to web components. [Glimmer](https://glimmerjs.com) *doesn't* compile to standalone JavaScript (the pros and cons of which deserve a separate blog post), but the team is doing some fascinating research around compiling templates to bytecode. (React is [getting in on the action](https://twitter.com/trueadm/status/944908776896978946), though their current research focuses on optimising your JSX app code, which is arguably more similar to the ahead-of-time optimisations that Angular, Ractive and Vue have been doing for a few years.)
-
-What happens if we use the new model as a starting point?
-
-
-## Introducing Sapper
-
-<aside><p>The <a href="https://sapper.svelte.dev/docs#Why_the_name">name comes from</a> the term for combat engineers, and is also short for Svelte app maker</p></aside>
-
-[Sapper](https://sapper.svelte.dev) is the answer to that question. **Sapper is a Next.js-style framework that aims to meet the eleven criteria at the top of this article while dramatically reducing the amount of code that gets sent to the browser.** It's implemented as Express-compatible middleware, meaning it's easy to understand and customise.
-
-The same 'hello world' app that took 204kb with React and Next weighs just 7kb with Sapper. That number is likely to fall further in the future as we explore the space of optimisation possibilities, such as not shipping any JavaScript *at all* for pages that aren't interactive, beyond the tiny Sapper runtime that handles client-side routing.
-
-What about a more 'real world' example? Conveniently, the [RealWorld](https://github.com/gothinkster/realworld) project, which challenges frameworks to develop an implementation of a Medium clone, gives us a way to find out. The [Sapper implementation](https://github.com/sveltejs/realworld) takes 39.6kb (11.8kb zipped) to render an interactive homepage.
-
-<aside><p>Code-splitting isn't free — if the reference implementation used code-splitting, it would be larger still</p></aside>
-
-The entire app costs 132.7kb (39.9kb zipped), which is significantly smaller than the reference React/Redux implementation at 327kb (85.7kb), but even if it was as large it would *feel* faster because of code-splitting. And that's a crucial point. We're told we need to code-split our apps, but if your app uses a traditional framework like React or Vue then there's a hard lower bound on the size of your initial code-split chunk — the framework itself, which is likely to be a significant portion of your total app size. With the Svelte approach, that's no longer the case.
-
-But size is only part of the story. Svelte apps are also extremely performant and memory-efficient, and the framework includes powerful features that you would sacrifice if you chose a 'minimal' or 'simple' UI library.
+私たちになら、もっとより良くできます！
 
 
-## Trade-offs
+## フレームワークとしてのコンパイラのパラダイムシフト
 
-The biggest drawback for many developers evaluating Sapper would be 'but I like React, and I already know how to use it', which is fair.
+[Svelte は根本的な思想を紹介しています](blog/frameworks-without-the-framework): UIフレークワークがフレームワークではなく、コンポーネントをスタンドアロンな JavaScript モジュールに変換するコンパイラだったらどうですか？　React や Vue のような、アプリのことを何も知らず無難なソリューションにならざるを得ないライブラリを使う代わりに、私たちは高度に最適化された純粋な JavaScript を送り出すことができます。 アプリケーションに必要なコードだけで、仮想DOMをベースとしたソリューションのようなメモリやパフォーマンスのオーバーヘッドはありません。
 
-If you're in that camp, I'd invite you to at least try alternative frameworks. You might be pleasantly surprised! The [Sapper RealWorld](https://github.com/sveltejs/realworld) implementation totals 1,201 lines of source code, compared to 2,377 for the reference implementation, because you're able to express concepts very concisely using Svelte's template syntax (which [takes all of five minutes to master](https://v2.svelte.dev/guide#template-syntax)). You get [scoped CSS](blog/the-zen-of-just-writing-css), with unused style removal and minification built-in, and you can use preprocessors like LESS if you want. You no longer need to use Babel. SSR is ridiculously fast, because it's just string concatenation. And we recently introduced [svelte/store](https://v2.svelte.dev/guide#state-management), a tiny global store that synchronises state across your component hierarchy with zero boilerplate. The worst that can happen is that you'll end up feeling vindicated!
+JavaScript の世界は [このモデルに向かっています](https://tomdale.net/2017/09/compilers-are-the-new-frameworks/)。 [Stencil](https://stenciljs.com) は Ionic のチームによる Svelte からインスピレーションを受けたフレームワークで、 Web コンポーネントにコンパイルされます。 [Glimmer](https://glimmerjs.com) は スタンドアロンな JavaScript にコンパイル *するわけではありませんが* (その長所と短所については、別のブログの記事にしたいと思います)、このチームはテンプレートをバイトコードにコンパイルすることについての興味深い研究を行なっています。 (React は [このような動きに足を踏み入れていますが](https://twitter.com/trueadm/status/944908776896978946)、彼らの現在の研究は JSX で書かれたアプリケーションのコードを最適化することに焦点を当てており、これは間違いなく Angular、 Ractive、 そして Vue がここ数年で行なっている事前最適化によく似たものです)
 
-But there are trade-offs nonetheless. Some people have a pathological aversion to any form of 'template language', and maybe that applies to you. JSX proponents will clobber you with the 'it's just JavaScript' mantra, and therein lies React's greatest strength, which is that it is infinitely flexible. That flexibility comes with its own set of trade-offs, but we're not here to discuss those.
-
-And then there's *ecosystem*. The universe around React in particular — the devtools, editor integrations, ancillary libraries, tutorials, StackOverflow answers, hell, even job opportunities — is unrivalled. While it's true that citing 'ecosystem' as the main reason to choose a tool is a sign that you're stuck on a local maximum, apt to be marooned by the rising waters of progress, it's still a major point in favour of incumbents.
+私たちがこの新しいモデルを出発点として用いるとどうなるのでしょうか？
 
 
-## Roadmap
+## Sapper の紹介
 
-We're not at version 1.0.0 yet, and a few things may change before we get there. Once we do (soon!), there are a lot of exciting possibilities.
+<aside><p><a href="https://sapper.svelte.dev/docs#Why_the_name">名前の由来</a> は工兵の用語で，Svelte app maker の略でもあります。</p></aside>
 
-I believe the next frontier of web performance is 'whole-app optimisation'. Currently, Svelte's compiler operates at the component level, but a compiler that understood the boundaries *between* those components could generate even more efficient code. The React team's [Prepack research](https://twitter.com/trueadm/status/944908776896978946) is predicated on a similar idea, and the Glimmer team is doing some interesting work in this space. Svelte and Sapper are well positioned to take advantage of these ideas.
+[Sapper](https://sapper.svelte.dev) はその問いへの答えです。 **Sapper は Next.js スタイルのフレームワークで、この記事の上部にある11の基準を満たしつつ、ブラウザに送信されるコードの量を劇的に減らすことを目的としています。** Express と互換性のあるミドルウェアとして実装されているため、理解しやすく、カスタマイズも容易に行えます。
 
-Speaking of Glimmer, the idea of compiling components to bytecode is one that we'll probably steal in 2018. A framework like Sapper could conceivably determine which compilation mode to use based on the characteristics of your app. It could even serve JavaScript for the initial route for the fastest possible startup time, then lazily serve a bytecode interpreter for subsequent routes, resulting in the optimal combination of startup size and total app size.
+同じ「hello world」のアプリケーションでも、React や Next では 204kb もあったものが、 Sapper ではたったの 7kb です。 クライアントサイドのルーティングを処理する Sapper のごく僅かなランタイムを除いて、インタラクティブではないページでは *一切の* JavaScript を読み込まないなどの最適化の可能性を探っていくうちに、将来的にこの数字はさらに小さくなっていくでしょう。
 
-Mostly, though, we want the direction of Sapper to be determined by its users. If you're the kind of developer who enjoys life on the bleeding edge and would like to help shape the future of how we build web apps, please join us on [GitHub](https://github.com/sveltejs/svelte) and [Discord](chat).
+さらに、「RealWorld」の例はどうでしょうか？　好都合なことに、 Medium クローンの実装をフレームワークで開発するという [RealWorld](https://github.com/gothinkster/realworld) プロジェクトでは、その結果を知ることができます。 [Sapper での実装](https://github.com/sveltejs/realworld) では、インタラクティブなホームページを表示するのに 39.6kb (zip形式では 11.8kb) かかります。
+
+<aside><p>コード分割もタダではありません。もしリファレンスの実装がコード分割を利用していたら、さらに大きくなっていたでしょう。</p></aside>
+
+アプリ全体のコストは 132.7kb (zip形式で 39.9kb) で、リファレンスの React/Redux での実装の 327kb (85.7kb) よりは著しく小さいですが、例え同じくらいの大きさであってもコード分割のおかげで *体感的には* 速くなっています。そしてこれが重要なポイントです。 アプリケーションではコード分割をする必要があると言われていますが、 React や Vue のような伝統的なフレームワークを利用している場合、最初にコードを分割するチャンクのサイズには厳しい下限があります — フレームワーク自体がアプリ全体のサイズの中で大部分を占めていると考えられるからです。  Svelte のアプローチは、もはやそのようなことはありません。
+
+しかしサイズの話は物語の一部に過ぎません。 また、 Svelte アプリケーションはパフォーマンスやメモリ効率が非常に高く、「ミニマル」や「シンプル」なUIライブラリを選択した場合に犠牲にしてしまうような強力な機能がこのフレームワークには含まれています。
+
+
+## トレードオフ
+
+多くの開発者が Sapper を評価する際の最大の難点は、「それでも React は好きだし、使い方もすでに知ってるよ」ということでしょうが、それは妥当なことです。
+
+そんな方々には、ぜひ代替フレームワークを試していただきたいと思います。 嬉しい驚きがあるかも知れません！ [Sapper による RealWorld](https://github.com/sveltejs/realworld) の実装ではソースコードの総行数が 1,201 行なのに対し、リファレンスでの実装では 2,377 行となっています。 これは、Svelte のテンプレート構文を使って概念を非常に簡潔に表現できるからで、[5 分もあればマスターできます](https://v2.svelte.dev/guide#template-syntax)。 使われていないスタイルの削除と縮小化が組み込まれた[scoped CSS](blog/the-zen-of-just-writing-css)を取得し、必要に応じて LESS のようなプリプロセッサを使用することができます。 Babel を使用する必要はありません。 SSR は、文字列を連結するだけなのでとてつもなく高速です。 また、最近導入した [svelte/store](https://v2.svelte.dev/guide#state-management)は、コンポーネント階層間で状態を同期させる小さなグローバルストアです。 最悪の場合、自分の正当性が証明されたような気になってしまうかも知れませんね！
+
+とは言え、トレードオフもあります。 いかなる「テンプレート言語」にも病的なまでに嫌悪感を抱く人がいますが、もしかしたらあなたも当てはまるかも知れません。 JSX の支持者は「それはただの JavaScript だ」と酷評するでしょうが、そこには React の最大の強みである、無限の柔軟性があるのです。 そのような柔軟性にはトレードオフがつきものですが、ここでそれについて議論するつもりはありません。
+
+そして、*エコシステム* があります。 特に React を取り巻く世界では、開発ツール、統合開発環境、付属ライブラリ、チュートリアル、 StackOverflow の回答、就職の機会に至るまで、他の追随を許さないものとなっています。 確かに、ツールを選ぶ主な理由として「エコシステム」を挙げるのは、無難な位置にとどまってしまっていて進歩の波に取り残されがちであることを示していますが、それでも既存の企業にとっては大きなポイントになります。
+
+
+## ロードマップ
+
+まだバージョン 1.0.0 ではありませんし、そこに辿り着くまでにいくつか修正する点があるかも知れません。 それが実現した暁には (もうすぐです！)、ワクワクするようなたくさんの可能性を秘めているでしょう。
+
+私は、 Web パフォーマンスにおける次の新天地は「アプリケーション全体の最適化」だと考えています。 現在、 Svelte のコンパイラはコンポーネントレベルで動作していますが、*コンポーネント間* の境界を解釈することができるコンパイラがあれば、より効率的なコードを生成することができます。 React チームの [Prepack の研究](https://twitter.com/trueadm/status/944908776896978946) も同様の考え方に基づいていますし、 Glimmer チームもこの分野で興味深い研究を行なっています。 Svelte と Sapper はこれらのアイディアを活かすことのできるポジションにいます。
+
+Glimmerといえば、コンポーネントをバイトコードにコンパイルするというアイディアは、2018年にはおそらく盗むことになるでしょう。 Sapper のようなフレームワークは、アプリの特性に応じてどのコンパイルモードを使うかを決めることができます 。 初回のルーティングでは JavaScript を提供して起動時間を最短にし、その後のルーティングではバイトコードインタプリタを遅延なく提供することで、起動サイズとアプリ全体のサイズの最適な組み合わせを実現することもできます。
+
+とは言え、 Sapper の方向性の大部分はユーザーに決めてもらいたいと考えています。あなたが最先端の生活を楽しみ、 Web アプリケーションの構築方法の未来を形作る手助けをしたいと思っている開発者であれば、ぜひ私たちの [GitHub](https://github.com/sveltejs/svelte) や [Discord](chat) に参加してください。

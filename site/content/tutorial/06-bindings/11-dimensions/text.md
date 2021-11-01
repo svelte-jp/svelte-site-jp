@@ -2,16 +2,16 @@
 title: Dimensions
 ---
 
-Every block-level element has `clientWidth`, `clientHeight`, `offsetWidth` and `offsetHeight` bindings:
+全てのブロックレベル要素は `clientWidth`、 `clientHeight`、`offsetWidth`、`offsetHeight` バインディングを備えています:
 
 ```html
-<div bind:clientWidth={w} bind:clientHeight={h}>
-	<span style="font-size: {size}px">{text}</span>
+<div bind:clientWidth="{w}" bind:clientHeight="{h}">
+  <span style="font-size: {size}px">{text}</span>
 </div>
 ```
 
-These bindings are readonly — changing the values of `w` and `h` won't have any effect.
+これらのバインディングは読み取り専用です。`w` と `h` の値を変更しても何の影響もありません。
 
-> Elements are measured using a technique similar to [this one](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/). There is some overhead involved, so it's not recommended to use this for large numbers of elements.
+> 要素は[この方法](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/)に似た手法を用いて測定されます。オーバーヘッドを内包しているため、要素数が巨大な場合はこの方法を使用することはおすすめしません。
 >
-> `display: inline` elements cannot be measured with this approach; nor can elements that can't contain other elements (such as `<canvas>`). In these cases you will need to measure a wrapper element instead.
+> `display: inline` 要素、または他の要素を内包できない要素（`<canvas>` など）もこの手法では測定できません。この場合は、代わりにラッバー要素を測定する必要があります。
