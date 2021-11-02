@@ -12,10 +12,10 @@ Svelte は素晴らしいツールで、公式ドキュメント及びチュー�
 
 貢献の形は様々で、翻訳はもちろん、誤字・脱字・誤訳の報告、よりよい翻訳文の提案、翻訳してほしいページのリクエスト、その他翻訳だけでなく Svelte Japan Community を良くするためのご意見なども大歓迎です！
 
-興味がある方は[CONTRIBUTING.md](https://github.com/svelte-jp/svelte-site-jp/blob/master/CONTRIBUTING.md)をご参照ください。
+興味がある方は [CONTRIBUTING_ja.md](https://github.com/svelte-jp/svelte-site-jp/blob/master/CONTRIBUTING_ja.md) をご参照ください。
 
 ご意見や気が付いたことがあれば、お気軽に Issue を作成して知らせてください。  
-もしくは[Svelte 日本の Discord](https://discord.com/invite/YTXq3ZtBbx)の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
+もしくは [Svelte 日本の Discord](https://discord.com/invite/YTXq3ZtBbx) の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
 
 ## Running locally
 
@@ -23,7 +23,7 @@ Set up the site project:
 
 ```bash
 git clone https://github.com/svelte-jp/svelte-site-jp.git
-cd svelte-site-jp
+cd svelte-site-jp/site
 npm ci
 npm run dev
 ```
@@ -35,14 +35,6 @@ The first time you run the site locally, it will update the list of Contributors
 ```bash
 npm run update
 ```
-
-## Building the site
-
-To build the website, run `npm run build`. The output can be found in `__sapper__/build`.
-
-## Testing
-
-Tests can be run using `npm run test`.
 
 ## Contributors ✨
 
@@ -86,3 +78,84 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+
+以下はSvelte公式のREADMEの内容です。
+
+---
+
+[![Cybernetically enhanced web apps: Svelte](https://sveltejs.github.io/assets/banner.png)](https://svelte.dev)
+
+
+[![npm version](https://img.shields.io/npm/v/svelte.svg)](https://www.npmjs.com/package/svelte) [![license](https://img.shields.io/npm/l/svelte.svg)](LICENSE.md) [![Chat](https://img.shields.io/discord/457912077277855764?label=chat&logo=discord)](https://svelte.dev/chat)
+
+
+## What is Svelte?
+
+Svelte is a new way to build web applications. It's a compiler that takes your declarative components and converts them into efficient JavaScript that surgically updates the DOM.
+
+Learn more at the [Svelte website](https://svelte.dev), or stop by the [Discord chatroom](https://svelte.dev/chat).
+
+
+## Supporting Svelte
+
+Svelte is an MIT-licensed open source project with its ongoing development made possible entirely by fantastic volunteers. If you'd like to support their efforts, please consider:
+
+- [Becoming a backer on Open Collective](https://opencollective.com/svelte).
+
+Funds donated via Open Collective will be used for compensating expenses related to Svelte's development such as hosting costs. If sufficient donations are received, funds may also be used to support Svelte's development more directly.
+
+
+## Development
+
+Pull requests are encouraged and always welcome. [Pick an issue](https://github.com/sveltejs/svelte/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) and help us out!
+
+To install and work on Svelte locally:
+
+```bash
+git clone https://github.com/sveltejs/svelte.git
+cd svelte
+npm install
+```
+
+> Do not use Yarn to install the dependencies, as the specific package versions in `package-lock.json` are used to build and test Svelte.
+
+To build the compiler and all the other modules included in the package:
+
+```bash
+npm run build
+```
+
+To watch for changes and continually rebuild the package (this is useful if you're using [npm link](https://docs.npmjs.com/cli/link.html) to test out changes in a project locally):
+
+```bash
+npm run dev
+```
+
+The compiler is written in [TypeScript](https://www.typescriptlang.org/), but don't let that put you off — it's basically just JavaScript with type annotations. You'll pick it up in no time. If you're using an editor other than [Visual Studio Code](https://code.visualstudio.com/), you may need to install a plugin in order to get syntax highlighting and code hints, etc.
+
+
+### Running Tests
+
+```bash
+npm run test
+```
+
+To filter tests, use `-g` (aka `--grep`). For example, to only run tests involving transitions:
+
+```bash
+npm run test -- -g transition
+```
+
+
+## svelte.dev
+
+The source code for https://svelte.dev, including all the documentation, lives in the [site](site) directory. The site is built with [Sapper](https://sapper.svelte.dev).
+
+### Is svelte.dev down?
+
+Probably not, but it's possible. If you can't seem to access any `.dev` sites, check out [this SuperUser question and answer](https://superuser.com/q/1413402).
+
+## License
+
+[MIT](LICENSE.md)

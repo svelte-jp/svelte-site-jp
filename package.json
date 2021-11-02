@@ -1,70 +1,153 @@
 {
-  "name": "svelte.dev",
-  "version": "1.0.0",
-  "description": "Docs and examples for Svelte",
-  "scripts": {
-    "dev": "node scripts/update.js && npm run copy-workers && sapper dev",
-    "copy-workers": "node scripts/copy-workers.js",
-    "migrate": "node-pg-migrate -r dotenv/config",
-    "build": "node scripts/update.js && npm run copy-workers && sapper build --legacy",
-    "update": "node scripts/update.js --force=true",
-    "start": "node __sapper__/build",
-    "lint": "node -e \"var shell=require('shelljs');var files=shell.find(['./CONTRIBUTING.md','./content/**/**/*.ja.md']).join(' ');if(shell.exec('textlint -f pretty-error '+files).code!==0){shell.exit(1)};\"",
-    "test": "mocha -r esm test/**",
-    "deploy": "make deploy"
-  },
-  "dependencies": {
-    "@polka/redirect": "^1.0.0-next.7",
-    "@polka/send": "^1.0.0-next.7",
-    "cookie": "^0.4.0",
-    "devalue": "^2.0.0",
-    "do-not-zip": "^1.0.0",
-    "flru": "^1.0.2",
-    "httpie": "^1.1.2",
-    "jsonwebtoken": "^8.5.1",
-    "marked": "^1.0.0",
-    "pg": "^7.12.1",
-    "polka": "^1.0.0-next.9",
-    "prism-svelte": "^0.4.3",
-    "prismjs": "^1.24.0",
-    "sirv": "^1.0.0",
-    "svelte-i18n": "^3.3.10",
-    "yootils": "0.0.16"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-transform-runtime": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
-    "@babel/runtime": "^7.6.0",
-    "@rollup/plugin-babel": "^5.0.0",
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
-    "@rollup/plugin-replace": "^2.2.0",
-    "@sindresorhus/slugify": "^0.9.1",
-    "@sveltejs/site-kit": "^1.4.0",
-    "@sveltejs/svelte-repl": "^0.2.1",
-    "all-contributors-cli": "^6.20.0",
-    "degit": "^2.1.4",
-    "dotenv": "^8.1.0",
-    "esm": "^3.2.25",
-    "jimp": "^0.8.0",
-    "mocha": "^6.2.0",
-    "node-fetch": "^2.6.1",
-    "node-pg-migrate": "^3.22.0",
-    "rollup": "^2.30.0",
-    "rollup-plugin-svelte": "^7.0.0",
-    "rollup-plugin-terser": "^7.0.0",
-    "sapper": "^0.28.10",
-    "shelljs": "^0.8.3",
-    "svelte": "^3.39.0",
-    "textlint": "^11.9.0",
-    "textlint-rule-detect-bad-chars": "^1.0.2",
-    "textlint-rule-no-mix-dearu-desumasu": "^4.0.1",
-    "textlint-rule-preset-jtf-style": "^2.3.8"
+  "name": "svelte",
+  "version": "3.44.0",
+  "description": "Cybernetically enhanced web apps",
+  "module": "index.mjs",
+  "main": "index",
+  "files": [
+    "types",
+    "compiler.*",
+    "register.js",
+    "index.*",
+    "ssr.*",
+    "internal",
+    "store",
+    "animate",
+    "transition",
+    "easing",
+    "motion",
+    "svelte",
+    "README.md"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "node": {
+        "import": "./ssr.mjs",
+        "require": "./ssr.js"
+      },
+      "import": "./index.mjs",
+      "require": "./index.js"
+    },
+    "./compiler": {
+      "import": "./compiler.mjs",
+      "require": "./compiler.js"
+    },
+    "./animate": {
+      "import": "./animate/index.mjs",
+      "require": "./animate/index.js"
+    },
+    "./easing": {
+      "import": "./easing/index.mjs",
+      "require": "./easing/index.js"
+    },
+    "./internal": {
+      "import": "./internal/index.mjs",
+      "require": "./internal/index.js"
+    },
+    "./motion": {
+      "import": "./motion/index.mjs",
+      "require": "./motion/index.js"
+    },
+    "./register": {
+      "require": "./register.js"
+    },
+    "./store": {
+      "import": "./store/index.mjs",
+      "require": "./store/index.js"
+    },
+    "./transition": {
+      "import": "./transition/index.mjs",
+      "require": "./transition/index.js"
+    },
+    "./ssr": {
+      "import": "./ssr.mjs",
+      "require": "./ssr.js"
+    }
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">= 8"
+  },
+  "types": "types/runtime/index.d.ts",
+  "scripts": {
+    "test": "mocha",
+    "test:unit": "mocha --require sucrase/register --recursive src/**/__test__.ts",
+    "quicktest": "mocha",
+    "precoverage": "c8 mocha",
+    "coverage": "c8 report --reporter=text-lcov > coverage.lcov && c8 report --reporter=html",
+    "codecov": "codecov",
+    "precodecov": "npm run coverage",
+    "build": "rollup -c && npm run tsd",
+    "prepare": "npm run build",
+    "dev": "rollup -cw",
+    "pretest": "npm run build",
+    "posttest": "agadoo internal/index.mjs",
+    "prepublishOnly": "node check_publish_env.js && npm run lint && npm test",
+    "tsd": "tsc -p src/compiler --emitDeclarationOnly && tsc -p src/runtime --emitDeclarationOnly",
+    "lint": "eslint \"{src,test}/**/*.{ts,js}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sveltejs/svelte.git"
+  },
+  "keywords": [
+    "UI",
+    "framework",
+    "templates",
+    "templating"
+  ],
+  "author": "Rich Harris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sveltejs/svelte/issues"
+  },
+  "homepage": "https://github.com/sveltejs/svelte#README",
+  "devDependencies": {
+    "@ampproject/remapping": "^0.3.0",
+    "@rollup/plugin-commonjs": "^11.0.0",
+    "@rollup/plugin-json": "^4.0.1",
+    "@rollup/plugin-node-resolve": "^6.0.0",
+    "@rollup/plugin-replace": "^2.3.0",
+    "@rollup/plugin-sucrase": "^3.1.0",
+    "@rollup/plugin-typescript": "^2.0.1",
+    "@rollup/plugin-virtual": "^2.0.0",
+    "@sveltejs/eslint-config": "github:sveltejs/eslint-config#v5.8.0",
+    "@types/mocha": "^7.0.0",
+    "@types/node": "^8.10.53",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
+    "acorn": "^8.4.1",
+    "agadoo": "^1.1.0",
+    "c8": "^5.0.1",
+    "code-red": "^0.2.2",
+    "codecov": "^3.5.0",
+    "css-tree": "^1.1.2",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-svelte3": "^3.2.1",
+    "estree-walker": "^3.0.0",
+    "is-reference": "^3.0.0",
+    "jsdom": "^15.2.1",
+    "kleur": "^3.0.3",
+    "locate-character": "^2.0.5",
+    "magic-string": "^0.25.3",
+    "mocha": "^7.0.0",
+    "periscopic": "^3.0.4",
+    "puppeteer": "^2.0.0",
+    "rollup": "^1.27.14",
+    "source-map": "^0.7.3",
+    "source-map-support": "^0.5.13",
+    "sourcemap-codec": "^1.4.8",
+    "tiny-glob": "^0.2.6",
+    "tslib": "^2.0.3",
+    "typescript": "^3.7.5"
+  },
+  "nyc": {
+    "include": [
+      "compiler/svelte.js",
+      "shared.js"
+    ],
+    "sourceMap": true,
+    "instrument": true
   }
 }
