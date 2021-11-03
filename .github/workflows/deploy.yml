@@ -3,14 +3,15 @@ name: CD
 on:
   push:
     branches: [ master ]
-    paths-ignore:
-      - 'CONTRIBUTING.md'
-      - 'DICTIONARY.md'
-      - 'README.md'
-      - '.all-contributorsrc'
+    paths:
+      - site/content
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: site
 
 jobs:
   build:
@@ -22,7 +23,7 @@ jobs:
       - name: Create .env file
         run: |
           cp .env.example .env
-          sed -i -e "/MAPBOX_ACCESS_TOKEN/s/$/${{ secrets.MAPBOX_ACCESS_TOKEN }}/g" .env
+          sed -i -e "/VITE_MAPBOX_ACCESS_TOKEN/s/$/${{ secrets.MAPBOX_ACCESS_TOKEN }}/g" .env
 
       - name: Login to Heroku Container registry
         env: 

@@ -1,232 +1,141 @@
-# Svelte Site JP への貢献について
+# Contributing to Svelte
 
-Svelte Site JPはSvelte公式ドキュメントサイトの日本語化プロジェクトです。
-Svelteは素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。  
+Svelte is a new way to build web applications. It's a compiler that takes your declarative components and converts them into efficient JavaScript that surgically updates the DOM.
 
-このリポジトリは[sveltejs/svelteのsiteディレクトリ](https://github.com/sveltejs/svelte/tree/master/site)をフォークして作成されており、ライセンスやコミュニティ・コラボレーションの精神についてはSvelte本体のそれを引き継ぎます。
+The [Open Source Guides](https://opensource.guide/) website has a collection of resources for individuals, communities, and companies. These resources help people who want to learn how to run and contribute to open source projects. Contributors and people new to open source alike will find the following guides especially useful:
 
-Svelte公式のCONTRIBUTING.mdはこちらです、是非ご一読ください。
+* [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+* [Building Welcoming Communities](https://opensource.guide/building-community/)
 
-* [CONTRIBUTING.md - sveltejs/svelte](https://github.com/sveltejs/svelte/blob/master/CONTRIBUTING.md)
+## Get involved
 
+There are many ways to contribute to Svelte, and many of them do not involve writing any code. Here's a few ideas to get started:
 
-## 貢献するには
+- Simply start using Svelte. Go through the [Getting Started](https://svelte.dev/blog/the-easiest-way-to-get-started) guide. Does everything work as expected? If not, we're always looking for improvements. Let us know by [opening an issue](#reporting-new-issues).
+- Look through the [open issues](https://github.com/sveltejs/svelte/issues). A good starting point would be issues tagged [good first issue](https://github.com/sveltejs/svelte/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22). Provide workarounds, ask for clarification, or suggest labels. Help [triage issues](#triaging-issues-and-pull-requests).
+- If you find an issue you would like to fix, [open a pull request](#your-first-pull-request).
+- Read through our [tutorials](https://svelte.dev/tutorial/basics). If you find anything that is confusing or can be improved, you can make edits by clicking "Edit this chapter" at the bottom left of the tutorial page.
+- Take a look at the [features requested](https://github.com/sveltejs/svelte/labels/enhancement) by others in the community and consider opening a pull request if you see something you want to work on.
 
-Svelte Site JPに貢献する方法はたくさんあり、その多くはコードを書く必要もなければ、いきなり翻訳する必要もありません。
+Contributions are very welcome. If you think you need help planning your contribution, please ping us on Discord at [svelte.dev/chat](https://svelte.dev/chat) and let us know you are looking for a bit of help.
 
-- 日本語ドキュメントサイト([https://svelte.jp/](https://svelte.jp/))を使ってみてください。気になるところや改善点があれば[Issueを開いて](#issueを作成する)お知らせください。
-- 翻訳で貢献されたい場合は[翻訳作業について](#翻訳作業について)をチェックしてみてください。翻訳にはみなさんの協力が必要です。誤訳があっても誤字・脱字があっても単語が統一できていなくても構いません、後からみんなで良くしていければと考えています。
+### Triaging issues and pull requests
 
-貢献は大歓迎です！もし貢献を迷っていたり、貢献に助けが必要であれば[Svelte日本のDiscord](https://discord.com/invite/YTXq3ZtBbx)で知らせてください。
+One great way you can contribute to the project without writing any code is to help triage issues and pull requests as they come in.
 
+- Ask for more information if you believe the issue does not provide all the details required to solve it.
+- Suggest [labels](https://github.com/sveltejs/svelte/labels) that can help categorize issues.
+- Flag issues that are stale or that should be closed.
+- Ask for test plans and review code.
 
-## 翻訳作業について
+## Bugs
 
+We use [GitHub issues](https://github.com/sveltejs/svelte/issues) for our public bugs. If you would like to report a problem, take a look around and see if someone already opened an issue about it. If you are certain this is a new unreported bug, you can submit a [bug report](#reporting-new-issues).
 
-### ディレクトリ構成・翻訳の仕組み
+If you have questions about using Svelte, contact us on Discord at [svelte.dev/chat](https://svelte.dev/chat), and we will do our best to answer your questions.
 
-- **Blog**
-  - Blogの原文は content/blog 配下にあります。  
-    日本語翻訳は content/blog/**ja** 配下の {原文のファイル名}.**ja**.md というファイルを修正して行います。
-- **API Docs**
-  - API Docsの原文は content/docs 配下にあります。  
-    日本語翻訳は content/docs/**ja** 配下の {原文のファイル名}.**ja**.md というファイルを修正して行います。
-- **FAQ**
-  - FAQの原文は content/faq 配下にあります。  
-    日本語翻訳は content/faq/**ja** 配下の {原文のファイル名}.**ja**.md というファイルを修正して行います。
-- **チュートリアル**
-  - チュートリアルの原文はcontent/tutorial配下のそれぞれの章ごとに`text.md`というファイルから読み取られています。
-    日本語翻訳は、その`text.md`をコピーして`text.ja.md`というファイルを作成して文章を翻訳します。  
-    (`text.ja.md`はホットリロードだと変更が反映されないのでご注意ください！)
-- **トップページ**
-  - トップページはmessages配下の`en.json`が原文で、日本語翻訳は`ja.json`ファイルです。
-- **Chat(Discord)のリンク**
-  - Svelte本体のDiscordのリンクはsrc/routes配下の`chat.js`にあり、Svelte日本Discordのリンクは`chat-jp.js`にあります。
+If you see anything you'd like to be implemented, create a [feature request issue](https://github.com/sveltejs/svelte/issues/new?template=feature_request.md)
 
-```
-.
-├── content
-│   ├── blog
-│   │   ├── 2016-11-26-frameworks-without-the-framework.md         # <- Blogの原文
-│   │   ...
-│   │   └── ja
-│   │       ├── 2016-11-26-frameworks-without-the-framework.ja.md  # <- Blogの日本語翻訳用ファイル
-│   │       ...
-│   │
-│   ├── docs
-│   │   ├── 00-introduction.md         # <- API Docsの原文
-│   │   ...
-│   │   └── ja
-│   │       ├── 00-introduction.ja.md  # <- API Docsの日本語翻訳用ファイル
-│   │       ...
-│   │
-│   ├── examples
-│   ├── faq
-│   │   ├── 100-im-new-to-svelte.md         # <- FAQの原文
-│   │   ...
-│   │   └── ja
-│   │       ├── 100-im-new-to-svelte.ja.md  # <- FAQの日本語翻訳用ファイル
-│   │       ...
-│   │
-│   └── tutorial
-│       ├── 01-introduction
-│       │   ├── 01-basics
-│       │   │   ├── app-a
-│       │   │   ├── text.ja.md  # <- チュートリアルの日本語翻訳用ファイル
-│       │   │   └── text.md     # <- チュートリアルの原文
-│       ...
-...
-├── messages
-│   ├── en.json           # <- トップページの英語ファイル
-│   └── ja.json           # <- トップページの日本語ファイル
-...
-├── src
-│   ├── routes
-│   │   ...
-│   │   ├── index.svelte  # <- トップページ
-│   │   ...
-│   │   ├── chat-jp.js  # <- Svelte日本Discordへのリンク
-│   │   ├── chat.js     # <- SvelteDiscordへのリンク
-│   │   ...
-etc...
-```
+## Reporting new issues
 
+When [opening a new issue](https://github.com/sveltejs/svelte/issues/new/choose), always make sure to fill out the issue template. **This step is very important!** Not doing so may result in your issue not being managed in a timely fashion. Don't take this personally if this happens, and feel free to open a new issue once you've gathered all the information required by the template.
 
-### 翻訳の流れ
+- **One issue, one bug:** Please report a single bug per issue.
+- **Provide reproduction steps:** List all the steps necessary to reproduce the issue. The person reading your bug report should be able to follow these steps to reproduce your issue with minimal effort. If possible, use the [REPL](https://svelte.dev/repl) to create your reproduction.
 
+## RFCs
 
-#### 1. 翻訳するドキュメントを選ぶ
+If you'd like to propose an implementation for a large new feature or change then please [create an RFC](https://github.com/sveltejs/rfcs) to discuss it up front.
 
-翻訳が必要な文書は[Issue](https://github.com/svelte-jp/svelte-site-jp/issues?q=is%3Aopen+is%3Aissue+label%3Atranslation)が作成されています。
+## Installation
 
-まだ誰も着手していないIssueには`翻訳者募集中`というLabelがついています。翻訳したいものがあれば、Issueのコメントで知らせてください(堅苦しい挨拶などは不要です。「この翻訳やりましょうか？」と言っていただけたらそれだけでとても嬉しいです！)。
+1. Ensure you have [npm](https://www.npmjs.com/get-npm) installed.
+1. After cloning the repository, run `npm install` in the root of the repository.
+1. To start a development server, run `npm run dev`.
 
-運営側から依頼する旨をコメントで返信しますので、その後に作業を開始してください。
+## Pull requests
 
-もし翻訳したいドキュメントのIssueがなければ、Issueを作成してください。
+### Your first pull request
 
+So you have decided to contribute code back to upstream by opening a pull request. You've invested a good chunk of time, and we appreciate it. We will do our best to work with you and get the PR looked at.
 
-#### 2. 環境設定
+Working on your first Pull Request? You can learn how from this free video series:
 
-このリポジトリをForkし、セットアップしてください。
+[**How to Contribute to an Open Source Project on GitHub**](https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github)
 
-```
-git clone https://github.com/{USER}/svelte-site-jp.git
-cd svelte-site-jp
-npm ci
-npm run update
-npm run dev
-```
+### Proposing a change
 
-このあと[localhost:3000](http://localhost:3000)にアクセスし、正常に表示されることを確認します。
+If you would like to request a new feature or enhancement but are not yet thinking about opening a pull request, you can also file an issue with [feature template](https://github.com/sveltejs/svelte/issues/new?template=feature_request.md).
 
+If you're only fixing a bug, it's fine to submit a pull request right away but we still recommend that you file an issue detailing what you're fixing. This is helpful in case we don't accept that specific fix but want to keep track of the issue.
 
-#### 3. 翻訳作業
+### Sending a pull request
 
-[ディレクトリ構成・翻訳の仕組み](#ディレクトリ構成翻訳の仕組み)を参考に、担当する文書を見つけてください。
+Small pull requests are much easier to review and more likely to get merged. Make sure the PR does only one thing, otherwise please split it.
 
-実際の翻訳については[翻訳のガイドライン](#翻訳のガイドライン)を参考にしてください。
+Please make sure the following is done when submitting a pull request:
 
-> いきなり完璧な翻訳を目指さなくても大丈夫です。PRに間違いや誤字・脱字があっても大丈夫です。ちゃんとレビューをしますし、レビューで怒ったりしませんのでご安心ください。それより、あなたがこのプロジェクトに貢献するため時間と労力を割いてくれたことに感謝しかありません。
+1. Fork [the repository](https://github.com/sveltejs/svelte) and create your branch from `master`.
+1. Describe your **test plan** in your pull request description. Make sure to test your changes.
+1. Make sure your code lints (`npm run lint`).
+1. Make sure your tests pass (`npm run test`).
 
+All pull requests should be opened against the `master` branch.
 
-##### 3-1. ブログの翻訳について
+#### Test plan
 
-ブログ記事は長文になることが多く、opinionatedな意見もあり、言い回しや誤訳によって誤解を招く可能性があります。  
-オリジナルの著者の方にご迷惑をかけるのを防ぐ目的で、翻訳された文書であることを特に強調するために下記のテンプレートを追記してください。
+A good test plan has the exact commands you ran and their output, provides screenshots or videos if the pull request changes UI.
 
-```markdown
-> 翻訳 : Svelte日本コミュニティ  
-> 原文 : https://svelte.dev/blog/sveltekit-beta
-> 
-> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
-> 正確な内容についてはsvelte.devの原文を参照してください。  
-> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
-> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
-> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
+- If you've changed APIs, update the documentation.
+
+#### Writing tests
+
+All tests are located in `/test` folder.
+
+Test samples are kept in `/test/xxx/samples` folder.
+
+#### Running tests
+
+1. To run test, run `npm run test`.
+1. To run test for a specific feature, you can use the `-g` (aka `--grep`) option. For example, to only run test involving transitions, run `npm run test -- -g transition`.
+
+##### Running solo test
+
+1. To run only one test, rename the test sample folder to end with `.solo`. For example, to run the `test/js/samples/action` only, rename it to `test/js/samples/action.solo`.
+1. To run only one test suite, rename the test suite folder to end with `.solo`. For example, to run the `test/js` test suite only, rename it to `test/js.solo`.
+1. Remember to rename the test folder back. The CI will fail if there's a solo test.
+
+##### Updating `.expected` files
+
+1. Tests suites like `css`, `js`, `server-side-rendering` asserts that the generated output has to match the content in the `.expected` file. For example, in the `js` test suites, the generated js code is compared against the content in `expected.js`.
+1. To update the content of the `.expected` file, run the test with `--update` flag. (`npm run test --update`)
+
+#### Breaking changes
+
+When adding a new breaking change, follow this template in your pull request:
+
+```md
+### New breaking change here
+
+- **Who does this affect**:
+- **How to migrate**:
+- **Why make this breaking change**:
+- **Severity (number of people affected x effort)**:
 ```
 
-見本： https://raw.githubusercontent.com/svelte-jp/svelte-site-jp/master/content/blog/ja/2021-03-23-sveltekit-beta.ja.md
+### What happens next?
 
+The core Svelte team will be monitoring for pull requests. Do help us by making your pull request easy to review by following the guidelines above.
 
-#### 4. lintの実行
+## Style guide
 
-lintを実行し、引っかかった箇所は修正してください。
+[Eslint](https://eslint.org) will catch most styling issues that may exist in your code. You can check the status of your code styling by simply running `npm run lint`.
 
-```
-npm run lint
-```
+### Code conventions
 
-終わったらcommitし、Fork先にpushします。
+- `snake_case` for internal variable names and methods.
+- `camelCase` for public variable names and methods.
 
+## License
 
-#### 5. Pull Request作成
-
-Fork元にPull Requestを提出してください。Pull RequestのコメントにはIssueの番号を含めてください。レビュー後、問題がなければマージされます。
-PRに間違いや誤字・脱字、ガイドライン違反があっても大丈夫です。間違いを恐れないでください。
-
-
-## 翻訳スタイル
-
-- [JTF日本語標準スタイルガイド（翻訳用）](https://www.jtf.jp/tips/styleguide) に準拠することとします
-- JTF日本語標準スタイルのチェックツールは [textlint-plugin-JTF-style](https://github.com/azu/textlint-plugin-JTF-style) を使用し、ルールは[一部カスタマイズ](.textlintrc)してあります
-
-
-### 翻訳のガイドライン
-
-[「公用文作成の要領」の見直しに関する国語課題小委員会の検討状況（案）](https://www.bunka.go.jp/seisaku/bunkashingikai/kokugo/kokugo/kokugo_72/pdf/r1422554_04.pdf)
-
-#### 文体
-
-「だである」ではなく「ですます」調を使用してください。
-
-
-#### 改行位置を原文と揃える
-
-可能な限り、原文と翻訳文の行数を揃え、更新時のdiffチェックが楽になるように協力してください。
-
-
-#### 単語、表記ゆれ
-
-[DICTIONARY.md](https://github.com/svelte-jp/svelte-site-jp/blob/master/DICTIONARY.md)を参考にしてください。
-
-
-#### ダッシュ
-
-原文で使われているダッシュは、以下のように場合に応じて訳し分けてください。
-
-- 和訳で文中に埋め込まれるような語句を区切っている場合、ダッシュの代わりに括弧でその語句を囲んでください
-- 和訳で文と文の区切りになっている場合、ダッシュの代わりに句点（`。`）を打ってください
-- 箇条書きの項目と説明を区切っている場合、ダッシュをそのままにする
-
-
-## Issueを作成する
-
-何かお気づきの点などがある場合はお気軽にIssueを作成して頂いて構いません。
-以下のテンプレートを用意しております。
-
-- 翻訳ドキュメント追加
-  - 翻訳したい/してほしいドキュメントがIssueになければこちらをご使用ください。
-- 誤字・脱字・誤訳報告、翻訳改善要望
-  - 誤字・脱字・誤訳や、不自然な言い回しやよりより翻訳文があればこちらをご使用ください。
-- その他
-  - ご質問、ご意見、お気軽にどうぞ！
-
-
-## その他
-
-- Svelte本体の変更は大体月に1度のペースで日本語サイトにも反映を行います。これは、Svelte本体のサイトが大体月に1度(月初、毎月のNewsletterが入るタイミング)で更新されるためです。
-  Svelte本体のサイトに緊急で更新がある場合はなるべくそれに追従したいと考えています。
-  - 反映の方法は Wikiの [How to fork from Svelte site, and How to follow Svelte site](https://github.com/svelte-jp/svelte-site-jp/wiki/How-to-fork-from-Svelte-site,-and-How-to-follow-Svelte-site) に記載しています。
-
-
-## 備考
-
-翻訳の進め方やCONTRIBUTING.mdに記載する内容などは、各フロントエンドフレームワーク及びライブラリの日本語化プロジェクトである、[angular/angular-ja](https://github.com/angular/angular-ja)、[vuejs/jp.vuejs.org](https://github.com/vuejs/jp.vuejs.org), [reactjs/ja.reactjs.org](https://github.com/reactjs/ja.reactjs.org)を参考にさせて頂きました。
-
-
-## ライセンス
-
-Svelte Site JPは[sveltejs/svelteのsiteディレクトリ](https://github.com/sveltejs/svelte/tree/master/site)をフォークして作成されており、ライセンス(MIT)を引き継いでいます。
-
-Svelte Site JPに貢献することにより、あなたはあなたの貢献が[MIT license](https://github.com/svelte-jp/svelte-site-jp/blob/master/LICENSE)の下でライセンスされることに同意するものとします。
+By contributing to Svelte, you agree that your contributions will be licensed under its [MIT license](https://github.com/sveltejs/svelte/blob/master/LICENSE).
