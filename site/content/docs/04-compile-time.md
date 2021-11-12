@@ -62,8 +62,8 @@ const result = svelte.compile(source, {
 | `cssOutputFilename` | string | `null`
 | `sveltePath` | string | `"svelte"` -->
 
-
-The returned `result` object contains the code for your component, along with useful bits of metadata.
+| option | default | description |
+| --- | --- | --- |
 | `filename` | `null` | デバッグのヒントやソースマップに使われる `string` です。バンドルプラグインが自動的に設定します。
 | `name` | `"Component"` | 結果として得られるJavaScriptクラスの名前を設定する `string` です (ただし、スコープ内の他の変数と競合する場合はコンパイラが名前を変更します)、通常は `filename` から推測されます。
 | `format` | `"esm"` | `"esm"` の場合、JavaScriptモジュールを作成します (`import` と `export` を指定します)、`"cjs"` の場合、CommonJSモジュールを作成します(`require` と `module.exports` を指定します)、これは、いくつかのサーバーサイドのレンダリング状況やテストに便利です。
