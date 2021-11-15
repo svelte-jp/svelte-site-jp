@@ -5,6 +5,15 @@ author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
 
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-september-2021
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
+
 SvelteKitが[80%完了マーク](https://github.com/sveltejs/kit/milestone/2)を超え、GitHubで[5000スター](https://github.com/sveltejs/kit)を超え、Sapperよりも多くの利用者がいる現在、SvelteKitを試すのに最適な時期はありません。コミュニティの多くの人が試しているので、今月はかなり大きなショーケースになっています...。
 
 また、11月20日には、世界各国のスピーカーが参加する[Svelte Summit](https://sveltesummit.com)も開催されますので、お見逃しなく。お住まいの地域で開催されるウォッチパーティーにもご注目ください👀
