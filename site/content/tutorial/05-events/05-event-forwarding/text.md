@@ -4,7 +4,7 @@ title: Event forwarding
 
 DOM イベントとは異なり、コンポーネントのイベントは *バブル* しません。もし深くネストされたコンポーネントでイベントをリッスンする場合、中間コンポーネントはイベントを *フォワード* する必要があります。
 
-今回ののケースでは、[前のチャプタ](tutorial/component-events)と同じように `App.svelte` と `Inner.svelte` がありますが、`<Inner/>` を含む `Outer.svelte` コンポーネントがあります。
+今回のケースでは、[前のチャプタ](tutorial/component-events)と同じように `App.svelte` と `Inner.svelte` がありますが、`<Inner/>` を含む `Outer.svelte` コンポーネントがあります。
 
 この問題を解決する1つの方法は、`Outer.svelte` に `createEventDispatcher` を追加して、`message` イベントをリッスンして、そのハンドラを作成することです。
 
