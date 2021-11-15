@@ -82,8 +82,8 @@ const result = svelte.compile(source, {
 | `loopGuardTimeout` | 0 | `loopGuardTimeout` msを超えてスレッドがブロックされた場合にループを解除するようにSvelteに指示する `数値` です。これは無限ループを防ぐのに便利です。**利用可能なのは `dev: true` の場合のみです**
 | `preserveComments` | `false` | `true` の場合、サーバサイドでのレンダリング中に HTML コメントが保存されます。デフォルトではコメントは削除されます。
 | `preserveWhitespace` | `false` | `true` の場合、要素内や要素間の空白は、可能であれば削除されたり単一の空白になったりするのではなく、入力したとおりに保持されます。
-| `sourcemap` | `object \| string` | An initial sourcemap that will be merged into the final output sourcemap. This is usually the preprocessor sourcemap.
-| `enableSourcemap` | `boolean \| { js: boolean; css: boolean; }` | If `true`, Svelte generate sourcemaps for components. Use an object with `js` or `css` for more granular control of sourcemap generation. By default, this is `true`.
+| `sourcemap` | `object \| string` | 最終的な出力ソースマップにマージされる初期のソースマップです。これは通常、プリプロセッサのソースマップです。
+| `enableSourcemap` | `boolean \| { js: boolean; css: boolean; }` | `true`の場合、Svelteはコンポーネントのソースマップを生成します。ソースマップ生成をより詳細に制御するには、`js`または`css`を持つオブジェクトを使用します。デフォルトでは`true`です。
 | `outputFilename` | `null` | JavaScriptのソースマップに使われる `文字列` です。
 | `cssOutputFilename` | `null` | CSSのソースマップに使われる `文字列` です。
 | `sveltePath` | `"svelte"` | `svelte` パッケージの場所。`svelte` または `svelte/[module]` からのインポートは、それに応じて変更されます。
