@@ -7,7 +7,7 @@ authorURL: https://desandoval.net
 
 SvelteKitが[80%完了マーク](https://github.com/sveltejs/kit/milestone/2)を超え、GitHubで[5000スター](https://github.com/sveltejs/kit)を超え、Sapperよりも多くの利用者がいる現在、SvelteKitを試すのに最適な時期はありません。コミュニティの多くの人が試しているので、今月はかなり大きなショーケースになっています...。
 
-また、11月20日には、世界各国のスピーカーが参加する[Svelte Summit](https://sveltesummit.com)も開催されますので、お見逃しなく。お住まいの地域で開催されるウォッチパーティーにもご注目してください👀
+また、11月20日には、世界各国のスピーカーが参加する[Svelte Summit](https://sveltesummit.com)も開催されますので、お見逃しなく。お住まいの地域で開催されるウォッチパーティーにもご注目ください👀
 
 続いては新機能です！
 
@@ -32,21 +32,22 @@ SvelteおよびSvelteKitのすべての更新を確認するには、それぞ�
 - [The Pudding](https://pudding.cool/)は、文化の中で議論されているアイデアをビジュアル・エッセイで説明するデジタル出版物です - SvelteKitで再構築されました。
 - [Power Switcher](https://powerswitcher.axpo.com/)は、エネルギー源がよりクリーンなものに移行していく中で、スイスの電力供給の発展をインタラクティブに紹介しています。
 - [Sublive](https://sub.live/)は、世界中のミュージシャンを低レイテンシーかつ高品質なオーディオネットワークで繋ぎ、新しい音楽の作り方を提案します。
-- [Vibify](https://www.vibify.me/)は、Spotifyの聴取履歴を利用して、音楽の中に隠れたプレイリストを見つけることができます。
-- [Browse Marvel Unlimited by Year](https://marvel.geoffrich.net/)は、ある年のMarvel Unlimitedで入手可能なイシューを確認できるSvelteKitサイトです。
+- [Vibify](https://www.vibify.me/)は、Spotifyの再生履歴を利用して、音楽の中に隠れたプレイリストを見つけることができます。
+- [Browse Marvel Unlimited by Year](https://marvel.geoffrich.net/)はSveltekitサイトで、Marvel Unlimitedで入手可能な発行物を年ごとに探すことができます。
+- [Files](https://files.community/)は、Windows用の最新のファイルエクスプローラーです。SvelteKitで再構築された新しいサイトを公開しています。
 - [lil-hash](https://github.com/jackbow/lil-hash)は、覚えやすく、話しやすい短縮URLを生成するシンプルなURL短縮ツールです。
 - [PWA Haven](https://github.com/ThaUnknown/pwa-haven)は、OSのネイティブアプリを置き換える、小さく、速く、シンプルなPWAのコレクションです。
 - [DottoBit](https://dottobit.com/)は、URL共有機能を備えたマルチカラーの16bitドローイングプログラムです。
 - [Former Fast Document for Print](https://github.com/zummon/former)は、美しいデザイン、国際言語対応、自動計算機能を備えた請求書作成ソフトです。
 - [Helvetikon](https://github.com/noahsalvi/helvetikon)は、スイス・ドイツ語のコミュニティが運営する辞書です。
-- [Palitra App](https://palitra.app/)は、検索ベースのカラーパレットジェネレータです。
+- [Palitra App](https://palitra.app/)は、Windows用の最新のファイルエクスプローラー検索ベースのカラーパレットジェネレータです。
 
 **Svelteが登場するポッドキャスト**
 - [Svelte Radio](https://www.svelteradio.com/episodes/svelte-summit-is-coming-up-and-svelte-is-growing)では、先日リリースされたSvelte Summitのウェブサイトを支える技術や、その他の楽しいことをたくさん紹介しています！
-- [PodRocket](https://podrocket.logrocket.com/rich-harris)、LogRocketのポッドキャスト、リッチ・ハリスとSvelteを語る。
+- [PodRocket](https://podrocket.logrocket.com/rich-harris)は、LogRocketのポッドキャストで、Rich HarrisとともにSvelteについて話しています。[また、PodRocketではさらに](https://podrocket.logrocket.com/elderjs)、Elder.jsについてNick Reeseとともに掘り下げています。
 - [PodRocket also dove deep](https://podrocket.logrocket.com/elderjs) Nick Reeseと一緒にElder.jsに導入しました。
 - [Web Rush](https://webrush.io/episodes/episode-153-single-page-application-vs-multi-page-application-with-rich-harris)とリッチ・ハリスが、SPAとMPAの違い、サーバーレンダリングが果たす役割、クライアントサイドハイドレーションとは何か、SPAやMPAを開発するための最新ツールの状況などについて語ります。
-- [devtools.fm](https://devtools.fm/episode/15)では、魅力的なデータビジュアライゼーションの開発と明日のツールの構築について、リッチ・ハリスと語り合っています。
+- [devtools.fm](https://devtools.fm/episode/15)では、魅力的なデータビジュアライゼーションの開発とツール構築の将来について、リッチ・ハリスと語り合っています。
 
 **教育用コンテンツ**
 - [Have Single-Page Apps Ruined the Web?](https://www.youtube.com/watch?v=860d8usGC0o) 今年のJamstack Confで、リッチ・ハリスが論争の的となった質問に答えました。
@@ -80,4 +81,4 @@ SvelteおよびSvelteKitのすべての更新を確認するには、それぞ�
 
 コミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates/)では、Svelte エコシステム全体からの templates、adders、adapters をご覧いただけます。
 
-もっと更新情報が欲しいですか？ [Reddit](https://www.reddit.com/r/sveltejs/)or[Discord](https://discord.com/invite/yy75DKs) に参加してください！
+もっと更新情報をお探しですか？ [Reddit](https://www.reddit.com/r/sveltejs/)または[Discord](https://discord.com/invite/yy75DKs) にご参加ください！
