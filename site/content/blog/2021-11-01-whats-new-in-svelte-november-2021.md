@@ -6,7 +6,7 @@ authorURL: https://desandoval.net
 ---
 
 > 翻訳 : Svelte日本コミュニティ  
-> 原文 : https://svelte.dev/blog/whats-new-in-svelte-september-2021
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-november-2021
 > 
 > 日本語版は原文をよりよく理解するための参考となることを目的としています。  
 > 正確な内容についてはsvelte.devの原文を参照してください。  
