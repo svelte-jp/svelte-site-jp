@@ -14,7 +14,7 @@ authorURL: https://desandoval.net
 > - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
 > - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-SvelteKitが[80%完了マーク](https://github.com/sveltejs/kit/milestone/2)を超え、GitHubで[5000スター](https://github.com/sveltejs/kit)を超え、Sapperよりも多くの利用者がいる現在、SvelteKitを試すのに最適な時期はありません。コミュニティの多くの人が試しているので、今月はかなり大きなショーケースになっています...。
+SvelteKitの完成度が[80%を超え](https://github.com/sveltejs/kit/milestone/2)、GitHubで[5000スター](https://github.com/sveltejs/kit)を超え、Sapperよりも多くの利用者がいる現在、SvelteKitを試すには絶好の機会です。コミュニティの多くの人が試しているので、今月はかなり大きなショーケースになっています...。
 
 また、11月20日には、世界各国のスピーカーが参加する[Svelte Summit](https://sveltesummit.com)も開催されますので、お見逃しなく。お住まいの地域で開催されるウォッチパーティーにもご注目ください👀
 
@@ -49,11 +49,12 @@ SvelteおよびSvelteKitのすべての更新を確認するには、それぞ�
 - [DottoBit](https://dottobit.com/)は、URL共有機能を備えたマルチカラーの16bitドローイングプログラムです。
 - [Former Fast Document for Print](https://github.com/zummon/former)は、美しいデザイン、国際言語対応、自動計算機能を備えた請求書作成ソフトです。
 - [Helvetikon](https://github.com/noahsalvi/helvetikon)は、スイス・ドイツ語のコミュニティが運営する辞書です。
-- [Palitra App](https://palitra.app/)は、Windows用の最新のファイルエクスプローラー検索ベースのカラーパレットジェネレータです。
+- [Palitra App](https://palitra.app/)は、検索ベースのカラーパレットジェネレータです。
 
 **Svelteが登場するポッドキャスト**
 - [Svelte Radio](https://www.svelteradio.com/episodes/svelte-summit-is-coming-up-and-svelte-is-growing)では、先日リリースされたSvelte Summitのウェブサイトを支える技術や、その他の楽しいことをたくさん紹介しています！
-- [PodRocket](https://podrocket.logrocket.com/rich-harris)は、LogRocketのポッドキャストで、Rich HarrisとともにSvelteについて話しています。[また、PodRocketではさらに](https://podrocket.logrocket.com/elderjs)、Elder.jsについてNick Reeseとともに掘り下げています。
+- [PodRocket](https://podrocket.logrocket.com/rich-harris)は、LogRocketのポッドキャストで、Rich HarrisとともにSvelteについて話しています。
+- [また、PodRocketではさらに](https://podrocket.logrocket.com/elderjs)、Elder.jsについてNick Reeseとともに掘り下げています。
 - [PodRocket also dove deep](https://podrocket.logrocket.com/elderjs) Nick Reeseと一緒にElder.jsに導入しました。
 - [Web Rush](https://webrush.io/episodes/episode-153-single-page-application-vs-multi-page-application-with-rich-harris)とリッチ・ハリスが、SPAとMPAの違い、サーバーレンダリングが果たす役割、クライアントサイドハイドレーションとは何か、SPAやMPAを開発するための最新ツールの状況などについて語ります。
 - [devtools.fm](https://devtools.fm/episode/15)では、魅力的なデータビジュアライゼーションの開発とツール構築の将来について、リッチ・ハリスと語り合っています。
