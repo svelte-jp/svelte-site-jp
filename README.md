@@ -70,6 +70,11 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://qiita.com/fuwasegu"><img src="https://avatars.githubusercontent.com/u/52437973?v=4?s=100" width="100px;" alt=""/><br /><sub><b>HirosuguTakeshita</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=lunain84" title="Documentation">📖</a></td>
     <td align="center"><a href="https://yamanoku.net/"><img src="https://avatars.githubusercontent.com/u/1996642?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Okuto Oyama</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=yamanoku" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/baseballyama"><img src="https://avatars.githubusercontent.com/u/19153718?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yuichiro Yamashita</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=baseballyama" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://keybase.io/nullnyat"><img src="https://avatars.githubusercontent.com/u/89781396?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nullcat chan!</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=nullnyat" title="Documentation">📖</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/komura-c"><img src="https://avatars.githubusercontent.com/u/37304826?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yuki Ishii</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=komura-c" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://sukimakakumei.co.jp/"><img src="https://avatars.githubusercontent.com/u/49876561?v=4?s=100" width="100px;" alt=""/><br /><sub><b>torish14</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=torish14" title="Documentation">📖</a></td>
   </tr>
 </table>
 
