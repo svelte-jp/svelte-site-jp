@@ -1,6 +1,6 @@
 ---
-title: What's new in Svelte: 2021年10月
-description: "What's new in Svelte"は1周年
+title: "What's new in Svelte: 2021年10月"
+description: "What's new in Svelte は1周年"
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---

@@ -6,7 +6,7 @@ title: Compile time
 
 * [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) は [Rollup](https://rollupjs.org) のユーザー向けです
 * [svelte-loader](https://github.com/sveltejs/svelte-loader) は [webpack](https://webpack.js.org) のユーザー向けです
-* もしくは [コミュニティでメンテナンスされているプラグイン](https://sveltesociety.dev/tooling) のどれか
+* もしくは [コミュニティでメンテナンスされているプラグイン](https://sveltesociety.dev/tools) のどれか
 
 とはいえ、バンドルプラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
 
