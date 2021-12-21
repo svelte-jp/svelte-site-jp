@@ -24,7 +24,7 @@ title: Component format
 
 `<script>` ブロックは、コンポーネントのインスタンスが生成されるときに実行される JavaScript を含みます。トップレベルで宣言（またはインポート）された変数は、そのコンポーネントのマークアップから '見る' ことができます。 `<script>` には、4つのルールがあります。
 
-##### 1. `export` creates a component prop
+#### 1. `export` creates a component prop
 
 ---
 
@@ -87,7 +87,7 @@ development モード（[コンパイラオプション](docs#compile-time-svelt
 </script>
 ```
 
-##### 2. Assignments are 'reactive'(代入は'リアクティブ')
+#### 2. Assignments are 'reactive'(代入は'リアクティブ')
 
 ---
 
@@ -125,7 +125,7 @@ Svelteのリアクティビティは代入に基づいているため、`.push()
 </script>
 ```
 
-##### 3. `$:` marks a statement as reactive(＄はステートメントがリアクティブであることを示す)
+#### 3. `$:` marks a statement as reactive(＄はステートメントがリアクティブであることを示す)
 
 ---
 
@@ -187,7 +187,7 @@ Total: {total}
 </script>
 ```
 
-##### 4. Prefix stores with `$` to access their values(ストアに＄を付けて値にアクセス)
+#### 4. Prefix stores with `$` to access their values(ストアに＄を付けて値にアクセス)
 
 ---
 
