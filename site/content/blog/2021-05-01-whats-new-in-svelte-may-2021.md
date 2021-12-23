@@ -1,5 +1,5 @@
 ---
-title: What's new in Svelte: 2021年5月
+title: "What's new in Svelte: 2021年5月"
 description: SvelteKit 1.0に向けた取り組みとSvelteKitサイトでいっぱいのショーケース！
 author: Daniel Sandoval
 authorURL: https://desandoval.net

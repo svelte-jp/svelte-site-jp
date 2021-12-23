@@ -459,7 +459,7 @@ key ブロックは式の値が変更されたときに、その中身を破棄�
 要素には、属性と同じように*ディレクティブ*を持たせることができます。これは何らかの方法で要素の動作を制御します。
 
 
-#### [on:*eventname*](on_element_event)
+#### on:*eventname*
 
 ```sv
 on:eventname={handler}
@@ -549,7 +549,7 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 <button on:click={increment} on:click={track}>Click me!</button>
 ```
 
-#### [bind:*property*](bind_element_property)
+#### bind:*property*
 
 ```sv
 bind:property={variable}
@@ -770,7 +770,7 @@ bind:group={variable}
 <input type="checkbox" bind:group={fillings} value="Guac (extra)">
 ```
 
-#### [bind:this](bind_element)
+#### bind:this
 
 ```sv
 bind:this={dom_node}
@@ -929,7 +929,7 @@ transition = (node: HTMLElement, params: any) => {
 {/if}
 ```
 
-> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](docs#Client-side_component_API) ときに `intro: true` を設定することで変更できます。
+> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](docs#run-time-client-side-component-api) ときに `intro: true` を設定することで変更できます。
 
 ##### Transition parameters
 
@@ -1148,9 +1148,9 @@ DOMRect {
 
 ---
 
-アニメーションは、[keyed each block](docs#each) の内容が並び替えられたときに発生します。アニメーションは、要素が削除されたときには実行されず、each ブロックのデータが並べ替えられたときにのみ実行されます。animate ディレクティブは、キー付き each ブロックの *直接の* 子要素になければいけません。
+アニメーションは、[keyed each block](docs#template-syntax-each) の内容が並び替えられたときに発生します。アニメーションは、要素が削除されたときには実行されず、each ブロックのデータが並べ替えられたときにのみ実行されます。animate ディレクティブは、キー付き each ブロックの *直接の* 子要素になければいけません。
 
-アニメーションは Svelte の[組み込みアニメーション関数](docs#svelte_animate) または [カスタムアニメーション関数](docs#Custom_animation_functions) を使用することができます。
+アニメーションは Svelte の[組み込みアニメーション関数](docs#run-time-svelte-animate) または [カスタムアニメーション関数](docs#template-syntax-element-directives-animate-fn-custom-animation-functions) を使用することができます。
 
 ```sv
 <!-- When `list` is reordered the animation will run-->
@@ -1177,7 +1177,7 @@ DOMRect {
 
 ---
 
-アニメーションは、`node`、`animation` オブジェクト、および任意の `paramaters` を引数として指定するカスタム関数を使用することができます。`animation` パラメータは、`from` と `to` プロパティを含むオブジェクトで、それぞれ要素の `start` と `end` の位置におけるジオメトリを記述した [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties) を含みます。`from` プロパティは要素の開始位置の DOMRect であり、`to` プロパティはリストが並び替えられ DOM が更新された後の最終位置の DOMRect です。
+アニメーションは、`node`、`animation` オブジェクト、および任意の `parameters` を引数として指定するカスタム関数を使用することができます。`animation` パラメータは、`from` と `to` プロパティを含むオブジェクトで、それぞれ要素の `start` と `end` の位置におけるジオメトリを記述した [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties) を含みます。`from` プロパティは要素の開始位置の DOMRect であり、`to` プロパティはリストが並び替えられ DOM が更新された後の最終位置の DOMRect です。
 
 返されたオブジェクトが `css` メソッドを持つ場合、Svelte は要素上で再生される CSS アニメーションを作成します。
 
@@ -1249,7 +1249,7 @@ DOMRect {
 
 ### Component directives
 
-#### [on:*eventname*](on_component_event)
+#### on:*eventname*
 
 ```sv
 on:eventname={handler}
@@ -1257,7 +1257,7 @@ on:eventname={handler}
 
 ---
 
-コンポーネントは [createEventDispatcher](docs#createEventDispatcher) を用いるか、または DOM イベントをフォワードすることでイベントを発火することができます。コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
+コンポーネントは [createEventDispatcher](docs#run-time-svelte-createeventdispatcher) を用いるか、または DOM イベントをフォワードすることでイベントを発火することができます。コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
 
 ```sv
 <SomeComponent on:whatever={handler}/>
@@ -1271,7 +1271,7 @@ DOM イベントと同様に、`on:` ディレクティブが値なしに使わ�
 <SomeComponent on:whatever/>
 ```
 
-#### [--style-props](style_props)
+#### --style-props
 
 ```sv
 --style-props="anycssvalue"
@@ -1340,7 +1340,7 @@ html {
 <Slider --rail-color="goldenrod"/>
 ```
 
-#### [bind:*property*](bind_component_property)
+#### bind:*property*
 
 ```sv
 bind:property={variable}
@@ -1354,7 +1354,7 @@ bind:property={variable}
 <Keypad bind:value={pin}/>
 ```
 
-#### [bind:this](bind_component)
+#### bind:this
 
 ```sv
 bind:this={component_instance}
@@ -1410,7 +1410,7 @@ bind:this={component_instance}
 </Widget>
 ```
 
-#### [`<slot name="`*name*`">`](slot_name)
+#### `<slot name="`*name*`">`
 
 ---
 
@@ -1453,7 +1453,7 @@ bind:this={component_instance}
 ```
 
 
-#### [`$$slots`](slots_object)
+#### `$$slots`
 
 ---
 
@@ -1479,7 +1479,7 @@ bind:this={component_instance}
 </Card>
 ```
 
-#### [`<slot key={`*value*`}>`](slot_let)
+#### `<slot key={`*value*`}>`
 
 ---
 
@@ -1617,7 +1617,7 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](docs#use_action) を使用することもできます。
+`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](docs#template-syntax-element-directives-use-action) を使用することもできます。
 
 `<svelte:body>` はコンポーネントのトップレベルに表示する必要があります。
 
@@ -1657,7 +1657,7 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:options>` 要素は、コンポーネントごとのコンパイラオプションを指定する場所を提供します。これらは [コンパイラセクション](docs#svelte_compile) で詳しく説明されています。使用できるオプションは以下の通りです。
+`<svelte:options>` 要素は、コンポーネントごとのコンパイラオプションを指定する場所を提供します。これらは [コンパイラセクション](docs#compile-time-svelte-compile) で詳しく説明されています。使用できるオプションは以下の通りです。
 
 * `immutable={true}` — 変異可能なデータは絶対に使いません。そのため、コンパイラは値が変更されたかどうかを判断するために単純な参照等価性チェックを行うことができます。
 * `immutable={false}` — デフォルトです。Svelte は、変更可能なオブジェクトが変更されたかどうかについて、より保守的になります。
@@ -1672,7 +1672,7 @@ bind:this={component_instance}
 
 ### `<svelte:fragment>`
 
-`<svelte:fragment>`要素によって、コンテナとなるDOM要素でラップすることなく[名前付きスロット](docs#slot_name)に内容を入れることができます。
+`<svelte:fragment>`要素によって、コンテナとなるDOM要素でラップすることなく[名前付きスロット](docs#template-syntax-slot-slot-name)に内容を入れることができます。
 
 ```sv
 <!-- Widget.svelte -->

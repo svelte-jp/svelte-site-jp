@@ -1,6 +1,6 @@
 ---
 title: 仮想DOMは純粋なオーバーヘッド(Virtual DOM is pure overhead)
-description: '仮想DOMは速い'という神話を完全に終わりにしよう
+description: "'仮想DOMは速い'という神話を完全に終わりにしよう"
 author: Rich Harris
 authorURL: https://twitter.com/Rich_Harris
 ---

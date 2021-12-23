@@ -1,10 +1,9 @@
 ---
-title: What's new in Svelte: 2021年11月
+title: "What's new in Svelte: 2021年11月"
 description: ショーケースを彩る5000個以上の星たち
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
-
 > 翻訳 : Svelte日本コミュニティ  
 > 原文 : https://svelte.dev/blog/whats-new-in-svelte-november-2021
 > 

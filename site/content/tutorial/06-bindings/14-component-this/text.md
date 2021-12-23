@@ -2,9 +2,13 @@
 title: Binding to component instances
 ---
 
-DOM要素にバインドできるのと同じように、コンポーネントのインスタンス自体にもバインドできます。たとえば、DOM要素をバインドするときと同じように、`<InputField>` のインスタンスを `field` という名前のプロパティにバインドすることができます。
+DOM要素にバインドできるのと同じように、コンポーネントのインスタンス自体にもバインドできます。たとえば、DOM要素をバインドするときと同じように、`<InputField>` のインスタンスを `field` 変数にバインドすることができます。
 
 ```html
+<script>
+	let field;
+</script>
+
 <InputField bind:this={field} />
 ```
 

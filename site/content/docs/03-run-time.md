@@ -20,7 +20,7 @@ onMount(callback: () => () => void)
 
 `onMount` 関数は、コンポーネントが DOM にマウントされるとすぐに実行されるコールバックをスケジュールします。これはコンポーネントの初期化中に呼び出されなければなりません (ただし、コンポーネントの *内部* に存在する必要はありません。外部モジュールから呼び出すことができます)。
 
-`onMount` は [サーバーサイドコンポーネント](docs#Server-side_component_API) の内部では実行されません。
+`onMount` は [サーバーサイドコンポーネント](docs#run-time-server-side-component-api) の内部では実行されません。
 
 ```sv
 <script>
@@ -226,7 +226,7 @@ dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
 
 ---
 
-[コンポーネントイベント](docs＃on_component_event) のディスパッチに使用できるイベントディスパッチャーを作成します。 イベントディスパッチャーは、 `name` と ` detail` の2つの引数を取る関数です。 
+[コンポーネントイベント](docs＃template-syntax-component-directives-on-component-event) のディスパッチに使用できるイベントディスパッチャーを作成します。 イベントディスパッチャーは、 `name` と ` detail` の2つの引数を取る関数です。 
 
 `createEventDispatcher` で作成されたコンポーネントイベントは [カスタムイベント](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) を作成します。これらのイベントは、[バブリング](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture) せず、`event.preventDefault()` でキャンセルできません。引数 `detail` は [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) プロパティに対応し、任意のタイプのデータを含むことができます。
 
@@ -256,11 +256,11 @@ dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
 
 ### `svelte/store`
 
-`svelte/store` モジュールは、[readable](docs#readable)、[writable](docs#writable)、 [derived](docs#derived) ストアを作成するための関数をエクスポートします。
+`svelte/store` モジュールは、[readable](docs#run-time-svelte-store-readable)、[writable](docs#run-time-svelte-store-writable)、 [derived](docs#run-time-svelte-store-derived) ストアを作成するための関数をエクスポートします。
 
-コンポーネントで[リアクティブな `$store` 構文](docs#4_$)を便利に使うために、これらの関数を使用する必要がないことを覚えておいてください。`.subscribe` とそのサブスクライブの解除、（オプションで）`.set` を正しく実装したオブジェクトは有効なストアであり、その特殊な構文と Svelte に組み込まれた [`derived` ストア](docs#derived)の両方で機能します。
+コンポーネントで[リアクティブな `$store` 構文](docs#component-format-script-4-prefix-stores-with-$-to-access-their-values)を便利に使うために、これらの関数を使用する必要がないことを覚えておいてください。`.subscribe` とそのサブスクライブの解除、（オプションで）`.set` を正しく実装したオブジェクトは有効なストアであり、その特殊な構文と Svelte に組み込まれた [`derived` ストア](docs#run-time-svelte-store-derived)の両方で機能します。
 
-これにより、Svelte で使用するための、ほぼすべての他のリアクティブ状態を扱うライブラリをラップすることが可能になります。続いて説明する正しい実装がどのようなものか理解するために、[store contract](docs#Store_contract) も読んでみてください。
+これにより、Svelte で使用するための、ほぼすべての他のリアクティブ状態を扱うライブラリをラップすることが可能になります。続いて説明する正しい実装がどのようなものか理解するために、[store contract](docs#component-format-script-4-prefix-stores-with-$-to-access-their-values-store-contract) も読んでみてください。
 
 #### `writable`
 
@@ -446,7 +446,7 @@ store = tweened(value: any, options)
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トゥイーンの持続時間のミリ秒
-* `easing` (`function`, default `t => t`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `t => t`) — [イージング関数](docs#run-time-svelte-easing)
 * `interpolate` (`function`) — 下記を参照してください。
 
 `store.set` と `store.update` は、インスタンス化時に渡されたオプションを上書きする第2引数 `options` を受け取ることができます。
@@ -537,7 +537,7 @@ store = spring(value: any, options)
 
 ---
 
-[`tweened`](docs#tweened) ストアと同様に、`set` と `update` はスプリングが止まれば resolve する promise を返します。`store.stiffness` と `store.damping` プロパティはスプリングが動いている間に変更することができ、すぐに効果を発揮します。
+[`tweened`](docs#run-time-svelte-motion-tweened) ストアと同様に、`set` と `update` はスプリングが止まれば resolve する promise を返します。`store.stiffness` と `store.damping` プロパティはスプリングが動いている間に変更することができ、すぐに効果を発揮します。
 
 `set` と `update` はどちらも第2引数として `hard` または `soft` プロパティを持つオブジェクトを取ることができます。`{ hard: true }` は対象の値を即座に設定します。`{ soft: n }` は既存の運動量を `n` 秒間保持してから止まります。`{ soft: true }` は `{ soft: 0.5 }` と同等です。
 
@@ -565,7 +565,7 @@ $: $size = big ? 100 : 10;
 
 ### `svelte/transition`
 
-`svelte/transition` モジュールは7つの関数をエクスポートします。`fade`、`blur`、`fly`、 `slide`、`scale`、`draw`、`crossfade` の7つの関数をエクスポートします。これらは Svelte [`transitions`](docs#transition_fn) で使用します。
+`svelte/transition` モジュールは7つの関数をエクスポートします。`fade`、`blur`、`fly`、 `slide`、`scale`、`draw`、`crossfade` の7つの関数をエクスポートします。これらは Svelte [`transitions`](docs#template-syntax-element-directives-transition-fn) で使用します。
 
 #### `fade`
 
@@ -587,7 +587,7 @@ out:fade={params}
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
-* `easing` (`function`, default `linear`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `linear`) — [イージング関数](docs#run-time-svelte-easing)
 
 [トランジション チュートリアル](tutorial/transition) で `fade` トランジションの動作を見ることができます。
 
@@ -623,7 +623,7 @@ out:blur={params}
 
 * `delay` (`number`, default 0) —開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — アニメーションの持続時間のミリ秒
-* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#run-time-svelte-easing)
 * `opacity` (`number`, default 0) - アニメーション化する opacity の値
 * `amount` (`number`, default 5) - ぼかしのサイズをピクセル単位で表します
 
@@ -659,7 +659,7 @@ out:fly={params}
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
-* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#run-time-svelte-easing)
 * `x` (`number`, default 0) - アニメーションで移動する x 位置のオフセット 
 * `y` (`number`, default 0) - アニメーションで移動する y 位置のオフセット
 * `opacity` (`number`, default 0) - アニメーションで変化する opacity のオフセット
@@ -699,7 +699,7 @@ out:slide={params}
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
-* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#run-time-svelte-easing)
 
 ```sv
 <script>
@@ -734,7 +734,7 @@ out:scale={params}
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
-* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#run-time-svelte-easing)
 * `start` (`number`, default 0) - アニメーションで変化する scale の値
 * `opacity` (`number`, default 0) - アニメーションで変化する opacity の値
 
@@ -772,7 +772,7 @@ SVG 要素のストロークを蛇が管の中を進むようにアニメーシ�
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `speed` (`number`, default undefined) - アニメーションの速度、下記を参照してください
 * `duration` (`number` | `function`, default 800) — トランジションの持続時間のミリ秒
-* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `cubicInOut`) — [イージング関数](docs#run-time-svelte-easing)
 
 速度パラメータ `speed` はパスの長さに対する遷移の持続時間を設定する手段です。これはパスの長さに適用される修飾子で `duration = length / speed` となります。1000ピクセルで速度が1のパスの持続時間は `1000ms` であり、速度を `0.5` に設定すると持続時間は2倍になり、`2` に設定すると半分になります。
 
@@ -799,7 +799,7 @@ SVG 要素のストロークを蛇が管の中を進むようにアニメーシ�
 
 #### `crossfade`
 
-`crossfade` 関数は `send` と `receive` という [トランジション](docs#transition_fn)のペアを作成します。ある要素が「送信」されると、それに対応する「受信」される要素を探し、その要素を相手の位置に変換してフェードアウトさせるトランジションを生成します。要素が「受信」されると、その逆が起こります。対応する要素がない場合は、`fallback` トランジションが使用されます。
+`crossfade` 関数は `send` と `receive` という [トランジション](docs#template-syntax-element-directives-transition-fn)のペアを作成します。ある要素が「送信」されると、それに対応する「受信」される要素を探し、その要素を相手の位置に変換してフェードアウトさせるトランジションを生成します。要素が「受信」されると、その逆が起こります。対応する要素がない場合は、`fallback` トランジションが使用されます。
 
 ---
 
@@ -807,8 +807,8 @@ SVG 要素のストロークを蛇が管の中を進むようにアニメーシ�
 
 * `delay` (`number`, デフォルト 0) — 開始するまでのミリ秒
 * `duration` (`number` | `function`, デフォルト 800) — トランジションが継続するミリ秒
-* `easing` (`function`, デフォルト `cubicOut`) — [イージング関数](docs#svelte_easing)
-* `fallback` (`function`) — 受信している要素に一致するものがない場合の送信時や、送信している要素がない場合の受信時に使用するフォールバック[トランジション](docs#transition_fn)です。
+* `easing` (`function`, デフォルト `cubicOut`) — [イージング関数](docs#run-time-svelte-easing)
+* `fallback` (`function`) — 受信している要素に一致するものがない場合の送信時や、送信している要素がない場合の受信時に使用するフォールバック[トランジション](docs#template-syntax-element-directives-transition-fn)です。
 
 ```sv
 <script>
@@ -831,7 +831,7 @@ SVG 要素のストロークを蛇が管の中を進むようにアニメーシ�
 
 ### `svelte/animate`
 
-`svelte/animate` モジュールは、Svelte [animations](docs#animate_fn) で使用するための関数を1つエクスポートします。
+`svelte/animate` モジュールは、Svelte [animations](docs#template-syntax-element-directives-animate-fn) で使用するための関数を1つエクスポートします。
 
 #### `flip`
 
@@ -845,7 +845,7 @@ animate:flip={params}
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number` | `function`, default `d => Math.sqrt(d) * 120`) — 下記を参照してください
-* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#svelte_easing)
+* `easing` (`function`, default `cubicOut`) — [イージング関数](docs#run-time-svelte-easing)
 
 
 `duration` は、以下のいずれかを指定することができます。
@@ -961,7 +961,7 @@ const app = new App({
 
 ---
 
-`hydrate` オプションは、新しい要素を作成するのではなく、既存の DOM を（大抵はサーバーサイドレンダリングから）アップグレードするよう Svelte に指示します。これはコンポーネントが [`hydratable: true` のオプション](docs#svelte_compile) でコンパイルされた場合にのみ機能します。`<head>` 要素のハイドレーションは、サーバーサイドレンダリングのコードも `hydratable: true` を使ってコンパイルされた場合にのみ適切に動作します。これは `head` 内の各要素にマーカーを追加して、コンポーネントがハイドレーション中にどの要素を除去すべきかを認識できるようにします。
+`hydrate` オプションは、新しい要素を作成するのではなく、既存の DOM を（大抵はサーバーサイドレンダリングから）アップグレードするよう Svelte に指示します。これはコンポーネントが [`hydratable: true` のオプション](docs#compile-time-svelte-compile) でコンパイルされた場合にのみ機能します。`<head>` 要素のハイドレーションは、サーバーサイドレンダリングのコードも `hydratable: true` を使ってコンパイルされた場合にのみ適切に動作します。これは `head` 内の各要素にマーカーを追加して、コンポーネントがハイドレーション中にどの要素を除去すべきかを認識できるようにします。
 
 通常、`target` の子要素はそのまま残されますが、`hydrate: true` ではすべての子要素が削除されます。そのため `anchor` オプションは `hydrate: true` と一緒に使用できません。
 
@@ -1045,7 +1045,7 @@ app.count += 1;
 
 ---
 
-Svelte コンポーネントは、`customElement: true` コンパイラオプションを使ってカスタム要素 (別名Webコンポーネント) にコンパイルすることもできます。コンポーネントのタグ名は `<svelte:options>` [element](docs#svelte_options) で指定する必要があります。
+Svelte コンポーネントは、`customElement: true` コンパイラオプションを使ってカスタム要素 (別名Webコンポーネント) にコンパイルすることもできます。コンポーネントのタグ名は `<svelte:options>` [element](docs#template-syntax-svelte-options) で指定する必要があります。
 
 ```sv
 <svelte:options tag="my-element" />
@@ -1082,7 +1082,7 @@ document.body.innerHTML = `
 
 ---
 
-デフォルトでは、カスタム要素は `accessors: true` でコンパイルされます。これは、任意の [プロパティ](docs#Attributes_and_props) が DOM 要素のプロパティとして公開されることを意味します (また、可能であれば属性として読み書き可能です)。
+デフォルトでは、カスタム要素は `accessors: true` でコンパイルされます。これは、任意の [プロパティ](docs#template-syntax-attributes-and-props) が DOM 要素のプロパティとして公開されることを意味します (また、可能であれば属性として読み書き可能です)。
 
 これを防ぐには、`<svelte:options>` に `accessors={false}` を追加します。
 
@@ -1119,7 +1119,7 @@ const result = Component.render(...)
 
 サーバーサイドコンポーネントは任意のプロパティ(props)と一緒に呼びだせる `render` メソッドを公開しています。これは `head`、 `html`、 `css` プロパティを持つオブジェクトを返します。この `head` は見つけた `<svelte:head>` 要素の内容を含みます。
 
-Svelte コンポーネントを直接 Node にインポートするには、[`svelte/register`](docs#svelte_register) を使ってください。
+Svelte コンポーネントを直接 Node にインポートするには、[`svelte/register`](docs#run-time-svelte-register) を使ってください。
 
 ```js
 require('svelte/register');

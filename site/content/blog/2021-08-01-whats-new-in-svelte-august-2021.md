@@ -1,5 +1,5 @@
 ---
-title: What's new in Svelte: 2021年8月
+title: "What's new in Svelte: 2021年8月"
 description: おお！ Shadow DOM、export と await だ。
 author: Daniel Sandoval
 authorURL: https://desandoval.net
