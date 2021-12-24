@@ -26,7 +26,7 @@ SvelteKitの完成度が[80%を超え](https://github.com/sveltejs/kit/milestone
 - `vite-plugin-svelte`では、新しい`experimental.prebundleSvelteLibraries`オプションを追加しました。このオプションは、アイコンライブラリやUIフレームワークのような多くのコンポーネントを含むSvelteライブラリのロードをより高速にします。このオプションは、`svelte.config.js`のルートで設定できます。是非お試しいただき、ご意見をお聞かせください！
 - SvelteKitは、`rel="external"`としてマークされていない限り、クライアント上のエンドポイントのみをルーティングします。 - これにより、クライアントJSのサイズが小さくなり、将来的にルーターのリファクタリングがしやすくなりました。([2656](https://github.com/sveltejs/kit/pull/2656))
 - SvelteKitがNode 12をサポートしなくなりました。([2604](https://github.com/sveltejs/kit/pull/2604))
-- SvelteKitがVite 2.6.0からVite 2.6.12にアップグレードされ、ViteがSvelteランタイムを破壊する問題が修正されました。(https://github.com/vitejs/vite/issues/4306) また、SvelteKitのテンプレートにおけるViteの問題を回避または診断しやすくするための、SvelteKitチームによる2つの修正が含まれています(https://github.com/vitejs/vite/pull/5192) および (https://github.com/vitejs/vite/pull/5193)。Vite 2.7のベータ版が公開されており、SSRの修正が追加されています。
+- SvelteKitがVite 2.6.0からVite 2.6.12にアップグレードされ、ViteがSvelteランタイムを破壊する問題が修正されました。(https://github.com/vitejs/vite/issues/4306) また、SvelteKitのテンプレートにおけるViteの問題を回避または診断しやすくするための、SvelteKitチームによる2つの修正が含まれています(https://github.com/vitejs/vite/pull/5192) および ([https://github.com/vitejs/vite/pull/5193](https://github.com/vitejs/vite/pull/5193))。Vite 2.7のベータ版が公開されており、SSRの修正が追加されています。
 
 
 SvelteおよびSvelteKitのすべての更新を確認するには、それぞれ[Svelte](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md)および[SvelteKit changelog](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md)をご覧ください。
