@@ -17,24 +17,6 @@ Svelte は素晴らしいツールで、公式ドキュメント及びチュー�
 ご意見や気が付いたことがあれば、お気軽に Issue を作成して知らせてください。  
 もしくは [Svelte 日本の Discord](https://discord.com/invite/YTXq3ZtBbx) の `#ドキュメント翻訳`チャンネルに投稿頂いても構いません。
 
-## Running locally
-
-Set up the site project:
-
-```bash
-git clone https://github.com/svelte-jp/svelte-site-jp.git
-cd svelte-site-jp/site
-npm ci
-npm run dev
-```
-
-and navigate to [localhost:3000](http://localhost:3000).
-
-The first time you run the site locally, it will update the list of Contributors and REPL dependencies. After this it won't run again unless you force it by running:
-
-```bash
-npm run update
-```
 
 ## Contributors ✨
 

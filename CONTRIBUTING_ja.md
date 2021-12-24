@@ -25,7 +25,7 @@ Svelte Site JPに貢献する方法はたくさんあり、その多くはコー
 
 ### ディレクトリ構成・翻訳の仕組み
 
-サイト全体のソースや文書ファイルはこのリポジトリの `site` ディレクトリにあります。
+ドキュメントのファイルはこのリポジトリの `site/content` ディレクトリにあります。
 
 - **Blog**
   - Blogは site/content/blog 配下にあります。  
@@ -35,8 +35,6 @@ Svelte Site JPに貢献する方法はたくさんあり、その多くはコー
   - FAQは site/content/faq 配下にあります。  
 - **チュートリアル**
   - チュートリアルは site/content/tutorial 配下のそれぞれの章ごとに`text.md`というファイルがあります。
-- **トップページ**
-  - トップページは site/src/routes/index.svelte です。
 
 ```
 site
@@ -60,14 +58,11 @@ site
 │       │   │   ├── app-a
 │       │   │   └── text.md   # <- チュートリアル
 │       ...
-...
-├── src
-│   ├── routes
-│   │   ...
-│   │   ├── index.svelte  # <- トップページ
-│   │   ...
+│
 etc...
 ```
+
+サイトのソース、TOPページの日本語訳は [svelte-jp/site](https://github.com/svelte-jp/sites) にあります。
 
 
 ### 翻訳の流れ
@@ -84,22 +79,13 @@ etc...
 もし翻訳したいドキュメントのIssueがなければ、Issueを作成してください。
 
 
-#### 2. 環境設定
+#### 2. 翻訳作業
 
-このリポジトリをForkし、セットアップしてください。
+このリポジトリをForkし、ローカルにcloneしてください。
 
 ```
 git clone https://github.com/{USER}/svelte-site-jp.git
-cd svelte-site-jp/site
-npm ci
-npm run update
-npm run dev
 ```
-
-このあと[localhost:3000](http://localhost:3000)にアクセスし、正常に表示されることを確認します。
-
-
-#### 3. 翻訳作業
 
 [ディレクトリ構成・翻訳の仕組み](#ディレクトリ構成翻訳の仕組み)を参考に、担当する文書を見つけてください。
 
@@ -108,7 +94,7 @@ npm run dev
 > いきなり完璧な翻訳を目指さなくても大丈夫です。PRに間違いや誤字・脱字があっても大丈夫です。ちゃんとレビューをしますし、レビューで怒ったりしませんのでご安心ください。それより、あなたがこのプロジェクトに貢献するため時間と労力を割いてくれたことに感謝しかありません。
 
 
-##### 3-1. ブログの翻訳について
+##### 2-1. ブログの翻訳について
 
 ブログ記事は長文になることが多く、opinionatedな意見もあり、言い回しや誤訳によって誤解を招く可能性があります。  
 オリジナルの著者の方にご迷惑をかけるのを防ぐ目的で、翻訳された文書であることを特に強調するために下記のテンプレートを追記してください。
@@ -127,18 +113,18 @@ npm run dev
 見本： https://raw.githubusercontent.com/svelte-jp/svelte-site-jp/master/site/content/blog/2021-03-23-sveltekit-beta.md
 
 
-#### 4. lintの実行
+#### 3. lintの実行
 
 lintを実行し、引っかかった箇所は修正してください。
 
 ```
-npm run lint
+npm run textlint
 ```
 
 終わったらcommitし、Fork先にpushします。
 
 
-#### 5. Pull Request作成
+#### 4. Pull Request作成
 
 Fork元にPull Requestを提出してください。Pull RequestのコメントにはIssueの番号を含めてください。レビュー後、問題がなければマージされます。
 PRに間違いや誤字・脱字、ガイドライン違反があっても大丈夫です。間違いを恐れないでください。
@@ -204,6 +190,6 @@ PRに間違いや誤字・脱字、ガイドライン違反があっても大丈
 
 ## ライセンス
 
-Svelte Site JPは[sveltejs/svelteのsiteディレクトリ](https://github.com/sveltejs/svelte/tree/master/site)をフォークして作成されており、ライセンス(MIT)を引き継いでいます。
+Svelte Site JPは[sveltejs/svelte](https://github.com/sveltejs/svelte)をフォークして作成されており、ライセンス(MIT)を引き継いでいます。
 
 Svelte Site JPに貢献することにより、あなたはあなたの貢献が[MIT license](https://github.com/svelte-jp/svelte-site-jp/blob/master/LICENSE)の下でライセンスされることに同意するものとします。

@@ -96,6 +96,7 @@
     "pretest": "npm run build",
     "posttest": "agadoo internal/index.mjs",
     "prepublishOnly": "node check_publish_env.js && npm run lint && npm test",
+    "textlint": "node -e \"var shell=require('shelljs');var files=shell.find(['./CONTRIBUTING_ja.md','./site/content/**/*.md']).join(' ');if(shell.exec('textlint -f pretty-error '+files).code!==0){shell.exit(1)};\"",
     "tsd": "tsc -p src/compiler --emitDeclarationOnly && tsc -p src/runtime --emitDeclarationOnly",
     "lint": "eslint \"{src,test}/**/*.{ts,js}\""
   },
@@ -149,9 +150,14 @@
     "periscopic": "^3.0.4",
     "puppeteer": "^2.0.0",
     "rollup": "^1.27.14",
+    "shelljs": "^0.8.3",
     "source-map": "^0.7.3",
     "source-map-support": "^0.5.13",
     "sourcemap-codec": "^1.4.8",
+    "textlint": "^11.9.0",
+    "textlint-rule-detect-bad-chars": "^1.0.2",
+    "textlint-rule-no-mix-dearu-desumasu": "^4.0.1",
+    "textlint-rule-preset-jtf-style": "^2.3.8",
     "tiny-glob": "^0.2.6",
     "tslib": "^2.0.3",
     "typescript": "^3.7.5"

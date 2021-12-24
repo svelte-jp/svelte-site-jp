@@ -13,7 +13,7 @@ authorURL: https://desandoval.net
 > - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
 > - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-SvelteKitの完成度が[80%を超え](https://github.com/sveltejs/kit/milestone/2)、GitHubで[5000スター](https://github.com/sveltejs/kit)を超え、Sapperよりも多くの利用者がいる現在、SvelteKitを試すには絶好の機会です。コミュニティの多くの人が試しているので、今月はかなり大きなショーケースになっています...。
+SvelteKitの完成度が[80%を超え](https://github.com/sveltejs/kit/milestone/2)、GitHubで[5000スター](https://github.com/sveltejs/kit)を超え、Sapperよりも多くの利用者がいる現在、SvelteKitを試すには絶好の機会です。コミュニティの多くの人が試しているので、今月はかなり大きなショーケースになっています…。
 
 また、11月20日には、世界各国のスピーカーが参加する[Svelte Summit](https://sveltesummit.com)も開催されますので、お見逃しなく。お住まいの地域で開催されるウォッチパーティーにもご注目ください👀
 
@@ -61,7 +61,7 @@ SvelteおよびSvelteKitのすべての更新を確認するには、それぞ�
 **教育用コンテンツ**
 - [Have Single-Page Apps Ruined the Web?](https://www.youtube.com/watch?v=860d8usGC0o) 今年のJamstack Confで、リッチ・ハリスが論争の的となった質問に答えました。
 - [Svelte vs SvelteKit - What's The Difference?](https://www.youtube.com/watch?v=IKhtnhQKjxQ) LevelUpTutsでは、この2つのプロジェクトの関係を説明するクイックガイドを提供しています。Scott Tolinski氏によるSvelteに関するガイドの残りの部分は、彼の新シリーズである["Weekly Svelte"](https://www.youtube.com/playlist?list=PLLnpHn493BHF-Onm1MQgKC1psvW-rJuYi)でチェックできます。
-- [WebJedaのSvelteKit Hooks](https://www.youtube.com/watch?v=RarufLoEL08&list=PLm_Qt4aKpfKgzcTiMT2cgWGBDBIPK06DQ)シリーズは、今月も第3回 「クッキーセッション認証」をお届けします。
+- [WebJedaのSvelteKit Hooks](https://www.youtube.com/watch?v=RarufLoEL08&list=PLm_Qt4aKpfKgzcTiMT2cgWGBDBIPK06DQ)シリーズは、今月も第3回「クッキーセッション認証」をお届けします。
 - [Writing Context Aware Styles in a Svelte App](https://www.ryanfiller.com/blog/tips/svelte-contex-aware-styles)は、親に動的に適応することができる自己完結型のコンポーネントを書くためのガイドです。
 - [A Beginner's Guide to SvelteKit](https://www.sitepoint.com/a-beginners-guide-to-sveltekit/)では、SvelteとSvelteKitの両方を初心者向けに説明し、架空のユーザーのプロフィールページを表示するシンプルなウェブアプリを構築しています。
 - [Svelte vs React: Ending the Debate](https://massivepixel.io/blog/svelte-vs-react/)は、昔からある議論を歴史的に捉えたものです。
