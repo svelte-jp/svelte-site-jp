@@ -33,7 +33,7 @@ authorURL: https://desandoval.net
 Svelteのメンテナは[SvelteKitを1.0にする手助けを探しています](https://github.com/sveltejs/kit/issues/2100) 1.0のマイルストーンにあった100以上の問題を解決しました。残りは数十個しかありませんが、そのリストを少しでも短くするために手を貸していただきたいと思っています。
 ご協力いただける方は、[1.0 milestone issues](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0)のいずれかの作業をご検討ください。
 
-この1ヶ月間は、あらゆる問題を解決することに注力し、100件以上のPRを統合しました。いくつかの新機能も追加されました...
+この1か月間は、あらゆる問題を解決することに注力し、100件以上のPRを統合しました。いくつかの新機能も追加されました…
 
 - SvelteKitは、事前にレンダリングされたアプリがクエリパラメータにアクセスしようとしているかどうかを検出し、サイレントに失敗するのではなくエラーを返すようになりました。([#2104](https://github.com/sveltejs/kit/pull/2104))
 - `adapter-node` では、[Kitミドルウェアを自分のサーバーに追加して](https://kit.svelte.dev/faq#integrations) 他のミドルウェアと一緒に使うことができるようになりました。また、[開発モードでミドルウェアを追加](https://kit.svelte.dev/faq#how-do-i-use-x-with-sveltekit-how-do-i-use-middleware)することもできます。この分野ではさらに改良が加えられる予定です。

@@ -16,7 +16,7 @@ authorURL: https://desandoval.net
 
 やぁみんな👋 Svelteブログに「What's new in Svelte」を掲載し始めてから1年が経ちました。いつも読んでくださっている皆さん、そして毎月投稿してくださっている皆さんにこの場を借りて感謝の気持ちをお伝えしたいと思います。メンテナから、DiscordやRedditに投稿してくれる皆さんまで、Svelteコミュニティを素晴らしいものにするための努力を目の当たりにするのは素晴らしいことです。
 
-皆さん、これからもがんばっていきましょう！それでは、今月のニュースに飛び込んでみましょう...
+皆さん、これからもがんばっていきましょう！それでは、今月のニュースに飛び込んでみましょう…
 
 ## New around Svelte
 
@@ -36,7 +36,7 @@ authorURL: https://desandoval.net
 
 貢献したい方は、[「help wanted」とラベル付けされた1.0へのマイルストーンのIssue](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0+label%3A%22help+wanted%22)のいずれかに取り組むことをご検討ください。
 
-今月のSvelteKitの注目すべき改善点は...
+今月のSvelteKitの注目すべき改善点は…
 
 - サービスワーカーが`$lib`エイリアスを使用してファイルにアクセスできるようになりました ([#2326](https://github.com/sveltejs/kit/pull/2326))
 - SvelteのライブラリがViteの設定なしですぐに動作するようになりました ([#2343](https://github.com/sveltejs/kit/pull/2343))
@@ -101,7 +101,7 @@ SvelteKitのすべての更新を確認するには、[SvelteKitのChangelog](ht
 
 ## Before you go, answer the call for speakers!
 
-Svelte Summit Fall 2021（2021年11月20日開催）では、講演者を募集しています。10月30日までにトークプロポーザルを提出してください...どなたでも発表や参加が可能です。
+Svelte Summit Fall 2021（2021年11月20日開催）では、講演者を募集しています。10月30日までにトークプロポーザルを提出してください…どなたでも発表や参加が可能です。
 
 ### More info on the [sessionize site](https://sessionize.com/svelte-summit-fall-2021/)
 
