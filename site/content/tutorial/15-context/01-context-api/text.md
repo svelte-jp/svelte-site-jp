@@ -19,7 +19,7 @@ setContext(key, {
 });
 ```
 
-コンテキストオブジェクトはなんでも構いません。[lifecycle functions](tutorial/onmount)のように、`setContext`と`getContext`はコンポーネントの初期化時に呼び出されなければいけません。それより後 (例えば `onMount` の中) で呼び出すとエラーをスローします。この例では、コンポーネントがマウントされるまで`map`は作成されないので、このコンテキストオブジェクトには`map`自体ではなく`getMap`関数が含まれています。
+コンテキストオブジェクトはなんでも構いません。[lifecycle functions](/tutorial/onmount)のように、`setContext`と`getContext`はコンポーネントの初期化時に呼び出されなければいけません。それより後 (例えば `onMount` の中) で呼び出すとエラーをスローします。この例では、コンポーネントがマウントされるまで`map`は作成されないので、このコンテキストオブジェクトには`map`自体ではなく`getMap`関数が含まれています。
 
 一方、`MapMarker.svelte`では、Mapboxインスタンスへの参照を取得できるようになりました。
 

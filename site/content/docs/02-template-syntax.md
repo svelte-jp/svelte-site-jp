@@ -929,7 +929,7 @@ transition = (node: HTMLElement, params: any) => {
 {/if}
 ```
 
-> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](docs#run-time-client-side-component-api) ときに `intro: true` を設定することで変更できます。
+> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](/docs#run-time-client-side-component-api) ときに `intro: true` を設定することで変更できます。
 
 ##### Transition parameters
 
@@ -1022,7 +1022,7 @@ transition = (node: HTMLElement, params: any) => {
 {/if}
 ```
 
-トランジションがトランジションオブジェクトではなく関数を返す場合、その関数は次のマイクロタスクで呼び出されます。これにより、複数のトランジションを調整することができ、[クロスフェード効果](tutorial/deferred-transitions) が可能になります。
+トランジションがトランジションオブジェクトではなく関数を返す場合、その関数は次のマイクロタスクで呼び出されます。これにより、複数のトランジションを調整することができ、[クロスフェード効果](/tutorial/deferred-transitions) が可能になります。
 
 
 ##### Transition events
@@ -1148,9 +1148,9 @@ DOMRect {
 
 ---
 
-アニメーションは、[keyed each block](docs#template-syntax-each) の内容が並び替えられたときに発生します。アニメーションは、要素が削除されたときには実行されず、each ブロックのデータが並べ替えられたときにのみ実行されます。animate ディレクティブは、キー付き each ブロックの *直接の* 子要素になければいけません。
+アニメーションは、[keyed each block](/docs#template-syntax-each) の内容が並び替えられたときに発生します。アニメーションは、要素が削除されたときには実行されず、each ブロックのデータが並べ替えられたときにのみ実行されます。animate ディレクティブは、キー付き each ブロックの *直接の* 子要素になければいけません。
 
-アニメーションは Svelte の[組み込みアニメーション関数](docs#run-time-svelte-animate) または [カスタムアニメーション関数](docs#template-syntax-element-directives-animate-fn-custom-animation-functions) を使用することができます。
+アニメーションは Svelte の[組み込みアニメーション関数](/docs#run-time-svelte-animate) または [カスタムアニメーション関数](/docs#template-syntax-element-directives-animate-fn-custom-animation-functions) を使用することができます。
 
 ```sv
 <!-- When `list` is reordered the animation will run-->
@@ -1257,7 +1257,7 @@ on:eventname={handler}
 
 ---
 
-コンポーネントは [createEventDispatcher](docs#run-time-svelte-createeventdispatcher) を用いるか、または DOM イベントをフォワードすることでイベントを発火することができます。コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
+コンポーネントは [createEventDispatcher](/docs#run-time-svelte-createeventdispatcher) を用いるか、または DOM イベントをフォワードすることでイベントを発火することができます。コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
 
 ```sv
 <SomeComponent on:whatever={handler}/>
@@ -1617,7 +1617,7 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](docs#template-syntax-element-directives-use-action) を使用することもできます。
+`<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](/docs#template-syntax-element-directives-use-action) を使用することもできます。
 
 `<svelte:body>` はコンポーネントのトップレベルに表示する必要があります。
 
@@ -1644,7 +1644,7 @@ bind:this={component_instance}
 
 ```sv
 <svelte:head>
-	<link rel="stylesheet" href="tutorial/dark-theme.css">
+	<link rel="stylesheet" href="/tutorial/dark-theme.css">
 </svelte:head>
 ```
 
@@ -1657,7 +1657,7 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:options>` 要素は、コンポーネントごとのコンパイラオプションを指定する場所を提供します。これらは [コンパイラセクション](docs#compile-time-svelte-compile) で詳しく説明されています。使用できるオプションは以下の通りです。
+`<svelte:options>` 要素は、コンポーネントごとのコンパイラオプションを指定する場所を提供します。これらは [コンパイラセクション](/docs#compile-time-svelte-compile) で詳しく説明されています。使用できるオプションは以下の通りです。
 
 * `immutable={true}` — 変異可能なデータは絶対に使いません。そのため、コンパイラは値が変更されたかどうかを判断するために単純な参照等価性チェックを行うことができます。
 * `immutable={false}` — デフォルトです。Svelte は、変更可能なオブジェクトが変更されたかどうかについて、より保守的になります。
@@ -1672,7 +1672,7 @@ bind:this={component_instance}
 
 ### `<svelte:fragment>`
 
-`<svelte:fragment>`要素によって、コンテナとなるDOM要素でラップすることなく[名前付きスロット](docs#template-syntax-slot-slot-name)に内容を入れることができます。
+`<svelte:fragment>`要素によって、コンテナとなるDOM要素でラップすることなく[名前付きスロット](/docs#template-syntax-slot-slot-name)に内容を入れることができます。
 
 ```sv
 <!-- Widget.svelte -->

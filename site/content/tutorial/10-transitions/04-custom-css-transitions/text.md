@@ -23,7 +23,7 @@ function fade(node, {
 
 * `delay` — トランジション開始までのミリ秒
 * `duration` — ミリ秒単位でのトランジションの長さ
-* `easing` — `p => t` イージング関数 ( [tweening](tutorial/tweened) の章を参照)
+* `easing` — `p => t` イージング関数 ( [tweening](/tutorial/tweened) の章を参照)
 * `css` — `u === 1 - t` である `(t, u) => css` 関数
 * `tick` — ノードに何らかの影響を与える `(t, u) => {...}` 関数
 
