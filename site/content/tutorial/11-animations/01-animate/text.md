@@ -2,7 +2,7 @@
 title: The animate directive
 ---
 
-[前の章](tutorial/deferred-transitions)では、要素が1つのToDoリストから別のリストに移動するときに、遷移の遅延を使用して動きの錯覚を作成しました。
+[前の章](/tutorial/deferred-transitions)では、要素が1つのToDoリストから別のリストに移動するときに、遷移の遅延を使用して動きの錯覚を作成しました。
 
 この錯覚を完成させるには、遷移して *いない* 要素にもモーションを適用する必要があります。このために、`animate` ディレクティブを使用します。
 

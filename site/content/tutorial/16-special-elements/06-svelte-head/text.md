@@ -6,7 +6,7 @@ title: <svelte:head>
 
 ```html
 <svelte:head>
-	<link rel="stylesheet" href="tutorial/dark-theme.css">
+	<link rel="stylesheet" href="/tutorial/dark-theme.css">
 </svelte:head>
 ```
 

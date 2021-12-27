@@ -18,7 +18,7 @@ authorURL: https://twitter.com/orta
 これにより、より良い開発体験が得られると考えています。 -- また、より大きな Svelte コードベースにも美しくスケールします -- TypeScript と JavaScript のどちらを使用していても。
 
 <figure>
-	<img alt="Screenshot of TypeScript in Svelte" src="media/svelte-ts.png">
+	<img alt="Screenshot of TypeScript in Svelte" src="/media/svelte-ts.png">
 	<figcaption>Image of TypeScript + Svelte in VS Code (theme is <a href="https://marketplace.visualstudio.com/items?itemName=karyfoundation.theme-karyfoundation-themes">Kary Pro</a>.)</figcaption>
 </figure>
 

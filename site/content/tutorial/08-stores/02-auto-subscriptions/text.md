@@ -13,7 +13,7 @@ const unsubscribe = count.subscribe(value => {
 ```
 > `subscribe` メソッドを呼ぶと `unsubscribe` 関数が返ります.
 
-`unsubscribe` が宣言されましたが、さらに、例えば `onDestroy` [lifecycle hook](tutorial/ondestroy) などで呼び出される必要があります。
+`unsubscribe` が宣言されましたが、さらに、例えば `onDestroy` [lifecycle hook](/tutorial/ondestroy) などで呼び出される必要があります。
 
 ```html
 <script>

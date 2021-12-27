@@ -20,7 +20,7 @@ Svelte は[新しい種類のフレームワーク](/blog/frameworks-without-the
 
 ## 1. REPL の利用
 
-[Svelte REPL](repl) は Svelte を始めるための最も簡単な方法です。 始めるための例のリストから選択し、あなたが望むようにそれらの例を微調整することも可能です。
+[Svelte REPL](/repl) は Svelte を始めるための最も簡単な方法です。 始めるための例のリストから選択し、あなたが望むようにそれらの例を微調整することも可能です。
 
 <aside><p><a href="https://nodejs.org/">Node.js</a> をインストールし、ターミナルの使い方を知っている必要があるでしょう。</p></aside>
 
@@ -60,7 +60,7 @@ npm run dev
 
 これにより新しいプロジェクトが `my-svelte-project` ディレクトリ内に生成され、依存関係をインストールし、http://localhost:5000 でサーバーが起動されます。
 
-TypeScript のより詳しい使用方法を知りたい場合は [こちら](blog/svelte-and-typescript) をご参照ください。
+TypeScript のより詳しい使用方法を知りたい場合は [こちら](/blog/svelte-and-typescript) をご参照ください。
 
 一度少しいじってみて全体がどのように組み合わさっているかを理解しましたら、[sveltejs/template](https://github.com/sveltejs/template)  をフォークし、代わりに以下を実行することができます:
 

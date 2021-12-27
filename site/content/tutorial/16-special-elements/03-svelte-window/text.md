@@ -10,4 +10,4 @@ title: <svelte:window>
 <svelte:window on:keydown={handleKeydown}/>
 ```
 
-> DOM要素と同様に `preventDefault` のような[イベント修飾子](tutorial/event-modifiers)を追加することができます。
+> DOM要素と同様に `preventDefault` のような[イベント修飾子](/tutorial/event-modifiers)を追加することができます。
