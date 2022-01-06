@@ -18,7 +18,7 @@ Happy new year, Svelte Community! Svelte、SvelteKit、Language Tools、 Showcas
 ## What's new in SvelteKit
 - SvelteKit の `@sveltejs/adapter-static` に `precompress` オプションが追加され、アセットとページの brotli 圧縮が簡単にできるようになりました ([#3079](https://github.com/sveltejs/kit/pull/3079))
 - SvelteKit の Concurrency mode はページを並行してプリレンダリングするようになりました ([#3120](https://github.com/sveltejs/kit/pull/3120))。`1.0.0-next.205` 以降ではデフォルトで有効になります
-- ページのパフォーマンスが向上のため、CSS が自動的に JS より前にインクルードされるようになりました ([d13efe](https://github.com/sveltejs/kit/commit/d138efe21692f5925f1e89afc0a33f42d6a1a711))
+- CSS が自動的に JS より前にインクルードされるようになり、ページのパフォーマンスが向上します ([d13efe](https://github.com/sveltejs/kit/commit/d138efe21692f5925f1e89afc0a33f42d6a1a711))
 - 新しい設定オプションによって service worker の登録を無効にできるようになり、カスタムで独自の登録を行うことができます ([#2988](https://github.com/sveltejs/kit/pull/2988))
 - SSR のルート分割(route-splitting)の導入 - モノリシックなビルドをより小さなピースに分割し、起動とルーティングのパフォーマンスを向上させます ([#2931](https://github.com/sveltejs/kit/pull/2931))
 - `request.origin/path/query` は `request.url` になりました - 設定とページの `load` 関数がシンプルになりました ([#3126](https://github.com/sveltejs/kit/pull/3126))
