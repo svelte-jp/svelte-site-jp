@@ -1,27 +1,35 @@
 ---
-title: "What's new in Svelte: January 2022"
-description: "Faster builds with SvelteKit and a much anticipated REPL feature"
+title: "What's new in Svelte: 2022年1月"
+description: "SvelteKit のビルドの高速化と待望の REPL 機能"
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-january-2022
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-Happy new year, Svelte Community! Lots to share this month across Svelte, SvelteKit, Language Tools and the Showcase. Thanks to everyone who made 2021 a great year to use Svelte. Looking forward to the next one 🚀
+Happy new year, Svelte Community! Svelte、SvelteKit、Language Tools、 Showcase にまたがって共有することがたくさんあります。Svelte を使って2021年を素晴らしい年にしてくれた全ての方に感謝します。今年も楽しみにしています 🚀
 
 ## What's new in SvelteKit
-- `@sveltejs/adapter-static` for SvelteKit now has a `precompress` option to make brotli compression of assets and pages easier to do out of the box ([#3079](https://github.com/sveltejs/kit/pull/3079))
-- Concurrency mode in SvelteKit will now prerender pages in parallel ([#3120](https://github.com/sveltejs/kit/pull/3120)). It is enabled by default in `1.0.0-next.205` and later
-- CSS is now automatically included before JS for improved page performance ([d13efe](https://github.com/sveltejs/kit/commit/d138efe21692f5925f1e89afc0a33f42d6a1a711))
-- A new config option adds the ability to disable service worker registration to do your own custom registration ([#2988](https://github.com/sveltejs/kit/pull/2988))
-- SSR route-splitting is here - breaking monolithic builds into smaller pieces for improved startup and routing performance ([#2931](https://github.com/sveltejs/kit/pull/2931))
-- `request.origin/path/query` is now `request.url` - simplifying the config and page `load` functions ([#3126](https://github.com/sveltejs/kit/pull/3126))
-- After the [update to Vite 2.7](https://github.com/sveltejs/kit/pull/3018), SvelteKit users are [reporting significant performance improvements](https://www.reddit.com/r/sveltejs/comments/rljhfc/sveltekit_massive_compiler_improvement_by/) and loading third-parties libraries in SSR has also been greatly improved
-- SvelteKit server will now automatically restart when the config files is changed ([vite-plugin-svelte#237](https://github.com/sveltejs/vite-plugin-svelte/pull/237))
+- SvelteKit の `@sveltejs/adapter-static` に `precompress` オプションが追加され、アセットとページの brotli 圧縮が簡単にできるようになりました ([#3079](https://github.com/sveltejs/kit/pull/3079))
+- SvelteKit の Concurrency mode はページを並行してプリレンダリングするようになりました ([#3120](https://github.com/sveltejs/kit/pull/3120))。`1.0.0-next.205` 以降ではデフォルトで有効になります
+- ページのパフォーマンスが向上のため、CSS が自動的に JS より前にインクルードされるようになりました ([d13efe](https://github.com/sveltejs/kit/commit/d138efe21692f5925f1e89afc0a33f42d6a1a711))
+- 新しい設定オプションによって service worker の登録を無効にできるようになり、カスタムで独自の登録を行うことができます ([#2988](https://github.com/sveltejs/kit/pull/2988))
+- SSR のルート分割(route-splitting)の導入 - モノリシックなビルドをより小さなピースに分割し、起動とルーティングのパフォーマンスを向上させます ([#2931](https://github.com/sveltejs/kit/pull/2931))
+- `request.origin/path/query` は `request.url` になりました - 設定とページの `load` 関数がシンプルになりました ([#3126](https://github.com/sveltejs/kit/pull/3126))
+- [Vite 2.7 へのアップデート](https://github.com/sveltejs/kit/pull/3018)後、SvelteKit ユーザーから [大幅なパフォーマンスの向上が報告されており](https://www.reddit.com/r/sveltejs/comments/rljhfc/sveltekit_massive_compiler_improvement_by/)、SSRでのサードパーティライブラリのロードも大幅に改善されました
+- 設定ファイルの変更時、SvelteKit サーバーが自動的に再起動するようになりました ([vite-plugin-svelte#237](https://github.com/sveltejs/vite-plugin-svelte/pull/237))
 
 
 ## Other new bits from `svelte/*`
-- [Svelte 3.44.3](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md#3443) is out with a few bug fixes in the binding and loop code
-- Svelte Language Tools has introduced support for the then/catch shorthands from Svelte 3.41 and TypeScript's "go to" functionality ([105.8.0 and later](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.8.0))
-- The Svelte REPL got a nice upgrade as well - letting you delete saved REPLs. Try it out by logging in at [svelte.dev/apps](https://svelte.dev/apps)
+- [Svelte 3.44.3](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md#3443) がリリースされ、バインディングやループコードのいくつかのバグが修正されました
+- Svelte Language Tools が、Svelte 3.41 からの then/catch の短縮構文と TypeScript の "go to" 機能 ([105.8.0 以降](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.8.0)) のサポートが導入されました
+- Svelte REPL にも素晴らしいアップグレードがあります - 保存された REPL を削除できるようになりました。[svelte.dev/apps](https://svelte.dev/apps) にログインして試してみてください
 
 
 ---
@@ -29,17 +37,17 @@ Happy new year, Svelte Community! Lots to share this month across Svelte, Svelte
 ## Community Showcase
 
 **Apps & Sites**
-- [Discover Twitter Spaces](https://github.com/navneetsharmaui/discover-twitter-spaces) is a tool that helps you find the Twitter Spaces
-- [Modern Fluid Typography Editor](https://github.com/codeAdrian/modern-fluid-typography-editor) helps create beautiful fluid typography using CSS clamp
-- [Unnwhiteboard](https://github.com/AviKKi/unnwhiteboard) is a job board for companies (or teams) that don't do "whiteboard" interviews
-- [Secret Santa](https://gitlab.com/arturoguzman/secret-santa-sveltekit) is a gift giving coordination app developed with easiness in mind
-- [LogSnag](https://logsnag.com/) notifies you of your projects' events and provides you with a timeline to keep track of anything important that happens
-- [Version 0.2 of Tangent](http://tangentnotes.com/Download), a Svelte-based note writing app, is now in beta
-- [Intl Explorer](https://github.com/jesperorb/intl-explorer) is a tool for viewing output for all possible formatters for Intl
+- [Discover Twitter Spaces](https://github.com/navneetsharmaui/discover-twitter-spaces) は Twitter Spaces を探すのに便利なツールです
+- [Modern Fluid Typography Editor](https://github.com/codeAdrian/modern-fluid-typography-editor) は CSS clamp を使用して美しい fluid typography の作成を手助けしてくれます
+- [Unnwhiteboard](https://github.com/AviKKi/unnwhiteboard) は "ホワイトボード" 面接を行わない企業(またはチーム)のための job board です 
+- [Secret Santa](https://gitlab.com/arturoguzman/secret-santa-sveltekit) は手軽さを重視して開発されたギフトコーディネートアプリです
+- [LogSnag](https://logsnag.com/) は、プロジェクトのイベントを通知し、タイムラインを提供することで、重要なことが起こったときにそれを記録することができます
+- [Version 0.2 of Tangent](http://tangentnotes.com/Download) はSvelteベースのノートアプリで、ベータ版になりました
+- [Intl Explorer](https://github.com/jesperorb/intl-explorer) は Intl に対応する全てのフォーマッターの出力を見るためのツールです
 
-A lot of work this month has gone into migrating the Svelte main website and Svelte REPL to live in the https://github.com/sveltejs/sites repository - including a brand new homepage for [svelte.dev](https://svelte.dev/). Thanks to all the contributors who made this possible!
+Svelte のメインの Web サイトと Svelte REPL を https://github.com/sveltejs/sites リポジトリに移行するために多くの作業が行われました - それには [svelte.dev](https://svelte.dev/) のリニューアルも含まれます。これを実現した全てのコントリビューターに感謝します！
 
-If you're looking for a fun SvelteKit project to work on, [you can contribute to the Svelte Society site rewrite](https://github.com/svelte-society/sveltesociety-2021/issues) 💅
+もし何か作業できる楽しいSvelteKitプロジェクトをお探しなら、[Svelte Society サイトの書き直しに貢献できます](https://github.com/svelte-society/sveltesociety-2021/issues) 💅
 
 
 **Learning and Listening**
@@ -65,13 +73,13 @@ _To Listen To_
 - [JS Party #205: So much Sveltey goodness (w/ Rich Harris)](https://changelog.com/jsparty/205)
 
 **Libraries, Tools & Components**
-- [svelte-headlessui](https://github.com/rgossiaux/svelte-headlessui) is an unofficial, complete Svelte port of the Headless UI component library
-- [svelte-forms v2](https://chainlist.github.io/svelte-forms/) has been released - the author is [looking for feedback](https://www.reddit.com/r/sveltejs/comments/r6354j/svelteforms_v2_has_been_released/)
-- [Percival](https://github.com/ekzhang/percival) is a declarative data query and visualization language
-- [Svelte FlatList](https://github.com/snuffyDev/svelte-flatlist) is a mobile-friendly, simple, and customizable draggable menu
-- [svelte-keyed](https://github.com/bryanmylee/svelte-keyed) is a writable derived store for objects and arrays
-- [Svemix](https://github.com/svemix/svemix) is Remix for Svelte - providing server scripts inside your Svelte components/routes, which will be transformed into endpoints
+- [svelte-headlessui](https://github.com/rgossiaux/svelte-headlessui) は Headless UI コンポーネントライブラリの、アンオフィシャルなSvelte向けの完全移植版です
+- [svelte-forms v2](https://chainlist.github.io/svelte-forms/) がリリースされました - 作者は [フィードバックを募集中です](https://www.reddit.com/r/sveltejs/comments/r6354j/svelteforms_v2_has_been_released/)
+- [Percival](https://github.com/ekzhang/percival) は宣言的なデータクエリと視覚化言語(visualization language)です
+- [Svelte FlatList](https://github.com/snuffyDev/svelte-flatlist) はモバイルフレンドリーで、シンプルで、カスタマイズ可能なドラッグメニューです
+- [svelte-keyed](https://github.com/bryanmylee/svelte-keyed) はオブジェクトと配列向けの writable derived store です
+- [Svemix](https://github.com/svemix/svemix) は Svelte 向けの Remix です - Svelte コンポーネント/ルート内にサーバースクリプトを配置し、それがエンドポイントに変換されます
 
-Want to add something to the showcase? Need help bringing your next idea to life in Svelte? Join us on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs).
+ショーケースに追加したいものがありますか？ Svelte でアイデアを実現するのに助けが必要ですか？ [Reddit](https://www.reddit.com/r/sveltejs/) また [Discord](https://discord.com/invite/yy75DKs) にご参加ください！
 
-See ya next month!
+また来月お会いしましょう！
