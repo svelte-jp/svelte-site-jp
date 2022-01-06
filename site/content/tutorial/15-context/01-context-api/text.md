@@ -11,7 +11,7 @@ title: setContext and getContext
 まずはコンテキストを設定してみましょう。`Map.svelte`では、`svelte`から`setContext`をインポートし、`mapbox.js`から`key`をインポートして、`setContext`を呼び出します。
 
 ```js
-import { onMount, setContext } from 'svelte';
+import { onDestroy, setContext } from 'svelte';
 import { mapbox, key } from './mapbox.js';
 
 setContext(key, {

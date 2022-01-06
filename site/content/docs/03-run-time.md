@@ -445,7 +445,7 @@ store = tweened(value: any, options)
 トゥイーンされたストアは、一定の期間にわたって値を更新します。以下のオプションが利用可能です。
 
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
-* `duration` (`number`, default 400) — トゥイーンの持続時間のミリ秒
+* `duration` (`number` | `function`, default 400) — トゥイーンの持続時間のミリ秒
 * `easing` (`function`, default `t => t`) — [イージング関数](/docs#run-time-svelte-easing)
 * `interpolate` (`function`) — 下記を参照してください。
 
@@ -879,7 +879,7 @@ animate:flip={params}
 
 イージング関数は、時間の経過とともに変化する速度を指定するもので、Svelte に組み込まれたトランジションやアニメーション、tweened や spring ユーティリティの作業をする際に便利です。`svelte/easing` には、31の名前付きエクスポートが含まれています。`linear` イージング、10種類のイージング関数の3つのバリエーション `in`, `out`, `inOut` です。
 
-[examples section](/examples) の [ease visualiser](/examples#easing) で様々なイージングを試してみることができます。
+[examples section](/examples) の [ease visualiser](/examples/easing) で様々なイージングを試してみることができます。
 
 
 | ease | in | out | inOut |
