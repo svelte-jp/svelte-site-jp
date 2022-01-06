@@ -6,7 +6,7 @@ title: 始める前に (Before we begin)
 
 もしあなたが（まだ）そうでないのであれば、このリファレンスを参照する前に [対話型チュートリアル](/tutorial) や [例題](/examples) を参照することをお勧めします。
 
-恥ずかしがらずに[Discord chatroom](/chat)で助けを求めましょう。
+恥ずかしがらずに[Discord chatroom](https://svelte.dev/chat)で助けを求めましょう。
 
 古いバージョンのSvelteをお使いですか？ [v2 docs](https://v2.svelte.dev)をご覧ください。
 
