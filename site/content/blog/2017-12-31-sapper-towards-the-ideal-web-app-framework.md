@@ -46,7 +46,7 @@ authorURL: https://twitter.com/Rich_Harris
 
 ## フレームワークとしてのコンパイラのパラダイムシフト (The compiler-as-framework paradigm shift)
 
-[Svelte は根本的な思想を紹介しています](/blog/frameworks-without-the-framework): UIフレークワークがフレームワークではなく、コンポーネントをスタンドアロンな JavaScript モジュールに変換するコンパイラだったらどうですか？ React や Vue のような、アプリのことを何も知らず無難なソリューションにならざるを得ないライブラリを使う代わりに、私たちは高度に最適化された純粋な JavaScript を送り出すことができます。 アプリケーションに必要なコードだけで、仮想DOMをベースとしたソリューションのようなメモリやパフォーマンスのオーバーヘッドはありません。
+[Svelte は根本的な思想を紹介しています](/blog/frameworks-without-the-framework): UIフレークワークがフレームワークではなく、コンポーネントをスタンドアロンな JavaScript モジュールに変換するコンパイラだったらどうですか？React や Vue のような、アプリのことを何も知らず無難なソリューションにならざるを得ないライブラリを使う代わりに、私たちは高度に最適化された純粋な JavaScript を送り出すことができます。 アプリケーションに必要なコードだけで、仮想DOMをベースとしたソリューションのようなメモリやパフォーマンスのオーバーヘッドはありません。
 
 JavaScript の世界は [このモデルに向かっています](https://tomdale.net/2017/09/compilers-are-the-new-frameworks/)。 [Stencil](https://stenciljs.com) は Ionic のチームによる Svelte からインスピレーションを受けたフレームワークで、 Web コンポーネントにコンパイルされます。 [Glimmer](https://glimmerjs.com) は スタンドアロンな JavaScript にコンパイル *するわけではありませんが* (その長所と短所については、別のブログの記事にしたいと思います)、このチームはテンプレートをバイトコードにコンパイルすることについての興味深い研究を行なっています。 (React は [このような動きに足を踏み入れていますが](https://twitter.com/trueadm/status/944908776896978946)、彼らの現在の研究は JSX で書かれたアプリケーションのコードを最適化することに焦点を当てており、これは間違いなく Angular、 Ractive、 そして Vue がここ数年で行なっている事前最適化によく似たものです)
 

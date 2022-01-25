@@ -15,7 +15,7 @@ authorURL: https://desandoval.net
 
 SvelteKit が日に日に stable に近づいてきて、バグフィックス以外のコード変更の観点では取り上げられることがなくなってきました… そのため、今月のニュースレターでは、Svelte Summit Fall 2021 を取り上げます！
 
-もしこの1ヶ月間のバグフィックスを深く知りたければ、[Svelte](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md) と [SvelteKit](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md) の changelogs をそれぞれチェックしてみてください。
+もしこの1か月間のバグフィックスを深く知りたければ、[Svelte](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md) と [SvelteKit](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md) の changelogs をそれぞれチェックしてみてください。
 
 
 ## What happened at Svelte Summit?
@@ -23,7 +23,7 @@ SvelteKit が日に日に stable に近づいてきて、バグフィックス�
 もし Svelte Summit を見逃したなら、全ての配信を [YouTube](https://www.youtube.com/watch?v=1Df-9EKvZr0) で視聴できますし、[Discord の #svelte-summit チャンネル](https://discord.gg/YmHcdnhu) で要約をチェックできます。
 
 ハイライトはこちら:
-- [Rich Harris](https://twitter.com/rich_harris) は Svelte の歴史ツアーを案内し、[Vercel への入社](https://vercel.com/blog/vercel-welcomes-rich-harris-creator-of-svelte) を発表しました - 今後は Svelte のメンテナンスをフルタイムで行います！ ([20:00](https://www.youtube.com/watch?v=1Df-9EKvZr0&t=1200s))
+- [Rich Harris](https://twitter.com/rich_harris) は Svelte の歴史ツアーを案内し、[Vercel への入社](https://vercel.com/blog/vercel-welcomes-rich-harris-creator-of-svelte) を発表しました - 今後は Svelte のメンテナンスをフルタイムで行います！([20:00](https://www.youtube.com/watch?v=1Df-9EKvZr0&t=1200s))
 - [Steph Dietz](https://twitter.com/steph_dietz_) は、なぜSvelteのシンプルな抽象化が、初心者から上級者まで、JavaScriptを学び使うのを(それもボイラープレートなしで)簡単にできるのか説明しました ([29:00](https://www.youtube.com/watch?v=1Df-9EKvZr0&t=1740s))
 - [Kevin Bridges](https://twitter.com/kevinast) は、Svelte の リアクティビティロジックを `ReflectiveCounter` によって可視化し、必要に応じて "微調整" する方法を見せてくれました。プレゼンテーションの完全な "シラバス" [Kevin のサイト](https://wiibridges.com/presentations/ResponsiveSvelte/) で入手できます ([42:55](https://www.youtube.com/watch?v=1Df-9EKvZr0&t=2575s))
 - [Mateo Morris](https://twitter.com/_mateomorris) は [Primo](https://primo.af/) を立ち上げました。これは静的サイトを構築しビルドするのに役立つ all-in-one の SvelteKit CMS です ([1:12:34](https://www.youtube.com/watch?v=1Df-9EKvZr0&t=4354s))
@@ -42,7 +42,7 @@ SvelteKit が日に日に stable に近づいてきて、バグフィックス�
 - [Evyatar Alush](https://twitter.com/evyataral) は、[Vest](https://github.com/ealush/vest) というパワフルなバリデーションライブラリを使用することでよりよいフォームを作成(そして維持)することができると教えてくれました ([5:08:55](https://www.youtube.com/watch?v=1Df-9EKvZr0&t=18535s))
 - Dominik G. は、アイコンライブラリに関するフレッシュな見解をプレゼンしました - それはアプリケーションのバンドルサイズを減らし、Svelteアプリで Iconfy ライブラリ 全てが使用できる、というものです ([5:30:04](https://www.youtube.com/watch?v=1Df-9EKvZr0&t=19804s))
 
-このような素晴らしいイベントを開催して頂き、[Kevin](https://twitter.com/kevmodrome) と Svelte Society のボランティアの皆様に感謝いたします！ エキサイティングなことに、イベント終了後に [Kevin が今後 Svelte Society にフルタイムで取り組む](https://twitter.com/kevmodrome/status/1463151477174714373) ことが発表されました！ [この Svelte Society の YouTube Playlist](https://www.youtube.com/playlist?list=PL8bMgX1kyZTg2bI9IOMgfBc8lrU3v2itt) で、個々のビデオに分割された全ての講演をチェックすることができます。
+このような素晴らしいイベントを開催して頂き、[Kevin](https://twitter.com/kevmodrome) と Svelte Society のボランティアの皆様に感謝いたします！エキサイティングなことに、イベント終了後に [Kevin が今後 Svelte Society にフルタイムで取り組む](https://twitter.com/kevmodrome/status/1463151477174714373) ことが発表されました！ [この Svelte Society の YouTube Playlist](https://www.youtube.com/playlist?list=PL8bMgX1kyZTg2bI9IOMgfBc8lrU3v2itt) で、個々のビデオに分割された全ての講演をチェックすることができます。
 
 Svelte Summit にフィードバックがあれば、Kev が [Svelte subreddit でフィードバックを募集しています](https://www.reddit.com/r/sveltejs/comments/qzgo3k/svelte_summit_feedback/) 👀
 
@@ -94,6 +94,6 @@ Svelte Summit にフィードバックがあれば、Kev が [Svelte subreddit �
 - [Svelte Auto Form](https://github.com/leveluptuts/auto-form) は、柔軟性よりも使いやすさを重視した、高速で楽しいフォームライブラリです
 - [set-focus](https://www.npmjs.com/package/@svackages/set-focus) は、`<a>` や `<button>` 要素がマウントされるとすぐに focus をセットする Svelte action で、なんらかのケースやテストに便利です
 
-SvelteKit に関するアイデアをお持ちですか？ Svelte リポジトリの新しい [GitHub Discussions](https://github.com/sveltejs/kit/discussions) をチェックしてみてください。また、[Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.com/invite/yy75DKs) にもご参加いただけます。
+SvelteKit に関するアイデアをお持ちですか？Svelte リポジトリの新しい [GitHub Discussions](https://github.com/sveltejs/kit/discussions) をチェックしてみてください。また、[Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.com/invite/yy75DKs) にもご参加いただけます。
 
 また ~~来月~~ 来年お会いしましょう！

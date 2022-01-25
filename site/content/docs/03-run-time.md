@@ -5,7 +5,7 @@ title: Run time
 
 ### `svelte`
 
-`svelte` パッケージは、[ライフサイクル関数](/tutorial/onmount) と [コンテキストAPI](/tutorial/context-api) を公開します。
+`svelte` パッケージは、[ライフサイクル関数](/tutorial/onmount) と [context API](/tutorial/context-api) を公開します。
 
 #### `onMount`
 
@@ -208,7 +208,7 @@ contexts: Map<any, any> = getAllContexts()
 
 ---
 
-最も近い親コンポーネントにある全てのコンテキストマップを取得します。これはコンポーネントの初期化中に呼び出す必要があります。例えば、プログラムでコンポーネントを作成し、既存のコンテキストを渡したい場合などに便利です。
+最も近い親コンポーネントにある全ての context マップを取得します。これはコンポーネントの初期化中に呼び出す必要があります。例えば、プログラムでコンポーネントを作成し、既存の context を渡したい場合などに便利です。
 
 ```sv
 <script>
@@ -952,7 +952,7 @@ const app = new App({
 | `target` | **none** | レンダリング先の `HTMLElement` または `ShadowRoot`。このオプションは必須です
 | `anchor` | `null` | `target` の子要素。これのすぐ前にコンポーネントがレンダリングされます
 | `props` | `{}` | コンポーネントに渡すプロパティのオブジェクト
-| `context` | `new Map()` | コンポーネントに提供するルートレベルのコンテキストのキーと値のペアの `Map`
+| `context` | `new Map()` | コンポーネントに提供するルートレベルの context のキーと値のペアの `Map`
 | `hydrate` | `false` | 下記参照
 | `intro` | `false` | `true` なら、その後の状態変化を待つのではなく、初回レンダリング時にトランジションを再生します。
 
@@ -1144,7 +1144,7 @@ const { head, html, css } = App.render({
 
 | オプション | デフォルト | 説明 |
 | --- | --- | --- |
-| `context` | `new Map()` | コンポーネントに提供するルートレベルのコンテキストのキーと値のペアの `Map`
+| `context` | `new Map()` | コンポーネントに提供するルートレベルの context のキーと値のペアの `Map`
 
 ```js
 const { head, html, css } = App.render(
