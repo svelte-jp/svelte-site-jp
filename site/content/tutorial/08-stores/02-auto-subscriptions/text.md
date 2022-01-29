@@ -8,7 +8,7 @@ title: Auto-subscriptions
 
 ```js
 const unsubscribe = count.subscribe(value => {
-	count_value = value;
+	countValue = value;
 });
 ```
 > `subscribe` メソッドを呼ぶと `unsubscribe` 関数が返ります.
@@ -23,16 +23,16 @@ const unsubscribe = count.subscribe(value => {
 	import Decrementer from './Decrementer.svelte';
 	import Resetter from './Resetter.svelte';
 
-	let count_value;
+	let countValue;
 
 	const unsubscribe = count.subscribe(value => {
-		count_value = value;
+		countValue = value;
 	});
 
 	onDestroy(unsubscribe);
 </script>
 
-<h1>The count is {count_value}</h1>
+<h1>The count is {countValue}</h1>
 ```
 
 ただし、このやり方は、特にコンポーネントが複数のストアにサブスクライブしている場合に、少し定型的になり始めます。代わりに、Svelte には巧妙な工夫が施されています。ストア名の前に `$` を付けることで、ストアの値を参照できます。
