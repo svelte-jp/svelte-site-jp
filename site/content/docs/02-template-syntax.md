@@ -1736,7 +1736,7 @@ bind:this={component_instance}
 
 ### `<svelte:fragment>`
 
-`<svelte:fragment>`要素によって、コンテナとなるDOM要素でラップすることなく[名前付きスロット](/docs#template-syntax-slot-slot-name)に内容を入れることができます。
+`<svelte:fragment>`要素によって、コンテナとなるDOM要素でラップすることなく[名前付きスロット](/docs#template-syntax-slot-slot-name-name)に内容を入れることができます。
 
 ```sv
 <!-- Widget.svelte -->
