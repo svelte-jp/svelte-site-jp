@@ -41,10 +41,10 @@ authorURL: https://desandoval.net
 - サービスワーカーが`$lib`エイリアスを使用してファイルにアクセスできるようになりました ([#2326](https://github.com/sveltejs/kit/pull/2326))
 - SvelteのライブラリがViteの設定なしですぐに動作するようになりました ([#2343](https://github.com/sveltejs/kit/pull/2343))
 - package exportsフィールドの改善 ([#2345](https://github.com/sveltejs/kit/pull/2345)と [#2327](https://github.com/sveltejs/kit/pull/2327))
-- [重要] `prerender.pages`設定オプションの名称が`prerender.entries`に変更されました ([#2380](https://github.com/sveltejs/kit/pull/2380))
+- [重要]`prerender.pages`設定オプションの名称が`prerender.entries`に変更されました ([#2380](https://github.com/sveltejs/kit/pull/2380))
 - フックからのBodyの型付けを可能にするために、新しいジェネリック引数が追加されました ([#2413](https://github.com/sveltejs/kit/pull/2413))
 - packageコマンドの実行時にpackage.jsonに`svelte`フィールドが追加されるようになりました ([#2431](https://github.com/sveltejs/kit/pull/2431))
-- [重要] load関数の`context`パラメータが`stuff`に改名されました ([#2439](https://github.com/sveltejs/kit/pull/2439))
+- [重要]load関数の`context`パラメータが`stuff`に改名されました ([#2439](https://github.com/sveltejs/kit/pull/2439))
 - `adapter-node`を使ってカスタムサーバを構築するときのために、`entryPoint`オプションを追加しました ([#2414](https://github.com/sveltejs/kit/pull/2414))
 - `vite-plugin-svelte`は、SvelteコンポーネントのTypeScript、PostCSS、Scssなどの自動プリプロセッサにViteを使用する[useVitePreprocess](https://github.com/sveltejs/vite-plugin-svelte/blob/main/docs/config.md#usevitepreprocess)のサポートを改善しました ([#173](https://github.com/sveltejs/vite-plugin-svelte/pull/173))
 
