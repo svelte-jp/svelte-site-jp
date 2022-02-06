@@ -80,6 +80,6 @@ _To Listen To_
 - [svelte-keyed](https://github.com/bryanmylee/svelte-keyed) はオブジェクトと配列向けの writable derived store です
 - [Svemix](https://github.com/svemix/svemix) は Svelte 向けの Remix です - Svelte コンポーネント/ルート内にサーバースクリプトを配置し、それがエンドポイントに変換されます
 
-ショーケースに追加したいものがありますか？Svelte でアイデアを実現するのに助けが必要ですか？ [Reddit](https://www.reddit.com/r/sveltejs/) また [Discord](https://discord.com/invite/yy75DKs) にご参加ください！
+ショーケースに追加したいものがありますか？Svelte でアイデアを実現するのに助けが必要ですか？ [Reddit](https://www.reddit.com/r/sveltejs/) または [Discord](https://discord.com/invite/yy75DKs) にご参加ください！
 
 また来月お会いしましょう！

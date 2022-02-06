@@ -73,7 +73,7 @@ authorURL: https://desandoval.net
 - [Easy-to-Embed Svelte Components](https://codeandlife.com/2021/03/06/easy-to-embed-svelte-components/) では、Rollupとscriptタグを使ってSvelteコンポーネントを任意の場所に埋め込む方法を説明しています。
 - [Convert Svelte project from Rollup to Snowpack](https://www.youtube.com/watch?v=-sHcqj4YLeQ) は一般的な移行パターンについてビデオで解説しています。
 - [How to internationalize routing in Svelte & Sapper](https://www.leaf.cloud/blog/how-to-internationalize-routing-in-svelte-sapper?utm_medium=story&utm_source=reddit.com&utm_campaign=awareness&utm_content=sapper_routing) では、leaf.cloud がどのようにサイトをオランダ語に翻訳したかを説明しています。
-- [Svelte Store: Reactive context using Svelte Store](https://www.youtube.com/watch?v=-rTnWlbdjoY) は "どうやって [a] context の値をリアクティブにするのか" という質問に答えているビデオです。
+- [Svelte Store: Reactive context using Svelte Store](https://www.youtube.com/watch?v=-rTnWlbdjoY) は "どうやって[a]context の値をリアクティブにするのか" という質問に答えているビデオです。
 - [Creating Social Sharing Images with Cloudinary and Svelte](https://www.youtube.com/watch?v=-Si5o-R7KHY) はJAMstackのWebサイト向けのOpen GraphのイメージやTwitterカードを動的に開発する方法を説明するCloudinaryのビデオです。
 
 
