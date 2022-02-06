@@ -57,7 +57,7 @@ development モード（[コンパイラオプション](/docs#compile-time-svel
 
 `const` や `class`、`function` をエクスポートすると、コンポーネントの外からは読み取り専用になります。ただし、関数*式*は有効なプロパティです。
 
-読み取り専用のプロパティは、[`bind:this` 構文](/docs#template-syntax-element-directives-bind-element)を使ってコンポーネントに関連付けられた要素のプロパティとしてアクセスできます。
+読み取り専用のプロパティは、[`bind:this` 構文](/docs#template-syntax-component-directives-bind-this)を使ってコンポーネントに関連付けられた要素のプロパティとしてアクセスできます。
 
 ```sv
 <script>
