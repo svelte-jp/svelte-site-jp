@@ -16,13 +16,13 @@ authorURL: https://desandoval.net
 数ヶ月(数年)かけて進めてきた2つのプロジェクトが公開されました。SvelteKitは現在パブリックベータとなり、slotted components はSvelteで使えるようになりました！
 
 ## SvelteKitはどう？(What's up with SvelteKit?)
-[SvelteKit](https://kit.svelte.dev/) - SSR、サーバーレスアプリケーション、SPAなどを構築するためのSvelteの汎用的なフレームワーク - が正式にパブリックベータになりました。バグがあるかも！　詳細は[最新のブログ記事](https://svelte.dev/blog/sveltekit-beta)をご覧ください。1.0がいつリリースされるか知りたいですか？ [github](https://github.com/sveltejs/kit/milestone/2)のマイルストーンをチェックしてみてください。
+[SvelteKit](https://kit.svelte.jp/) - SSR、サーバーレスアプリケーション、SPAなどを構築するためのSvelteの汎用的なフレームワーク - が正式にパブリックベータになりました。バグがあるかも！　詳細は[最新のブログ記事](https://svelte.jp/blog/sveltekit-beta)をご覧ください。1.0がいつリリースされるか知りたいですか？ [github](https://github.com/sveltejs/kit/milestone/2)のマイルストーンをチェックしてみてください。
 > 訳注 : `最新のブログ記事`の日本語翻訳版は[こちら](https://svelte.jp/blog/sveltekit-beta)です。
 
 始め方、Sapperとの違い、新しい機能や移行方法を学びたいですか？　今週の[Svelte Radioのエピソード](https://www.svelteradio.com/episodes/svelte-kit-public-beta)で、AntonyとKevとSwyxが深く掘り下げているのでチェックしてみてください。
 
 ## SvelteとLanguageツールの新着情報(New in Svelte & Language Tools)
-- Slotted components (`<svelte:fragment slot="...">`を含む) を使用すると、コンポーネントの利用者が特定のスロットにリッチなコンテンツを割り当てることができます (**Svelte 3.35.0, Language Tools [104.5.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-104.5.0)**, [docs](https://svelte.dev/docs#template-syntax-svelte-fragment) と [tutorial](https://svelte.dev/tutorial/svelte-fragment) をチェックしてみてください)
+- Slotted components (`<svelte:fragment slot="...">`を含む) を使用すると、コンポーネントの利用者が特定のスロットにリッチなコンテンツを割り当てることができます (**Svelte 3.35.0, Language Tools [104.5.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-104.5.0)**, [docs](https://svelte.dev/docs#template-syntax-svelte-fragment) と [tutorial](https://svelte.jp/tutorial/svelte-fragment) をチェックしてみてください)
 - Linked editing がSvelteファイル内のHTMLで機能するようになりました (**Language Tools, [104.6.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-104.6.0)**)
 - 型定義 `svelte.d.ts` が正常に解決されるようになり、ライブラリの作成者がSvelteコンポーネントと一緒に型定義を配布できるようになりました (**Language Tools, [104.7.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-104.7.0)**)
 - ViteでSvelteを使用するのに [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) が利用可能になりました。`npm init @vitejs/app` はこのプラグインを使用したSvelteオプションが含まれています。

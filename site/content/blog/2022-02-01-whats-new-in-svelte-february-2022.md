@@ -24,21 +24,21 @@ Happy February, everyone! ここ1か月ほどで、Svelte と SvelteKit の [開
 - [Svelte REPL で AST が出力できるようになりました](https://svelte.dev/repl/hello-world)
 
 ## What's new in SvelteKit
-- `inlineStyleThreshold` によって、CSS ファイルをインラインスタイルシートにしてページに挿入するかどうか指定できるようになりました ([Docs](https://kit.svelte.jp/docs#configuration-inlinestylethreshold), [#2620](https://github.com/sveltejs/kit/pull/2620))
-- `beforeNavigate`/`afterNavigate` ライフサイクル関数によって、ページナビゲーションの前後に機能を追加することができるようになりました ([Docs](https://kit.svelte.jp/docs#modules-$app-navigation), [#3293](https://github.com/sveltejs/kit/pull/3293))
-- プラットフォーム固有のコンテキストを、adapter から渡せるようになりました ([Docs](https://kit.svelte.jp/docs#adapters-supported-environments-platform-specific-context), [#3429](https://github.com/sveltejs/kit/pull/3429))
-- Hooks の `resolve` 関数に `ssr` パラメーターが追加され、必要に応じて SSR を簡単にスキップできるようになりました ([Docs](https://kit.svelte.jp/docs#hooks-handle), [#2804](https://github.com/sveltejs/kit/pull/2804))
-- `$page.stuff` は、ページがレイアウトに対してデータを '上向きに' 渡すためのメカニズムを提供します ([Docs](https://kit.svelte.jp/docs#loading-input-stuff), [#3252](https://github.com/sveltejs/kit/pull/3252))
-- Fallthrough routes によって、ルート(route)が読み込めないときのルーティング先を指定することができます ([Docs](https://kit.svelte.jp/docs#routing-advanced-fallthrough-routes), [#3217](https://github.com/sveltejs/kit/pull/3217))
+- `inlineStyleThreshold` によって、CSS ファイルをインラインスタイルシートにしてページに挿入するかどうか指定できるようになりました ([Docs](https://kit.svelte.jp/docs/configuration#inlinestylethreshold), [#2620](https://github.com/sveltejs/kit/pull/2620))
+- `beforeNavigate`/`afterNavigate` ライフサイクル関数によって、ページナビゲーションの前後に機能を追加することができるようになりました ([Docs](https://kit.svelte.jp/docs/modules#$app-navigation), [#3293](https://github.com/sveltejs/kit/pull/3293))
+- プラットフォーム固有のコンテキストを、adapter から渡せるようになりました ([Docs](https://kit.svelte.jp/docs/adapters#supported-environments-platform-specific-context), [#3429](https://github.com/sveltejs/kit/pull/3429))
+- Hooks の `resolve` 関数に `ssr` パラメーターが追加され、必要に応じて SSR を簡単にスキップできるようになりました ([Docs](https://kit.svelte.jp/docs/hooks#handle), [#2804](https://github.com/sveltejs/kit/pull/2804))
+- `$page.stuff` は、ページがレイアウトに対してデータを '上向きに' 渡すためのメカニズムを提供します ([Docs](https://kit.svelte.jp/docs/loading#input-stuff), [#3252](https://github.com/sveltejs/kit/pull/3252))
+- Fallthrough routes によって、ルート(route)が読み込めないときのルーティング先を指定することができます ([Docs](https://kit.svelte.jp/docs/routing#advanced-routing-fallthrough-routes), [#3217](https://github.com/sveltejs/kit/pull/3217))
 
 **New configs**
-- Content Security Policy (CSP) がサポートされ、インラインの JavaScript と スタイルシートを使用するときのセキュリティが強化されます ([Docs](https://kit.svelte.jp/docs#configuration-csp), [#3499](https://github.com/sveltejs/kit/pull/3499))
-- `kit.routes` の設定で、ビルド時に、どのモジュールをパブリック/プライベートにするかカスタマイズできるようになりました ([Docs](https://kit.svelte.jp/docs#configuration-routes), [#3576](https://github.com/sveltejs/kit/pull/3576))
-- `prerender.createIndexFiles` の設定で、index.html をサブフォルダの名前でプリレンダリングできるようになりました ([Docs](https://kit.svelte.jp/docs#configuration-prerender), [#2632](https://github.com/sveltejs/kit/pull/2632))
-- `kit.methodOverride` を使用することで、HTTP メソッドをオーバーライドできるようになりました ([Docs](https://kit.svelte.jp/docs#routing-endpoints-http-method-overrides), [#2989](https://github.com/sveltejs/kit/pull/2989))
+- Content Security Policy (CSP) がサポートされ、インラインの JavaScript と スタイルシートを使用するときのセキュリティが強化されます ([Docs](https://kit.svelte.jp/docs/configuration#csp), [#3499](https://github.com/sveltejs/kit/pull/3499))
+- `kit.routes` の設定で、ビルド時に、どのモジュールをパブリック/プライベートにするかカスタマイズできるようになりました ([Docs](https://kit.svelte.jp/docs/configuration#routes), [#3576](https://github.com/sveltejs/kit/pull/3576))
+- `prerender.createIndexFiles` の設定で、index.html をサブフォルダの名前でプリレンダリングできるようになりました ([Docs](https://kit.svelte.jp/docs/configuration#prerender), [#2632](https://github.com/sveltejs/kit/pull/2632))
+- `kit.methodOverride` を使用することで、HTTP メソッドをオーバーライドできるようになりました ([Docs](https://kit.svelte.jp/docs/routing#endpoints-http-method-overrides), [#2989](https://github.com/sveltejs/kit/pull/2989))
 
 **Config changes**
-- `config.kit.hydrate` と `config.kit.router` が `config.kit.browser` の配下に移動されました ([Docs](https://kit.svelte.jp/docs#configuration-browser), [3578](https://github.com/sveltejs/kit/pull/3578))
+- `config.kit.hydrate` と `config.kit.router` が `config.kit.browser` の配下に移動されました ([Docs](https://kit.svelte.jp/docs/configuration#browser), [3578](https://github.com/sveltejs/kit/pull/3578))
 
 **Breaking change**
 - エンドポイント(endpoints) と Hooks で、`Request` オブジェクトと `Response` オブジェクト が使われるようになりました ([#3384](https://github.com/sveltejs/kit/pull/3384))

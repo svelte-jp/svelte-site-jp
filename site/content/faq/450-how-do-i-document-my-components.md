@@ -4,7 +4,7 @@ question: コンポーネントのドキュメントを作成する方法はあ�
 
 Svelte Language Serverを使用するエディターでは、特別にフォーマットされたコメントを使用して、コンポーネント、関数、およびエクスポートを文書化することができます。
 
-````svelte
+````sv
 <script>
 	/** What should we call the user? */
 	export let name = 'world';

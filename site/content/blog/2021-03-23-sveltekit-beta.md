@@ -32,7 +32,7 @@ npm install
 npm run dev -- --open
 ```
 
-ドキュメントは [kit.svelte.dev/docs](https://kit.svelte.dev/docs) にあります。もし [Sapper](https://sapper.svelte.dev) アプリをSvelteKitに移行したい場合は、[kit.svelte.dev/migrating](https://kit.svelte.dev/migrating) に解説がございます。
+ドキュメントは [kit.svelte.dev/docs](https://kit.svelte.dev/docs)(訳注:[日本語版](https://kit.svelte.jp/docs))にあります。もし [Sapper](https://sapper.svelte.dev) アプリをSvelteKitに移行したい場合は、[kit.svelte.dev/docs/migrating](https://kit.svelte.dev/docs/migrating) (訳注:[日本語版](https://kit.svelte.jp/docs/migrating))に解説がございます。
 
 ソースコードは [github.com/sveltejs/kit](https://github.com/sveltejs/kit) で公開しています。issueとpull requestは整理が完了するまで無効にしておりますが、近い将来、完全に公開する予定です。
 
@@ -68,7 +68,7 @@ SvelteKitは、まだ完成していないにもかかわらず、私たちの�
 
 ## 1.0に向けたロードマップ(The road to 1.0)
 
-1.0マイルストーンの未解決のissueは [issue tracker](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0) で確認できます。その作業に加えて、ドキュメントをアップグレードし、[adapters](https://kit.svelte.dev/docs#adapters) を追加する予定です。
+1.0マイルストーンの未解決のissueは [issue tracker](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0) で確認できます。その作業に加えて、ドキュメントをアップグレードし、[adapters](https://kit.svelte.jp/docs/adapters) を追加する予定です。
 
 最も重要なことは、私たちが最高のアプリケーションフレームワークを作るためには、皆さんからのフィードバックが必要であるということです。実際に使ってみて、足りない部分を教えてください。
 
