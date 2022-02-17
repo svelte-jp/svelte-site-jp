@@ -86,7 +86,7 @@ count += 1; $$invalidate('count', count);
 
 ## 新しい Svelte(New look)
 
-改修されているのはコンポーネントだけではありません。[svelte.technology](https://svelte.technology) から [svelte.dev](https://svelte.dev) に移行した新しいロゴとウェブサイトを作成した [AchimVedam](https://vedam.de/) の素晴らしいデザイン作業のおかげで、Svelte 自体はまったく新しいルックアンドフィールになっています。 
+改修されているのはコンポーネントだけではありません。[svelte.technology](https://svelte.technology) から [svelte.dev](https://svelte.dev)(訳注:[日本語版](https://svelte.jp)) に移行した新しいロゴとウェブサイトを作成した [AchimVedam](https://vedam.de/) の素晴らしいデザイン作業のおかげで、Svelte 自体はまったく新しいルックアンドフィールになっています。 
 
 また、私たちはキャッチフレーズを「魔法のように消える UI フレームワーク」から「サイバネティックに強化されたウェブアプリ」に変更しました。Svelte には様々な側面があります。-- 卓越した性能、小さなバンドル、アクセシビリティ、組み込みのスタイルカプセル化、宣言的な遷移、使いやすさ、コンパイラであることなど -- その中のどれか1つに焦点を当てることは、他のものに不公平感を与えるような気がします。「Cybernetically enhanced」は、私たちのツールは私たち自身の知能の拡張として機能するべきだという Svelte の包括的な哲学を思い起こさせるようにデザインされています -- 願わくばレトロでウィリアム・ギブソン風のひねりを加えて。
 

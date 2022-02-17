@@ -36,9 +36,9 @@ Svelteのメンテナは[SvelteKitを1.0にする手助けを探しています]
 この1か月間は、あらゆる問題を解決することに注力し、100件以上のPRを統合しました。いくつかの新機能も追加されました…
 
 - SvelteKitは、事前にレンダリングされたアプリがクエリパラメータにアクセスしようとしているかどうかを検出し、サイレントに失敗するのではなくエラーを返すようになりました。([#2104](https://github.com/sveltejs/kit/pull/2104))
-- `adapter-node` では、[Kitミドルウェアを自分のサーバーに追加して](https://kit.svelte.dev/faq#integrations) 他のミドルウェアと一緒に使うことができるようになりました。また、[開発モードでミドルウェアを追加](https://kit.svelte.dev/faq#how-do-i-use-x-with-sveltekit-how-do-i-use-middleware)することもできます。この分野ではさらに改良が加えられる予定です。
-- 新しい[`sequence`ヘルパーは、複数の`handle`コールを連鎖させることができます。](https://kit.svelte.dev/docs#modules-sveltejs-kit-hooks)
-- 新しい[`handleError`フック](https://kit.svelte.dev/docs#hooks-handleerror)では、エラー追跡サービスにデータを送信したり、コンソールにエラーを表示する前にフォーマットをカスタマイズしたりすることができます。
+- `adapter-node` では、[Kitミドルウェアを自分のサーバーに追加して](https://kit.svelte.jp/faq#integrations) 他のミドルウェアと一緒に使うことができるようになりました。また、[開発モードでミドルウェアを追加](https://kit.svelte.jp/faq#how-do-i-use-x-with-sveltekit-how-do-i-use-middleware)することもできます。この分野ではさらに改良が加えられる予定です。
+- 新しい[`sequence`ヘルパーは、複数の`handle`コールを連鎖させることができます。](https://kit.svelte./docs/modules#sveltejs-kit-hooks)
+- 新しい[`handleError`フック](https://kit.svelte.jp/docs/hooks#handleerror)では、エラー追跡サービスにデータを送信したり、コンソールにエラーを表示する前にフォーマットをカスタマイズしたりすることができます。
 - `adapter-node` がソケットパスをリッスンできるようになりました。([#2048](https://github.com/sveltejs/kit/pull/2048))
 
 SvelteKitのすべてのアップデートを確認するには、[SvelteKit changelog](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md)をご覧ください。

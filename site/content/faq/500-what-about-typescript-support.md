@@ -6,14 +6,14 @@ question: TypeScriptのサポートはどうですか?
 
 Svelteテンプレートでリアクティブ変数の型を宣言するには、次の構文を使用します。
 
-```
+```ts
 let x: number;
 $: x = count + 1;
 ```
 
 タイプまたはインタフェースをインポートするには、[TypeScriptの`type`修飾子](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export)を使用します:
 
-```
+```ts
 import type { SomeInterface } from './SomeFile';
 ```
 

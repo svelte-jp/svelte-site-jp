@@ -22,10 +22,10 @@ authorURL: https://desandoval.net
 ## New in SvelteKit
 - [kit.svelte.dev](https://kit.svelte.dev/) の外観が新しくなり、[SvelteKit Demoサイト](https://netlify.demo.svelte.dev/) も一新されました。`npm init svelte@next` を実行してチェックしてみてください。
 - `@sveltejs/adapter-static` を使って、fallback page を指定することでシングルページアプリまたはSPAを作れるようになりました ([PR](https://github.com/sveltejs/kit/pull/1181), [Docs](https://github.com/sveltejs/kit/tree/master/packages/adapter-static))
-- アプリ全体またはページごとにサーバーサイドレンダリング (SSR) を無効にできるようになりました ([PR](https://github.com/sveltejs/kit/pull/713), [Docs](https://kit.svelte.dev/docs#ssr-and-javascript-ssr))
-- プリレンダリングのときにスローされるエラーメッセージがよりわかりやすく読みやすくなりました ([PR](https://github.com/sveltejs/kit/pull/1062), [Docs](https://kit.svelte.dev/docs#layouts-error-pages))
-- ページがルートレイアウトを継承しないようにレイアウトをリセットできるようになりました。これは特定のレイアウトがある場合やi18n variationに便利です ([PR](https://github.com/sveltejs/kit/pull/1061), [Docs](https://kit.svelte.dev/docs#layouts-resets))
-- SvelteKitコードの `fetch` は可能な限り環境が提供する実装を使用できるようになりました。もし `fetch` が利用できない場合は、アダプタによってpolyfillされます ([PR](https://github.com/sveltejs/kit/pull/1066), [Docs](https://kit.svelte.dev/docs#loading-input-fetch))
+- アプリ全体またはページごとにサーバーサイドレンダリング (SSR) を無効にできるようになりました ([PR](https://github.com/sveltejs/kit/pull/713))
+- プリレンダリングのときにスローされるエラーメッセージがよりわかりやすく読みやすくなりました ([PR](https://github.com/sveltejs/kit/pull/1062), [Docs](https://kit.svelte.jp/docs/layouts#error-pages))
+- ページがルートレイアウトを継承しないようにレイアウトをリセットできるようになりました。これは特定のレイアウトがある場合やi18n variationに便利です ([PR](https://github.com/sveltejs/kit/pull/1061), [Docs](https://kit.svelte.jp/docs/layouts#resets))
+- SvelteKitコードの `fetch` は可能な限り環境が提供する実装を使用できるようになりました。もし `fetch` が利用できない場合は、アダプタによってpolyfillされます ([PR](https://github.com/sveltejs/kit/pull/1066), [Docs](https://kit.svelte.jp/docs/loading#input-fetch))
 
 ## New in Svelte & Language Tools
 - `svelte-preprocess` が tsconfig.json の "extends" フィールドをサポートしました (4.7.2)
