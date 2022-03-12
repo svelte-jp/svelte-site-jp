@@ -9,27 +9,25 @@ title: Exports
 	const elements = new Set();
 
 	export function stopAll() {
-		elements.forEach(element => {
+		elements.forEach((element) => {
 			element.pause();
 		});
 	}
 </script>
 ```
 
-…そしてそれを `App.svelte` からインポートすることができます…
+…そしてそれを `App.svelte` でインポートすることができます…
 
 ```html
 <script>
-	import AudioPlayer, { stopAll } from './AudioPlayer.svelte';
+	import AudioPlayer, { stopAll } from "./AudioPlayer.svelte";
 </script>
 ```
 
 …さらにそれをイベントハンドラで使うことができます。
 
 ```html
-<button on:click={stopAll}>
-	stop all audio
-</button>
+<button on:click="{stopAll}">stop all audio</button>
 ```
 
-> default export は使うことはできません、なぜならコンポーネント *が* default export だからです。
+> default export は使うことはできません、なぜならコンポーネント _が_ default export だからです。
