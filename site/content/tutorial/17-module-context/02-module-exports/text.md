@@ -16,7 +16,7 @@ title: Exports
 </script>
 ```
 
-…そしてそれを `App.svelte` からインポートすることができます…
+…そしてそれを `App.svelte` でインポートすることができます…
 
 ```html
 <script>
