@@ -39,7 +39,7 @@ npm install
 npm run dev
 ```
 
-これはアプリを [localhost:5000](http://localhost:5000) で起動し、`svelte-app/src` ファイルを変更するたびに [Rollup](https://rollupjs.org) が再ビルドします。
+これによってアプリが [localhost:8080](http://localhost:8080) で起動し、`svelte-app/src` ファイルを変更するたびに [Rollup](https://rollupjs.org) が再ビルドします。
 
 
 ## 2. degit の利用
@@ -58,7 +58,7 @@ npm install
 npm run dev
 ```
 
-これにより新しいプロジェクトが `my-svelte-project` ディレクトリ内に生成され、依存関係をインストールし、http://localhost:5000 でサーバーが起動されます。
+これにより新しいプロジェクトが `my-svelte-project` ディレクトリ内に生成され、依存関係をインストールし、http://localhost:8080 でサーバーが起動されます。
 
 TypeScript のより詳しい使用方法を知りたい場合は [こちら](/blog/svelte-and-typescript) をご参照ください。
 
