@@ -1627,6 +1627,28 @@ bind:this={component_instance}
 <svelte:component this={currentSelection.component} foo={bar}/>
 ```
 
+### `<svelte:element>`
+
+```sv
+<svelte:element this={expression}/>
+```
+
+---
+
+The `<svelte:element>` element lets you render an element of a dynamically specified type. This is useful for example when rich text content from a CMS. If the tag is changed, the children will be preserved unless there's a transition attached to the element. Any properties and event listeners present will be applied to the element.
+
+The only supported binding is `bind:this`, since the element type specific bindings that Svelte does at build time (e.g. `bind:value` for input elements) does not work with a dynamic tag type.
+
+If `this` has a nullish value, a warning will be logged in development mode.
+
+```sv
+<script>
+	let tag = 'div';
+	export let handler;
+</script>
+
+<svelte:element this={tag} on:click={handler}>Foo</svelte:element>
+```
 
 ### `<svelte:window>`
 
@@ -1683,7 +1705,7 @@ bind:this={component_instance}
 
 `<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](/docs#template-syntax-element-directives-use-action) を使用することもできます。
 
-`<svelte:body>` はコンポーネントのトップレベルに表示する必要があります。
+As with `<svelte:window>`, this element may only appear the top level of your component and must never be inside a block or element.
 
 ```sv
 <svelte:body
@@ -1704,7 +1726,7 @@ bind:this={component_instance}
 
 この要素を使うと、 `document.head` に要素を挿入することができます。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
 
-`<svelte:window>` や `<svelte:head>` と同様に、この要素はコンポーネントのトップレベルに表示する必要があり、ブロックや他の要素の中に置くことはできません。
+As with `<svelte:window>` and `<svelte:body>`, this element may only appear at the top level of your component and must never be inside a block or element.
 
 ```sv
 <svelte:head>

@@ -1,5 +1,21 @@
 # Svelte changelog
 
+## Unreleased
+
+* Return the context object in `setContext` [#7427](https://github.com/sveltejs/svelte/issues/7427)
+* Fix `{@const}` tag not working inside Component when there's no `let:` [#7189](https://github.com/sveltejs/svelte/issues/7189)
+* Ignore comments in `{#each}` blocks when containing elements with `animate:` ([#3999](https://github.com/sveltejs/svelte/issues/3999))
+* Add a third parameter to the returned function of `createEventDispatcher` that allows passing an object of `{ cancelable: true }` to create a cancelable custom event. The returned function when called will also return a boolean depending on whether the event is cancelled ([#7064](https://github.com/sveltejs/svelte/pull/7064))
+* Fix value of `let:` bindings not updating in certain cases ([#7440](https://github.com/sveltejs/svelte/issues/7440))
+* Strip leading newline after `<pre>` and `<textarea>` ([#7264](https://github.com/sveltejs/svelte/issues/7264))
+
+## 3.47.0
+
+* Add support for dynamic elements through `<svelte:element>` ([#2324](https://github.com/sveltejs/svelte/issues/2324))
+* Miscellaneous variable context fixes in `{@const}` ([#7222](https://github.com/sveltejs/svelte/pull/7222))
+* Fix `{#key}` block not being reactive when the key variable is not otherwise used ([#7408](https://github.com/sveltejs/svelte/issues/7408))
+* Add `Symbol` as a known global ([#7418](https://github.com/sveltejs/svelte/issues/7418))
+
 ## 3.46.6
 
 * Actually include action TypeScript interface in published package ([#7407](https://github.com/sveltejs/svelte/pull/7407))

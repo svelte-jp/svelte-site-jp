@@ -4,7 +4,7 @@ title: Keyed each blocks
 
 デフォルトでは、`each` ブロックの値を変更すると、ブロックの *末尾* にアイテムを追加・削除し、変更された値を更新します。これはあなたが望むものではないかもしれません。
 
-説明するよりも理由を示す方が簡単です。「Remove first thing」ボタンを何度かクリックして、何が起きるか確認してください。先頭の `<Thing>` コンポーネントを削除しますが、*末尾*のDOMノードが削除されています。それから残ったDOMノードの `name` の値が更新されますが、絵文字は更新されません。
+It's easier to show why than to explain. Click the 'Remove first thing' button a few times, and notice what happens: it does not remove the first `<Thing>` component, but rather the *last* DOM node. Then it updates the `name` value in the remaining DOM nodes, but not the emoji. 
 
 代わりに、先頭の `<Thing>` コンポーネントとそのDOMノードだけを削除して、残りには影響を与えないようにしたいと思います。
 

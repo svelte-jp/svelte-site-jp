@@ -8,4 +8,5 @@ question: Svelteアプリケーションをテストするにはどうすれば�
 
 単体テストを始めるためのリソース:
 - [Svelte Testing Library](https://testing-library.com/docs/svelte-testing-library/example/)
+- [Example using vitest](https://github.com/vitest-dev/vitest/tree/main/examples/svelte)
 - [Example using uvu test runner with JSDOM](https://github.com/lukeed/uvu/tree/master/examples/svelte)

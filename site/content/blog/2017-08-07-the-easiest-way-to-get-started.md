@@ -20,7 +20,9 @@ Svelte は[新しい種類のフレームワーク](/blog/frameworks-without-the
 
 ## 1. REPL の利用
 
-[Svelte REPL](/repl) は Svelte を始めるための最も簡単な方法です。 始めるための例のリストから選択し、あなたが望むようにそれらの例を微調整することも可能です。
+最も簡単に始められる方法は [Svelte REPL](/repl) (Read-Eval-Print Loop) です。コードを編集してその結果をすぐに確認することができるインタラクティブな環境です。
+
+[examples](/examples/) のリストから選択し、[REPL](/repl) リンクをクリックし、お望み通りの動作になるまで微調整をすることができます。
 
 <aside><p><a href="https://nodejs.org/">Node.js</a> をインストールし、ターミナルの使い方を知っている必要があるでしょう。</p></aside>
 
