@@ -2,13 +2,9 @@
 title: Compile time
 ---
 
-通常、Svelte コンパイラと直接やりとりすることはなく、代わりにバンドルプラグインを使ってビルドシステムに統合することになります。
+通常、Svelte コンパイラと直接やり取りすることはありません。その代わり、バンドラープラグイン(bundler plugin)を使ってビルドシステムにインテグレートします。Svelte チームが最も推奨している、また注力もしているバンドラープラグインは [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) です。[SvelteKit](https://kit.svelte.jp/) フレームワークは `vite-plugin-svelte` を活用し、アプリケーションをビルドするためのセットアップと、[Svelte コンポーネントライブラリをパッケージングするツール](https://kit.svelte.jp/docs/packaging)を提供しています。Svelte Society には、Rollup や Webpack などのツール向けの [その他のバンドラープラグイン](https://sveltesociety.dev/tools/#bundling) のリストがあります。
 
-* [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) は [Rollup](https://rollupjs.org) のユーザー向けです
-* [svelte-loader](https://github.com/sveltejs/svelte-loader) は [webpack](https://webpack.js.org) のユーザー向けです
-* もしくは [コミュニティでメンテナンスされているプラグイン](https://sveltesociety.dev/tools) のどれか
-
-とはいえ、バンドルプラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
+とはいえ、バンドラープラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
 
 
 
@@ -64,7 +60,7 @@ const result = svelte.compile(source, {
 
 | option | default | description |
 | --- | --- | --- |
-| `filename` | `null` | デバッグのヒントやソースマップに使われる `string` です。バンドルプラグインが自動的に設定します。
+| `filename` | `null` | デバッグのヒントやソースマップに使われる `string` です。バンドラープラグインが自動的に設定します。
 | `name` | `"Component"` | 結果として得られるJavaScriptクラスの名前を設定する `string` です (ただし、スコープ内の他の変数と競合する場合はコンパイラが名前を変更します)、通常は `filename` から推測されます。
 | `format` | `"esm"` | `"esm"` の場合、JavaScriptモジュールを作成します (`import` と `export` を指定します)、`"cjs"` の場合、CommonJSモジュールを作成します(`require` と `module.exports` を指定します)、これは、いくつかのサーバーサイドのレンダリング状況やテストに便利です。
 | `generate` | `"dom"` | `"dom"` の場合、SvelteはDOMにマウントするためのJavaScriptクラスを生成します。`"ssr"`の場合、サーバサイドのレンダリングに適した `render` メソッドを持つオブジェクトを出力します。`false` の場合、JavaScriptやCSSは返されず、メタデータだけが返されます。
@@ -77,7 +73,7 @@ const result = svelte.compile(source, {
 | `accessors` | `false` | `true` の場合、ゲッターとセッターはコンポーネントのプロパティ(props)に対して作成されます。`false` の場合、それらは読み書きされた値に対してのみ作成されます。 (つまり`const`, `class`, `function` で宣言されたもの) `customElement: true` でコンパイルした場合、このオプションのデフォルトは `true` です。
 | `customElement` | `false` | `true` ならば、コンパイラに通常のSvelteコンポーネントの代わりにカスタム要素のコンストラクタを生成するように指示します。
 | `tag` | `null` | Svelteにカスタム要素を登録するタグ名を指定する `string`。文字列は小文字の英数字で、少なくとも1つのハイフンを含んだ文字列でなければなりません。例えば `"my-element"`.
-| `css` | `true` | `true` の場合、スタイルはJavaScriptクラスに含まれ、実行時に注入されます。これを `false` に設定して静的に生成されたCSSを使うと、JavaScriptのバンドルが小さくなり、パフォーマンスが向上するのでおすすめです。
+| `css` | `true` | `true` の場合、スタイルはJavaScriptクラスに含まれ、実行時にコンポーネントが実際にレンダリングされるときに注入されます。`false` の場合、CSS はコンパイル結果の `css` フィールドで返されます。多くの Svelte バンドラープラグインはこれを `false` に設定して静的に生成されたCSSを使用するので、JavaScriptのバンドルが小さくなり、キャッシュ可能な `.css` ファイルをサーブすることができるようになるので、パフォーマンスが向上します。
 | `cssHash` | 右記 | `{ hash, css, name, filename }`を引数に取り、スコープ付きCSSのクラス名として使われる文字列を返す関数。デフォルトでは、`svelte-${hash(css)}`を返します。
 | `loopGuardTimeout` | 0 | `loopGuardTimeout` msを超えてスレッドがブロックされた場合にループを解除するようにSvelteに指示する `数値` です。これは無限ループを防ぐのに便利です。**利用可能なのは `dev: true` の場合のみです**
 | `preserveComments` | `false` | `true` の場合、サーバサイドでのレンダリング中に HTML コメントが保存されます。デフォルトではコメントは削除されます。

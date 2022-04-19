@@ -148,7 +148,7 @@ setContext(key: any, context: any)
 
 ---
 
-任意の `context` オブジェクトを現在のコンポーネントと指定された `key` に関連付けます。context は、コンポーネントの子 (スロットコンテンツを含む) が `getContext` で利用できるようになります。
+任意の `context` オブジェクトを現在のコンポーネントと指定された `key` に関連付け、オブジェクトを返します。context は、コンポーネントの子 (スロットコンテンツを含む) が `getContext` で利用できるようになります。
 
 ライフサイクル関数と同様に、これはコンポーネントの初期化時に呼ばれなければなりません。
 
@@ -221,14 +221,14 @@ contexts: Map<any, any> = getAllContexts()
 #### `createEventDispatcher`
 
 ```js
-dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
+dispatch: ((name: string, detail?: any, options?: DispatchOptions) => boolean) = createEventDispatcher();
 ```
 
 ---
 
 [コンポーネントイベント](/docs＃template-syntax-component-directives-on-eventname) のディスパッチに使用できるイベントディスパッチャーを作成します。 イベントディスパッチャーは、 `name` と ` detail` の2つの引数を取る関数です。 
 
-`createEventDispatcher` で作成されたコンポーネントイベントは [カスタムイベント](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) を作成します。これらのイベントは、[バブリング](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture) せず、`event.preventDefault()` でキャンセルできません。引数 `detail` は [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) プロパティに対応し、任意のタイプのデータを含むことができます。
+`createEventDispatcher` で作成されたコンポーネントイベントは [カスタムイベント](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) を作成します。これらのイベントは [バブリング](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture) しません。引数 `detail` は [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) プロパティに対応し、任意のタイプのデータを含むことができます。
 
 ```sv
 <script>
@@ -252,6 +252,27 @@ dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
 </script>
 
 <Child on:notify="{callbackFunction}"/>
+```
+
+---
+
+dispatch 関数に3番目のパラメータを渡すことで、イベントがキャンセルできるようになります。もしイベントが `event.preventDefault()` によってキャンセルされると、その関数は `false` を返します。それ以外の場合は `true` を返します。
+
+```sv
+<script>
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
+
+	function notify() {
+		const shouldContinue = dispatch('notify', 'detail value', { cancelable: true });
+		if (shouldContinue) {
+			// no one called preventDefault
+		} else {
+			// a listener called preventDefault
+		}
+	}
+</script>
 ```
 
 ### `svelte/store`

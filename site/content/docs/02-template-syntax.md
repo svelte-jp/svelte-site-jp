@@ -1627,6 +1627,28 @@ bind:this={component_instance}
 <svelte:component this={currentSelection.component} foo={bar}/>
 ```
 
+### `<svelte:element>`
+
+```sv
+<svelte:element this={expression}/>
+```
+
+---
+
+`<svelte:element>` 要素は、動的に指定されたタイプの要素をレンダリングさせることができます。これは例えば、CMS からのリッチなテキストコンテンツなどに便利です。もしタグが変わっても、その要素に transition が設定されていない限り、その子要素は保持されます。プロパティやリスナーが存在する場合は、その要素に適用されます。
+
+Svelte がビルド時に処理する要素タイプ固有のバインディング (例: input 要素 の `bind:value`) は動的なタグタイプでは動作しないため、サポートされているバインディングは `bind:this` のみです。
+
+もし `this` が nullish な値を持つ場合、開発モードでは警告(warning) がログに記録されます。
+
+```sv
+<script>
+	let tag = 'div';
+	export let handler;
+</script>
+
+<svelte:element this={tag} on:click={handler}>Foo</svelte:element>
+```
 
 ### `<svelte:window>`
 
@@ -1671,7 +1693,7 @@ bind:this={component_instance}
 <svelte:window bind:scrollY={y}/>
 ```
 
-> Note that the page will not be scrolled to the initial value to avoid accessibility issues. Only subsequent changes to the bound variable of `scrollX` and `scrollY` will cause scrolling. However, if the scrolling behaviour is desired, call `scrollTo()` in `onMount()`.
+> アクセシビリティの問題を避けるため、ページは初期値にスクロールされないことにご注意ください。`scrollX` と `scrollY` にバインドされている変数が変更された後にのみ、スクロールが発生します。ただし、スクロールの挙動が必要であれば、`onMount()` 内で `scrollTo()` を呼び出してください。
 
 ### `<svelte:body>`
 
@@ -1683,7 +1705,7 @@ bind:this={component_instance}
 
 `<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](/docs#template-syntax-element-directives-use-action) を使用することもできます。
 
-`<svelte:body>` はコンポーネントのトップレベルに表示する必要があります。
+`<svelte:window>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```sv
 <svelte:body
@@ -1704,7 +1726,7 @@ bind:this={component_instance}
 
 この要素を使うと、 `document.head` に要素を挿入することができます。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
 
-`<svelte:window>` や `<svelte:head>` と同様に、この要素はコンポーネントのトップレベルに表示する必要があり、ブロックや他の要素の中に置くことはできません。
+`<svelte:window>` と `<svelte:body>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```sv
 <svelte:head>
