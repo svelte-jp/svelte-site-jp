@@ -21,7 +21,7 @@ setContext(key, {
 
 context オブジェクトはなんでも構いません。[ライフサイクル関数](/tutorial/onmount)のように、`setContext` と `getContext` はコンポーネントの初期化時に呼び出されなければいけません。それより後 (例えば `onMount` の中) で呼び出すとエラーをスローします。この例では、コンポーネントがマウントされるまで `map` は作成されないので、この context オブジェクトには `map` 自体ではなく `getMap` 関数が含まれています。
 
-一方、`MapMarker.svelte` では、Mapboxイ ンスタンスへの参照を取得できるようになりました。
+一方、`MapMarker.svelte` では、Mapbox インスタンスへの参照を取得できるようになりました。
 
 ```js
 import { getContext } from 'svelte';

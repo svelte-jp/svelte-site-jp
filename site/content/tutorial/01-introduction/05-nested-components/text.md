@@ -2,13 +2,13 @@
 title: Nested components
 ---
 
-It would be impractical to put your entire app in a single component. Instead, we can import components from other files and then use them as though we were including elements.
+アプリ全体を単一のコンポーネントにまとめるのは現実的ではありません。代わりに、他のファイルからコンポーネントをインポートして、HTML要素を使用するのと同じようにコンポーネントを使用することができます。
 
-We now present you 2 files in the editor on the right (upper bar) to click on, `App.svelte` and `Nested.svelte`.
+右側のエディタに2つのファイルがあります。上部のバーにある `App.svelte` と `Nested.svelte` をクリックすると、それぞれのファイルが表示されます。
 
-Each `.svelte` file holds a component that is a reusable self-contained block of code that encapsulates HTML, CSS, and JavaScript that belong together.
+それぞれの `.svelte` ファイルには、再利用可能な、自己完結型の (HTML、CSS、JavaScript がカプセル化された) コードブロックが含まれています。
 
-Let's add a `<script>` tag to `App.svelte` that imports the file (our component) `Nested.svelte` into our app...
+`<script>` タグを `App.svelte` に追加し、`Nested.svelte` をコンポーネントとしてアプリにインポートしましょう…
 
 ```html
 <script>
@@ -16,13 +16,13 @@ Let's add a `<script>` tag to `App.svelte` that imports the file (our component)
 </script>
 ```
 
-...then use component `Nested` in the app markup:
+…そして `Nested` コンポーネントをアプリのマークアップで使用してください:
 
 ```html
 <p>This is a paragraph.</p>
 <Nested/>
 ```
 
-`Nested.svelte`には`p`要素がありますが、`App.svelte`のスタイルが適用されていないことに注目してください。
+`Nested.svelte` には `p` 要素がありますが、`App.svelte` のスタイルが適用されていないことに注目してください。
 
-またコンポーネント名`Nested`が大文字で始まっていることにも注目してください。この命名規則は、ユーザーが定義したコンポーネントと、通常のHTMLタグを区別するために採用されました。
+またコンポーネント名 `Nested` が大文字で始まっていることにも注目してください。この命名規則は、ユーザーが定義したコンポーネントと、通常のHTMLタグを区別するために採用されました。

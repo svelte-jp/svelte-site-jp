@@ -125,7 +125,7 @@ Svelteのリアクティビティは代入に基づいているため、`.push()
 </script>
 ```
 
-#### 3. `$:` marks a statement as reactive(＄はステートメントがリアクティブであることを示す)
+#### 3. `$:` marks a statement as reactive
 
 ---
 
@@ -187,7 +187,7 @@ Total: {total}
 </script>
 ```
 
-#### 4. Prefix stores with `$` to access their values(ストアに＄を付けて値にアクセス)
+#### 4. Prefix stores with `$` to access their values
 
 ---
 
@@ -216,7 +216,7 @@ Total: {total}
 </script>
 ```
 
-##### ストアコントラクト(Store contract)
+##### Store contract
 
 ```js
 store = { subscribe: (subscription: (value: any) => void) => (() => void), set?: (value: any) => void }
