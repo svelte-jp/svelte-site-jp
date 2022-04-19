@@ -2,9 +2,9 @@
 title: The style directive
 ---
 
-Being able to set CSS properties dynamically is nice. However, this can get unwieldy if you have to write a long string. Mistakes like missing any of the semicolons could make the whole string invalid. Therefore, Svelte provides a nicer way to write inline styles with the style directive.
+CSS プロパティを動的にセットすることができたら良いですよね。しかし、もし長い文字列を書かなければいけないのだとしたら、扱いにくくなってしまうでしょう。セミコロンの書き忘れのようなミスをしてしまうだけで、文字列が全て無効になってしまいます。そのため、Svelte はインラインスタイルを書くためのより良い方法として style ディレクティブを提供します。
 
-Change the style attribute of the paragraph to the following:
+paragraph の style 属性を以下のように変更しましょう:
 
 ```html
 <p 
@@ -13,6 +13,6 @@ Change the style attribute of the paragraph to the following:
 >
 ```
 
-The style directive shares a few qualities with the class directive. You can use a shorthand when the name of the property and the variable are the same. So `style:color="{color}"` can be written as just `style:color`.
+style ディレクティブは class ディレクティブといくつかの点で共通しています。プロパティの名前と変数の名前が同じ場合はショートハンドが使えます。つまり、`style:color="{color}"` は `style:color` と書くこともできます。
 
-Similar to the class directive, the style directive will take precedence if you try to set the same property through a style attribute.
+class ディレクティブと同じように、同じ名前のプロパティが style 属性でセットされていても style ディレクティブのほうが優先されます。
