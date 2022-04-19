@@ -2,9 +2,9 @@
 title: Inline styles
 ---
 
-Apart from adding styles inside style tags, you can also add styles to individual elements using the style attribute. Usually you will want to do styling through CSS, but this can come in handy for dynamic styles, especially when combined with CSS custom properties.
+style タグの内側に style を追加するのとは別に、style 属性を使用して個々の要素に style を追加することもできます。大抵、CSS を通してスタイリングをしたいと思いますが、動的なスタイルには、特に CSS カスタムプロパティと組み合わせるときはこのほうが便利です。
 
-Add the following style attribute to the paragraph element:
+以下の style 属性を paragraph 要素に追加します:
 `style="color: {color}; --opacity: {bgOpacity};"`
 
-Great, now you can style the paragraph using variables that change based on your input without having to make a class for every possible value.
+素晴らしい、可能な値全てに対しクラスを作成することなくinput に基づいて変更される変数によって paragraph をスタイリングすることができます。

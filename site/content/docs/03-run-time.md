@@ -256,7 +256,7 @@ dispatch: ((name: string, detail?: any, options?: DispatchOptions) => boolean) =
 
 ---
 
-Events can be cancelable by passing a third parameter to the dispatch function. The function returns `false` if the event is cancelled with `event.preventDefault()`, otherwise it returns `true`.
+dispatch 関数に3番目のパラメータを渡すことで、イベントがキャンセルできるようになります。もしイベントが `event.preventDefault()` によってキャンセルされると、その関数は `false` を返します。それ以外の場合は `true` を返します。
 
 ```sv
 <script>

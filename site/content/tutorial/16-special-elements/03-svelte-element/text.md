@@ -2,7 +2,7 @@
 title: <svelte:element>
 ---
 
-Sometimes we don't know in advance what kind of DOM element to render. `<svelte:element>` comes in handy here. Instead of a sequence of `if` blocks...
+どの種類の DOM 要素をレンダリングするのか事前にわからない場合があります。この場合は `<svelte:element>` が便利です。`if` ブロックを何個も並べる代わりに…
 
 ```html
 {#if selected === 'h1'}
@@ -14,10 +14,10 @@ Sometimes we don't know in advance what kind of DOM element to render. `<svelte:
 {/if}
 ```
 
-...we can have a single dynamic component:
+…動的なコンポーネントを1つ置きます:
 
 ```html
 <svelte:element this={selected}>I'm a {selected} tag</svelte:element>
 ```
 
-The `this` value can be any string, or a falsy value — if it's falsy, no element is rendered.
+`this` の値は任意の文字列、または falsy な値です。falsy である場合、要素がレンダリングされません。

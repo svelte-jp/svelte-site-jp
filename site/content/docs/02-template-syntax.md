@@ -1635,11 +1635,11 @@ bind:this={component_instance}
 
 ---
 
-The `<svelte:element>` element lets you render an element of a dynamically specified type. This is useful for example when rich text content from a CMS. If the tag is changed, the children will be preserved unless there's a transition attached to the element. Any properties and event listeners present will be applied to the element.
+`<svelte:element>` 要素は、動的に指定されたタイプの要素をレンダリングさせることができます。これは例えば、CMS からのリッチなテキストコンテンツなどに便利です。もしタグが変わっても、その要素に transition が設定されていない限り、その子要素は保持されます。プロパティやリスナーが存在する場合は、その要素に適用されます。
 
-The only supported binding is `bind:this`, since the element type specific bindings that Svelte does at build time (e.g. `bind:value` for input elements) does not work with a dynamic tag type.
+Svelte がビルド時に処理する要素タイプ固有のバインディング (例: input 要素 の `bind:value`) は動的なタグタイプでは動作しないため、サポートされているバインディングは `bind:this` のみです。
 
-If `this` has a nullish value, a warning will be logged in development mode.
+もし `this` が nullish な値を持つ場合、開発モードでは警告(warning) がログに記録されます。
 
 ```sv
 <script>
@@ -1693,7 +1693,7 @@ If `this` has a nullish value, a warning will be logged in development mode.
 <svelte:window bind:scrollY={y}/>
 ```
 
-> Note that the page will not be scrolled to the initial value to avoid accessibility issues. Only subsequent changes to the bound variable of `scrollX` and `scrollY` will cause scrolling. However, if the scrolling behaviour is desired, call `scrollTo()` in `onMount()`.
+> アクセシビリティの問題を避けるため、ページは初期値にスクロールされないことにご注意ください。`scrollX` と `scrollY` にバインドされている変数が変更された後にのみ、スクロールが発生します。ただし、スクロールの挙動が必要であれば、`onMount()` 内で `scrollTo()` を呼び出してください。
 
 ### `<svelte:body>`
 
@@ -1705,7 +1705,7 @@ If `this` has a nullish value, a warning will be logged in development mode.
 
 `<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](/docs#template-syntax-element-directives-use-action) を使用することもできます。
 
-As with `<svelte:window>`, this element may only appear the top level of your component and must never be inside a block or element.
+`<svelte:window>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```sv
 <svelte:body
@@ -1726,7 +1726,7 @@ As with `<svelte:window>`, this element may only appear the top level of your co
 
 この要素を使うと、 `document.head` に要素を挿入することができます。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
 
-As with `<svelte:window>` and `<svelte:body>`, this element may only appear at the top level of your component and must never be inside a block or element.
+`<svelte:window>` と `<svelte:body>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```sv
 <svelte:head>
