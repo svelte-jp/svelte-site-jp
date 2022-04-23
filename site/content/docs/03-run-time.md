@@ -558,7 +558,7 @@ store = spring(value: any, options)
 
 ---
 
-All of the options above can be changed while the spring is in motion, and will take immediate effect.
+上記のオプションは全て spring のモーション中に変更することができ、すぐにその効果に反映されます。
 
 ```js
 const size = spring(100);
