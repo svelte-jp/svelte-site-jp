@@ -25,3 +25,5 @@ let coords = spring({ x: 50, y: 50 }, {
 ```
 
 マウスを振り回して、スライダーをドラッグしてみて、スプリングの動作にどのように影響するかを感じてみてください。スプリングがまだ動いている間に値を調整することができることに注目してください。
+
+Consult the [API reference](/docs#run-time-svelte-motion-spring) for more information.
