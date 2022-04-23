@@ -558,9 +558,33 @@ store = spring(value: any, options)
 
 ---
 
-[`tweened`](/docs#run-time-svelte-motion-tweened) ストアと同様に、`set` と `update` はスプリングが止まれば resolve する promise を返します。`store.stiffness` と `store.damping` プロパティはスプリングが動いている間に変更することができ、すぐに効果を発揮します。
+上記のオプションは全て spring のモーション中に変更することができ、すぐにその効果に反映されます。
+
+```js
+const size = spring(100);
+size.stiffness = 0.3;
+size.damping = 0.4;
+size.precision = 0.005;
+```
+
+---
+
+[`tweened`](/docs#run-time-svelte-motion-tweened) ストアと同様に、`set` と `update` はスプリングが止まれば resolve する promise を返します。
 
 `set` と `update` はどちらも第2引数として `hard` または `soft` プロパティを持つオブジェクトを取ることができます。`{ hard: true }` は対象の値を即座に設定します。`{ soft: n }` は既存の運動量を `n` 秒間保持してから止まります。`{ soft: true }` は `{ soft: 0.5 }` と同等です。
+
+```js
+const coords = spring({ x: 50, y: 50 });
+// updates the value immediately
+coords.set({ x: 100, y: 200 }, { hard: true });
+// preserves existing momentum for 1s
+coords.update(
+	(target_coords, coords) => {
+		return { x: target_coords.x, y: coords.y };
+	},
+	{ soft: 1 }
+);
+```
 
 [スプリングチュートリアルの例を参照してください。](/tutorial/spring)
 
