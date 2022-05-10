@@ -1639,9 +1639,9 @@ bind:this={component_instance}
 
 Svelte がビルド時に処理する要素タイプ固有のバインディング (例: input 要素 の `bind:value`) は動的なタグタイプでは動作しないため、サポートされているバインディングは `bind:this` のみです。
 
-If `this` has a nullish value, the element and its children will not be rendered.
+`this` が nullish な値である場合、この要素と子要素はレンダリングされません。
 
-If `this` is the name of a void tag (e.g., `br`) and `<svelte:element>` has child elements, a runtime error will be thrown in development mode.
+`this` が void 要素のタグ名 (例えば `br`) で、`<svelte:element>` が子要素を持っている場合、開発モードの場合はランタイムエラーがスローされます。
 
 ```sv
 <script>

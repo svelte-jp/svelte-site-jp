@@ -2,9 +2,9 @@
 title: Dynamic attributes
 ---
 
-You can use curly braces to control element attributes, just like you use them to control text.
+テキストをコントロールするのと同様、中括弧を使うことで要素の属性をコントロールすることができます。
 
-Our image is missing a `src` attribute — let's add one:
+画像 (image) に `src` 属性がありません。これを追加してみましょう。
 
 ```html
 <img src={src}>
