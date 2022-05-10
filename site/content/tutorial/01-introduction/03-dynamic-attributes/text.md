@@ -2,9 +2,9 @@
 title: Dynamic attributes
 ---
 
-中括弧を使用してテキストをコントロールしましたが、同じように中括弧を使用して要素の属性をコントロールできます。
+You can use curly braces to control element attributes, just like you use them to control text.
 
-`img`タグには`src`が足りないようです。追加してみましょう。
+Our image is missing a `src` attribute — let's add one:
 
 ```html
 <img src={src}>
@@ -24,7 +24,6 @@ Webアプリケーションは、例えば視覚や動作に障害のある方�
 
 要素の*中*でも中括弧を使用することができます。`<script>`ブロックの中に`name`変数を宣言し、`A man dances.`を`"{name} dances."`に変更してみましょう。
 
-
 ## Shorthand attributes
 
 `src={src}`のように、属性の名前と値の変数が一致することは珍しくありません。このような場合、Svelteでは省略して書くことができます。
@@ -32,4 +31,3 @@ Webアプリケーションは、例えば視覚や動作に障害のある方�
 ```html
 <img {src} alt="A man dances.">
 ```
-

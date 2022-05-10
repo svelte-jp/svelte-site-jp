@@ -465,16 +465,16 @@ The `{@const ...}` tag defines a local constant.
 
 ```sv
 <script>
-  export let boxes;
+	export let boxes;
 </script>
 
 {#each boxes as box}
-  {@const area = box.width * box.height}
+	{@const area = box.width * box.height}
 	{box.width} * {box.height} = {area}
 {/each}
 ```
 
-`{@const}` is only allowed as direct child of `{#each}`, `{:then}`, `{:catch}`, `<Component />` or `<svelte:fragment />`.
+`{@const}` is only allowed as direct child of `{#if}`, `{:else if}`, `{:else}`, `{#each}`, `{:then}`, `{:catch}`, `<Component />` or `<svelte:fragment />`.
 
 
 ### Element directives
@@ -1635,11 +1635,13 @@ bind:this={component_instance}
 
 ---
 
-`<svelte:element>` 要素は、動的に指定されたタイプの要素をレンダリングさせることができます。これは例えば、CMS からのリッチなテキストコンテンツなどに便利です。もしタグが変わっても、その要素に transition が設定されていない限り、その子要素は保持されます。プロパティやリスナーが存在する場合は、その要素に適用されます。
+`<svelte:element>` 要素は、動的に指定されたタイプの要素をレンダリングさせることができます。これは例えば、CMS のリッチなテキストコンテンツを表示する場合などに便利です。プロパティやリスナーが存在する場合は、その要素に適用されます。
 
 Svelte がビルド時に処理する要素タイプ固有のバインディング (例: input 要素 の `bind:value`) は動的なタグタイプでは動作しないため、サポートされているバインディングは `bind:this` のみです。
 
-もし `this` が nullish な値を持つ場合、開発モードでは警告(warning) がログに記録されます。
+If `this` has a nullish value, the element and its children will not be rendered.
+
+If `this` is the name of a void tag (e.g., `br`) and `<svelte:element>` has child elements, a runtime error will be thrown in development mode.
 
 ```sv
 <script>
