@@ -5,7 +5,7 @@ author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
 > 翻訳 : Svelte 日本コミュニティ  
-> 原文 : https://svelte.dev/blog/whats-new-in-svelte-april-2022
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-may-2022
 >
 > 日本語版は原文をよりよく理解するための参考となることを目的としています。  
 > 正確な内容については svelte.dev の原文を参照してください。  
