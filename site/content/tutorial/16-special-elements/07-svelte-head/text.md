@@ -10,4 +10,4 @@ title: <svelte:head>
 </svelte:head>
 ```
 
-> サーバサイドレンダリング (SSR) モードでは、`<svelte:head>` の内容は HTML の残りのHTMLとは別に返されます。
+> サーバサイドレンダリング (SSR) モードでは、`<svelte:head>` の内容は残りのHTMLとは別に返されます。
