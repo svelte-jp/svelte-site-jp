@@ -4,13 +4,15 @@ title: Making an app
 
 このチュートリアルは、コンポーネントを書くプロセスに慣れることを目的としています。しかしいつかは、ご自身のテキストエディタで快適にコンポーネントを書きたいと思うでしょう。
 
-まず最初に、Svelteとビルドツールを統合する必要があります。公式にメンテナンスされている、[Vite](https://vitejs.dev/)、[Rollup](https://rollupjs.org)と[webpack](https://webpack.js.org/)のプラグインが用意されています。
+まず、Svelte とビルドツールをインテグレートする必要があるでしょう。私たちは、[Vite](https://vitejs.dev/) を [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte/) と一緒に使用することを推奨しています。
 
-* [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte)
-* [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte)
-* [svelte-loader](https://github.com/sveltejs/svelte-loader)
+```bash
+npm init vite my-app -- --template svelte
+```
 
-…また、[コミュニティがメンテナンスしているプラグイン](https://sveltesociety.dev/tools)も数多くあります。
+または、[コミュニティによってメンテナンスされているインテグレーション](https://sveltesociety.dev/tools) もございます。
+
+> [SvelteKit](https://kit.svelte.jp) は Svelte チームが提供する公式のアプリケーションフレームワークです。現時点ではまだ開発中ですが、pre-1.0 のソフトウェアを使用することが気にならないのであれば、Svelte アプリを構築するのにおすすめします。
 
 もしWeb開発にあまり慣れておらずこういったツールを使ったことがなくてもご安心ください。順を追って段階的に進められるシンプルなガイド[Svelte for new developers](/blog/svelte-for-new-developers)をご用意しています。
 

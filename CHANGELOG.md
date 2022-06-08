@@ -1,5 +1,10 @@
 # Svelte changelog
 
+## Unreleased
+
+* Faster SSR ([#5701](https://github.com/sveltejs/svelte/pull/5701))
+* Fix `class:` directive updates with `<svelte:element>` ([#7521](https://github.com/sveltejs/svelte/issues/7521))
+
 ## 3.48.0
 
 * Allow creating cancelable custom events with `createEventDispatcher` ([#4623](https://github.com/sveltejs/svelte/issues/4623))

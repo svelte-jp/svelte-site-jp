@@ -461,7 +461,7 @@ key ブロックは式の値が変更されたときに、その中身を破棄�
 
 ---
 
-The `{@const ...}` tag defines a local constant.
+`{@const ...}` タグはローカル定数を定義します。
 
 ```sv
 <script>
@@ -474,7 +474,7 @@ The `{@const ...}` tag defines a local constant.
 {/each}
 ```
 
-`{@const}` is only allowed as direct child of `{#if}`, `{:else if}`, `{:else}`, `{#each}`, `{:then}`, `{:catch}`, `<Component />` or `<svelte:fragment />`.
+`{@const}` は、`{#if}`、`{:else if}`、`{:else}`、`{#each}`、`{:then}`、`{:catch}`、`<Component />`、`<svelte:fragment />` の直下にのみ配置することができます。
 
 
 ### Element directives
@@ -627,7 +627,7 @@ bind:property={variable}
 
 ---
 
-`bind:` は `on:` ディレクティブと一緒に使うことができます。変数のバインドとイベントハンドラーは、記述の順番に基づいて実行されます。
+`bind:` ディレクティブと `on:` ディレクティブを一緒に使用する場合、イベントハンドラが呼ばれた際には、定義された順番がバインドされた変数の値に影響します。
 
 ```sv
 <script>
@@ -641,6 +641,7 @@ bind:property={variable}
 />
 ```
 
+ここではテキストの input の値を、`input` イベントを使用してバインドしています。他の要素のバインディングでは、例えば `change` などの異なるイベントが使用されることになります。
 
 ##### Binding `<select>` value
 
@@ -858,7 +859,7 @@ style:property
 
 ---
 
-The `style:` directive provides a shorthand for setting multiple styles on an element.
+`style:` ディレクティブは、要素に対して複数のスタイルをセットするためのショートハンドを提供します。
 
 ```sv
 <!-- These are equivalent -->
@@ -877,7 +878,7 @@ The `style:` directive provides a shorthand for setting multiple styles on an el
 
 ---
 
-When `style:` directives are combined with `style` attributes, the directives will take precedence:
+`style:` ディレクティブが `style` 属性と一緒に使用されている場合、`style:` ディレクティブのほうが優先されます。
 
 ```sv
 <div style="color: blue;" style:color="red">This will be red</div>
