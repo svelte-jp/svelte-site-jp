@@ -627,7 +627,7 @@ bind:property={variable}
 
 ---
 
-`bind:` は `on:` ディレクティブと一緒に使うことができます。変数のバインドとイベントハンドラーは、記述の順番に基づいて実行されます。
+If you're using `bind:` directives together with `on:` directives, the order that they're defined in affects the value of the bound variable when the event handler is called.
 
 ```sv
 <script>
@@ -641,6 +641,7 @@ bind:property={variable}
 />
 ```
 
+Here we were binding to the value of a text input, which uses the `input` event. Bindings on other elements may use different events such as `change`.
 
 ##### Binding `<select>` value
 

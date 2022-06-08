@@ -826,7 +826,7 @@ export default class ElementWrapper extends Wrapper {
 				(${data}.multiple ? @select_options : @select_option)(${this.var}, ${data}.value);
 			`);
 			block.chunks.update.push(b`
-				if (${block.renderer.dirty(Array.from(dependencies))} && 'value' in ${data}) (${data}.multiple ? @select_options : @select_option)(${this.var}, ${data}.value);;
+				if (${block.renderer.dirty(Array.from(dependencies))} && 'value' in ${data}) (${data}.multiple ? @select_options : @select_option)(${this.var}, ${data}.value);
 			`);
 		} else if (this.node.name === 'input' && this.attributes.find(attr => attr.node.name === 'value')) {
 			const type = this.node.get_static_attribute_value('type');
@@ -1048,7 +1048,7 @@ export default class ElementWrapper extends Wrapper {
 
 			block.chunks.hydrate.push(updater);
 
-			if (has_spread) {
+			if (has_spread || this.node.is_dynamic_element) {
 				block.chunks.update.push(updater);
 			} else if ((dependencies && dependencies.size > 0) || this.class_dependencies.length) {
 				const all_dependencies = this.class_dependencies.concat(...dependencies);
