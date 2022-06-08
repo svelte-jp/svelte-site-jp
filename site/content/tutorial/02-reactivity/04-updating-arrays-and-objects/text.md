@@ -2,11 +2,11 @@
 title: Updating arrays and objects
 ---
 
-Svelte's reactivity is triggered by assignments. Methods that mutate arrays or objects will not trigger updates by themselves.
+Svelte のりアクティビティは代入によってトリガーされます。配列やオブジェクトを変更するようなメソッドでは、その更新がトリガーされません。
 
-In this example, clicking the "Add a number" button calls the `addNumber` function, which appends a number to the array but doesn't trigger the recalculation of `sum`.
+こちらの例では、"Add a number" ボタンをクリックして `addNumber` 関数を呼び出しますが、配列に数値が追加されるものの `sum` の再計算はトリガーされません。
 
-One way to fix that is to assign `numbers` to itself to tell the compiler it has changed:
+これを修正する方法の1つとして、`numbers` に `numbers` 自身を代入することでその変更をコンパイラに教えることができます。
 
 ```js
 function addNumber() {
@@ -15,7 +15,7 @@ function addNumber() {
 }
 ```
 
-You could also write this more concisely using the ES6 spread syntax:
+また、ES6 のスプレッド構文を使用してより簡潔に書くこともできます。
 
 ```js
 function addNumber() {
@@ -23,7 +23,7 @@ function addNumber() {
 }
 ```
 
-The same rule applies to array methods such as `pop`, `shift`, and `splice` and to objects methods such as `Map.set`, `Set.add`, etc.
+同じルールが、`pop`、`shift`、`splice` などの配列のメソッドや、`Map.set`、`Set.add` などのオブジェクトのメソッドにも適用されます。
 
 配列やオブジェクトの *プロパティ* への代入（例：`obj.foo += 1` や `array[i] = x`）は値自体への代入と同じように動作します。
 
@@ -33,7 +33,7 @@ function addNumber() {
 }
 ```
 
-However, indirect assignments to references such as this...
+ただし、以下のケースのような参照への間接的な代入は…
 
 ```js
 const foo = obj.foo;
@@ -49,6 +49,6 @@ function quox(thing) {
 quox(obj);
 ```
 
-...won't trigger reactivity on `obj.foo.bar`, unless you follow it up with `obj = obj`.
+…`obj.foo.bar` に対するリアクティビティはトリガーされません。もしトリガーしたければ、`obj = obj` を続けて書く必要があります。
 
-A simple rule of thumb: the updated variable must directly appear on the left hand side of the assignment.
+大まかなまとめ: 更新される変数は代入の左側に直接置かなければならない。
