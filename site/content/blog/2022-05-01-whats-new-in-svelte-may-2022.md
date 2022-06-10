@@ -24,13 +24,12 @@ authorURL: https://desandoval.net
 - `svelte:element` と `sveltekit:reload` がサポートされました
 - 無効な Svelte インポートパスが自動的に検知されるようになりました。以前の動作に戻したい場合は PR をご確認ください ([#1448](https://github.com/sveltejs/language-tools/pull/1448))
 - `source.sortImports` によって、未使用のインポートを削除することなくインポートをソートできるようになりました ([#1338](https://github.com/sveltejs/language-tools/issues/1338))
-- HMTL 属性にカーソルを合わせたときに、TS のホバー情報ではなく HTML のホバー情報が表示されるようになり、より便利な情報が見られるようになりました ([#1447](https://github.com/sveltejs/language-tools/pull/1447))
+- HTML 属性にカーソルを合わせたときに、TS のホバー情報ではなく HTML のホバー情報が表示されるようになり、より便利な情報が見られるようになりました ([#1447](https://github.com/sveltejs/language-tools/pull/1447))
 - VS Code で、`Insert Snippet` コマンドを使って既存のコードブロックをコントロールフロータグでラップできるようになりました ([#1373](https://github.com/sveltejs/language-tools/pull/1373))
 
 ## What's new in SvelteKit
 - ルート(routes)のディレクトリにあるファイルやディレクトリの名前を `__tests__` や `__test__` にすることができるようになりました ([#4438](https://github.com/sveltejs/kit/pull/4438))
 - Netlify Edge Functions ([#4657](https://github.com/sveltejs/kit/pull/4657)) と Vercel build output API ([#4663](https://github.com/sveltejs/kit/pull/4663)) がサポートされました
-- Custom `load` dependencies, array of strings representing URLs the page depends on, are now available when loading routes ([Docs](https://kit.svelte.jp/docs/loading#output-dependencies), [#4536](https://github.com/sveltejs/kit/pull/4536))
 - ルート(routes)のロード時、そのページが依存している URL を表す文字列の配列である dependencies プロパティに、カスタムで URL を追加できるようになりました ([Docs](https://kit.svelte.dev/docs/loading#output-dependencies), [#4536](https://github.com/sveltejs/kit/pull/4536))
 
 
