@@ -1,6 +1,6 @@
 {
   "name": "svelte",
-  "version": "3.48.0",
+  "version": "3.49.0",
   "description": "Cybernetically enhanced web apps",
   "module": "index.mjs",
   "main": "index",
@@ -96,7 +96,7 @@
     "posttest": "agadoo internal/index.mjs",
     "prepublishOnly": "node check_publish_env.js && npm run lint && npm test",
     "textlint": "node -e \"var shell=require('shelljs');var files=shell.find(['./CONTRIBUTING_ja.md','./site/content/**/*.md']).join(' ');if(shell.exec('textlint -f pretty-error '+files).code!==0){shell.exit(1)};\"",
-    "tsd": "tsc -p src/compiler --emitDeclarationOnly && tsc -p src/runtime --emitDeclarationOnly",
+    "tsd": "node ./generate-type-definitions.js",
     "lint": "eslint \"{src,test}/**/*.{ts,js}\""
   },
   "repository": {
@@ -125,6 +125,7 @@
     "@rollup/plugin-typescript": "^2.0.1",
     "@rollup/plugin-virtual": "^2.0.0",
     "@sveltejs/eslint-config": "github:sveltejs/eslint-config#v5.8.0",
+    "@types/aria-query": "^5.0.0",
     "@types/mocha": "^7.0.0",
     "@types/node": "^8.10.53",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
@@ -132,6 +133,8 @@
     "acorn": "^8.4.1",
     "agadoo": "^1.1.0",
     "all-contributors-cli": "^6.20.0",
+    "aria-query": "^5.0.0",
+    "axobject-query": "^3.0.1",
     "code-red": "^0.2.5",
     "css-tree": "^1.1.2",
     "eslint": "^8.0.0",
@@ -148,7 +151,7 @@
     "puppeteer": "^2.0.0",
     "rollup": "^1.27.14",
     "shelljs": "^0.8.3",
-    "source-map": "^0.7.3",
+    "source-map": "^0.7.4",
     "source-map-support": "^0.5.13",
     "sourcemap-codec": "^1.4.8",
     "textlint": "^12.1.0",
@@ -158,13 +161,5 @@
     "tiny-glob": "^0.2.6",
     "tslib": "^2.0.3",
     "typescript": "^3.7.5"
-  },
-  "nyc": {
-    "include": [
-      "compiler/svelte.js",
-      "shared.js"
-    ],
-    "sourceMap": true,
-    "instrument": true
   }
 }

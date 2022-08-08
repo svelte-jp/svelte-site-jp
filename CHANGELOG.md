@@ -2,8 +2,26 @@
 
 ## Unreleased
 
-* Faster SSR ([#5701](https://github.com/sveltejs/svelte/pull/5701))
-* Fix `class:` directive updates with `<svelte:element>` ([#7521](https://github.com/sveltejs/svelte/issues/7521))
+* Add a11y warning `a11y-role-has-required-aria-props` which checks that elements with `role` attribute has all required attributes for that role. ([#5852](https://github.com/sveltejs/svelte/pull/5852))
+* Add a11y warning `aria-proptypes` which checks ARIA state and property values ([#6978](https://github.com/sveltejs/svelte/pull/6978))
+* Add a11y warning `a11y-no-abstract-role` which checks ARIA roles must be non-abstract ARIA role ([#6241](https://github.com/sveltejs/svelte/pull/6241))
+* Add a11y warning `a11y-no-interactive-element-to-noninteractive-role` which checks for noninteractive roles used on interactive elements ([#5955](https://github.com/sveltejs/svelte/pull/5955))
+* Remove of empty stylesheets created from transitions ([#4801](https://github.com/sveltejs/svelte/issues/4801), [#7164](https://github.com/sveltejs/svelte/issues/7164))
+* Disallow invalid CSS selectors starting with a combinator ([#7643](https://github.com/sveltejs/svelte/issues/7643))
+* Add `ComponentEvents` convenience type ([#7702](https://github.com/sveltejs/svelte/pull/7702))
+* Add `SveltePreprocessor` utility type ([#7742](https://github.com/sveltejs/svelte/pull/7742))
+* Handle arrow function on `<slot>` inside `<svelte:fragment>` ([#7485](https://github.com/sveltejs/svelte/issues/7485))
+* Use `Node.parentNode` instead of `Node.parentElement` for legacy browser support ([#7723](https://github.com/sveltejs/svelte/issues/7723))
+
+## 3.49.0
+
+* Improve performance of string escaping during SSR ([#5701](https://github.com/sveltejs/svelte/pull/5701))
+* Add `ComponentType` and `ComponentProps` convenience types ([#6770](https://github.com/sveltejs/svelte/pull/6770))
+* Add support for CSS `@layer` ([#7504](https://github.com/sveltejs/svelte/issues/7504))
+* Export `CompileOptions` from `svelte/compiler` ([#7658](https://github.com/sveltejs/svelte/pull/7658))
+* Fix DOM-less components not being properly destroyed ([#7488](https://github.com/sveltejs/svelte/issues/7488))
+* Fix `class:` directive updates with `<svelte:element>` ([#7521](https://github.com/sveltejs/svelte/issues/7521), [#7571](https://github.com/sveltejs/svelte/issues/7571))
+* Harden attribute escaping during SSR ([#7530](https://github.com/sveltejs/svelte/pull/7530))
 
 ## 3.48.0
 
