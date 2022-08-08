@@ -7,7 +7,7 @@ title: Making an app
 まず、Svelte とビルドツールをインテグレートする必要があるでしょう。私たちは、[Vite](https://vitejs.dev/) を [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte/) と一緒に使用することを推奨しています。
 
 ```bash
-npm init vite my-app -- --template svelte
+npm create vite@latest my-app -- --template svelte
 ```
 
 または、[コミュニティによってメンテナンスされているインテグレーション](https://sveltesociety.dev/tools) もございます。

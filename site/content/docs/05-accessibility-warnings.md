@@ -54,6 +54,17 @@ DOM要素の中には、ARIAロールやステート、プロパティをサポ�
 
 ---
 
+### `role-has-required-aria-props`
+
+Elements with ARIA roles must have all required attributes for that role.
+
+```sv
+<!-- A11y: A11y: Elements with the ARIA role "checkbox" must have the following attributes defined: "aria-checked" -->
+<span role="checkbox" aria-labelledby="foo" tabindex="0"></span>
+```
+
+---
+
 ### `a11y-hidden`
 
 一部のDOM要素は、スクリーンリーダーのナビゲーションに有用であるため、非表示にすべきではありません。
@@ -83,6 +94,18 @@ imgのalt属性には、image、picture、またはphotoという単語は含ん
 
 <!-- A11y: スクリーンリーダーでは、すでに<img>要素を「画像」として読み上げています -->
 <img src="foo" alt="Picture of baz fixing a bug." />
+```
+
+---
+
+### `a11y-incorrect-aria-attribute-type`
+
+Enforce that only the correct type of value is used for aria attributes. For example, `aria-hidden`
+should only receive a boolean.
+
+```sv
+<!-- A11y: The value of 'aria-hidden' must be exactly one of true or false -->
+<div aria-hidden="yes"/>
 ```
 
 ---
@@ -223,6 +246,17 @@ HTMLの要素には、デフォルトでARIA roleを持つものがあります�
 
 <!-- A11y: 冗長な　role 'img' -->
 <img role="img" src="foo.jpg" />
+```
+
+---
+
+### `a11y-no-interactive-element-to-noninteractive-role`
+
+[WAI-ARIA](https://www.w3.org/TR/wai-aria-1.1/#usage_intro) roles should not be used to convert an interactive element to a non-interactive element. Non-interactive ARIA roles include `article`, `banner`, `complementary`, `img`, `listitem`, `main`, `region` and `tooltip`.
+
+```sv
+<!-- A11y: <textarea> cannot have role 'listitem' -->
+<textarea role="listitem" />
 ```
 
 ---
