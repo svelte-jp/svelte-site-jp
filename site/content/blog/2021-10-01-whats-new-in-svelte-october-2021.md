@@ -61,7 +61,7 @@ SvelteKitのすべての更新を確認するには、[SvelteKitのChangelog](ht
 - [hirehive](https://www.hirehive.com/)は、求職者と仕事のトラッキングサイトです
 - [Microsocial](https://microsocial.xyz/)は、実験的なPeer-to-Peerソーシャルプラットフォームです
 - [Dylan Ipsum](https://www.dylanlyrics.app/)は、lorem ipsumをBob Dylanの歌詞に置き換えるランダムテキストジェネレータです
-- [Chip8 Svelte](https://github.com/mikeyhogarth/chip8-svelte)は、CHIP8 Typescriptの上に構築されたCHIP-8エミュレータのフロントエンドです
+- [Chip8 Svelte](https://github.com/mikeyhogarth/chip8-svelte)は、CHIP8 TypeScriptの上に構築されたCHIP-8エミュレータのフロントエンドです
 
 **Svelteのプロジェクトをお探しですか？ウェブ上でのSvelteの存在感を高めることに興味がありますか？**SvelteKitでのSvelte Societyの書き換えに貢献したい方は、[オープンなIssueのリスト](https://github.com/svelte-society/sveltesociety-2021/issues)をチェックしてください。
 
@@ -83,7 +83,7 @@ SvelteKitのすべての更新を確認するには、[SvelteKitのChangelog](ht
 
 **Libraries, Tools & Components**
 - [sveltekit-netlify-cms](https://github.com/buhrmi/sveltekit-netlify-cms)は、Netlify CMSで使用するために構成されたSvelteKitスケルトンアプリです
-- [SvelteFireTS](https://github.com/jacobbowdoin/sveltefirets)は、Fireship.ioにインスパイアされた、SvelteKit + Typescript + Firebaseライブラリです
+- [SvelteFireTS](https://github.com/jacobbowdoin/sveltefirets)は、Fireship.ioにインスパイアされた、SvelteKit + TypeScript + Firebaseライブラリです
 - [stores-x](https://github.com/Anyass3/stores-x)は、vueXのようにSvelteストアを使用することができます
 - [sveltekit-snippets](https://github.com/stordahl/sveltekit-snippets)は、SvelteKitとVanilla Svelteの共通パターンのスニペットを提供するVSCode拡張です
 - [svelte-xactor](https://github.com/wobsoriano/svelte-xactor)は、xactorマシンをストアコントラクトを実装したグローバルストアに簡単に変換することができるミドルウェアです

@@ -50,7 +50,7 @@ authorURL: https://desandoval.net
 
 **Apps & Sites built with Svelte**
 - [Launcher](https://launcher.team/) はオープンソースのアプリランチャーです。SvelteKit、Prisma、Tailwind を使用しています
-- [Paaster](https://paaster.io/) は end to end で暗号化された pastebin で、デフォルトで安全です。Svelte、Vite、Typescript、Python、Starlette、rclone、Docker で構築されています
+- [Paaster](https://paaster.io/) は end to end で暗号化された pastebin で、デフォルトで安全です。Svelte、Vite、TypeScript、Python、Starlette、rclone、Docker で構築されています
 - [Simple AF Video Converter](https://github.com/berlyozzy/Simple-AF-Video-Converter) は ffmpeg.wasm の Electron ラッパーです。フォーマット間の動画変換を簡単に行うことができます。
 - [Streamchaser](https://github.com/streamchaser/streamchaser) は、一元化されたエンターテイメントテクノロジープラットフォームを通じて、映画やシリーズ、ドキュメンタリーなどの検索をシンプルにすることを追求しています
 - [Svelte Color Picker](https://github.com/V-Py/svelte-material-color-picker) はシンプルなカラーピッカーで、Svelteで構築されています
@@ -98,7 +98,7 @@ _To Watch_
 
 **Libraries, Tools & Components**
 - [SvelTable](https://sveltable.io/) は多機能なデータテーブルコンポーネントで、Svelteで構築されています
-- [svelte-cyberComp](https://github.com/Cybersteam00/svelte-cyberComp) はパワフルで軽量な Svelte コンポーネントで、Svelte と Typescript で書かれています
+- [svelte-cyberComp](https://github.com/Cybersteam00/svelte-cyberComp) はパワフルで軽量な Svelte コンポーネントで、Svelte と TypeScript で書かれています
 - [Flowbite Svelte](https://github.com/shinokada/flowbite-svelte) は Svelte 向けの非公式な Flowbite コンポーネントライブラリです
 - [Svelte-Tide-Project](https://github.com/jbertovic/svelte-tide-project) は、フロントエンドに Svelte、バックエンドに Rust の Tide を使った スターター・テンプレートです
 - [Fetch Inject](https://github.com/vhscom/fetch-inject#sveltekit) は非同期な JavaScript の依存関係を管理するためのパフォーマンス最適化の実装で、Svelte をサポートし始めました

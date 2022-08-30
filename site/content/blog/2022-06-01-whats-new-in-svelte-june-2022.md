@@ -1,33 +1,42 @@
 ---
-title: "What's new in Svelte: June 2022"
-description: "Cancellable dispatched events, deeper {@const} declarations and more!"
+title: "What's new in Svelte: 2022年6月"
+description: "キャンセル可能なディスパッチイベント、より深い {@const} 宣言など!"
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-june-2022
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-With last month's [Svelte Summit](https://www.youtube.com/watch?v=qqj2cBockqE) behind us, we're ready to apply everything we learned in this new month of June! Also new this month are some quality-of-life changes to `createEventDispatcher`, `@const` declarations and tons of progress toward SvelteKit 1.0.
+先月 [Svelte Summit](https://www.youtube.com/watch?v=qqj2cBockqE) があったので、私たちは学んだことすべてをこの6月に適用する準備ができています! また、`createEventDispatcher`、`@const` 宣言 などの QOL を上げてくれる変更や、SvelteKit 1.0 に向けた大量の進捗があります。
 
-Let's dive in!
+それでは見ていきましょう!
 
 ## What's new in Svelte
-- Custom events can now be cancelled in the `createEventDispatcher` function (**3.48.0**, [Docs](https://svelte.dev/docs#run-time-svelte-createeventdispatcher), [PR](https://github.com/sveltejs/svelte/pull/7064))
-- The `{@const}` tag can now be used in `{#if}` blocks to conditionally define variables (**3.48.0**, [Docs](https://svelte.dev/docs#template-syntax-const), [PR](https://github.com/sveltejs/svelte/pull/7451))
-- Lots of bug fixes across `<svelte:element>`, animations and various DOM elements. Check out the [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md#3480) for a deeper dive!
+- `createEventDispatcher` 関数で、カスタムイベントをキャンセルできるようになりました (**3.48.0**, [Docs](https://svelte.jp/docs#run-time-svelte-createeventdispatcher), [PR](https://github.com/sveltejs/svelte/pull/7064))
+- `{@const}` タグが `{#if}` ブロックの中で使えるようになり、条件に応じて変数が定義できるようになりました (**3.48.0**, [Docs](https://svelte.jp/docs#template-syntax-const), [PR](https://github.com/sveltejs/svelte/pull/7451))
+- `<svelte:element>`、アニメーション、多くの DOM 要素に関するバグが修正されました。詳細は [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md#3480) をご覧ください!
 
 
 ## What's new in SvelteKit
-- Vite 2.9.9 was released as one of the last Vite 2 releases. The Svelte team has been hard at work contributing to the the Vite 3 release to make the integration between SvelteKit and Vite smoother than ever ([Vite 3.0 Milestone](https://github.com/vitejs/vite/milestone/5))
-- `config.kit.alias` lets you more easily declare a custom alias to replace values in `import` statements ([Docs](https://kit.svelte.dev/docs/configuration#alias), [PR](https://github.com/sveltejs/kit/pull/4964))
-- Pages marked for prerendering will now fail during SSR at runtime ([PR](https://github.com/sveltejs/kit/pull/4812))
+- Vite 2 のリリースの最後の1つとして、Vite 2.9.9 がリリースされました。Svelte チームは、SvelteKit と Vite の統合をこれまで以上にスムーズにするために、Vite 3 のリリースに向けて、一生懸命コントリビュートしています ([Vite 3.0 Milestone](https://github.com/vitejs/vite/milestone/5))
+- `config.kit.alias` によって、`import` 文の値を置き換えるカスタムのエイリアスを簡単に宣言できるようになりました ([Docs](https://kit.svelte.dev/docs/configuration#alias), [PR](https://github.com/sveltejs/kit/pull/4964))
+- プリレンダリングされるようマークされたページが、SSR の実行中に失敗するようになりました ([PR](https://github.com/sveltejs/kit/pull/4812))
 
 **Breaking Changes**
-- Node 14 is no longer supported ([PR](https://github.com/sveltejs/kit/pull/4922))
-- Requests to `/favicon.ico` will no longer be suppressed and will instead be handled as a valid route ([PR](https://github.com/sveltejs/kit/pull/5046))
-- AMP support has been moved to a separate `@sveltejs/amp` package ([Docs](https://kit.svelte.dev/docs/seo#manual-setup-amp), [PR](https://github.com/sveltejs/kit/pull/4710))
-- Generated types are now written to `_types` directories - update your imports accordingly ([PR](https://github.com/sveltejs/kit/pull/4705))
-- `%svelte.head%` and `%svelte.body%` are now `%sveltekit.head%` and `%sveltekit.body%` in `app.html` ([Docs](https://kit.svelte.dev/docs/migrating#project-files-src-template-html), [PR](https://github.com/sveltejs/kit/pull/5016/))
-- `LoadInput` is now `LoadEvent`
-- Dropped support for Wrangler 1 in favor of Wrangler 2 ([PR](https://github.com/sveltejs/kit/pull/4887))
+- Node 14 はもうサポートされません ([PR](https://github.com/sveltejs/kit/pull/4922))
+- `/favicon.ico` に対するリクエストはもう抑制されなくなり、正しいルート(route)として扱われるようになりました ([PR](https://github.com/sveltejs/kit/pull/5046))
+- AMP サポートは `@sveltejs/amp` パッケージに分割されました ([Docs](https://kit.svelte.jp/docs/seo#manual-setup-amp), [PR](https://github.com/sveltejs/kit/pull/4710))
+- Generated types は `_types` ディレクトリに生成されるようになったため、それに合わせてインポートを更新してください ([PR](https://github.com/sveltejs/kit/pull/4705))
+- `%svelte.head%` と `%svelte.body%` は、`app.html` の `%sveltekit.head%` と `%sveltekit.body%` になりました  ([Docs](https://kit.svelte.jp/docs/migrating#project-files-src-template-html), [PR](https://github.com/sveltejs/kit/pull/5016/))
+- `LoadInput` は `LoadEvent` になりました
+- Wrangler 2 を優先するため、Wrangler 1 はサポートされなくなりました ([PR](https://github.com/sveltejs/kit/pull/4887))
 
 ---
 
@@ -106,8 +115,8 @@ There were lots of Svelte stores released this month from a number of authors...
 - [svelte-persistent-store](https://github.com/furudean/svelte-persistent-store) is a writable svelte store that saves and loads data from `Window.localStorage` or `Window.sessionStorage`.
 
 
-Did we miss anything? Join us on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs) to add your voice.
+もし見落としがありましたら、[Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.com/invite/yy75DKs) で教えてください。
 
-Don't forget that you can also join us in-person at the Svelte Summit in Stockholm! Come join us for two days of awesome Svelte content! [Get your tickets now](https://ti.to/svelte/svelte-summit-fall-edition).
+ストックホルムで開催される Svelte Summit に現地参加することもできますので、お忘れなく! Svelteの素晴らしいコンテンツでいっぱいの2日間に是非加わってください! [チケットはこちらです](https://ti.to/svelte/svelte-summit-fall-edition)。
 
-See y'all next month!
+また来月お会いしましょう!
