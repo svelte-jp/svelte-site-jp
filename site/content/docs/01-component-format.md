@@ -55,9 +55,7 @@ development モード（[コンパイラオプション](/docs#compile-time-svel
 
 ---
 
-`const` や `class`、`function` をエクスポートすると、コンポーネントの外からは読み取り専用になります。ただし、関数*式*は有効なプロパティです。
-
-読み取り専用のプロパティは、[`bind:this` 構文](/docs#template-syntax-component-directives-bind-this)を使ってコンポーネントに関連付けられた要素のプロパティとしてアクセスできます。
+`const` や `class`、`function` をエクスポートすると、コンポーネントの外からは読み取り専用になります。ただし、以下で示すように、関数は有効なプロパティ値(valid prop values)です。
 
 ```sv
 <script>
@@ -72,6 +70,8 @@ development モード（[コンパイラオプション](/docs#compile-time-svel
 	export let format = n => n.toFixed(2);
 </script>
 ```
+
+読み取り専用のプロパティは要素のプロパティとしてアクセスでき、[`bind:this` 構文](/docs#template-syntax-component-directives-bind-this) を使用してコンポーネントに結び付けられます。
 
 ---
 
@@ -125,15 +125,29 @@ Svelteのリアクティビティは代入に基づいているため、`.push()
 </script>
 ```
 
+---
+
+Svelteの `<script>` ブロックはコンポーネントが作成されたときのみ実行されるため、`<script>` ブロック内の代入は、プロパティの更新時に自動で再実行されません。プロパティの変更を追跡したい場合は、次のセクションの例をご覧ください。
+
+```sv
+<script>
+	export let person;
+	// this will only set `name` on component creation
+	// it will not update when `person` does
+	let { name } = person;
+</script>
+```
+
 #### 3. `$:` marks a statement as reactive
 
 ---
 
-トップレベルの（つまりブロック内や関数内でない）ステートメントは `$:` という [JS ラベル構文](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/label) の接頭辞をつけることでリアクティブにできます。リアクティブステートメントは、依存する値が変更されるたびに、コンポーネント更新の直前に実行されます。
+トップレベルの（つまりブロック内や関数内でない）ステートメントは `$:` という [JS ラベル構文](https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Statements/label) の接頭辞をつけることでリアクティブにできます。リアクティブステートメントは、他のスクリプトコードの後、かつコンポーネントのマークアップがレンダリングされる前に実行されます。また、依存する値が変更されるたびにも実行されます。
 
 ```sv
 <script>
 	export let title;
+	export let person
 
 	// これは `title` プロパティが変わるたびに
 	// `document.title` を更新します
@@ -143,6 +157,12 @@ Svelteのリアクティビティは代入に基づいているため、`.push()
 		console.log(`複数のステートメントをまとめることができます`);
 		console.log(`現在のタイトルは ${title}`);
 	}
+
+	// this will update `name` when 'person' changes
+	$: ({ name } = person);
+
+	// don't do this. it will run before the previous line
+	let name2 = name;
 </script>
 ```
 

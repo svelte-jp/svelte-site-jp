@@ -52,7 +52,7 @@ SvelteKitのすべてのアップデートを確認するには、[SvelteKit cha
 - [macos-web](https://github.com/PuruVJ/macos-web) by @puruvjdev は、Svelteを使って、一から作り直しました。詳細はこの[Twitter スレッド](https://twitter.com/puruvjdev/status/1426267327687847939)をご覧ください。
 - [Brave Search](https://search.brave.com/) は、Svelteを使用しています。
 - [exatorrent](https://github.com/varbhat/exatorrent) は、GoとSvelteで書かれた、セルフホスティング可能で使いやすく、軽量で機能豊富なtorrentクライアントです。
-- [json2TsTypes](https://github.com/jatinhemnani01/json2TsTypes) は、JSONをTypescriptのTypes/Interfacesに変換するシンプルなツールです。
+- [json2TsTypes](https://github.com/jatinhemnani01/json2TsTypes) は、JSONをTypeScriptのTypes/Interfacesに変換するシンプルなツールです。
 - [Histogram.dev](https://histogram.dev/) は、CSVの各機能のヒストグラムを生成します。
 - [cybernetic.dev](https://cybernetic.dev/) は、Svelteの学習中に行われたデータ中心のUI実験のコレクションです。
 - [LunaNotes](https://chrome.google.com/webstore/detail/lunanotes-youtube-video-n/oehoffnnkgcdacmbkhmlbjedinpampak?hl=en) は、YouTube動画のメモを取るのに役立つChrome拡張機能です。

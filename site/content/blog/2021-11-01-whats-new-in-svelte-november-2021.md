@@ -80,7 +80,7 @@ SvelteおよびSvelteKitのすべての更新を確認するには、それぞ�
 - [date-picker-svelte](https://github.com/probablykasper/date-picker-svelte)は、Svelte用の日付と時間のピッカーです。
 - [TwelveUI](https://twelveui.readme.io/reference/what-is-twelveui)は、アクセシビリティを内蔵したSvelteのコンポーネントライブラリです。
 - [svelte-outclick](https://github.com/babakfp/svelte-outclick/)は、outclickイベントを提供することで、要素の外側でクリックをリッスンすることができるSvelteコンポーネントです。
-- [svelte-zero-api](https://github.com/ymzuiku/svelte-zero-api)では、SvelteKit APIをクライアント関数のように使用することができます - Typescriptをサポートしています。
+- [svelte-zero-api](https://github.com/ymzuiku/svelte-zero-api)では、SvelteKit APIをクライアント関数のように使用することができます - TypeScriptをサポートしています。
 - [svelte-recaptcha-v2](https://github.com/basaran/svelte-recaptcha-v2)は、Svelte SPA、SSR、sveltekitの静的サイト用のGoogle reCAPTCHA v2の実装です。
 - [Svelte Body](https://github.com/ghostdevv/svelte-body)は、SvelteKitやRoutifyと連携して、ルートのボディにスタイルを適用することができます。
 - [svelte-debug-console](https://github.com/basaran/svelte-debug-console)は、Svelte SPA、SSR、sveltekitの静的サイトのためのdebug.jsの実装で、デバッグ文をブラウザ上で確認することができます。
