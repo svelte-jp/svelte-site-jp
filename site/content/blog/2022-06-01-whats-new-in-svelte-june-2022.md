@@ -43,19 +43,19 @@ authorURL: https://desandoval.net
 ## Community Showcase
 
 **Apps & Sites built with Svelte**
-- [Plantarium](https://github.com/jim-fx/plantarium) is a tool for the procedural generation of 3D plants.
-- [SPATULA](https://github.com/AlexWarnes/lamina-spatula) is a tool for building shading materials that are exportable as code material in any project that uses lamina and threejs
-- [Waaard](https://waaard.com/) lets you create and send protected links with a variety of SSO providers
-- [Magidoc](https://github.com/magidoc-org/magidoc) is a fast and highly customizable GraphQL documentation generator
-- [myMarkmap](https://github.com/eyssette/myMarkmap) is a custom editor for Markmap, built with SvelteKit
-- [PassShare](https://passshare.mynt.pw/) is a way for you to share your passwords to your friends, securely and effortlessly
-- [DashingOS](https://beta.dashingos.com/) is a tool (like Notion + CodeSandbox) to make it quick and easy to prototype and document your work all in one place
-- [worker-kit-email](https://github.com/miunau/worker-kit-email) helps you develop transactional emails quickly using regular SvelteKit routes
-- [kaios-weather-svelte](https://github.com/cyan-2048/kaios-weather-svelte) is a very familiar looking weather app for KaiOS
-- [svelte-gantt](https://github.com/ANovokmet/svelte-gantt) is a lightweight and fast interactive gantt chart/resource booking component
-- [Miru](https://github.com/ThaUnknown/miru) is a BitTorrent streaming software for cats
+- [Plantarium](https://github.com/jim-fx/plantarium) は、3D の植物を手続き的に生成するためのツールです。
+- [SPATULA](https://github.com/AlexWarnes/lamina-spatula) は、lamina と threejs を使用するプロジェクトであればコードマテリアルとしてポータブルなシェーディングマテリアルを構築するためのツールです。
+- [Waaard](https://waaard.com/) は、様々な SSO プロバイダーでリンクを保護できるようにし、それを送信することができます
+- [Magidoc](https://github.com/magidoc-org/magidoc) は、高速かつ高いカスタマイズ性を備えた GraphQL ドキュメントジェネレーターです
+- [myMarkmap](https://github.com/eyssette/myMarkmap) は、マークアップ向けのカスタムエディタで、SvelteKit で構築されています
+- [PassShare](https://passshare.mynt.pw/) では、あなたのパスワードをあなたの友人に、安全かつ効率的に共有することができます
+- [DashingOS](https://beta.dashingos.com/) は、(Notion + CodeSandbox のような)ツールで、プロトタイプと文書化を一箇所で、素早く簡単に行うことができます
+- [worker-kit-email](https://github.com/miunau/worker-kit-email) は、通常の SvelteKit のルート(routes)を使用して、トランザクショナルな email を開発するのに便利です
+- [kaios-weather-svelte](https://github.com/cyan-2048/kaios-weather-svelte) は、KaiOS 向けのとても親しみやすい天気アプリです
+- [svelte-gantt](https://github.com/ANovokmet/svelte-gantt) は、軽量で高速かつインタラクティブなガントチャート/リソースブッキングコンポーネントです
+- [Miru](https://github.com/ThaUnknown/miru) は、cats 向けの BitTorrent ストリーミングソフトウェアです
 
-Looking for a great SvelteKit website to contribute to? [Help build the Svelte Society site](https://github.com/svelte-society/sveltesociety.dev/issues)!
+素晴らしい SvelteKit Web サイトに貢献してみませんか? [Svelte Society のサイトの構築を手伝っていただけませんか](https://github.com/svelte-society/sveltesociety.dev/issues)!
 
 
 **Learning Resources**
