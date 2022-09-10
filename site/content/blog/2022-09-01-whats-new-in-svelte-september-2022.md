@@ -1,33 +1,42 @@
 ---
-title: "What's new in Svelte: September 2022"
-description: "Migrating to SvelteKit's new filesystem-based router"
+title: "What's new in Svelte: 2022年9月"
+description: "SvelteKit の新しいファイルシステムベースルーターへの移行"
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-september-2022
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-Still looking for something to do this month? It's your last chance to get tickets to Svelte Summit, Stockholm! [Join us on Sept 8-9th](https://www.sveltesummit.com/) 🎉
+今月やりたいことをまだお探しですか? Svelte Summit Stockholm のチケットを手に入れる最後のチャンスです! [9月8-9日です、ご参加ください](https://www.sveltesummit.com/) 🎉
 
-With the redesign of SvelteKit's filesystem-based router merging early last month, there's lots to cover this month - from the [migration script](https://github.com/sveltejs/kit/discussions/5774) to a number of new blog posts, videos and tutorials.
+先月、再設計された SvelteKit のファイルシステムベースルーターがマージされ、今月は、[移行スクリプト](https://github.com/sveltejs/kit/discussions/5774) から新しいブログ記事の数々、ビデオ、チュートリアルまで、コンテンツが盛り沢山です。
 
-But the new routing isn't the only new feature in SvelteKit...
+しかし、SvelteKit の新機能は新しいルーティングだけではありません…
 
 ## What's new in SvelteKit
-- `Link` is now supported as an HTTP header and works out of the box with Cloudflare's [Automatic Early Hints](https://github.com/sveltejs/kit/issues/5455) (**1.0.0-next.405**, [PR](https://github.com/sveltejs/kit/pull/5735))
-- `$env/static/*` are now virtual to prevent writing sensitive values to disk (**1.0.0-next.413**, [PR](https://github.com/sveltejs/kit/pull/5825))
-- `$app/stores` can now be used from anywhere on the browser (**1.0.0-next.428**, [PR](https://github.com/sveltejs/kit/pull/6100))
-- `config.kit.env.dir` is a new config that sets the directory to search for `.env` files (**1.0.0-next.430**, [PR](https://github.com/sveltejs/kit/pull/6175))
+- HTTP ヘッダーの `Link` がサポートされ、Cloudflare の [Automatic Early Hints](https://github.com/sveltejs/kit/issues/5455) がすぐに使えるようになりました (**1.0.0-next.405**, [PR](https://github.com/sveltejs/kit/pull/5735))
+- 機密性の高い値がディスクに書き込まれるのを防ぐため、`$env/static/*` は仮想化(virtual)されました (**1.0.0-next.413**, [PR](https://github.com/sveltejs/kit/pull/5825))
+- `$app/stores` がブラウザのどこからでも使用できるようになりました (**1.0.0-next.428**, [PR](https://github.com/sveltejs/kit/pull/6100))
+- `config.kit.env.dir` は `.env` ファイルを探すディレクトリを設定する新しいコンフィグです (**1.0.0-next.430**, [PR](https://github.com/sveltejs/kit/pull/6175))
 
 **Breaking changes:**
-- The filesystem-based router and `load` API improves the way routes are managed. **Before installing version `@sveltejs/kit@1.0.0-next.406` or later, [follow this migration guide](https://github.com/sveltejs/kit/discussions/5774)** ([PR](https://github.com/sveltejs/kit/pull/5778), [Issue](https://github.com/sveltejs/kit/discussions/5748))
-- `event.session` has been removed from `load` along with the `session` store and `getSession`. Use `event.locals` instead (**1.0.0-next.415**, [PR](https://github.com/sveltejs/kit/pull/5946))
-- Named layouts have been removed in favor of `(groups)` (**1.0.0-next.432**, [Docs](https://kit.svelte.dev/docs/advanced-routing#advanced-layouts), [PR & Migration Instructions](https://github.com/sveltejs/kit/pull/6174))
-- `event.clientAddress` is now `event.getClientAddress()` (**1.0.0-next.438**, [PR](https://github.com/sveltejs/kit/pull/6237))
-- `$app/env` has been renamed to `$app/environment`, to disambiguate with `$env/...` (**1.0.0-next.445**, [PR](https://github.com/sveltejs/kit/pull/6334))
+- ファイルシステムベースルーターと `load` API において、ルート(routes)を管理する方法が改善されました。 **`@sveltejs/kit@1.0.0-next.406` 以降のバージョンをインストールする前に、[こちらの移行ガイド(migration guide)に従ってください](https://github.com/sveltejs/kit/discussions/5774)** ([PR](https://github.com/sveltejs/kit/pull/5778), [Issue](https://github.com/sveltejs/kit/discussions/5748))
+- `event.session` が `load` から削除され、合わせて `session` ストアと `getSession` も削除されました。代わりに `event.locals` を使用してください (**1.0.0-next.415**, [PR](https://github.com/sveltejs/kit/pull/5946))
+- 名前付きレイアウト(Named layouts)が削除され、`(groups)` が作成されました (**1.0.0-next.432**, [Docs](https://kit.svelte.dev/docs/advanced-routing#advanced-layouts), [PR & Migration Instructions](https://github.com/sveltejs/kit/pull/6174))
+- `event.clientAddress` は `event.getClientAddress()` になりました (**1.0.0-next.438**, [PR](https://github.com/sveltejs/kit/pull/6237))
+- `$app/env` は `$app/environment` にリネームされ、`$env/...` と混同しにくくなりました (**1.0.0-next.445**, [PR](https://github.com/sveltejs/kit/pull/6334))
 
-For a full list of changes, check out kit's [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md).
+変更の全リストは、kit の  [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md) をご確認ください。
 
 **Updates to language tools**
-- TypeScript doesn't resolve imports to SvelteKit's $types very well, the latest version of Svelte's language tools makes it better (**105.21.0**, [#1592](https://github.com/sveltejs/language-tools/pull/1592))
+- TypeScript が SvelteKit の $types をうまく解決できませんでしたが、Svelte の language tools の最新バージョンではそれが改善されました (**105.21.0**, [#1592](https://github.com/sveltejs/language-tools/pull/1592))
 
 
 ---
