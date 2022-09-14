@@ -43,9 +43,9 @@ DOM 要素の中には、ARIA role やステート、プロパティをサポー
 
 ### `a11y-click-events-have-key-events`
 
-Enforce `on:click` is accompanied by at least one of the following: `onKeyUp`, `onKeyDown`, `onKeyPress`. Coding for the keyboard is important for users with physical disabilities who cannot use a mouse, AT compatibility, and screenreader users. 
+`on:click` が `onKeyUp`、`onKeyDown`、`onKeyPress` のうち少なくともいずれか1つを伴って使用されることを矯正します。キーボード操作用のコーディングは、マウスを使用することができないユーザーや、支援技術(AT)の互換性、スクリーンリーダーを使用するユーザーのためにとても重要です。
 
-This does not apply for interactive or hidden elements.
+これはインタラクティブな要素や隠し要素(hidden elements)には適用されません。
 
 ```sv
 <!-- A11y: visible, non-interactive elements with an on:click event must be accompanied by an on:keydown, on:keyup, or on:keypress event. -->
@@ -265,7 +265,7 @@ HTML の要素には、デフォルトで ARIA role を持つものがありま�
 
 ### `a11y-no-noninteractive-tabindex`
 
-Tab key navigation should be limited to elements on the page that can be interacted with.
+タブキーでのナビゲーションは、ページ上のインタラクティブに操作できる要素に限定する必要があります。
 
 ```sv
 <!-- A11y: not interactive element cannot have positive tabIndex value -->
