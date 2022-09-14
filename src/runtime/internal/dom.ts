@@ -316,6 +316,12 @@ export function set_svg_attributes(node: Element & ElementCSSInlineStyle, attrib
 	}
 }
 
+export function set_custom_element_data_map(node, data_map: Record<string, unknown>) {
+	Object.keys(data_map).forEach((key) => {
+		set_custom_element_data(node, key, data_map[key]);
+	});
+}
+
 export function set_custom_element_data(node, prop, value) {
 	if (prop in node) {
 		node[prop] = typeof node[prop] === 'boolean' && value === '' ? true : value;
@@ -644,6 +650,27 @@ export function custom_event<T=any>(type: string, detail?: T, { bubbles = false,
 
 export function query_selector_all(selector: string, parent: HTMLElement = document.body) {
 	return Array.from(parent.querySelectorAll(selector)) as ChildNodeArray;
+}
+
+export function head_selector(nodeId: string, head: HTMLElement) {
+	const result = [];
+	let started = 0;
+
+	for (const node of head.childNodes) {
+		if (node.nodeType === 8 /* comment node */) {
+			const comment = node.textContent.trim();
+			if (comment === `HEAD_${nodeId}_END`) {
+				started -= 1;
+				result.push(node);
+			} else if (comment === `HEAD_${nodeId}_START`) {
+				started += 1;
+				result.push(node);
+			}
+		} else if (started > 0) {
+			result.push(node);
+		}
+	}
+	return result;
 }
 
 export class HtmlTag {

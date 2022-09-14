@@ -1,5 +1,20 @@
 # Svelte changelog
 
+## Unreleased
+
+* Fix hydration issue with using `{@html}` and components in `svelte:head` ([#4533](https://github.com/sveltejs/svelte/issues/4533), [#6463](https://github.com/sveltejs/svelte/issues/6463), [#7444](https://github.com/sveltejs/svelte/issues/7444))
+* Warn instead of throwing error if `<svelte:element>` is void tag ([#7566](https://github.com/sveltejs/svelte/issues/7566))
+* Treat `inert` as boolean attribute ([#7785](https://github.com/sveltejs/svelte/pull/7785))
+* Supporting scoped style for `<svelte:element>` ([#7443](https://github.com/sveltejs/svelte/issues/7443))
+* Supports SVG elements with `<svelte:element>`([#7613](https://github.com/sveltejs/svelte/issues/7613))
+* Warn user when binding on a `{...rest}` object in `{#each}` block ([#6860](https://github.com/sveltejs/svelte/issues/6860))
+* Supports `--style-props` for `<svelte:component>` ([#7461](https://github.com/sveltejs/svelte/issues/7461))
+* Add a11y warnings:
+	* `a11y-no-noninteractive-tabindex`: check for tabindex on non-interactive elements ([#6693](https://github.com/sveltejs/svelte/pull/6693))
+	* `a11y-click-events-have-key-events`: check if click event is accompanied by key events ([#5073](https://github.com/sveltejs/svelte/pull/5073))
+* `a11y-role-has-required-aria-props` do not warn when elements matched their semantic role ([#7838](https://github.com/sveltejs/svelte/pull/7838))
+* Supports custom element in `<svelte:element>` ([#7766](https://github.com/sveltejs/svelte/pull/7766))
+
 ## 3.50.1
 
 * Add all global objects and functions as known globals ([#3805](https://github.com/sveltejs/svelte/issues/3805), [#7223](https://github.com/sveltejs/svelte/issues/7223))

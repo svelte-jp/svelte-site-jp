@@ -24,7 +24,7 @@ import { Literal } from 'estree';
 import compiler_warnings from '../compiler_warnings';
 import compiler_errors from '../compiler_errors';
 import { ARIARoleDefintionKey, roles, aria, ARIAPropertyDefinition, ARIAProperty } from 'aria-query';
-import { is_interactive_element, is_non_interactive_roles, is_presentation_role } from '../utils/a11y';
+import { is_interactive_element, is_non_interactive_roles, is_presentation_role, is_interactive_roles, is_hidden_from_screen_reader, is_semantic_role_element } from '../utils/a11y';
 
 const aria_attributes = 'activedescendant atomic autocomplete busy checked colcount colindex colspan controls current describedby description details disabled dropeffect errormessage expanded flowto grabbed haspopup hidden invalid keyshortcuts label labelledby level live modal multiline multiselectable orientation owns placeholder posinset pressed readonly relevant required roledescription rowcount rowindex rowspan selected setsize sort valuemax valuemin valuenow valuetext'.split(' ');
 const aria_attribute_set = new Set(aria_attributes);
@@ -434,11 +434,16 @@ export default class Element extends Node {
 	}
 
 	validate_attributes_a11y() {
-		const { component, attributes } = this;
+		const { component, attributes, handlers } = this;
 
 		const attribute_map = new Map<string, Attribute>();
+		const handlers_map = new Map();
+
 		attributes.forEach(attribute => (
 			attribute_map.set(attribute.name, attribute)
+		));
+		handlers.forEach(handler => (
+			handlers_map.set(handler.name, handler)
 		));
 
 		attributes.forEach(attribute => {
@@ -484,7 +489,7 @@ export default class Element extends Node {
 				}
 
 				const value = attribute.get_static_value() as ARIARoleDefintionKey;
-				
+
 				if (value && aria_role_abstract_set.has(value)) {
 					component.warn(attribute, compiler_warnings.a11y_no_abstract_role(value));
 				} else if (value && !aria_role_set.has(value)) {
@@ -509,13 +514,15 @@ export default class Element extends Node {
 				}
 
 				// role-has-required-aria-props
-				const role = roles.get(value);
-				if (role) {
-					const required_role_props = Object.keys(role.requiredProps);
-					const has_missing_props = required_role_props.some(prop => !attributes.find(a => a.name === prop));
+				if (!is_semantic_role_element(value, this.name, attribute_map)) {
+					const role = roles.get(value);
+					if (role) {
+						const required_role_props = Object.keys(role.requiredProps);
+						const has_missing_props = required_role_props.some(prop => !attributes.find(a => a.name === prop));
 
-					if (has_missing_props) {
-						component.warn(attribute, compiler_warnings.a11y_role_has_required_aria_props(value as string, required_role_props));
+						if (has_missing_props) {
+							component.warn(attribute, compiler_warnings.a11y_role_has_required_aria_props(value as string, required_role_props));
+						}
 					}
 				}
 
@@ -549,8 +556,40 @@ export default class Element extends Node {
 				}
 			}
 		});
-	}
 
+		// click-events-have-key-events
+		if (handlers_map.has('click')) {
+			const role = attribute_map.get('role');
+			const is_non_presentation_role = role?.is_static && !is_presentation_role(role.get_static_value() as ARIARoleDefintionKey);
+
+			if (
+				!is_hidden_from_screen_reader(this.name, attribute_map) &&
+				(!role || is_non_presentation_role) &&
+				!is_interactive_element(this.name, attribute_map) &&
+				!this.attributes.find(attr => attr.is_spread)
+			) {
+				const has_key_event =
+					handlers_map.has('keydown') ||
+					handlers_map.has('keyup') ||
+					handlers_map.has('keypress');
+
+				if (!has_key_event) {
+					component.warn(
+						this,
+						compiler_warnings.a11y_click_events_have_key_events()
+					);
+				}
+			}
+		}
+
+		// no-noninteractive-tabindex
+		if (!is_interactive_element(this.name, attribute_map) && !is_interactive_roles(attribute_map.get('role')?.get_static_value() as ARIARoleDefintionKey)) {
+			const tab_index = attribute_map.get('tabindex');
+			if (tab_index && (!tab_index.is_static || Number(tab_index.get_static_value()) >= 0)) {
+				component.warn(this, compiler_warnings.a11y_no_noninteractive_tabindex);
+			}
+		}
+	}
 
 	validate_special_cases() {
 		const { component, attributes, handlers } = this;
