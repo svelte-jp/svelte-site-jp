@@ -41,6 +41,19 @@ DOM 要素の中には、ARIA role やステート、プロパティをサポー
 
 ---
 
+### `a11y-click-events-have-key-events`
+
+`on:click` が `onKeyUp`、`onKeyDown`、`onKeyPress` のうち少なくともいずれか1つを伴って使用されることを矯正します。キーボード操作用のコーディングは、マウスを使用することができないユーザーや、支援技術(AT)の互換性、スクリーンリーダーを使用するユーザーのためにとても重要です。
+
+これはインタラクティブな要素や隠し要素(hidden elements)には適用されません。
+
+```sv
+<!-- A11y: visible, non-interactive elements with an on:click event must be accompanied by an on:keydown, on:keyup, or on:keypress event. -->
+<div on:click={() => {}} />
+```
+
+---
+
 ### `a11y-distracting-elements`
 
 気が散るような要素が使われていないかを確認します。視覚的に邪魔になる要素は、視覚障害のあるユーザにアクセシビリティ上の問題を引き起こす可能性があります。このような要素は、ほとんどの場合非推奨であり、避けるべきです。
@@ -246,6 +259,17 @@ HTML の要素には、デフォルトで ARIA role を持つものがありま�
 ```sv
 <!-- A11y: <textarea> cannot have role 'listitem' -->
 <textarea role="listitem" />
+```
+
+---
+
+### `a11y-no-noninteractive-tabindex`
+
+タブキーでのナビゲーションは、ページ上のインタラクティブに操作できる要素に限定する必要があります。
+
+```sv
+<!-- A11y: not interactive element cannot have positive tabIndex value -->
+<div tabindex='0' />
 ```
 
 ---
