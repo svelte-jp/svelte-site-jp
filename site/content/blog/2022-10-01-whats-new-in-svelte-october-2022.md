@@ -1,15 +1,24 @@
 ---
-title: "What's new in Svelte: October 2022"
-description: "Svelte Summit, `use:enhance`, and a SvelteKit Release Candidate!"
+title: "What's new in Svelte: 2022年10月"
+description: "Svelte Summit、`use:enhance`、そして SvelteKit Release Candidate!"
 author: Daniel Sandoval
 authorURL: https://desandoval.net
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-october-2022
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-There's a bunch of updates this month... from new features in Svelte and SvelteKit to a whole 2-day *summit*! Plus, the Svelte extension gets some helpful new tools, new accessibility (a11y) warnings, and Tan Li Hau teaches us how to build our own Svelte and a Svelte spreadsheet 😎
+今月は更新がいっぱいあります… Svelte と SvelteKit の新機能から 2日間の *サミット* まで! それに加えて、Svelte の extension に追加された便利な新機能、新しいアクセシビリティ (a11y) の警告、そして Tan Li Hau による Svelte と Svelte スプレッドシートの構築方法についての講座もございます 😎
 
 ## What happened at Svelte Summit?
 
-A lot! Below you can find all the talks, by timestamp, from each livestream. Bite-size videos of the event will be coming soon to the Svelte Society channel, so be sure to [Subscribe](https://www.youtube.com/c/SvelteSociety), if you haven't already!
+コンテンツが盛り沢山です! それぞれのライブストリームから、タイムスタンプで全ての講演をご覧いただけます。分割されたビデオは近日中に Svelte Society のチャンネルに追加される予定ですので、まだの方は [チャンネル登録](https://www.youtube.com/c/SvelteSociety) をお忘れなく!
 
 _Day One_
 - [12:31](https://www.youtube.com/watch?v=pJcbZr5VlV4&t=751s) - How to get Svelte adopted at work
@@ -33,42 +42,44 @@ _Day Two_
 - [7:22:05](https://www.youtube.com/watch?v=A8jkJTWacow&t=26525s) - Getting started with Hooks
 - [7:38:14](https://www.youtube.com/watch?v=A8jkJTWacow&t=27494s) - Special Announcement*
 
-*In the final talk of the summit, Rich Harris announces the first Release Candidate of SvelteKit! With no planned breaking changes left, the team is hard at work squashing bugs and adding the remaining features for 1.0...
+*サミットの最後のトークでは、Rich Harris が SvelteKit の最初のリリース候補版(Release Candidate)を発表しました! 破壊的変更は行われなくなる予定で、チームはバグ潰しと 1.0 に向けた残りの機能の追加に懸命に取り組んでいます…
 
 ## More SvelteKit Updates
-- `use:enhance` is the easiest way to progressively enhance a form ([Docs](https://kit.svelte.dev/docs/form-actions#progressive-enhancement-use-enhance), [#6633](https://github.com/sveltejs/kit/pull/6633), [#6828](https://github.com/sveltejs/kit/pull/6828), [#7012](https://github.com/sveltejs/kit/pull/7012))
-- The demo app has been updated to add the Sverdle game, which Rich demoed at Svelte Summit and demonstrates `use:enhance` ([#6979](https://github.com/sveltejs/kit/pull/6979))
-- Cloudflare Pages `_routes.json` specification is now supported by `adapter-cloudflare` ([#6530](https://github.com/sveltejs/kit/pull/6530))
-- Improved build performance by running asset and page compression in parallel ([#6710](https://github.com/sveltejs/kit/pull/6710))
+- `use:enhance` はフォームを漸進的に強化 (progressively enhance) するのに最も簡単な方法です ([Docs](https://kit.svelte.dev/docs/form-actions#progressive-enhancement-use-enhance), [#6633](https://github.com/sveltejs/kit/pull/6633), [#6828](https://github.com/sveltejs/kit/pull/6828), [#7012](https://github.com/sveltejs/kit/pull/7012))
+- デモアプリが更新され、Sverdle ゲームが追加されました。Rich は Svelte Summit で披露し、`use:enhance` のデモンストレーションを行いました ([#6979](https://github.com/sveltejs/kit/pull/6979))
+- Cloudflare Pages の `_routes.json` の仕様が `adapter-cloudflare` でサポートされました ([#6530](https://github.com/sveltejs/kit/pull/6530))
+- asset とページの圧縮を並行に実行することでビルドパフォーマンスが改善されました ([#6710](https://github.com/sveltejs/kit/pull/6710))
 
 **Breaking changes:**
-- Node 16.14 is now the minimum version to run SvelteKit ([#6388](https://github.com/sveltejs/kit/pull/6388))
-- `App.PrivateEnv` and `App.PublicEnv` have been removed in favour of generated types ([#6413](https://github.com/sveltejs/kit/pull/6413))
-- `%sveltekit.message%` has been replaced with `%sveltekit.error.message%` ([6659](https://github.com/sveltejs/kit/pull/6659))
-- `App.PageError` is now `App.Error` - check for it in your hooks ([Docs](https://kit.svelte.dev/docs/hooks#shared-hooks-handleerror), [#6963](https://github.com/sveltejs/kit/pull/6963))
-- `externalFetch` is now `handleFetch` and will run for all fetch calls in `load` that run on the server ([#6565](https://github.com/sveltejs/kit/pull/6565))
+- SvelteKit を実行できる Node のミニマムバージョンが Node 16.14 になりました ([#6388](https://github.com/sveltejs/kit/pull/6388))
+- `App.PrivateEnv` と `App.PublicEnv` が削除され、generated types がその役割を引き継ぎます ([#6413](https://github.com/sveltejs/kit/pull/6413))
+- `%sveltekit.message%` は `%sveltekit.error.message%` に置き換わります ([6659](https://github.com/sveltejs/kit/pull/6659))
+- `App.PageError` は `App.Error` となりました - hooks をご確認ください ([Docs](https://kit.svelte.dev/docs/hooks#shared-hooks-handleerror), [#6963](https://github.com/sveltejs/kit/pull/6963))
+- `externalFetch` は `handleFetch` となり、サーバー上で実行される `load` から全ての fetch が実行されます ([#6565](https://github.com/sveltejs/kit/pull/6565))
 
 For a full list of changes, check out SvelteKit's [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md).
+変更の全リストは、SvelteKit の [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md) をご確認ください。
 
 ## Svelte Updates
-- New a11y warnings for `incorrect-aria-attribute-type`, `no-abstract-role`, `interactive-element-to-noninteractive-role` and `role-has-required-aria-props`.`no-noninteractive-tabindex` and `click-events-have-key-events` coming soon! (**3.50.0**)
-- New types for `ComponentEvents` and `SveltePreprocessor` (**3.50.0**)
-- Improved parsing speed when encountering large blocks of whitespace (**3.50.0**)
-- All global JavaScript objects and functions are now recognized as known globals (**3.50.1**)
+- 新たな a11y warning として `incorrect-aria-attribute-type`、`no-abstract-role`、`interactive-element-to-noninteractive-role`、`role-has-required-aria-props` が追加されました。`no-noninteractive-tabindex` と `click-events-have-key-events` も間もなくです! (**3.50.0**)
+- `ComponentEvents` and `SveltePreprocessor` (**3.50.0**)
+- 新たな型として `ComponentEvents` と `SveltePreprocessor` が追加されました (**3.50.0**)
+- ホワイトスペースの大きいブロックが含まれている場合においてパースのスピードが改善されました (**3.50.0**)
+- 全てのグローバルな JavaScript オブジェクトと関数が、既知のグローバルなものとして認識されるようになりました (**3.50.1**)
 
-For all the changes to the Svelte compiler, including upcoming changes, check out the [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md).
+Svelte コンパイラに対する全ての変更や、今後の変更については、[CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md) をご確認ください。
 
 ## New in Language Tools
-- Better code formatting for editor suggestion (**106.0.0**, [#1598](https://github.com/sveltejs/language-tools/pull/1598))
-- Easily create SvelteKit route files from the context menu or command palette (**106.1.0**, [#1620](https://github.com/sveltejs/language-tools/pull/1620))
+- エディタが提案するコードフォーマットが改善されました (**106.0.0**, [#1598](https://github.com/sveltejs/language-tools/pull/1598))
+- SvelteKit の route ファイルが、コンテキストメニューやコマンドパレットから簡単に作成できるようになりました (**106.1.0**, [#1620](https://github.com/sveltejs/language-tools/pull/1620))
 
 ---
 
 ## Ask Questions in the Svelte Discord
 
-In case you missed the announcement, the Svelte Discord has an exciting new update... a forum! The new [questions channel](https://discord.com/channels/457912077277855764/1023340103071965194) utilizes Discord's new forums feature to help the community better ask, find and answer questions!
+発表を見逃してしまった方、Svelte Discord にエキサイティングな更新があるんです… それはフォーラムです! 新しい [questions channel](https://discord.com/channels/457912077277855764/1023340103071965194) は、Discord の新しいフォーラム機能を利用し、質問とその発見、そして回答をするためのより良いコミュニティとなることを支援します!
 
-It can be used for anything you may be trying to accomplish using Svelte including using SvelteKit, community libraries, tools, etc. So ask away!
+Svelte や SvelteKit を使って実現したいことや、コミュニティのライブラリ、ツールなど、なんにでもお使いいただけます。お気軽にどうぞ!
 
 ---
 
@@ -134,6 +145,6 @@ _UI Kits and Starters_
 - [sveltekit-monorepo](https://github.com/sw-yx/sveltekit-monorepo) is monorepo starter with 2022 tech
 - [svelte-component-test-recipes](https://github.com/davipon/svelte-component-test-recipes) uses `vitest`, `@testing-library/svelte`, and `svelte-htm` to test Svelte components that seemed to be hard to test
 
-Whew! That's a lot of updates. Let us know if we missed anything on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs)!
+Whew! 更新が盛り沢山でしたね。何か見逃していることがあれば [Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.com/invite/yy75DKs) でお知らせください!
 
-See ya next month 👋
+それではまた来月 👋
