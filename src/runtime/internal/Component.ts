@@ -14,7 +14,7 @@ export interface Fragment {
 	/* claim   */ l: (nodes: any) => void;
 	/* hydrate */ h: () => void;
 	/* mount   */ m: (target: HTMLElement, anchor: any) => void;
-	/* update  */ p: (ctx: any, dirty: any) => void;
+	/* update  */ p: (ctx: T$$['ctx'], dirty: T$$['dirty']) => void;
 	/* measure */ r: () => void;
 	/* fix     */ f: () => void;
 	/* animate */ a: () => void;
@@ -24,7 +24,7 @@ export interface Fragment {
 }
 interface T$$ {
 	dirty: number[];
-	ctx: null | any;
+	ctx: any[];
 	bound: any;
 	update: () => void;
 	callbacks: any;
@@ -110,7 +110,7 @@ export function init(component, options, instance, create_fragment, not_equal, p
 
 	const $$: T$$ = component.$$ = {
 		fragment: null,
-		ctx: null,
+		ctx: [],
 
 		// state
 		props,
@@ -212,6 +212,9 @@ if (typeof HTMLElement === 'function') {
 
 		$on(type, callback) {
 			// TODO should this delegate to addEventListener?
+			if (!is_function(callback)) {
+				return noop;
+			}
 			const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
 			callbacks.push(callback);
 
@@ -244,6 +247,9 @@ export class SvelteComponent {
 	}
 
 	$on(type, callback) {
+		if (!is_function(callback)) {
+			return noop;
+		}
 		const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
 		callbacks.push(callback);
 
