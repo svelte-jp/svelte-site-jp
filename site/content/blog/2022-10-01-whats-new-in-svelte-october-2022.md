@@ -57,7 +57,6 @@ _Day Two_
 - `App.PageError` は `App.Error` となりました - hooks をご確認ください ([Docs](https://kit.svelte.dev/docs/hooks#shared-hooks-handleerror), [#6963](https://github.com/sveltejs/kit/pull/6963))
 - `externalFetch` は `handleFetch` となり、サーバー上で実行される `load` から全ての fetch が実行されます ([#6565](https://github.com/sveltejs/kit/pull/6565))
 
-For a full list of changes, check out SvelteKit's [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md).
 変更の全リストは、SvelteKit の [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md) をご確認ください。
 
 ## Svelte Updates
