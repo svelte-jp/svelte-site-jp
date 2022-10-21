@@ -193,6 +193,25 @@ Total: {total}
 ```
 
 ---
+It is important to note that the reactive blocks are ordered via simple static analysis at compile time, and all the compiler looks at are the variables that are assigned to and used within the block itself, not in any functions called by them. This means that `yDependent` will not be updated when `x` is updated in the following example:
+
+```sv
+<script>
+	let x = 0;
+	let y = 0;
+	
+	const setY = (value) => {
+		y = value;
+	}
+	
+	$: yDependent = y;
+	$: setY(x);
+</script>
+```
+
+Moving the line `$: yDependent = y` below `$: setY(x)` will cause `yDependent` to be updated when `x` is updated.
+
+---
 
 宣言されていない変数への代入だけでステートメントが構成されている場合、Svelte はあなたの代わりに `let` 宣言を挿入します。
 
