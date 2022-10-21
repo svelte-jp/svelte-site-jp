@@ -1377,7 +1377,7 @@ Svelte の実装は、基本的にラッパー要素を追加するためのシ�
 
 ---
 
-For SVG namespace, the example above desugars into using `<g>` instead:
+SVG namespace の場合、上記の例はデシュガー(脱糖)すると `<g>` が代わりに使用されます:
 
 ```sv
 <g style="--rail-color: black; --track-color: rgb(0, 0, 255)">
@@ -1389,7 +1389,7 @@ For SVG namespace, the example above desugars into using `<g>` instead:
 </g>
 ```
 
-**Note**: Since this is an extra `<g>`, beware that your CSS structure might accidentally target this. Be mindful of this added wrapper element when using this feature.
+**Note**: 余分な `<g>` が追加されるため、あなたのCSS構造が誤ってこれをターゲットにしてしまう可能性があるので注意してください。この機能を利用する際は、この追加されるラッパー要素に気をつけてください。
 
 ---
 

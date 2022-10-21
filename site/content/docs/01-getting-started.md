@@ -4,9 +4,9 @@ title: Getting started
 
 ---
 
-To try Svelte in an interactive online environment you can try [the REPL](https://svelte.dev/repl) or [StackBlitz](https://node.new/svelte).
+インタラクティブなオンライン環境で Svelte を試す場合は、[こちらの REPL](https://svelte.dev/repl) か [StackBlitz](https://node.new/svelte) をお試しください。
 
-To create a project locally, run:
+ローカルにプロジェクトを作成する場合は、以下を実行してください:
 
 ```
 npm create vite@latest myapp -- --template svelte
@@ -15,8 +15,8 @@ npm install
 npm run dev
 ```
 
-Or use [SvelteKit](https://kit.svelte.dev/), the official application framework from the Svelte team (currently in release candidate status).
+もしくは、[SvelteKit](https://kit.svelte.jp/) をお使いください。Svelte チームによる公式アプリケーションフレームワークです (現時点はリリース候補版(release candidate status)です)。
 
-The Svelte team maintains a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) and the Svelte community has created a list of integrations with various other [tooling and editors](https://sveltesociety.dev/tools).
+Svelte チームでは [VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) をメンテナンスしております。そして Svelte コミュニティではその他様々な種類の [ツールやエディタ](https://sveltesociety.dev/tools) のインテグレーションのリストも作成しています。
 
-If you're having trouble, get help on [Discord](https://svelte.dev/chat) or [StackOverflow](https://stackoverflow.com/questions/tagged/svelte).
+お困りの場合は、[Discord](https://svelte.dev/chat) や [StackOverflow](https://stackoverflow.com/questions/tagged/svelte) でご質問ください。
