@@ -4,7 +4,7 @@ title: Congratulations!
 
 これでSvelteチュートリアルは終了し、アプリの構築を始める準備が整いました。各章はいつでも参照することができます(上のタイトルをクリックするとドロップダウンが表示されます)。または [API リファレンス](/docs)、[例](/examples)、[ブログ](/blog) で学習を続けてください。あなたがTwitterユーザーであれば、[@sveltejs](https://twitter.com/sveltejs)を介して更新情報を得ることができます。
 
-ローカルの開発環境で設定するには、[クイックスタートガイド](/blog/the-easiest-way-to-get-started)を確認してみてください。
+ローカルの開発環境で設定するには、[クイックスタートガイド](/docs#getting-started)を確認してみてください。
 
 ルーティング、サーバーサイドレンダリング、その他すべてを含む、より拡張性の高いフレームワークをお探しなら、[SvelteKit](https://kit.svelte.jp)をご覧ください。
 

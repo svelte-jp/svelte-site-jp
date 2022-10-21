@@ -874,6 +874,9 @@ style:property
 
 <!-- Multiple styles can be included -->
 <div style:color style:width="12rem" style:background-color={darkMode ? "black" : "white"}>...</div>
+
+<!-- Styles can be marked as important -->
+<div style:color|important="red">...</div>
 ```
 
 ---
@@ -1374,7 +1377,23 @@ Svelte の実装は、基本的にラッパー要素を追加するためのシ�
 
 ---
 
-Svelte の CSS Variables サポートによって、テーマに沿ったコンポーネントを作るのは容易です。
+For SVG namespace, the example above desugars into using `<g>` instead:
+
+```sv
+<g style="--rail-color: black; --track-color: rgb(0, 0, 255)">
+  <Slider
+    bind:value
+    min={0}
+    max={100}
+  />
+</g>
+```
+
+**Note**: Since this is an extra `<g>`, beware that your CSS structure might accidentally target this. Be mindful of this added wrapper element when using this feature.
+
+---
+
+Svelte の CSS Variables サポートによって、テーマに沿ったコンポーネントを作るのは容易です:
 
 ```sv
 <!-- Slider.svelte -->

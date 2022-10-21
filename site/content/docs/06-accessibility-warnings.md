@@ -268,7 +268,7 @@ HTML の要素には、デフォルトで ARIA role を持つものがありま�
 タブキーでのナビゲーションは、ページ上のインタラクティブに操作できる要素に限定する必要があります。
 
 ```sv
-<!-- A11y: not interactive element cannot have positive tabIndex value -->
+<!-- A11y: noninteractive element cannot have positive tabIndex value -->
 <div tabindex='0' />
 ```
 
