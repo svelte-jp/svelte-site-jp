@@ -58,7 +58,7 @@ authorURL: https://desandoval.net
 
 
 **Libraries, Tools & Components**
-- [svelte-pipeline](https://github.com/novacbn/svelte-pipeline) は、 Svelte Store として、 REPL や Editor などにカスタムの Javascript コンテキストと Svelte Compiler を提供します。
+- [svelte-pipeline](https://github.com/novacbn/svelte-pipeline) は、 Svelte Store として、 REPL や Editor などにカスタムの JavaScript コンテキストと Svelte Compiler を提供します。
 - [Sveltotron](https://github.com/Salemmous/sveltotron) はあなたの Svelte アプリを検査するために作られた Electron ベースのアプリです。
 - [svelte-qr-reader-writer](https://github.com/pleasemarkdarkly/svelte-qr-reader-writer) は、QRコードからのデータの読み取りと書き込みを支援する Svelte コンポーネントです。
 - [svelte-stack-router](https://www.npmjs.com/package/svelte-stack-router) Stacks との連携により、 Svelte アプリをよりネイティブに近づけることを目的としています。

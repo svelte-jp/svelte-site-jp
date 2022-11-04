@@ -72,7 +72,7 @@ _To Watch_
 - [SvelteKit Page Endpoints](https://www.youtube.com/watch?v=yQRf2wmTu5w), [Named Layouts](https://www.youtube.com/watch?v=UHX9TJ0BxZY) and [Passing data from page component to layout component with $page.stuff](https://www.youtube.com/watch?v=CXaCstU5pcw) by lihautan
 - [🍞 & 🧈: Magically load data with SvelteKit Endpoints](https://www.youtube.com/watch?v=f6prqYlbTE4) by Johnny Magrippis
 - [Svelte for React developers](https://www.youtube.com/watch?v=7tsrwrx5HtQ) by frontendtier
-- [Learn Svelte JS || Javascript Compiler for Building Front end Applications](https://www.youtube.com/watch?v=1rKRarJJFrY&list=PLIGDNOJWiL1-7zCgdR7MKuho-tPC6Ra6C&index=1) by Code with tsksharma
+- [Learn Svelte JS || JavaScript Compiler for Building Front end Applications](https://www.youtube.com/watch?v=1rKRarJJFrY&list=PLIGDNOJWiL1-7zCgdR7MKuho-tPC6Ra6C&index=1) by Code with tsksharma
 - [SvelteKit Authentication](https://www.youtube.com/watch?v=T935Ya4W5X0&list=PLA9WiRZ-IS_zKrDzhOhV5RGKKTHNIyTDO&index=1) by Joy of Code
 - [Svelte + websockets: Build a real-time Auction app](https://www.youtube.com/watch?v=CqgsWFrwQIU) by Evgeny Maksimov
 
@@ -94,7 +94,7 @@ _To Read_
 - [Svelte Brick Gallery](https://github.com/anotherempty/svelte-brick-gallery) is a masonry-like image gallery component for Svelte
 - [use-vest](https://github.com/enyo/use-vest) is a Svelte action for Vest - a library that makes it easy to validate forms and show errors when necessary
 - [Svelidate](https://github.com/svelidate/svelidate) is a simple and lightweight form validation library for Svelte with no dependencies
-- [Svve11](https://github.com/oslabs-beta/Svve11) is an "accessbility-first" component library for Svelte
+- [Svve11](https://github.com/oslabs-beta/Svve11) is an "accessibility-first" component library for Svelte
 - [Slidy](https://github.com/Valexr/Slidy) is a simple, configurable & reusable carousel sliding action script with templates & some useful plugins
 - [Svelte Component Snippets](https://marketplace.visualstudio.com/items?itemName=brysonbw.svelte-component-snippets) is a VS Code extension with access to common Svelte snippets
 - [Svelte Confetti](https://github.com/Mitcheljager/svelte-confetti) adds a little bit of flair to your app with some confetti 🎊

@@ -66,7 +66,7 @@ SvelteKitのすべての更新を確認するには、[SvelteKitのChangelog](ht
 **Svelteのプロジェクトをお探しですか？ウェブ上でのSvelteの存在感を高めることに興味がありますか？**SvelteKitでのSvelte Societyの書き換えに貢献したい方は、[オープンなIssueのリスト](https://github.com/svelte-society/sveltesociety-2021/issues)をチェックしてください。
 
 **Podcasts Featuring Svelte**
-- [Syntax Podast: From React to SvelteKit](https://podcasts.apple.com/us/podcast/from-react-to-sveltekit/id1253186678?i=1000536276106) ReactからSvelteKitへ Level Up TutorialsをReactからSvelteKitに移行した理由、方法、利点、注意すべき点などについて、ScottとWesが語ります！
+- [Syntax Podcast: From React to SvelteKit](https://podcasts.apple.com/us/podcast/from-react-to-sveltekit/id1253186678?i=1000536276106) ReactからSvelteKitへ Level Up TutorialsをReactからSvelteKitに移行した理由、方法、利点、注意すべき点などについて、ScottとWesが語ります！
 - [Web Rush Podcast: Svelte Tools and Svelte Society](https://www.webrush.io/episodes/episode-150-svelte-tools-and-svelte-society) Kevin Åberg Kultalahtiが、Svelte Societyとは何か、Svelteに期待していること、製品にとってドキュメントがいかに重要であるか、など _など_ について語ります
 - [Svelte: The Compiled Future of Front End](https://www.arahansen.com/the-compiled-future-of-front-end/)では、コンポーネントベースのフロントエンドの歴史と、コンパイラがどのようにすべてを変えるかについて詳しく説明しています
 - [Svelte Radio: Contributing to Svelte with Martin 'Grygrflzr' Krisnanto Putra](https://share.transistor.fm/s/10aa305c) Grygrflzrがメンテナになるまでの道のりや、React、Vite、その他多くのことについての見解を語っています
