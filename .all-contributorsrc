@@ -244,6 +244,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "tatsuyafw",
+      "name": "Tatsuya Hoshino",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1162665?v=4",
+      "profile": "http://tatsuyafw.hatenablog.jp/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
