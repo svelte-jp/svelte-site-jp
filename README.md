@@ -60,6 +60,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/kokko-san"><img src="https://avatars.githubusercontent.com/u/36446753?v=4?s=100" width="100px;" alt=""/><br /><sub><b>kokko-san</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=kokko-san" title="Documentation">📖</a></td>
     <td align="center"><a href="https://ota-meshi.github.io/"><img src="https://avatars.githubusercontent.com/u/16508807?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yosuke Ota</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=ota-meshi" title="Documentation">📖</a></td>
     <td align="center"><a href="http://mitsu-ksgr.github.io/"><img src="https://avatars.githubusercontent.com/u/3091232?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mitsu-ksgr</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=mitsu-ksgr" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://tatsuyafw.hatenablog.jp/"><img src="https://avatars.githubusercontent.com/u/1162665?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tatsuya Hoshino</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=tatsuyafw" title="Documentation">📖</a></td>
   </tr>
 </table>
 
