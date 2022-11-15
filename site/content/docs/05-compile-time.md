@@ -73,7 +73,7 @@ const result = svelte.compile(source, {
 | `accessors` | `false` | `true` の場合、ゲッターとセッターはコンポーネントのプロパティ(props)に対して作成されます。`false` の場合、それらは読み書きされた値に対してのみ作成されます。 (つまり`const`, `class`, `function` で宣言されたもの) `customElement: true` でコンパイルした場合、このオプションのデフォルトは `true` です。
 | `customElement` | `false` | `true` ならば、コンパイラに通常のSvelteコンポーネントの代わりにカスタム要素のコンストラクタを生成するように指示します。
 | `tag` | `null` | Svelteにカスタム要素を登録するタグ名を指定する `string`。文字列は小文字の英数字で、少なくとも1つのハイフンを含んだ文字列でなければなりません。例えば `"my-element"`.
-| `css` | `true` | `true` の場合、スタイルはJavaScriptクラスに含まれ、実行時にコンポーネントが実際にレンダリングされるときに注入されます。`false` の場合、CSS はコンパイル結果の `css` フィールドで返されます。多くの Svelte バンドラープラグインはこれを `false` に設定して静的に生成されたCSSを使用するので、JavaScriptのバンドルが小さくなり、キャッシュ可能な `.css` ファイルをサーブすることができるようになるので、パフォーマンスが向上します。
+| `css` | `'injected'` | `'injected'` (以前は `true`) の場合、スタイルはJavaScriptクラスに含まれ、実行時にコンポーネントが実際にレンダリングされるときに注入されます。`'external'` (以前は `false`) の場合、CSS はコンパイル結果の `css` フィールドで返されます。多くの Svelte バンドラープラグインはこれを `external` に設定して静的に生成されたCSSを使用するので、JavaScriptのバンドルが小さくなり、キャッシュ可能な `.css` ファイルをサーブすることができるようになるので、パフォーマンスが向上します。`'none'` の場合、スタイルは完全に取り除かれ、CSS 出力は生成されません。
 | `cssHash` | 右記 | `{ hash, css, name, filename }`を引数に取り、スコープ付きCSSのクラス名として使われる文字列を返す関数。デフォルトでは、`svelte-${hash(css)}`を返します。
 | `loopGuardTimeout` | 0 | `loopGuardTimeout` msを超えてスレッドがブロックされた場合にループを解除するようにSvelteに指示する `数値` です。これは無限ループを防ぐのに便利です。**利用可能なのは `dev: true` の場合のみです**
 | `preserveComments` | `false` | `true` の場合、サーバサイドでのレンダリング中に HTML コメントが保存されます。デフォルトではコメントは削除されます。
