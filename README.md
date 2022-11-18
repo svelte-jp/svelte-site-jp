@@ -1,8 +1,10 @@
-# Svelte Site JP
+# Svelte site Japanese translation
 
 [Svelte](https://github.com/sveltejs/svelte)の公式ドキュメントサイト [svelte.dev](https://svelte.dev/) を日本語に翻訳するプロジェクトです。
 
-**日本語ドキュメントサイト URL : https://svelte.jp/**
+**日本語ドキュメントサイト URL: https://svelte.jp/**
+
+> **SvelteKit** ドキュメントの日本語翻訳リポジトリはこちら: [svelte-jp/kit](https://github.com/svelte-jp/kit)
 
 Svelte は素晴らしいツールで、公式ドキュメント及びチュートリアルも非常に素晴らしいです。公式からは英語版のみ提供されていますが、日本語に翻訳されたドキュメントとチュートリアルがあれば日本語話者にとってはもっと学習しやすくなると考えています。
 
