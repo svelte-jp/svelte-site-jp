@@ -7,7 +7,7 @@ title: Each blocks
 ```html
 <ul>
 	{#each cats as cat}
-		<li><a target="_blank" href="https://www.youtube.com/watch?v={cat.id}">
+		<li><a target="_blank" href="https://www.youtube.com/watch?v={cat.id}" rel="noreferrer">
 			{cat.name}
 		</a></li>
 	{/each}
@@ -20,7 +20,7 @@ title: Each blocks
 
 ```html
 {#each cats as cat, i}
-	<li><a target="_blank" href="https://www.youtube.com/watch?v={cat.id}">
+	<li><a target="_blank" href="https://www.youtube.com/watch?v={cat.id}" rel="noreferrer">
 		{i + 1}: {cat.name}
 	</a></li>
 {/each}
