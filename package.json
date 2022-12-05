@@ -97,7 +97,7 @@
     "prepublishOnly": "node check_publish_env.js && npm run lint && npm run build && npm test",
     "textlint": "node -e \"var shell=require('shelljs');var files=shell.find(['./CONTRIBUTING_ja.md','./site/content/**/*.md']).join(' ');if(shell.exec('textlint -f pretty-error '+files).code!==0){shell.exit(1)};\"",
     "tsd": "node ./generate-type-definitions.js",
-    "lint": "eslint \"{src,test}/**/*.{ts,js}\""
+    "lint": "eslint \"{src,test}/**/*.{ts,js}\" --cache"
   },
   "repository": {
     "type": "git",
