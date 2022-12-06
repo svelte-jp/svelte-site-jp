@@ -124,9 +124,9 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US
 
 > `input` 要素やその子要素である `option` 要素の `value` 属性は、`bind:group` や `bind:checked` を使用している場合、スプレッド属性で設定してはいけません。このような場合、バインドされる変数にリンクできるように、Svelteがその要素の`value`をマークアップの中で直接見ることができる必要があります。
 
-> Sometimes, the attribute order matters as Svelte sets attributes sequentially in JavaScript. For example, `<input type="range" min="0" max="1" value={0.5} step="0.1"/>`, Svelte will attempt to set the value to `1` (rounding up from 0.5 as the step by default is 1), and then set the step to `0.1`. To fix this, change it to `<input type="range" min="0" max="1" step="0.1" value={0.5}/>`.
+> Svelte は JavaScript で属性を順番に設定するため、その属性の順番が問題になることがあります。例えば、`<input type="range" min="0" max="1" value={0.5} step="0.1"/>` の場合、Svelte は value に `1` を設定し (step のデフォルトが 1 であるため、0.5 から切り上げられてしまいます)、そしてそのあとで step に `0.1` を設定します。これを修正するには、順序を `<input type="range" min="0" max="1" step="0.1" value={0.5}/>` のように変更してください。
 
-> Another example is `<img src="..." loading="lazy" />`. Svelte will set the img `src` before making the img element `loading="lazy"`, which is probably too late. Change this to `<img loading="lazy" src="...">` to make the image lazily loaded.
+> 別の例としては `<img src="..." loading="lazy" />` があります。Svelte は、img 要素を `loading="lazy"` にする前に、img の `src` を設定しますが、これでは遅すぎます。画像を遅延読み込みさせるには、`<img loading="lazy" src="...">` のように変更してください。
 
 ---
 
