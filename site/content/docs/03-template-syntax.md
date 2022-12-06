@@ -124,6 +124,10 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US
 
 > `input` 要素やその子要素である `option` 要素の `value` 属性は、`bind:group` や `bind:checked` を使用している場合、スプレッド属性で設定してはいけません。このような場合、バインドされる変数にリンクできるように、Svelteがその要素の`value`をマークアップの中で直接見ることができる必要があります。
 
+> Svelte は JavaScript で属性を順番に設定するため、その属性の順番が問題になることがあります。例えば、`<input type="range" min="0" max="1" value={0.5} step="0.1"/>` の場合、Svelte は value に `1` を設定し (step のデフォルトが 1 であるため、0.5 から切り上げられてしまいます)、そしてそのあとで step に `0.1` を設定します。これを修正するには、順序を `<input type="range" min="0" max="1" step="0.1" value={0.5}/>` のように変更してください。
+
+> 別の例としては `<img src="..." loading="lazy" />` があります。Svelte は、img 要素を `loading="lazy"` にする前に、img の `src` を設定しますが、これでは遅すぎます。画像を遅延読み込みさせるには、`<img loading="lazy" src="...">` のように変更してください。
+
 ---
 
 ### Text expressions
@@ -971,7 +975,7 @@ transition:fn|local={params}
 
 
 ```js
-transition = (node: HTMLElement, params: any) => {
+transition = (node: HTMLElement, params: any, options: { direction: 'in' | 'out' | 'both' }) => {
 	delay?: number,
 	duration?: number,
 	easing?: (t: number) => number,
@@ -1091,6 +1095,11 @@ transition = (node: HTMLElement, params: any) => {
 
 トランジションがトランジションオブジェクトではなく関数を返す場合、その関数は次のマイクロタスクで呼び出されます。これにより、複数のトランジションを調整することができ、[クロスフェード効果](/tutorial/deferred-transitions) が可能になります。
 
+Transition functions also receive a third argument, `options`, which contains information about the transition.
+
+Available values in the `options` object are:
+
+* `direction` - one of `in`, `out`, or `bidirectional` depending on the type of transition
 
 ##### Transition events
 
