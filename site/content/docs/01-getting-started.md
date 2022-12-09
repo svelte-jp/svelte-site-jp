@@ -6,7 +6,7 @@ title: Getting started
 
 インタラクティブなオンライン環境で Svelte を試す場合は、[こちらの REPL](https://svelte.dev/repl) か [StackBlitz](https://node.new/svelte) をお試しください。
 
-To create a project locally we recommend using [SvelteKit](https://kit.svelte.dev/), the official application framework from the Svelte team:
+プロジェクトをローカルで作成する場合は、[SvelteKit](https://kit.svelte.jp/) を使うことを推奨します。これは Svelte チームが開発しているオフィシャルのアプリケーションフレームワークです:
 ```
 npm create svelte@latest myapp
 cd myapp
@@ -14,8 +14,8 @@ npm install
 npm run dev
 ```
 
-SvelteKit will handle calling [the Svelte compiler](https://www.npmjs.com/package/svelte) to convert your `.svelte` files into `.js` files that create the DOM and `.css` files that style it. It also provides all the other pieces you need to build a web application such as a development server, routing, and deployment. [SvelteKit](https://kit.svelte.dev/) utilizes [Vite](https://vitejs.dev/) to build your code and handle server-side rendering (SSR). There are [plugins for all the major web bundlers](https://sveltesociety.dev/tools#bundling) to handle Svelte compilation, which will output `.js` and `.css` that you can insert into your HTML, but most others won't handle SSR.
+SvelteKit は [Svelte コンパイラ](https://www.npmjs.com/package/svelte) を呼び出し、`.svelte` ファイルを、DOM を構築する `.js` ファイルとそれをスタイリングする `.css` ファイルに変換します。また、開発サーバーやルーティング、デプロイメントなど、web アプリケーションを構築するのに必要なその他のピースも提供します。[SvelteKit](https://kit.svelte.jp/) はコードのビルドとサーバーサイドレンダリング (SSR) の処理に [Vite](https://vitejs.dev/) を使用しています。Svelte のコンパイルに対応している[全ての主要な web バンドラー向けのプラグイン](https://sveltesociety.dev/tools#bundling) があり、HTML に挿入できる `.js` と `.css` を出力することができますが、そのほとんどは SSR を処理しません。
 
-The Svelte team maintains a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) and there are integrations with various other [editors](https://sveltesociety.dev/tools#editor-support) and tools as well.
+Svelte チームは [VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) をメンテナンスしておりますが、その他様々な [エディタ](https://sveltesociety.dev/tools#editor-support) やツールとのインテグレーションございます。
 
 お困りの場合は、[Discord](https://svelte.dev/chat) や [StackOverflow](https://stackoverflow.com/questions/tagged/svelte) でご質問ください。
