@@ -19,7 +19,7 @@ title: Await blocks
 promise が reject できないことがわかっている場合は、`catch` ブロックを省略することができます。また promise が resolve するまで何も表示したくない場合は、最初のブロックを省略することもできます。
 
 ```html
-{#await promise then value}
-	<p>the value is {value}</p>
+{#await promise then number}
+	<p>the number is {number}</p>
 {/await}
 ```
