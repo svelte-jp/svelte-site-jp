@@ -1,8 +1,17 @@
 # Svelte changelog
 
-## 3.55.1 (unreleased)
+## 3.55.1
 
-* add missing `submitter` property to `on:submit` event type
+* Fix `draw` transition with delay showing a dot at the beginning of the path ([#6816](https://github.com/sveltejs/svelte/issues/6816))
+* Fix infinity runtime call stack when propagating bindings ([#7032](https://github.com/sveltejs/svelte/issues/7032))
+* Fix static `<svelte:element>` optimization in production mode ([#7937](https://github.com/sveltejs/svelte/issues/7937))
+* Fix `svelte-ignore` comment breaking named slot ([#8075](https://github.com/sveltejs/svelte/issues/8075))
+* Revert change to prevent running init binding unnecessarily ([#8103](https://github.com/sveltejs/svelte/issues/8103))
+* Fix adding duplicate event listeners with `<svelte:element on:event>` ([#8129](https://github.com/sveltejs/svelte/issues/8129))
+* Improve detection of promises that are also functions ([#8162](https://github.com/sveltejs/svelte/pull/8162))
+* Avoid mutating spread component props during SSR ([#8171](https://github.com/sveltejs/svelte/issues/8171))
+* Add missing typing for global `part` attribute ([#8181](https://github.com/sveltejs/svelte/issues/8181))
+* Add missing `submitter` property to `on:submit` event type
 
 ## 3.55.0
 
