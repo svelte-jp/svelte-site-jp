@@ -147,7 +147,7 @@ Svelteの `<script>` ブロックはコンポーネントが作成されたと�
 ```sv
 <script>
 	export let title;
-	export let person
+	export let person;
 
 	// これは `title` プロパティが変わるたびに
 	// `document.title` を更新します
