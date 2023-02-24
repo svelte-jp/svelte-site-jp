@@ -452,6 +452,29 @@ import { get } from 'svelte/store';
 const value = get(store);
 ```
 
+#### `readonly`
+
+```js
+readableStore = readonly(writableStore);
+```
+
+---
+
+This simple helper function makes a store readonly. You can still subscribe to the changes from the original one using this new readable store.
+
+
+```js
+import { readonly } from 'svelte/store';
+
+const writableStore = writable(1);
+const readableStore = readonly(writableStore);
+
+readableStore.subscribe(console.log);
+
+writableStore.set(2); // console: 2
+readableStore.set(2); // ERROR
+```
+
 
 ### `svelte/motion`
 
@@ -698,7 +721,7 @@ out:fly={params}
 
 ---
 
-要素の x と y の位置と opacity をアニメーション化します。`in` トランジションは、要素の現在の(デフォルトの)値からパラメータとして渡された値にアニメーションします。`out` トランジションは、指定された値から要素のデフォルト値にアニメーションします。
+要素の x と y の位置と opacity をアニメーション化します。`in` トランジションは、パラメータとして指定された値から、要素のデフォルトの値にアニメーションします。`out` トランジションは、要素のデフォルトの値から指定された値にアニメーションします。
 
 `fly` は以下のパラメータを受け付けます。
 

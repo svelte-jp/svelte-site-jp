@@ -19,6 +19,18 @@ Svelte が行うアクセシビリティチェックのリストは以下の通�
 
 ---
 
+### `a11y-aria-activedescendant-has-tabindex`
+
+An element with `aria-activedescendant` must be tabbable, so it must either have an inherent `tabindex` or declare `tabindex` as an attribute.
+
+```sv
+<!-- A11y: Elements with attribute aria-activedescendant should have tabindex value -->
+<div aria-activedescendant="some-id" />
+
+```
+
+---
+
 ### `a11y-aria-attributes`
 
 DOM 要素の中には、ARIA role やステート、プロパティをサポートしていないものがあります。これは `meta`、`html`、`script`、`style` などのように、表示されないものがあるからです。このルールは、これらの DOM 要素が `aria-*` プロパティを含まないことを強制します。
