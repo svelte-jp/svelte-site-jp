@@ -206,6 +206,7 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/en-US
 {/if}
 ```
 
+(Blocks don't have to wrap elements, they can also wrap text within elements!)
 
 ### {#each ...}
 
@@ -663,7 +664,7 @@ bind:property={variable}
 
 ---
 
-`<select multiple>` 要素はチェックボックスのグループと同様の動作になります。
+`<select multiple>` 要素はチェックボックスのグループと同様の動作になります。バインドされる変数は、選択される各 `<option>` の `value` プロパティに対応するエントリーの配列です。
 
 ```sv
 <select multiple bind:value={fillings}>
@@ -697,7 +698,7 @@ bind:property={variable}
 
 ---
 
-`<details>` elements support binding to the `open` property.
+`<details>` 要素は `open` プロパティのバインディングをサポートします。
 
 ```sv
 <details bind:open={isOpen}>
@@ -1307,14 +1308,12 @@ DOMRect {
 		const d = Math.sqrt(dx * dx + dy * dy);
 
 		return {
-		delay: 0,
-		duration: Math.sqrt(d) * 120,
-		easing: cubicOut,
-		tick: (t, u) =>
-			Object.assign(node.style, {
-				color: t > 0.5 ? 'Pink' : 'Blue'
-			});
-	};
+			delay: 0,
+			duration: Math.sqrt(d) * 120,
+			easing: cubicOut,
+			tick: (t, u) =>
+				Object.assign(node.style, { color: t > 0.5 ? 'Pink' : 'Blue' })
+		};
 	}
 </script>
 
@@ -1670,7 +1669,7 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 
 `this` が nullish な値である場合、この要素と子要素はレンダリングされません。
 
-`this` が void 要素のタグ名 (例えば `br`) で、`<svelte:element>` が子要素を持っている場合、開発モードの場合はランタイムエラーがスローされます。
+`this` が[空要素(void element)](https://developer.mozilla.org/ja/docs/Glossary/Void_element)のタグ名 (例えば `br`) で、`<svelte:element>` が子要素を持っている場合、開発モードの場合はランタイムエラーがスローされます。
 
 ```sv
 <script>
@@ -1716,7 +1715,7 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 * `outerHeight`
 * `scrollX`
 * `scrollY`
-* `online` — window.navigator.onLine の別名です
+* `online` — `window.navigator.onLine` の別名です
 
 `scrollX` と `scrollY` 以外はすべて読み込み専用です。
 
