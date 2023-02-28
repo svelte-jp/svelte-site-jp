@@ -768,6 +768,7 @@ out:slide={params}
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
 * `easing` (`function`, default `cubicOut`) — [イージング関数](/docs#run-time-svelte-easing)
+- `axis` (`x` | `y`, default `y`) — トランジションが発生するモーションの軸
 
 ```sv
 <script>
@@ -776,8 +777,8 @@ out:slide={params}
 </script>
 
 {#if condition}
-	<div transition:slide="{{delay: 250, duration: 300, easing: quintOut }}">
-		slides in and out
+	<div transition:slide="{{delay: 250, duration: 300, easing: quintOut, axis: 'x'}}">
+		slides in and out horizontally
 	</div>
 {/if}
 ```
