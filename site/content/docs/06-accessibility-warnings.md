@@ -308,6 +308,20 @@ ARIA role を持つ要素は、その role に必要な属性をすべて持つ�
 
 ---
 
+### `a11y-role-supports-aria-props`
+
+Elements with explicit or implicit roles defined contain only `aria-*` properties supported by that role.
+
+```sv
+<!-- A11y: The attribute 'aria-multiline' is not supported by the role 'link'. -->
+<div role="link" aria-multiline />
+
+<!-- A11y: The attribute 'aria-required' is not supported by the role 'listitem'. This role is implicit on the element <li>. -->
+<li aria-required />
+```
+
+---
+
 ### `a11y-structure`
 
 特定の DOM 要素が正しい構造を持つことを強制します。

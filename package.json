@@ -121,6 +121,7 @@
   "homepage": "https://svelte.dev",
   "devDependencies": {
     "@ampproject/remapping": "^0.3.0",
+    "@jridgewell/sourcemap-codec": "^1.4.14",
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-json": "^4.0.1",
     "@rollup/plugin-node-resolve": "^11.2.1",
@@ -157,7 +158,6 @@
     "shelljs": "^0.8.3",
     "source-map": "^0.7.4",
     "source-map-support": "^0.5.21",
-    "sourcemap-codec": "^1.4.8",
     "textlint": "^12.1.0",
     "textlint-rule-detect-bad-chars": "^1.0.2",
     "textlint-rule-no-mix-dearu-desumasu": "^4.0.1",

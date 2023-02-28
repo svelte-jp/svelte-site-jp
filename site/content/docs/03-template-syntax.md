@@ -751,6 +751,22 @@ bind:property={variable}
 ></video>
 ```
 
+##### Image element bindings
+
+---
+
+Image elements (`<img>`) have two readonly bindings:
+
+* `naturalWidth` (readonly) — the original width of the image, available after the image has loaded
+* `naturalHeight` (readonly) — the original height of the image, available after the image has loaded
+
+```sv
+<img
+	bind:naturalWidth
+	bind:naturalHeight
+></img>
+```
+
 ##### Block-level element bindings
 
 ---
@@ -1500,6 +1516,8 @@ bind:this={component_instance}
 	<p>this is some child content that will overwrite the default slot content</p>
 </Widget>
 ```
+
+Note: If you want to render regular `<slot>` element, You can use `<svelte:element this="slot" />`.
 
 #### `<slot name="`*name*`">`
 
