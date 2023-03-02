@@ -539,6 +539,7 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 
 * `preventDefault` — ハンドラを実行する前に `event.preventDefault()` を呼び出します
 * `stopPropagation` — `event.stopPropagation()` を呼び出し、イベントが次の要素に到達するのを防ぎます
+* `stopImmediatePropagation` - `event.stopImmediatePropagation()` を呼び出し、同じイベントの他のリスナーが呼び出されるのを防ぎます
 * `passive` — タッチ/ホイールイベントのスクロールパフォーマンスを向上させます（Svelte は追加することが安全な箇所には自動的に追加します）
 * `nonpassive` — 明示的に `passive: false` を設定します
 * `capture` — *バブリング*フェーズではなく*キャプチャ*フェーズ中にハンドラを実行します
@@ -713,14 +714,15 @@ bind:property={variable}
 
 ---
 
-メディア要素 (`<audio>` と `<video>`) には、独自のバインディングのセットがあります -- 6つの *readonly* と…
+メディア要素 (`<audio>` と `<video>`) には、独自のバインディングのセットがあります -- 7つの *readonly* と…
 
 * `duration` (readonly) — 動画の総再生時間(秒単位)です。
 * `buffered` (readonly) —  `{start, end}` オブジェクトの配列です。
 * `played` (readonly) — 同上
 * `seekable` (readonly) — 同上
-* `seeking` (readonly) — Boolean
-* `ended` (readonly) — Boolean
+* `seeking` (readonly) — boolean
+* `ended` (readonly) — boolean
+* `readyState` (readonly) — 0 から 4 までの数値
 
 …そして5つの *双方向* バインディング。
 
@@ -728,7 +730,7 @@ bind:property={variable}
 * `playbackRate` — どれぐらい早く、または遅く動画を再生するか、1 が '通常値' です。
 * `paused` — これは自明のはずです。
 * `volume` — 0 から 1 の間の値です。
-* `muted` — Booleanの値で、`true` はミュートになります。
+* `muted` — booleanの値で、`true` はミュートになります。
 
 動画にはさらに、`videoWidth` と `videoHeight` という読み取り専用のバインディングがあります。
 
@@ -741,6 +743,7 @@ bind:property={variable}
 	bind:seekable
 	bind:seeking
 	bind:ended
+	bind:readyState
 	bind:currentTime
 	bind:playbackRate
 	bind:paused
