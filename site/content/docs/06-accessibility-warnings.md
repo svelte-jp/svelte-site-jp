@@ -55,7 +55,7 @@ DOM 要素の中には、ARIA role やステート、プロパティをサポー
 
 ### `a11y-click-events-have-key-events`
 
-`on:click` が `onKeyUp`、`onKeyDown`、`onKeyPress` のうち少なくともいずれか1つを伴って使用されることを矯正します。キーボード操作用のコーディングは、マウスを使用することができないユーザーや、支援技術(AT)の互換性、スクリーンリーダーを使用するユーザーのためにとても重要です。
+`on:click` が `on:keyup`、`on:keydown`、`on:keypress` のうち少なくともいずれか1つを伴って使用されることを強制します。キーボード操作用のコーディングは、マウスを使用することができないユーザーや、支援技術(AT)の互換性、スクリーンリーダーを使用するユーザーのためにとても重要です。
 
 これはインタラクティブな要素や隠し要素(hidden elements)には適用されません。
 
@@ -63,6 +63,8 @@ DOM 要素の中には、ARIA role やステート、プロパティをサポー
 <!-- A11y: visible, non-interactive elements with an on:click event must be accompanied by an on:keydown, on:keyup, or on:keypress event. -->
 <div on:click={() => {}} />
 ```
+
+`keypress` イベントは現在非推奨であるため、代わりに `keyup` か `keydown` イベントを使用することが公式に推奨されていることにご注意ください。
 
 ---
 
