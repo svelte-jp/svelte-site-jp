@@ -21,7 +21,7 @@ Svelte が行うアクセシビリティチェックのリストは以下の通�
 
 ### `a11y-aria-activedescendant-has-tabindex`
 
-An element with `aria-activedescendant` must be tabbable, so it must either have an inherent `tabindex` or declare `tabindex` as an attribute.
+`aria-activedescendant` がある要素はタブで移動できなければならない (tabbable) ので、固有の `tabindex` を持つか、属性として `tabindex` を宣言しなければなりません。
 
 ```sv
 <!-- A11y: Elements with attribute aria-activedescendant should have tabindex value -->
@@ -277,6 +277,17 @@ HTML の要素には、デフォルトで ARIA role を持つものがありま�
 
 ---
 
+### `a11y-no-noninteractive-element-to-interactive-role`
+
+[WAI-ARIA](https://www.w3.org/TR/wai-aria-1.1/#usage_intro) role を、非インタラクティブな要素をインタラクティブな要素に変換するために使用してはいけません。インタラクティブな ARIA role には、`button`、`link`、`checkbox`、`menuitem`、`menuitemcheckbox`、`menuitemradio`、`option`、`radio`、`searchbox`、`switch`、`textbox` が含まれます。
+
+```sv
+<!-- A11y: Non-interactive element <h3> cannot have interactive role 'searchbox' -->
+<h3 role="searchbox">Button</h3>
+```
+
+---
+
 ### `a11y-no-noninteractive-tabindex`
 
 タブキーでのナビゲーションは、ページ上のインタラクティブに操作できる要素に限定する必要があります。
@@ -312,7 +323,7 @@ ARIA role を持つ要素は、その role に必要な属性をすべて持つ�
 
 ### `a11y-role-supports-aria-props`
 
-Elements with explicit or implicit roles defined contain only `aria-*` properties supported by that role.
+明示的または暗黙的な、定義された role を持つ要素は、その role がサポートする `aria-*` プロパティのみを含むようにします。
 
 ```sv
 <!-- A11y: The attribute 'aria-multiline' is not supported by the role 'link'. -->
