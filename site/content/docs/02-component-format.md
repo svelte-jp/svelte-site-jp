@@ -193,7 +193,7 @@ Total: {total}
 ```
 
 ---
-It is important to note that the reactive blocks are ordered via simple static analysis at compile time, and all the compiler looks at are the variables that are assigned to and used within the block itself, not in any functions called by them. This means that `yDependent` will not be updated when `x` is updated in the following example:
+リアクティブブロックはコンパイル時にシンプルな静的解析によって順序付けられます。コンパイラが見るのはブロック自体に割り当てられ使用される変数だけで、ブロックから呼び出される関数の中にある変数までは見ないということを留意しておくことが重要です。つまり、以下の例では、`x` が更新されたとき、`yDependent` は更新されないということです。
 
 ```sv
 <script>
@@ -209,7 +209,7 @@ It is important to note that the reactive blocks are ordered via simple static a
 </script>
 ```
 
-Moving the line `$: yDependent = y` below `$: setY(x)` will cause `yDependent` to be updated when `x` is updated.
+`$: yDependent = y` という行を `$: setY(x)` の下に移動させると、`x` が更新されたときに `yDependent` が更新されるようになります。
 
 ---
 

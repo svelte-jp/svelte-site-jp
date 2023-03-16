@@ -691,7 +691,12 @@ bind:property={variable}
 
 ---
 
-`contenteditable` 属性を持つ要素は `innerHTML` と `textContent` のバインディングをサポートします。
+`contenteditable` 属性を持つ要素は以下のバインディングをサポートします:
+- [`innerHTML`](https://developer.mozilla.org/ja/docs/Web/API/Element/innerHTML)
+- [`innerText`](https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/innerText)
+- [`textContent`](https://developer.mozilla.org/ja/docs/Web/API/Node/textContent)
+
+それぞれ少し違いがありますので、詳細は[こちら](https://developer.mozilla.org/ja/docs/Web/API/Node/textContent#Differences_from_innerText)をお読みください。
 
 ```sv
 <div contenteditable="true" bind:innerHTML={html}></div>
@@ -1746,6 +1751,25 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 
 > アクセシビリティの問題を避けるため、ページは初期値にスクロールされないことにご注意ください。`scrollX` と `scrollY` にバインドされている変数が変更された後にのみ、スクロールが発生します。ただし、スクロールの挙動が必要であれば、`onMount()` 内で `scrollTo()` を呼び出してください。
 
+### `<svelte:document>`
+
+```sv
+<svelte:document on:event={handler}/>
+```
+
+---
+
+`<svelte:window>` と似ていますが、この要素では、`window` では発生しない `visibilitychange` などのイベントに対するリスナーを `document` に追加することができます。また、`document` で [actions](/docs#template-syntax-element-directives-use-action) を使用することもできます。
+
+`<svelte:window>` と同様、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
+
+```sv
+<svelte:document
+	on:visibilitychange={handleVisibilityChange}
+	use:someAction
+/>
+```
+
 ### `<svelte:body>`
 
 ```sv
@@ -1756,7 +1780,7 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 
 `<svelte:window>` と同様に、この要素を使うことで `document.body` のイベント、例えば `window` では発生しない `mouseenter` や `mouseleave` などのリスナを追加することができます。また、`<body>` 要素に [action](/docs#template-syntax-element-directives-use-action) を使用することもできます。
 
-`<svelte:window>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
+`<svelte:window>` と `<svelte:document>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```sv
 <svelte:body
@@ -1777,7 +1801,7 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 
 この要素を使うと、 `document.head` に要素を挿入することができます。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
 
-`<svelte:window>` と `<svelte:body>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
+`<svelte:window>` と `<svelte:document>` と `<svelte:body>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```sv
 <svelte:head>
