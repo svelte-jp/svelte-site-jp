@@ -460,7 +460,7 @@ readableStore = readonly(writableStore);
 
 ---
 
-This simple helper function makes a store readonly. You can still subscribe to the changes from the original one using this new readable store.
+このシンプルなヘルパー関数は、ストアを読み取り専用にすることができます。新たに作成した読み取り専用のストアを使用して、オリジナルのストアからの変更をサブスクライブすることができます。
 
 
 ```js
@@ -693,7 +693,7 @@ out:blur={params}
 * `duration` (`number`, default 400) — アニメーションの持続時間のミリ秒
 * `easing` (`function`, default `cubicInOut`) — [イージング関数](/docs#run-time-svelte-easing)
 * `opacity` (`number`, default 0) - アニメーション化する opacity の値
-* `amount` (`number`, default 5) - ぼかしのサイズをピクセル単位で表します
+* `amount` (`number | string`, default 5) - ぼかしのサイズをピクセル単位で表します。css の単位 (例: `"4rem"`) をサポートしています。デフォルトの単位は `px` です
 
 ```sv
 <script>
@@ -728,10 +728,11 @@ out:fly={params}
 * `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
 * `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
 * `easing` (`function`, default `cubicOut`) — [イージング関数](/docs#run-time-svelte-easing)
-* `x` (`number`, default 0) - アニメーションで移動する x 位置のオフセット 
-* `y` (`number`, default 0) - アニメーションで移動する y 位置のオフセット
+* `x` (`number | string`, default 0) - アニメーションで移動する x 位置のオフセット 
+* `y` (`number | string`, default 0) - アニメーションで移動する y 位置のオフセット
 * `opacity` (`number`, default 0) - アニメーションで変化する opacity のオフセット
 
+x と y はデフォルトで `px` を使用しますが、css の単位もサポートしています。例えば `x: '100vw'` や `y: '50%'` にすることができます。
 `fly` トランジションの動作は [トランジション チュートリアル](/tutorial/adding-parameters-to-transitions) で見ることができます。
 
 ```sv
