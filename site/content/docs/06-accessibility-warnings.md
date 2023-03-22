@@ -137,6 +137,17 @@ ARIA 属性に正しいタイプの値のみが使用されることを強制し
 
 ---
 
+### `a11y-interactive-supports-focus`
+
+インタラクティブな role やインタラクティブなハンドラ (マウスやキー押下) を持つ要素は、フォーカス可能でありタブ移動が可能でなければなりません。
+
+```sv
+<!-- A11y: Elements with the 'button' interactive role must have a tabindex value. -->
+<div role="button" on:keypress={() => {}} />
+```
+
+---
+
 ### `a11y-label-has-associated-control`
 
 ラベルタグは、テキストラベルと関連するコントロールを持つことを強制します。
