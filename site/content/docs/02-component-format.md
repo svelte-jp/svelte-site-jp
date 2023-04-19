@@ -42,7 +42,7 @@ Svelte では、 変数の宣言を *プロパティ*（*prop*）としてマー
 
 ---
 
-プロパティはデフォルトの初期値を指定することができます。これはコンポーネントの初期化時にプロパティが指定されていない場合（または初期値が `undefined` の場合）に使用されます。プロパティを削除すると、その値は初期値ではなく `undefined` になることに注意してください。
+プロパティはデフォルトの初期値を指定することができます。この初期値はコンポーネントの初期化時にプロパティを指定しなかった場合（または初期値が `undefined` の場合）に使用されます。プロパティにデフォルト値がある場合、そのプロパティを使わずにコンポーネントをインスタンス化し、そのプロパティに値を入れて更新したあと、さらにそのプロパティを使わないようにコンポーネントを更新すると、そのプロパティの値は初期値ではなく `undefined` になることに注意してください。
 
 development モード（[コンパイラオプション](/docs#compile-time-svelte-compile)を参照）では、 デフォルトの初期値が指定されておらず、使用時に値を指定していない場合警告が表示されます。この警告を解消するためには、たとえ `undefined` であってもデフォルトの初期値を指定してください。
 
@@ -286,7 +286,7 @@ RxJSのObservablesとの相互運用性のため、`.subscribe` メソッドは�
 <script context="module">
 	let totalComponents = 0;
 
-	// this allows an importer to do e.g.
+	// the export keyword allows this function to imported with e.g.
 	// `import Example, { alertTotal } from './Example.svelte'`
 	export function alertTotal() {
 		alert(totalComponents);
