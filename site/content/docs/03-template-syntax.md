@@ -823,6 +823,8 @@ bind:group={variable}
 <input type="checkbox" bind:group={fillings} value="Guac (extra)">
 ```
 
+> `bind:group` only works if the inputs are in the same Svelte component.
+
 #### bind:this
 
 ```sv
@@ -1742,6 +1744,7 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 * `scrollX`
 * `scrollY`
 * `online` — `window.navigator.onLine` の別名です
+* `devicePixelRatio`
 
 `scrollX` と `scrollY` 以外はすべて読み込み専用です。
 
@@ -1756,6 +1759,9 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 ```sv
 <svelte:document on:event={handler}/>
 ```
+```sv
+<svelte:document bind:prop={value}/>
+```
 
 ---
 
@@ -1769,6 +1775,15 @@ Svelte がビルド時に処理する要素タイプ固有のバインディン�
 	use:someAction
 />
 ```
+
+---
+
+You can also bind to the following properties:
+
+* `fullscreenElement`
+* `visibilityState`
+
+All are readonly.
 
 ### `<svelte:body>`
 
