@@ -2,17 +2,17 @@
 question: Svelteアプリケーションをテストするにはどうすればよいですか？
 ---
 
-How your application is structured and where logic is defined will determine the best way to ensure it is properly tested. It is important to note that not all logic belongs within a component - this includes concerns such as data transformation, cross-component state management, and logging, among others. Remember that the Svelte library has its own test suite, so you do not need to write tests to validate implementation details provided by Svelte.
+アプリケーションの構造、ロジックの定義によって、適切にテストするための最適な方法が決まります。データ変換、コンポーネント間の状態管理、ロギングなど、すべてのロジックがコンポーネント内にあるわけではないことに注意することが重要です。Svelteライブラリは独自のテストスイートを持っているので、Svelteが提供する実装の詳細を検証するためにテストを書く必要はないことを忘れないでください。
 
-A Svelte application will typically have three different types of tests: Unit, Component, and End-to-End (E2E).
+Svelteアプリケーションには、通常3種類のテストがあります： ユニット、コンポーネント、エンドツーエンド（E2E）です。
 
-*Unit Tests*: Focus on testing business logic in isolation. Often this is validating individual functions and edge cases. By minimizing the surface area of these tests they can be kept lean and fast, and by extracting as much logic as possible from your Svelte components more of your application can be covered using them. When creating a new SvelteKit project, you will be asked whether you would like to setup [Vitest](https://vitest.dev/) for unit testing. There are a number of other test runners that could be used as well.
+*ユニット テスト*： ビジネスロジックを分離してテストすることに重点を置いています。多くの場合、これは個々の機能やエッジケースを検証するものです。また、Svelteコンポーネントから可能な限り多くのロジックを抽出することで、より多くのアプリケーションをこれらのテストでカバーすることができます。新しいSvelteKitプロジェクトを作成する際、ユニットテストのために[Vitest](https://vitest.dev/)をセットアップするかどうか尋ねられます。その他にも、使用可能なテストランナーが多数あります。
 
-*Component Tests*: Validating that a Svelte component mounts and interacts as expected throughout its lifecycle requires a tool that provides a Document Object Model (DOM). Components can be compiled (since Svelte is a compiler and not a normal library) and mounted to allow asserting against element structure, listeners, state, and all the other capabilities provided by a Svelte component. Tools for component testing range from an in-memory implementation like jsdom paired with a test runner like [Vitest](https://vitest.dev/) to solutions that leverage an actual browser to provide a visual testing capability such as [Playwright](https://playwright.dev/docs/test-components) or [Cypress](https://www.cypress.io/).
+*コンポーネント テスト*： Svelteコンポーネントがマウントされ、そのライフサイクルを通じて期待されるように相互作用することを検証するには、ドキュメントオブジェクトモデル（DOM）を提供するツールが必要です。コンポーネントはコンパイルして（Svelteはコンパイラであり、通常のライブラリではないため）マウントし、要素構造、リスナー、ステート、およびSvelteコンポーネントが提供する他のすべての機能に対してアサートすることができます。コンポーネントテストのためのツールは、jsdomのようなインメモリ実装と[Vitest](https://vitest.dev/)のようなテストランナーの組み合わせから、[Playwright](https://playwright.dev/docs/test-components)、[Cypress](https://www.cypress.io/)など、実際のブラウザを活用して視覚的なテスト機能を提供するソリューションまで、さまざまです。
 
-*End-to-End Tests*: To ensure your users are able to interact with your application it is necessary to test it as a whole in a manner as close to production as possible. This is done by writing end-to-end (E2E) tests which load and interact with a deployed version of your application in order to simulate how the user will interact with your application. When creating a new SvelteKit project, you will be asked whether you would like to setup [Playwright](https://playwright.dev/) for end-to-end testing. There are many other E2E test libraries available for use as well.
+*エンド・ツー・エンド テスト*： ユーザーがアプリケーションを操作できることを確認するために、可能な限り本番に近い方法で全体としてテストすることが必要です。これは、ユーザーがアプリケーションをどのように操作するかをシミュレートするために、アプリケーションのデプロイされたバージョンをロードして操作するエンドツーエンド（E2E）テストを書くことによって行われます。新しいSvelteKitプロジェクトを作成する際、エンドツーエンドテスト用に[Playwright](https://playwright.dev/)を設定するかどうか尋ねられます。他にも多くのE2Eテストライブラリがありますので、ご利用ください。
 
-Some resources for getting started with testing:
+テストを始めるためのリソースをいくつか紹介します：
 - [Svelte Testing Library](https://testing-library.com/docs/svelte-testing-library/example/)
 - [Svelte Component Testing in Cypress](https://docs.cypress.io/guides/component-testing/svelte/overview)
 - [Example using vitest](https://github.com/vitest-dev/vitest/tree/main/examples/svelte)
