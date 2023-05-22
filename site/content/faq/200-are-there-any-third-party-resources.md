@@ -1,5 +1,5 @@
 ---
-question: Are there any third-party resources?
+question: サードパーティのリソースはありますか？
 ---
 
-Svelte Society maintains a [list of books and videos](https://sveltesociety.dev/resources).
+Svelte Societyは [list of books and videos](https://sveltesociety.dev/resources) を管理しています。

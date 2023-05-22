@@ -6,18 +6,18 @@ Svelte Language Serverを使用するエディターでは、特別にフォー�
 
 ````sv
 <script>
-	/** What should we call the user? */
+	/** ユーザーをどう呼べばいいのか？? */
 	export let name = 'world';
 </script>
 
 <!--
 @component
-Here's some documentation for this component.
-It will show up on hover.
+このコンポーネントのドキュメントを紹介します。
+ホバーで表示されます。
 
-- You can use markdown here.
-- You can also use code blocks here.
-- Usage:
+- ここではマークダウンを使用することができます。
+- また、ここではコードブロックを使用することができます。
+- 使用方法:
   ```tsx
   <main name="Arethra">
   ```
