@@ -1,5 +1,7 @@
 import { modules } from '$lib/generated/type-info';
-import { renderContentMarkdown, slugify } from '@sveltejs/site-kit/markdown';
+// import { renderContentMarkdown, slugify } from '@sveltejs/site-kit/markdown';
+import { slugify } from '@sveltejs/site-kit/markdown';
+import { renderContentMarkdown } from '@tomoam/site-kit/markdown';
 
 /**
  * @param {string} filename

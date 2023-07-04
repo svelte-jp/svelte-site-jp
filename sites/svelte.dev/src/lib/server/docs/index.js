@@ -123,11 +123,12 @@ function get_sections(markdown) {
 	let currentNodes = [root];
 
 	lines.forEach((line) => {
-		const match = line.match(/^(#{2,4})\s(.*)/);
+		const match = line.match(/^(#{2,4})\s(.*?)(?:\s(<!--(.*?)-->))?$/);
+
 		if (match) {
 			const level = match[1].length - 2;
 			const text = titled(match[2]);
-			const slug = normalizeSlugify(text);
+			const slug = match[4] || normalizeSlugify(text);
 
 			// Prepare new node
 			/** @type {import('./types').Section} */
