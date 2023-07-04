@@ -2,9 +2,9 @@
 title: If blocks
 ---
 
-HTML doesn't have a way of expressing _logic_, like conditionals and loops. Svelte does.
+HTML には条件式やループのような _ロジック_ を表現する方法がありません。Svelteにはあります。
 
-To conditionally render some markup, we wrap it in an `if` block:
+条件付きでマークアップをレンダリングする場合は、そのマークアップを `if` ブロックで囲みます:
 
 ```svelte
 {#if user.loggedIn}
@@ -16,4 +16,4 @@ To conditionally render some markup, we wrap it in an `if` block:
 {/if}
 ```
 
-Try it — update the component, and click on the buttons.
+試してみてください。コンポーネントを更新し、ボタンをクリックしてみてください。

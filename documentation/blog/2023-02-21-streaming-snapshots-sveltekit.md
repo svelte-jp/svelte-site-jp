@@ -1,21 +1,30 @@
 ---
-title: Streaming, snapshots, and other new features since SvelteKit 1.0
-description: Exciting improvements in the latest version of SvelteKit
+title: Streaming、snapshots、その他 SvelteKit 1.0 以降の新機能
+description: SvelteKit 最新バージョンのエキサイティングな改善
 author: Geoff Rich
 authorURL: https://geoffrich.net
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/streaming-snapshots-sveltekit
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-The Svelte team has been hard at work since the release of SvelteKit 1.0. Let’s talk about some of the major new features that have shipped since launch: [streaming non-essential data](https://kit.svelte.dev/docs/load#streaming-with-promises), [snapshots](https://kit.svelte.dev/docs/snapshots), and [route-level config](https://kit.svelte.dev/docs/page-options#config).
+Svelte チームは SvelteKit 1.0 がリリースされたあとも懸命に取り組んできました。ローンチ後にリリースされたいくつかのメジャーな新機能についてご紹介します: [streaming non-essential data](https://kit.svelte.jp/docs/load#streaming-with-promises)、[snapshots](https://kit.svelte.jp/docs/snapshots)、そして [route-level config](https://kit.svelte.jp/docs/page-options#config) です。
 
 ## Stream non-essential data in load functions
 
-SvelteKit uses [load functions](https://kit.svelte.dev/docs/load) to retrieve data for a given route. When navigating between pages, it first fetches the data, and then renders the page with the result. This could be a problem if some of the data for the page takes longer to load than others, especially if the data isn’t essential – the user won’t see any part of the new page until all the data is ready.
+SvelteKit は [load 関数](https://kit.svelte.jp/docs/load)を使用してルート(route)のデータを取得します。ページ間で移動する場合、まず最初にデータを取得し、それからその結果を用いてページをレンダリングします。このため、もしデータの一部が他のデータよりも取得に時間がかかる場合、特にそのデータが重要ではない場合、問題になるでしょう – すべてのデータが揃わないと、ユーザーは新しいページのどの部分も見ることができないからです。
 
-There were ways to work around this. In particular, you could fetch the slow data in the component itself, so it first renders with the data from `load` and then starts fetching the slow data. But this was not ideal: the data is even more delayed since you don’t start fetching until the client renders, and you’re also having to break SvelteKit’s `load` convention.
+これを回避する方法もありました。具体的には、コンポーネント自体で遅いデータを取得することができるので、まず `load` で取得したデータでレンダリングし、そのあとで遅いデータの取得を開始します。しかしこれは理想的ではありませんでした: クライアントがレンダリングするまでデータの取得を開始しないため、データはさらに遅延しますし、SvelteKit の `load` の規約を破ることにもなります。
 
-Now, in SvelteKit 1.8, we have a new solution: you can return a nested promise from a server load function, and SvelteKit will start rendering the page before it resolves. Once it completes, the result will be [streamed](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API) to the page.
+今回、SvelteKit 1.8 において、新たなソリューションを提供します: server load 関数からネストした promise を返すと、SvelteKit はそれが解決する前にページのレンダリングを開始します。ネストした promise は完了し次第、その結果がページに[ストリーミング](https://developer.mozilla.org/ja/docs/Web/API/Streams_API)されます。
 
-For example, consider the following `load` function:
+例えば、次の `load` 関数について考えてみましょう:
 
 ```ts
 // @errors: 2304
@@ -29,7 +38,7 @@ export const load: PageServerLoad = () => {
 };
 ```
 
-SvelteKit will automatically await the `fetchPost` call before it starts rendering the page, since it’s at the top level. However, it won’t wait for the nested `fetchComments` call to complete – the page will render and `data.streamed.comments` will be a promise that will resolve as the request completes. We can show a loading state in the corresponding `+page.svelte` using Svelte’s [await block](https://svelte.dev/docs#template-syntax-await):
+SvelteKit は自動的にこの `fetchPost` の呼び出しを await してからページのレンダリングを開始します。なぜならそれがトップレベルだからです。しかし、ネストした `fetchComments` の呼び出しが完了するのは待ちません – ページはレンダリングされ、`data.streamed.comments` はリクエストが完了すると解決する promise となります。`+page.svelte` で、Svelte の [await block](https://svelte.jp/docs#template-syntax-await) を使用してロード中の状態を表示することもできます:
 
 ```svelte
 <script lang="ts">
@@ -52,17 +61,17 @@ SvelteKit will automatically await the `fetchPost` call before it starts renderi
 {/await}
 ```
 
-There is nothing unique about the property `streamed` here – all that is needed to trigger the behavior is a promise outside the top level of the returned object.
+この `streamed` プロパティに特別なものはありません – この動作をトリガーするのに必要なのは、戻り値のオブジェクトのトップレベル以外の場所にある promise だけです。
 
-SvelteKit will only be able to stream responses if your app’s hosting platform supports it. In general, any platform built around AWS Lambda (e.g. serverless functions) will not support streaming, but any traditional Node.js server or edge-based runtime will. Check your provider’s documentation for confirmation.
+SvelteKit は、アプリのホスティングプラットフォームがストリーミングをサポートしている場合にのみ、レスポンスをストリーミングすることができます。一般的には、AWS Lambda を中心に構築されたプラットフォーム (例えば serverless functions) はストリーミングをサポートしていませんが、従来の Node.js サーバーや edge ベースのランタイムはサポートしています。プロバイダーのドキュメントで確認してみてください。
 
-If your platform does not support streaming, the data will still be available, but the response will be buffered and the page won’t start rendering until all data has been fetched.
+プラットフォームがストリーミングをサポートしていない場合でも、データは利用可能です。その場合レスポンスはバッファリングされ、すべてのデータが取得されるまでページのレンダリングは開始されません。
 
 ## How does it work?
 
-In order for data from a server `load` function to get to the browser, we have to _serialize_ it. SvelteKit uses a library called [devalue](https://github.com/Rich-Harris/devalue), which is like `JSON.stringify` but better — it can handle values that JSON can't (like dates and regular expressions), it can serialize objects that contain themselves (or that exist multiple times in the data) without breaking identity, and it protects you against [XSS vulnerabilities](https://github.com/rich-harris/devalue#xss-mitigation).
+データを server `load` 関数からブラウザに送信するには、データを _シリアライズ_ する必要があります。SvelteKit は [devalue](https://github.com/Rich-Harris/devalue) というライブラリを使用しています。これは `JSON.stringify` のようなものですが、より優れています — JSON では扱うことができない値 (例えば date や正規表現など) も扱うことができ、自身をその中に含むような (またはそのデータの中に何度も現れるような) オブジェクトもそのアイデンティティを破壊することなくシリアライズすることができ、そして [XSS 脆弱性](https://github.com/rich-harris/devalue#xss-mitigation) から保護することができます。
 
-When we server-render a page, we tell devalue to serialize promises as function calls that create a _deferred_. This is a simplified version of the code SvelteKit adds to the page:
+ページをサーバーでレンダリングする際、promise を、_deferred(遅延)_ を作成する function call としてシリアライズするよう devalue に指示します。これは SvelteKit がページに追加するコードを簡略化したものです。
 
 ```js
 // @errors: 2339 7006
@@ -97,7 +106,7 @@ const data = {
 };
 ```
 
-This code, along with the rest of the server-rendered HTML, is sent to the browser immediately, but the connection is kept open. Later, when the promise resolves, SvelteKit pushes an additional chunk of HTML to the browser:
+このコードは、サーバーレンダリングされた一部の HTML と一緒にブラウザにすぐに送信されますが、コネクションは開いたままになっています。その後、promise が解決すると、SvelteKit は追加の HTML チャンクをブラウザにプッシュします:
 
 ```html
 <script>
@@ -107,7 +116,7 @@ This code, along with the rest of the server-rendered HTML, is sent to the brows
 </script>
 ```
 
-For client-side navigation, we use a slightly different mechanism. Data from the server is serialized as [newline delimited JSON](https://dataprotocols.org/ndjson/), and SvelteKit reconstructs the values — using a similar deferred mechanism — with `devalue.parse`:
+クライアントサイドナビゲーションの場合は、少し異なるメカニズムを使用します。サーバーからのデータは [newline delimited JSON](https://dataprotocols.org/ndjson/) としてシリアライズされ、SvelteKit は `devalue.parse` で似たような遅延メカニズムを使用してその値を再構築します:
 
 ```json
 // this is generated immediately — note the ["Promise",1]...
@@ -117,21 +126,21 @@ For client-side navigation, we use a slightly different mechanism. Data from the
 [{"id":1,"data":2},1,[3],{"comment":4},"First!"]
 ```
 
-Because promises are natively supported in this way, you can put them anywhere in the data returned from `load` (except at the top level, since we automatically await those for you), and they can resolve with any type of data that devalue supports — including more promises!
+このように promise はネイティブにサポートされているため、`load` から返されるデータのどこにでも置くことができます (トップレベルは除く。トップレベルは自動的に await するからです)。そして devalue がサポートするあらゆるタイプのデータを解決することができます — もちろんさらに多くの promise も！
 
-One caveat: this feature needs JavaScript. Because of this, we recommend that you only stream in non-essential data so that the core of the experience is available to all users.
+注意事項: この機能には JavaScript が必要です。そのため、重要でないデータのみ、ストリーミングすることを推奨します。すべてのユーザーがエクスペリエンスのコアを利用できるようにするためです。
 
-For more on this feature, see [the documentation](https://kit.svelte.dev/docs/load#streaming-with-promises). You can see a demo at [sveltekit-on-the-edge.vercel.app](https://sveltekit-on-the-edge.vercel.app/edge) (the location data is artificially delayed and streamed in) or [deploy your own on Vercel](https://vercel.com/templates/svelte/sveltekit-edge-functions), where streaming is supported in both Edge Functions and Serverless Functions.
+この機能の詳細については、[ドキュメント](https://kit.svelte.jp/docs/load#streaming-with-promises)をご覧ください。デモは [sveltekit-on-the-edge.vercel.app](https://sveltekit-on-the-edge.vercel.app/edge) (ロケーションデータをわざと遅延させ、ストリーミングしています) でご覧頂けますし、[ご自身で Vercel にデプロイ](https://vercel.com/templates/svelte/sveltekit-edge-functions)することもできます。Vercel では Edge Functions と Serverless Functions のどちらもストリーミングをサポートしています。
 
-We're grateful for the inspiration from prior implementations of this idea including Qwik, Remix, Solid, Marko, React and many others.
+私たちは、Qwik、Remix、Solid、Marko、React などの、このアイデアの先行実装からインスピレーションを受けました。深く感謝します。
 
 ## Snapshots
 
-Previously in a SvelteKit app, if you navigated away after starting to fill out a form, going back wouldn’t restore your form state – the form would be recreated with its default values. Depending on the context, this can be frustrating for users. Since SvelteKit 1.5, we have a built-in way to address this: snapshots.
+以前までの SvelteKit アプリでは、フォームに入力を開始したあとで移動して、そのあと戻ってくるとフォームの state は復元されず、デフォルトの値でフォームが再作成されていました。場合によっては、ユーザーはフラストレーションが溜まるかもしれません。SvelteKit 1.5 以降は、これに対応するための方法が組み込まれています: それが snapshots です。
 
-Now, you can export a `snapshot` object from a `+page.svelte` or `+layout.svelte`. This object has two methods: `capture` and `restore`. The `capture` function defines what state you want to store when the user leaves the page. SvelteKit will then associate that state with the current history entry. If the user navigates back to the page, the `restore` function will be called with the state you previously had set.
+現在、`+page.svelte` や `+layout.svelte` で `snapshot` オブジェクトをエクスポートすることができます。このオブジェクトには、`capture` と `restore` という2つのメソッドがあります。`capture` 関数は、ユーザーがページを離れたときにどの state を保存するかを定義します。SvelteKit はその state を現在の履歴エントリに関連付けます。ユーザがページに戻った場合は、以前に設定した state を引数に取って `restore` 関数が呼び出されます。
 
-For example, here is how you would capture and restore the value of a textarea:
+こちらは textarea の値を capture し、restore する方法の例です:
 
 ```svelte
 <script lang="ts">
@@ -152,15 +161,15 @@ For example, here is how you would capture and restore the value of a textarea:
 </form>
 ```
 
-While things like form input values and scroll positions are common examples, you can store any JSON-serializable data you like in a snapshot. The snapshot data is stored in [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage), so it will persist even when the page is reloaded, or if the user navigates to a different site entirely. Because it’s in `sessionStorage`, you won’t be able to access it during server-side rendering.
+フォームの input の値やスクロールポジションなどは一般的な例で、JSON-serializable なデータならなんでも snapshot に保存することができます。snapshot のデータは [sessionStorage](https://developer.mozilla.org/ja/docs/Web/API/Window/sessionStorage) に保存されるので、ページがリロードされたときや、ユーザーがまったく別のサイトに移動したときにも保持されます。`sessionStorage` に保存されるため、サーバーサイドレンダリング中にアクセスすることはできません。
 
-For more, see [the documentation](https://kit.svelte.dev/docs/snapshots).
+詳細は、[ドキュメント](https://kit.svelte.jp/docs/snapshots)をご覧ください。
 
 ## Route-level deployment configuration
 
-SvelteKit uses platform-specific [adapters](https://kit.svelte.dev/docs/adapters) to transform your app code for deployment to production. Until now, you had to configure your deployment on an app-wide level. For instance, you could either deploy your app as an edge function or a serverless function, but not both. This made it impossible to take advantage of the edge for parts of your app – if any route needed Node APIs, then you couldn’t deploy any of it to the edge. The same is true for other aspects of deployment configuration, such as regions and allocated memory: you had to choose one value that applied to every route in your entire app.
+SvelteKit はプラットフォームごとに固有の [adapter](https://kit.svelte.jp/docs/adapters) を使用してプロダクションへのデプロイ用にアプリのコードを変換しています。これまでは、デプロイメントの設定をアプリ全体レベルで行わなければなりませんでした。例えば、アプリを edge function としてデプロイするか、serverless function としてデプロイするか、どちらか一方は可能でしたが、両方同時に行うことはできませんでした。これでは、アプリの一部だけを edge にするというメリットを得ることができません – もし Node API を必要とするルート(route)がある場合、アプリ全体を edge にデプロイすることができないのです。リージョンの選択やメモリ割り当てなど、デプロイ設定の他の側面についても同様です: アプリ全体、すべてのルート(route)に適用される1つの値を選択しなければならなかったのです。
 
-Now, you can export a `config` object in your `+server.js`, `+page(.server).js` and `+layout(.server).js` files to control how those routes are deployed. Doing so in a `+layout.js` will apply the configuration to all child pages. The type of `config` is unique to each adapter, since it depends on the environment you’re deploying to.
+そしてこの度、`config` オブジェクトを `+server.js`、`+page(.server).js`、`+layout(.server).js` ファイルでエクスポートすることができるようになり、これらのルート(route)をどうやってデプロイするかコントロールできるようになりました。`+layout.js` でこれを行うと、そのすべての子ページに設定が適用されます。`config` の型は、デプロイ先の環境に依存するため、各 adapter ごとにユニークです。
 
 ```ts
 // @errors: 2307
@@ -171,37 +180,37 @@ export const config: Config = {
 };
 ```
 
-Configs are merged at the top level, so you can override values set in a layout for pages further down the tree. For more details, see [the documentation](https://kit.svelte.dev/docs/page-options#config).
+Config はトップレベルでマージされるため、レイアウトで設定された値をツリーのさらに下のページで上書きすることができます。詳細は[ドキュメント](https://kit.svelte.jp/docs/page-options#config)をご覧ください。
 
-If you deploy to Vercel, you can take advantage of this feature by installing the latest versions of SvelteKit and your adapter. This will require a major upgrade to your adapter version, since adapters supporting route-level config require SvelteKit 1.5 or later.
+Vercel にデプロイする場合、最新バージョンの SvelteKit と adapter をインストールすることでこの機能のメリットを享受することができます。ルートレベル(route-level)の config をサポートする adapter は SvelteKit 1.5 以降が必要であるため、adapter のバージョンを大幅にアップグレードする必要があるかもしれません。
 
 ```bash
 npm i @sveltejs/kit@latest
 npm i @sveltejs/adapter-auto@latest # or @sveltejs/adapter-vercel@latest
 ```
 
-For now, only the [Vercel adapter](https://kit.svelte.dev/docs/adapter-vercel#deployment-configuration) implements route-specific config, but the building blocks are there to implement this for other platforms. If you’re an adapter author, see the changes in [the PR](https://github.com/sveltejs/kit/pull/8740) to see what is required.
+今現在は、[Vercel adapter](https://kit.svelte.jp/docs/adapter-vercel#deployment-configuration) のみがルート固有(route-specific)の config を実装していますが、他のプラットフォーム向けでもこれを実装するためのビルディングブロックがあります。もしあなたが adapter の作者なら、[この PR](https://github.com/sveltejs/kit/pull/8740) の変更点を参照し、要求事項を確認してください。
 
 ## Incremental static regeneration on Vercel
 
-Route-level config also unlocked another much-requested feature – you can now use [incremental static regeneration](https://kit.svelte.dev/docs/adapter-vercel#incremental-static-regeneration) (ISR) with SvelteKit apps deployed to Vercel. ISR provides the performance and cost advantages of prerendered content with the flexibility of dynamically rendered content.
+ルートレベル(Route-level)の config では、もう1つ要望の多かった機能も使えるようになりました – Vercel にデプロイされる SvelteKit アプリで、[incremental static regeneration](https://kit.svelte.jp/docs/adapter-vercel#incremental-static-regeneration) (ISR) が使用できるようになりました。ISR は、プリレンダリングされたコンテンツにおけるコストとパフォーマンスの優位性と、動的なレンダリングコンテンツの柔軟性の両方を提供します。
 
-To add ISR to a route, include the `isr` property in your `config` object:
+ISR をルート(route)に追加するには、`config` オブジェクトに `isr` プロパティを追加します:
 
 ```ts
 export const config = {
 	isr: {
-		// see Vercel adapter docs for the required options
+		// 必須のオプションについては Vercel adapter のドキュメントをご覧ください
 	}
 };
 ```
 
 ## And much more...
 
-- The [OPTIONS method](https://kit.svelte.dev/docs/routing#server) is now supported in `+server.js` files
-- Better error messages when you [export something that belongs in a different file](https://github.com/sveltejs/kit/pull/9055) or [forget to put a slot](https://github.com/sveltejs/kit/pull/8475) in your +layout.svelte.
-- You can now [access public environment variables in app.html](https://kit.svelte.dev/docs/project-structure#project-files-src)
-- A new [text helper](https://kit.svelte.dev/docs/modules#sveltejs-kit-text) for creating responses
-- And a ton of bug fixes – see [the changelog](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md) for the full release notes.
+- [OPTIONS method](https://kit.svelte.jp/docs/routing#server) が `+server.js` ファイルでサポートされました。
+- [別のファイルに属するものをエクスポート](https://github.com/sveltejs/kit/pull/9055)したときや、+layout.svelte に[slot を置くのを忘れた](https://github.com/sveltejs/kit/pull/8475)ときのエラーメッセージが改善されました。
+- [app.html でパブリックな環境変数にアクセス](https://kit.svelte.jp/docs/project-structure#project-files-src)できるようになりました
+- レスポンスを作成する新たな [text ヘルパー](https://kit.svelte.jp/docs/modules#sveltejs-kit-text)が追加されました
+- そしてたくさんのバグフィックス – リリースノートの全文については[changelog](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md)をご覧ください。
 
-Thank you to everyone who has contributed and uses SvelteKit in their projects. We’ve said it before, but Svelte is a community project, and it wouldn’t be possible without your feedback and contributions.
+SvelteKit にコントリビュートしてくれた皆様、SvelteKit をプロジェクトで使ってくださっている皆様、ありがとうございます。以前にもお伝えしましたが、Svelte はコミュニティプロジェクトであり、皆様のフィードバックやコントリビューションがなくては成り立たないものです。

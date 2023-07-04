@@ -1,15 +1,24 @@
 ---
-title: Announcing SvelteKit 1.0
+title: SvelteKit 1.0 発表
 description: Web development, streamlined
 author: The Svelte team
 authorURL: https://svelte.dev/
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/announcing-sveltekit-1.0
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-After two years in development, [SvelteKit](https://kit.svelte.dev) has finally reached 1.0. As of today, it’s the recommended way to build Svelte apps of all shapes and sizes.
+2年間の開発を経て、[SvelteKit](https://kit.svelte.jp) はついに 1.0 に到達しました。今日現在において、SvelteKit はあらゆる形・サイズの Svelte アプリを構築する場合に推奨されます。
 
-We’re so excited to share this release with you. It’s the culmination of thousands of hours of work, both from the Svelte core team and the wider community, and we think it’s the most enjoyable way to build production-grade websites, whether you’re a solo developer working on a small project or part of a large team.
+このリリースを皆さんに共有できることがとても嬉しいです。Svelte コアチームと広いコミュニティによる何千時間もの作業の集大成であり、小さなプロジェクトに取り組む単独の開発者であれ、大きなチームの一員であれ、本番レベル(production-grade)の Web を構築するのに最も楽しい方法だと思います。
 
-To get started, run `npm create svelte@latest`, and visit the [docs](https://kit.svelte.dev/docs) and (experimental!) [interactive tutorial](https://learn.svelte.dev).
+始めてみるには、`npm create svelte@latest` を実行し、[ドキュメント](https://kit.svelte.jp/docs)と、[インタラクティブなチュートリアル](https://learn.svelte.jp)を確認してみてください(インタラクティブなチュートリアルはまだ experimental です)。
 
 <div class="max">
 <figure style="max-width: 960px; margin: 0 auto">
@@ -23,83 +32,82 @@ To get started, run `npm create svelte@latest`, and visit the [docs](https://kit
 
 ## What is SvelteKit?
 
-SvelteKit is a framework for building web applications on top of [Svelte](https://svelte.dev), a UI component framework [that](https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-web-frameworks) [developers](https://2021.stateofjs.com/en-US/libraries/front-end-frameworks/) [love](https://twitter.com/Rich_Harris/status/1589675637195042817) for its performance and ease of use.
+SvelteKit は web アプリケーションを開発するためのフレームワークで、そのパフォーマンスと使いやすさから [開発者から](https://2021.stateofjs.com/en-US/libraries/front-end-frameworks/) [最も](https://insights.stackoverflow.com/survey/2021#section-most-loved-dreaded-and-wanted-web-frameworks) [愛されている](https://twitter.com/Rich_Harris/status/1589675637195042817) UI コンポーネントフレームワークである [Svelte](https://svelte.jp) 上に構築されています。
+Svelte のようなコンポーネントフレームワークを使ったことがあれば、DOM を直接操作するより、こういったフレームワークを使用したほうがユーザーインターフェースの構築がずっと簡単になることをご存知でしょう。しかし、多くの疑問が残っています:
 
-If you’ve used component frameworks like Svelte, you’ll know that they make it much easier to build user interfaces than working with the DOM directly. But they leave a lot of questions unanswered:
+- ソースコードの構造はどうすればいいですか?
+- サーバーサイドレンダリングを追加するには?
+- サーバーでもブラウザでも動作するルーティングを追加するには?
+- クライアントサイドルーティングをアクセシブルにするには?
+- データを取得(fetch)はどうすればいいですか?
+- データを変更(mutate)するには?
+- エラーを処理するには?
+- プロダクション向けにビルドを最適化するには?
+- 環境変数を賢くセキュアに扱うには?
+- CSP ヘッダーと CSRF 保護を追加するには?
+- service worker を追加するには? 何をどうキャッシュさせられる?
+- アプリケーションをデプロイするにはどんな準備を?
 
-- How do I structure my source code?
-- How do I add server-side rendering?
-- How do I add routing that works on the server and in the browser?
-- How do I make client-side routing accessible?
-- How do I fetch data?
-- How do I mutate data?
-- How do I handle errors?
-- How do I optimise my production build?
-- How do I handle environment variables sensibly and securely?
-- How do I add CSP headers and CSRF protection?
-- How do I add a service worker that knows what to cache?
-- How do I prepare my application for deployment?
-
-An application framework is designed to answer these questions. SvelteKit does so with a design informed by the real world needs of an army of beta testers (many of whom have been running SvelteKit in production for some time — we salute your courage and thank you for the invaluable feedback) and the best ideas from other application frameworks including [Next.js](https://nextjs.org/) and [Remix](https://remix.run/).
+アプリケーションフレームワークは、これらの質問に応えられるよう設計されています。SvelteKit は、大勢のベータテスター (その多くは SvelteKit をプロダクションで運用しています — その勇気に敬意を表するとともに、貴重なフィードバックに感謝しています) の現実世界のニーズと、[Next.js](https://nextjs.org/) や [Remix](https://remix.run/) を含む他のアプリケーションフレームワークから得たベストなアイデアを反映した設計になっています。
 
 ## How is it different?
 
-Web developers today are spoiled for choice. Aside from the aforementioned frameworks, there are options like [Astro](https://astro.build/), battle-tested server frameworks like [Rails](https://rubyonrails.org/) and [Laravel](https://laravel.com/), and a million static site generators. These are all wonderful tools, and you should feel good about choosing them.
+Web 開発者にとって、魅力的な選択肢が多いという現在の状況は贅沢な悩みでしょう。前述のフレームワーク以外にも、[Astro](https://astro.build/) や、[Rails](https://rubyonrails.org/)・[Laravel](https://laravel.com/) といったプロダクションでの実績があるフレームワーク、そして数多くの静的サイトジェネレーターがあります。全て素晴らしいツールなので、選ぶのが楽しいはずです。
 
-SvelteKit does things a little differently, however:
+ただ、SvelteKit は一味違います:
 
-**Unlike traditional ‘multi-page app’ or MPA frameworks,** it defaults to client-side navigation after the initial server-rendered page load. This enables faster page transitions, state that persists between pages (such as a sidebar’s scroll position), and less data usage. It also avoids re-running third party scripts like analytics on every single page load.
+**従来の ‘マルチページアプリ’、MPA フレームワークと違い、** 最初にサーバーレンダリングされたページをロードしたあとは、デフォルトでクライアントサイドナビゲーションになります。これにより、高速なページ遷移、ページ間での状態の永続化(例えばサイドバーのスクロールポジション)、より少ないデータ使用量などが可能となります。また、サードパーティースクリプト(例えば analytics)が各ページのロードのたびに再実行されることを防ぎます。
 
-**Unlike traditional server frameworks,** it allows you to use one language, instead of effectively having two tightly-coupled apps (one to generate HTML, one to handle client-side interaction). Because SvelteKit runs wherever JavaScript runs, you can deploy your app as a traditional Node server, or using serverless functions — including at the edge.
+**従来のサーバーフレームワークと違い、** 単一の言語を使用することができます。密結合した2つのアプリ (1つは HTML の生成、1つはクライアントサイドインタラクションの処理) を持つことはありません。SvelteKit は JavaScript が動作する場所ならどこでも実行できるので、従来の Node サーバーとして、あるいはエッジを含むサーバーレス関数を使ってアプリをデプロイすることができます。
 
-**Unlike static site generators,** you can build apps with personalised or dynamic data — without the performance-killing, layout-shifting effects of fetching it from the browser after the page loads.
+**静的サイトジェネレーターと違い、** パーソナライズされたデータまたは動的なデータを使用するアプリを構築することができます。しかも、パフォーマンスを犠牲にすることもありませんし、ページロード後にブラウザからデータを取得することによって発生するレイアウトシフトもありません。
 
-With SvelteKit, you have flexibility. Many frameworks assume there’s one correct way to build an app, but reality is more nuanced. It’s not true, for example, that prerendering static pages is just a poor man’s `cache-control` — it also lets you do build-time validation or render data from the filesystem that your edge functions can’t access, and acts as a hedge against flaky databases. It’s not true that everything needs server-side rendering — it’s the right default if you want robust, performant apps with good SEO, but there are countless exceptions.
+SvelteKit によって、柔軟性を得られます。多くのフレームワークでは、アプリを構築する正しい方法は1つであると仮定していますが、現実はもっと微妙です。例えば、静的ページのプリレンダリングは単なるお手軽な `cache-control` ではありません — ビルド時のバリデーションや、エッジ関数がアクセスできないファイルシステムからのデータのレンダリングを可能にし、不安定なデータベースに対するヘッジとして機能します。全てのページにサーバーサイドレンダリングが必要だ、というのも正しくありません — 堅牢でハイパフォーマンスアプリと、優れた SEO を実現したいのであれば、それは正しいデフォルトですが、数え切れないほどの例外があります。
 
-In a SvelteKit app, you can make these choices with as much granularity as you need — for example the page you’re looking at is prerendered, but the [REPL](/repl) is rendered with dynamic data. Switching between the two is a single line of code. We call apps built with this approach ‘[transitional apps](https://www.youtube.com/watch?v=860d8usGC0o)’.
+SvelteKit アプリでは、これらの選択を必要なだけきめ細やかに行うことができます — 例えば、あなたが今見ているこのページはプリレンダリングされたものですが、[REPL](/repl) では動的なデータがレンダリングされています。この2つの挙動は、1行のコードで切り替えることができます。このようなアプローチで構築されたアプリを、私たちは ‘[transitional apps](https://www.youtube.com/watch?v=860d8usGC0o)’ と呼んでいます。
 
 ## What can I use with SvelteKit?
 
-Because SvelteKit uses [Vite](https://vitejs.dev/), the lightning-fast build tool, it has out-of-the-box support for hot module reloading, TypeScript, and many other things that developers rely on. You can install plugins from the vast Vite and Rollup ecosystems to add support for other tools.
+SvelteKit は高速なビルドツールである [Vite](https://ja.vitejs.dev/) を使用しているので、ホットモジュールリロード(hot module reloading)、TypeScript、その他開発者が必要とするものをすぐに利用することができます。Vite と Rollup の広大なエコシステムからプラグインをインストールすることで、他のツールのサポートを追加することができます。
 
-When creating a SvelteKit project you’ll be asked if you want to add [TypeScript](https://www.typescriptlang.org/), [ESLint](https://eslint.org/), [Prettier](https://prettier.io/), [Playwright](https://playwright.dev/) (for end-to-end browser tests) and [Vitest](https://vitest.dev/) (for unit tests). Integration guides already exist for many popular projects — [Tailwind](https://tailwindcss.com/docs/guides/sveltekit) and [Supabase](https://supabase.com/docs/guides/getting-started/tutorials/with-sveltekit), for example. You can use [Storybook](https://github.com/storybookjs/storybook/blob/next/code/frameworks/sveltekit/README.md) and [Histoire](https://histoire.dev/guide/svelte3/getting-started.html) for your component stories. The community-maintained [svelte-add](https://github.com/svelte-add/svelte-add) lets you add a growing list of other integrations with a single command.
+SvelteKit プロジェクトを作成するとき、[TypeScript](https://www.typescriptlang.org/)、[ESLint](https://eslint.org/)、[Prettier](https://prettier.io/)、[Playwright](https://playwright.dev/) (for end-to-end browser tests)、[Vitest](https://vitest.dev/) (for unit tests) を追加するか選択できます。例えば、[Tailwind](https://tailwindcss.com/docs/guides/sveltekit) や [Supabase](https://supabase.com/docs/guides/getting-started/tutorials/with-sveltekit) など、多くのポピュラーなプロジェクトにはすでにインテグレーションガイドがあります。コンポーネントストーリー(component stories) には [Storybook](https://github.com/storybookjs/storybook/blob/next/code/frameworks/sveltekit/README.md) や [Histoire](https://histoire.dev/guide/svelte3/getting-started.html) を使用することができます。コミュニティがメンテナンスしている [svelte-add](https://github.com/svelte-add/svelte-add) を使用すれば、コマンド1つでどんどん増えているインテグレーションの数々を追加することができます。
 
-And of course you have access to everything [npm](https://npmjs.com/) has to offer. (Note that some packages require Node.js, and so can only be used when deployed to Node-based platforms.)
+もちろん、[npm](https://npmjs.com/) が提供するものすべてにアクセスできます。(一部のパッケージは Node.js が必要なため、それを使う場合はデプロイ先が Node ベースのプラットフォームに限定されることにご注意ください。)
 
 ## Where can I deploy my apps?
 
-Anywhere! The SvelteKit CLI needs Node.js installed locally, but the framework itself has no dependencies on any platform. This means you can deploy it wherever JavaScript runs.
+どこでも! SvelteKit CLI にはローカルにインストールされた Node.js が必要ですが、フレームワーク自体にはどんなプラットフォームにも依存しません。つまり、JavaScript が動作する場所であれば、どこにでもデプロイすることができます。
 
-This is made possible by [adapters](https://kit.svelte.dev/docs/adapters). The default adapter, [adapter-auto](https://github.com/sveltejs/kit/tree/master/packages/adapter-auto), provides zero-config support for Vercel, Netlify, Cloudflare Pages and Azure Static Web Apps, with more platforms coming in the future. Community-provided adapters add support for Deno, Bun, Firebase, App Engine, AWS Lambda and many others.
+これは [adapter](https://kit.svelte.jp/docs/adapters) によって実現されています。デフォルトの adapter である [adapter-auto](https://github.com/sveltejs/kit/tree/master/packages/adapter-auto) は、Vercel、Netlify、Cloudflare Pages、Azure Static Web Apps をゼロコンフィグでサポートしており、今後さらに多くのプラットフォームが提供される予定です。コミュニティが提供する adapter によって、Deno、Bun、Firebase、App Engine、AWS Lambda、その他多くのサポートが追加されています。
 
-You can also deploy your app as a Node.js server using [adapter-node](https://github.com/sveltejs/kit/tree/master/packages/adapter-node).
+[adapter-node](https://github.com/sveltejs/kit/tree/master/packages/adapter-node) を使えばアプリを Node.js サーバーとしてデプロイすることもできます。
 
-If your entire app is suitable for prerendering, or is a single-page app (SPA), you can use [adapter-static](https://github.com/sveltejs/kit/tree/master/packages/adapter-static) — which turns SvelteKit into a static site generator — with any web server including [GitHub Pages](https://pages.github.com/).
+アプリ全体がプリレンダリングに適している場合や、シングルページアプリ (SPA) である場合、[adapter-static](https://github.com/sveltejs/kit/tree/master/packages/adapter-static) (これによって SvelteKit は静的サイトジェネレーターになります) を [GitHub Pages](https://pages.github.com/) を含むあらゆる Web サーバー向けに使用することができます。
 
 ## Acknowledgements
 
-This release was made possible by the hard work of a great many people. First and foremost, we’d like to thank the Svelte community, whose insightful feedback and myriad contributions large and small have shaped this project into something we’re truly proud to share with the wider community of web developers.
+このリリースは、とても多くの人々のハードワークによって実現されました。何よりもまず最初に、洞察に満ちたフィードバックや大小様々な幾千ものコントリビュートをしてくれた Svelte コミュニティに感謝したいと思います。彼らのおかげで、私たちは誇りを持って、このプロジェクトを web 開発者の広いコミュニティに共有できるものにすることができました。
 
-We’re also indebted to [Svelte Society](https://sveltesociety.dev/) and the community ambassadors, who, through initiatives like [Svelte Summit](https://www.sveltesummit.com/) and [Svelte Sirens](https://sveltesirens.dev/), have created a lively and welcoming space for Svelte developers, both online and IRL.
+また、[Svelte Society](https://sveltesociety.dev/) とコミュニティのアンバサダーにも感謝しています。[Svelte Summit](https://www.sveltesummit.com/) や [Svelte Sirens](https://sveltesirens.dev/) でイニシアチブを取り、オンラインでもオフラインでも、Svelte 開発者のために活気に満ちた友好的なスペースを作り上げてくれました。
 
-There are too many content creators to name without leaving people left out, but to everyone who has released courses and produced educational content around SvelteKit: thank you.
+コンテンツクリエーターがとても多いので、漏れのないように名前を挙げることはできませんが、SvelteKit 周辺の講座をリリースしたり、教育コンテンツを制作してくださった皆様、ありがとうございました。
 
-Back in early 2021, when we adopted Vite, we were the first major application framework to do so. At the time it was a risky bet, but we’re thrilled with how that bet paid off. Vite has grown to be an unstoppable force in the JavaScript world, and the Vite team have been brilliant and gracious partners.
+2021年の初頭、Vite を採用したとき、私たちは Vite を採用した初めてのメジャーなアプリケーションフレームワークでした。当時はリスキーな賭けでしたが、その賭けが報われたことに今は感動しています。Vite は JavaScript の世界で向かうところ敵なしの勢力に成長し、そして Vite チームは本当に素晴らしい、親切なパートナーです。
 
-We’ve had terrific support from teams at [Vercel](https://vercel.com), [Netlify](https://netlify.app/) and [Cloudflare](https://www.cloudflare.com/) to make zero-config deployments for those platforms possible.
+[Vercel](https://vercel.com)、[Netlify](https://netlify.app/)、[Cloudflare](https://www.cloudflare.com/) それぞれのチームから素晴らしいサポートを受け、これらのプラットフォームへのデプロイメントをゼロコンフィグにすることができました。
 
-Our friends at [StackBlitz](https://stackblitz.com/) worked feverishly to make [learn.svelte.dev](https://learn.svelte.dev), our first-of-its-kind [WebContainer](https://blog.stackblitz.com/posts/introducing-webcontainers/)-powered interactive tutorial, a reality.
+[StackBlitz](https://stackblitz.com/) の友人たちは、私たちにとって初となる [WebContainer](https://blog.stackblitz.com/posts/introducing-webcontainers/) を使用したインタラクティブなチュートリアルである [learn.svelte.dev](https://learn.svelte.dev) (日本語版: [learn.svelte.jp](https://learn.svelte.jp)) を実現するために熱心に取り組んでくれました。
 
-Finally, none of this could have happened without the project’s financial supporters. This includes hundreds of backers on [Open Collective](https://opencollective.com/svelte), and Vercel, which employs two core developers ([Rich](https://twitter.com/Rich_Harris/) and [Simon](https://twitter.com/dummdidumm_/)) to work on Svelte full time and supports the project in many other ways, such as [Steph’s](https://twitter.com/steph_dietz_) [Beginner SvelteKit](https://vercel.com/docs/beginner-sveltekit) course.
+最後に、このプロジェクトは資金支援者の方々がいなければ実現できなかったことをお伝えします。そこには、[Open Collective](https://opencollective.com/svelte) の数百名の支援者の方々、二人のコア開発者 ([Rich](https://twitter.com/Rich_Harris/) と [Simon](https://twitter.com/dummdidumm_/)) を雇用し、フルタイムで Svelte に取り組ませてくれた Vercel、その他様々な方法 (例えば [Steph の](https://twitter.com/steph_dietz_) [Beginner SvelteKit](https://vercel.com/docs/beginner-sveltekit) コースなど) でプロジェクトを支援してくれた方々も含まれます。
 
 ## Migrating
 
-If you have an app built with pre-release versions of SvelteKit, we recommend upgrading to the final pre-release version — `@sveltejs/kit@1.0.0-next.588` — before upgrading to 1.0, as the stable release removes errors and warnings that were used for migrating between pre-release versions. We also recommend consulting [this migration guide](https://github.com/sveltejs/kit/discussions/5774), especially if you’re currently on an older version than 1.0.0-next-406.
+SvelteKit のプレリリースバージョンで構築したアプリをお持ちの場合、1.0 にアップグレードする前に、プレリリースの最終バージョン — `@sveltejs/kit@1.0.0-next.588` — にアップグレードすることをおすすめします。安定(stable)バージョンではプレリリースバージョン間の移行に使われていたエラーや警告が削除されているからです。特に、1.0.0-next-406 より古いバージョンを使用している場合は、[このマイグレーションガイド](https://github.com/sveltejs/kit/discussions/5774) を参照することをおすすめします。
 
 ## What’s next?
 
-SvelteKit 1.0 is the beginning, not the end. It’s ready for production use today, but we’re just getting started. Our roadmap includes built-in i18n support, incremental static regeneration, granular control over deployment region and runtime, image optimisation, and many other improvements. Next year we’ll also start work on Svelte 4 — more on that later.
+SvelteKit 1.0 は始まりであり、終わりではありません。今日はプロダクションで使用する準備は整っていますが、まだ始まったばかりです。ロードマップには、ビルトインの i18n サポート、incremental static regeneration、デプロイメントリージョンとランタイムのきめ細やかなコントロール、イメージ最適化(image optimisation)、その他多くの改善があります。また、来年には Svelte 4 の取り組みを始める予定です — 詳細はまた今度。
 
-But don’t let us have the final word. Svelte is a community project, and many of our best ideas aren’t really ours at all — they’re yours. Subscribe to Svelte Society on [Twitter](https://twitter.com/SvelteSociety) and [YouTube](https://youtube.com/sveltesociety) to stay up to date, and join us in our [Discord server](https://svelte.dev/chat) and on [GitHub](https://github.com/sveltejs) to contribute back.
+ただ、私たちに決断を委ねないでください。Svelte はコミュニティプロジェクトであり、私たちの最高のアイデアの多くは、実際には私たちのものではありません — あなたたちのものです。[Twitter](https://twitter.com/SvelteSociety) や [YouTube](https://youtube.com/sveltesociety) で Svelte Society をサブスクライブして最新の情報を得るようにし、[Discord server](https://svelte.dev/chat) に参加し、[GitHub](https://github.com/sveltejs) でコントリビュートしてください。
 
-We can’t wait to see what you build.
+あなたが作ったものを見るのが待ちきれません。

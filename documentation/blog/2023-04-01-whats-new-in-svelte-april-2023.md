@@ -1,43 +1,50 @@
 ---
-title: "What's new in Svelte: April 2023"
-description: 'Loads of new Svelte compiler features, plus Svelte Summit and SvelteHack'
+title: "What's new in Svelte: 2023年4月"
+description: "たくさんの Svelte コンパイラの新機能, そして Svelte Summit と SvelteHack"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-april-2023
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-Happy April, everyone! This month, we're covering all the new features in the Svelte compiler, some quality-of-life improvements in SvelteKit and a huge showcase (like always).
+Happy April、みなさん！ 今月は、Svelte コンパイラの全ての新機能や、SvelteKit における QOL の改善、そしてたくさんのショーケースを見ていきますよ (いつものようにね)。
 
-In core team news, Dominic Gannaway has joined Vercel to work on Svelte full-time! Dominic is a world-class expert on wringing performance out of javascript engines, on the DOM, on reactivity, on accessibility, and more! You might know him as the creator of the [Inferno](https://www.infernojs.org/) UI framework or [Lexical](https://lexical.dev/), Meta's WYSIWYG editor. It'll be great to see his talents at work across the Svelte ecosystem 🌱
+コアチームのニュースとしては、Dominic Gannaway が Vercel にジョインし、フルタイムで Svelte に取り組むことになりました！ Dominic は javascript エンジンのパフォーマンスや、DOM、リアクティビティ、アクセシビリティなどのワールドクラスのエキスパートです！ UI フレームワークの [Inferno](https://www.infernojs.org/) や Meta の WYSIWYG エディタである [Lexical](https://lexical.dev/) の作者としても知られています。彼の才能が Svelte エコシステムで発揮されたら、とても素晴らしい未来が待っているでしょう🌱
 
-Don't forget! Svelte Summit Spring, Svelte's 6th virtual conference, will be happening on May 6th. Also, there's just two weeks left until the end of [SvelteHack](https://hack.sveltesociety.dev/)... It's a great opportunity to share your creations with the community and maybe even earn a prize!
+こちらもお忘れなく！ 6回目 となる Svelte のバーチャルカンファレンス、Svelte Summit Spring が 5月6日に開催されます。また、[SvelteHack](https://hack.sveltesociety.dev/) の締め切りまであと2週間です… あなたの作品をコミュニティにシェアする素晴らしい機会ですし、もしかしたら賞品を獲得できるかも！
 
-Now let's jump into this month's changes...
+それでは、今月の更新を見ていきましょう…
 
 ## What's new in Svelte
 
-- A bunch of new features are now available as of **3.56.0**!
-  - Add `|stopImmediatePropagation` event modifier for `on:eventname` ([#5085](https://github.com/sveltejs/svelte/issues/5085), [Docs](https://svelte.dev/docs#template-syntax-element-directives-on-eventname))
-  - Add `axis` parameter to `slide` transition ([#6182](https://github.com/sveltejs/svelte/issues/6182), [Docs](https://svelte.dev/docs#run-time-svelte-transition-slide))
-  - Add `readonly` utility to convert `writable` store to readonly ([#6518](https://github.com/sveltejs/svelte/pull/6518), [Docs](https://svelte.dev/docs#run-time-svelte-store-writable))
-  - Add `readyState` binding for media elements ([#6666](https://github.com/sveltejs/svelte/issues/6666), [Docs](https://svelte.dev/docs#template-syntax-element-directives-bind-property-media-element-bindings))
-  - Add `naturalWidth` and `naturalHeight` bindings to images ([#7771](https://github.com/sveltejs/svelte/issues/7771), [Docs](https://svelte.dev/docs#template-syntax-element-directives-bind-property-image-element-bindings))
-- Support `<!-- svelte-ignore ... -->` on components ([#8082](https://github.com/sveltejs/svelte/issues/8082))
-- Inputs in a `bind:group` will clear when their value is set to `undefined` (**3.56.0**, [#8214](https://github.com/sveltejs/svelte/issues/8214))
-- `<input>` values will now persist when swapping elements with spread attributes in an `{#each}` block (**3.56.0**, [#7578](https://github.com/sveltejs/svelte/issues/7578))
-- Better warnings across the board - from `noreferrer` to `aria` rules (**3.56.0**)
-- Add <svelte:document> (**3.57.0**, [#3310](https://github.com/sveltejs/svelte/issues/3310))
-- The `style:` directive will now take precedence over a `style=` attribute (**3.57.0**, [#7475](https://github.com/sveltejs/svelte/issues/7475))
-- CSS units are now supported in the `fly` and `blur` transitions (**3.57.0**, [#7623](https://github.com/sveltejs/svelte/pull/7623), [Docs](https://svelte.dev/docs#run-time-svelte-transition))
+- **3.56.0** でたくさんの新機能が使えるようになりました！
+  - `|stopImmediatePropagation` という `on:eventname` 向けのイベント修飾子(event modifier) が追加されました ([#5085](https://github.com/sveltejs/svelte/issues/5085), [Docs](https://svelte.jp/docs#template-syntax-element-directives-on-eventname))
+  - `slide` トランジションに `axis` パラメータが追加されました ([#6182](https://github.com/sveltejs/svelte/issues/6182), [Docs](https://svelte.jp/docs#run-time-svelte-transition-slide))
+  - `writable` ストアを読み取り専用に変換する `readonly` ユーティリティが追加されました ([#6518](https://github.com/sveltejs/svelte/pull/6518), [Docs](https://svelte.jp/docs#run-time-svelte-store-writable))
+  - メディア要素向けの `readyState` バインディングが追加されました ([#6666](https://github.com/sveltejs/svelte/issues/6666), [Docs](https://svelte.jp/docs#template-syntax-element-directives-bind-property-media-element-bindings))
+  - 画像(image) に `naturalWidth` と `naturalHeight` バインディングが追加されました ([#7771](https://github.com/sveltejs/svelte/issues/7771), [Docs](https://svelte.jp/docs#template-syntax-element-directives-bind-property-image-element-bindings))
+- コンポーネントでの `<!-- svelte-ignore ... -->` がサポートされました ([#8082](https://github.com/sveltejs/svelte/issues/8082))
+- `bind:group` の input で、値に `undefined` がセットされたときにクリアされるようになりました (**3.56.0**, [#8214](https://github.com/sveltejs/svelte/issues/8214))
+- `{#each}` ブロック内にある、spread 属性を持つ `<input>` 要素を入れ替えたとき、その `<input>` の値が保持されるようになりました (**3.56.0**, [#7578](https://github.com/sveltejs/svelte/issues/7578))
+- 全体的に警告(warning)が改善されました - `noreferrer` から `aria` ルールまで！ (**3.56.0**)
+- `<svelte:document>` が追加されました (**3.57.0**, [#3310](https://github.com/sveltejs/svelte/issues/3310))
+- `style:` ディレクティブが `style=` 属性より優先されるようになりました (**3.57.0**, [#7475](https://github.com/sveltejs/svelte/issues/7475))
+- `fly` と `blur` トランジションで CSS の単位がサポートされました (**3.57.0**, [#7623](https://github.com/sveltejs/svelte/pull/7623), [Docs](https://svelte.jp/docs#run-time-svelte-transition))
 
-For all the changes to the Svelte compiler, including unreleased changes, check out the [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md).
+Svelte コンパイラに対する全ての変更については、まだ未リリースの変更も含め、[CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md)  をご確認ください。
 
 ## What's new in SvelteKit
 
-- You can now get all cookies for a request with `cookies.getAll` (**1.10.0**, [#9287](https://github.com/sveltejs/kit/pull/9287), [Docs](https://kit.svelte.dev/docs/types#public-types-cookies))
-- Easily manage the submission status of (multiple) forms with the new exposed `submitter` parameter in `use:enhance` (**1.12.0**, [#9425](https://github.com/sveltejs/kit/pull/9425), [Docs](https://kit.svelte.dev/docs/types#public-types-submitfunction))
-- The default error page now has dark mode styles (**1.13.0**, [#9460](https://github.com/sveltejs/kit/pull/9460))
-- You can now omit types on all methods and variables with special meaning to SvelteKit and still benefit from full type safety! Read more about it in the [announcement blog post](https://svelte.dev/blog/zero-config-type-safety)
-
+- リクエストの全ての cookie を `cookies.getAll` で取得できるようになりました (**1.10.0**, [#9287](https://github.com/sveltejs/kit/pull/9287), [Docs](https://kit.svelte.jp/docs/types#public-types-cookies))
+- `use:enhance` の新たに追加された `submitter` パラメータを使って、(複数の) フォームの送信ステータスを簡単に管理できるようになりました (**1.12.0**, [#9425](https://github.com/sveltejs/kit/pull/9425), [Docs](https://kit.svelte.jp/docs/types#public-types-submitfunction))
+- デフォルトのエラーページがダークモードスタイルに対応しました (**1.13.0**, [#9460](https://github.com/sveltejs/kit/pull/9460))
+- SvelteKit にとって特別な意味を持つすべてのメソッドと変数について、型を省略しても完全な型安全性の恩恵を受けることができるようになりました！ 詳細は[発表のブログ記事](https://svelte.jp/blog/zero-config-type-safety)をお読みください
 ---
 
 ## Community Showcase
@@ -59,8 +66,7 @@ For all the changes to the Svelte compiler, including unreleased changes, check 
 **Learning Resources**
 
 _Featuring Svelte Contributors and Ambassadors_
-
-- [Streaming, snapshots, and other new features since SvelteKit 1.0](https://svelte.dev/blog/streaming-snapshots-sveltekit) by Geoff Rich on the svelte.dev Blog
+- [Streaming, snapshots, and other new features since SvelteKit 1.0](https://svelte.jp/blog/streaming-snapshots-sveltekit) by Geoff Rich on the svelte.dev Blog
 - [Dev Vlog: Rich Harris shows us what's new in Svelte and Kit, March 2023](https://www.youtube.com/watch?v=vgXgex5E-8g) from Svelte Society
   - If you missed this one live, check out [the next one](https://www.youtube.com/watch?v=MJHO6FSioPI) - scheduled for April 5th
 - [Svelte Society - London February 2023](https://www.youtube.com/watch?v=RkQ_f7XxdMI)
@@ -109,8 +115,8 @@ _To Read_
   - [AI Chat Bestie](https://github.com/KTruong008/aichatbestie) is an unofficial ChatGPT app
   - [chatgpt-svelte](https://github.com/ichbtrv/chatgpt-svelte) is a simple UI for the ChatGPT Open AI API
 
-Thanks for reading! And don't forget to try your hand at the [Svelte Hackathon](https://hack.sveltesociety.dev/) 🧑‍💻
+お読みいただきありがとうございました！あと、[Svelte Hackathon](https://hack.sveltesociety.dev/) にも是非チャレンジしてみてください 🧑‍💻
 
-As always, feel free to let us know if we missed anything on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.gg/svelte).
+いつも通り、見落としなどございましたら [Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.gg/svelte) にてお気軽にお知らせください。
 
-See ya next time!
+また次回お会いしましょう！

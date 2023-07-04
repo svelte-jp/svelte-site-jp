@@ -1,48 +1,56 @@
 ---
-title: "What's new in Svelte: January 2023"
-description: 'SvelteKit 1.0, learn.svelte.dev, and type definitions for Svelte elements.'
+title: "What's new in Svelte: 2023年1月"
+description: "SvelteKit 1.0、learn.svelte.dev、そして Svelte elements の型定義"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-january-2023
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-It's been just two weeks since the release of [SvelteKit 1.0](https://svelte.dev/blog/announcing-sveltekit-1.0)! If you haven't yet, check out the [livestream](https://www.youtube.com/watch?v=N4BRVkQVoMc), [new website](https://kit.svelte.dev/) and [learn.svelte.dev](https://learn.svelte.dev/) to learn all the features of SvelteKit step-by-step.
+[SvelteKit 1.0](https://svelte.jp/blog/announcing-sveltekit-1.0) のリリースからちょうど2週間が経ちました！ もしまだなら、[livestream](https://www.youtube.com/watch?v=N4BRVkQVoMc)、[新しい web サイト](https://kit.svelte.jp/) をチェックし、SvelteKit の全機能を段階的に学ぶなら [learn.svelte.dev](https://learn.svelte.dev/)(日本語版: https://learn.svelte.jp/) をチェックしてみてください。
 
-Let's dive into the details...
+それでは詳細を見ていきましょう…
 
 ## What's new in SvelteKit
 
-- `@sveltejs/kit` 1.0 is out! All future releases will follow semver and changes will be listed as major/minor/patch in the [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md#100).
-- Improved support for Storybook and Histoire ([#7990](https://github.com/sveltejs/kit/pull/7990)). Work is ongoing to fully support those tools ([storybook#20239](https://github.com/storybookjs/storybook/pull/20239)).
-- `vitePreprocess` is now the default preprocessor. Please see [the docs](https://kit.svelte.dev/docs/integrations#preprocessors) for differences between `vitePreprocess` and `svelte-preprocess` ([#8036](https://github.com/sveltejs/kit/pull/8036)).
+- `@sveltejs/kit` 1.0 がリリースされました！今後のリリースは全て semver に準拠し、変更点は [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md#100) に major/minor/patch としてリストアップされます。
+- Storybook と Histoire のサポートが改善されました ([#7990](https://github.com/sveltejs/kit/pull/7990))。これらのツールを完全にサポートするための作業が進行中です ([storybook#20239](https://github.com/storybookjs/storybook/pull/20239)).
+- `vitePreprocess` がデフォルトのプリプロセッサになりました。`vitePreprocess` と `svelte-preprocess` の違いについては [ドキュメント](https://kit.svelte.jp/docs/integrations#preprocessors) をご覧ください ([#8036](https://github.com/sveltejs/kit/pull/8036)).
 
 **Breaking changes:**
 
-- Unknown exports (except when starting with an underscore) are no longer allowed from `+(layout|page)(.server)?.js` and `+server.js` files ([#7878](https://github.com/sveltejs/kit/pull/7878))
-- `__data.json` is now stripped from URL ([#7979](https://github.com/sveltejs/kit/pull/7979))
-- `sveltekit()` will now return a promise for an array of Vite plugins ([#7994](https://github.com/sveltejs/kit/pull/7994))
-- A new `embedded` option, turned off by default, helps with link clicks when embedding SvelteKit ([docs](https://kit.svelte.dev/docs/configuration), [#7969](https://github.com/sveltejs/kit/pull/7969))
-- Automatic fallback generation has been replaced with `builder.generateFallback(fallback)` ([#8013](https://github.com/sveltejs/kit/pull/8013))
-- `invalid()` is now `fail()` and `ValidationError` is now `ActionFailure` ([#8012](https://github.com/sveltejs/kit/pull/8012))
-- SvelteKit will now throw an error on invalid load response ([#8003](https://github.com/sveltejs/kit/pull/8003))
-- SvelteKit is now using Vite 4 and requires a Svelte `peerDependency` of `^3.54.0` ([#7543](https://github.com/sveltejs/kit/pull/7543))
-- Shells are now prerendered when `ssr` is false and `prerender` is not false - ensure prerender is false when ssr is also false ([#8131](https://github.com/sveltejs/kit/pull/8131))
-- Warnings and errors about removed/changed APIs have been removed ([#8019](https://github.com/sveltejs/kit/pull/8019))
+- Unknown exports (アンダースコアで始まるものは除く) が `+(layout|page)(.server)?.js` と `+server.js` ファイルで行えなくなりました ([#7878](https://github.com/sveltejs/kit/pull/7878))
+- `__data.json` が URL から取り除かれます ([#7979](https://github.com/sveltejs/kit/pull/7979))
+- `sveltekit()` が Vite plugin の配列の promise を返すようになりました ([#7994](https://github.com/sveltejs/kit/pull/7994))
+- SvelteKit を埋め込む際に、リンクのクリックをサポートする新しい `embedded` オプション(デフォルトではオフ)が追加されました ([docs](https://kit.svelte.jp/docs/configuration), [#7969](https://github.com/sveltejs/kit/pull/7969))
+- フォールバックの自動生成は `builder.generateFallback(fallback)` に置き換わりました ([#8013](https://github.com/sveltejs/kit/pull/8013))
+- `invalid()` は `fail()` に、`ValidationError` は `ActionFailure` に置き換わりました ([#8012](https://github.com/sveltejs/kit/pull/8012))
+- 不正な load レスポンスに対し、SvelteKit はエラーをスローするようになりました ([#8003](https://github.com/sveltejs/kit/pull/8003))
+- SvelteKit は Vite 4 を使用するようになり、Svelte の `peerDependency` は `^3.54.0` が必須になりました ([#7543](https://github.com/sveltejs/kit/pull/7543))
+- `ssr` が false で `prerender` が false でない場合、シェル(Shells)がプリレンダリングされるようになりました。ssr が false の場合、prerender を false にしてください(訳注: これまでと同じ挙動にする場合のみ。詳細は [#8131](https://github.com/sveltejs/kit/pull/8131) を参照) ([#8131](https://github.com/sveltejs/kit/pull/8131))
+- API の削除や変更に関する警告やエラーが削除されました ([#8019](https://github.com/sveltejs/kit/pull/8019))
 
 ## What's new in Svelte
 
-- The `options.direction` argument can now be passed to custom transition functions (**3.54.0**, [#3918](https://github.com/sveltejs/svelte/issues/3918))
-- Variables can now be updated from a `@const` declared function (**3.54.0**, [#7843](https://github.com/sveltejs/svelte/issues/7843))
-- `svelte/elements` has been added for Svelte/HTML type definitions (**3.55.0**, [#7649](https://github.com/sveltejs/svelte/pull/7649))
+- `options.direction` 引数を、カスタムのトランジション関数に渡せるようになりました (**3.54.0**, [#3918](https://github.com/sveltejs/svelte/issues/3918))
+- `@const` で宣言した関数から、変数を更新できるようになりました (**3.54.0**, [#7843](https://github.com/sveltejs/svelte/issues/7843))
+- `svelte/elements` に、Svelte/HTML の型定義が追加されました (**3.55.0**, [#7649](https://github.com/sveltejs/svelte/pull/7649))
 
 ## What's new in Language Tools
 
-The Svelte extension and language tools now have a few new minimum version requirements:
+Svelte extension と language tools が要求するミニマムバージョンが新しくなりました:
+- Node のバージョン は 16 になりました
+- TypeScript のバージョンは 4.9 になりました
+- Svelte のバージョンは 3.55 になりました
 
-- Node version is now 16
-- TypeScript version is now 4.9
-- Svelte version is now 3.55
-
-The following features have also been released:
+以下の機能がリリースされました:
 
 - missing handler quick fix ([#1731](https://github.com/sveltejs/language-tools/pull/1731))
 - add Svelte anchor missing attribute code action ([#1730](https://github.com/sveltejs/language-tools/pull/1730))
@@ -52,7 +60,7 @@ The following features have also been released:
 - only show SvelteKit files context menu in SvelteKit projects ([#1771](https://github.com/sveltejs/language-tools/pull/1771))
 - use the `satisfies` operator if possible ([#1770](https://github.com/sveltejs/language-tools/pull/1770))
 
-For all the changes to the Svelte compiler, including unreleased changes, check out the [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md).
+Svelte コンパイラに対する全ての変更については、まだ未リリースの変更も含め、[CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md) をご確認ください。
 
 ---
 
@@ -109,4 +117,4 @@ _To Read_
 - [SvelteKit Tailwind Blog Starter](https://github.com/akiarostami/sveltekit-tailwind-blog-starter) is an easily configurable and customizable blog starter for SvelteKit + Tailwind CSS
 - [Free Svelte Accelerators](https://sveltekitstarter.com/) is a list of Svelte and Sveltekit open source code to jump start your project
 
-Happy new year 🎆 Let us know if we missed anything on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.gg/svelte)
+ハッピーニューイヤー 🎆 見落としなどございましたら [Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.gg/svelte) にてお知らせください。

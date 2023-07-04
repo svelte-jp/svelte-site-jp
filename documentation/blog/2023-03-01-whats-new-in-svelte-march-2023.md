@@ -1,37 +1,46 @@
 ---
-title: "What's new in Svelte: March 2023"
-description: 'SvelteHack, post-1.0 SvelteKit improvements and a huge showcase'
+title: "What's new in Svelte: 2023年3月"
+description: "SvelteHack、1.0以降の SvelteKit の改善、たくさんのショーケース"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-march-2023
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-March is _coming in hot_ with a number of essential features having been added to SvelteKit following its 1.0 launch. Check out [last week's blog post](https://svelte.dev/blog/streaming-snapshots-sveltekit) for more details.
+1.0 ローンチ後、SvelteKit にエッセンシャルな機能が多く追加されたため、ホットな3月になっています。詳細は[先週のブログ記事](https://svelte.jp/blog/streaming-snapshots-sveltekit)をチェックしてみてください。
 
-Svelte Society also launched [SvelteHack](https://hack.sveltesociety.dev/) last month with over $12,000 in prizes - calling all Svelte developers, new and old, to make something awesome before the April 17th deadline!
+Svelte Society は先月、$12,000 以上の賞金がかかっている [SvelteHack](https://hack.sveltesociety.dev/) を立ち上げました - 新旧すべての Svelte デベロッパーたちに、何か素晴らしいものを作ってもらえるよう呼びかけています。期限は4月17日！
 
-And, if you haven't heard already, there's going to be another Svelte Summit! Head over to [SvelteSummit.com](https://www.sveltesummit.com/) and sign up for the newsletter to get updates about the next event 📬
+そして、まだご存知でない方もいらっしゃるかもしれませんが、次回の Svelte Summit が開催する予定です！ [SvelteSummit.com](https://www.sveltesummit.com/) にアクセスして、ニュースレターに登録するとイベントの最新情報を受け取ることができます📬
 
-Now let's jump into this month's changes...
+それでは今月の最新情報を見ていきましょう…
 
 ## What's new in SvelteKit
 
-- `$app/paths` can now be used without an app - making things like component testing with Vitest, using Storybook, etc. easier (**1.4.0**, [#8838](https://github.com/sveltejs/kit/pull/8838))
-- Adapters can now be configured at the route level (**1.5.0**, [Docs](https://kit.svelte.dev/docs/page-options#config), [#8740](https://github.com/sveltejs/kit/pull/8740))
-- The new snapshot mechanism preserves ephemeral DOM state even after navigation and page reloads (**1.5.0**,[Docs](https://kit.svelte.dev/docs/snapshots), [#8710](https://github.com/sveltejs/kit/pull/8710))
-- `OPTIONS` are now available within the server method (**1.6.0**, [Docs](https://kit.svelte.dev/docs/routing#server), [#8731](https://github.com/sveltejs/kit/pull/8731))
-- Richer error messages have been added for invalid exports (**1.7.0**, [#9055](https://github.com/sveltejs/kit/pull/9055))
-- Streaming promises are now available for server load functions (**1.8.0**, [Docs](https://kit.svelte.dev/docs/load#streaming-with-promises), [#8901](https://github.com/sveltejs/kit/pull/8901))
-- A new configuration option, `preloadStrategy`, helps tune preloading to avoid import 'waterfalls' on certain browsers (**1.8.4**, [Docs](https://kit.svelte.dev/docs/configuration#output), [#9179](https://github.com/sveltejs/kit/pull/9179))
-- The new `paths.relative` option can control interpretation of `paths.assets` and `paths.base` (**1.9.0**, [Docs](https://kit.svelte.dev/docs/configuration#paths), [#9220](https://github.com/sveltejs/kit/pull/9220))
+- `$app/paths` がアプリなしで使えるようになりました - Vitest によるテストや Storybook の使用などが簡単になります (**1.4.0**, [#8838](https://github.com/sveltejs/kit/pull/8838))
+- adapter でルートレベル(route level)の設定ができるようになりました (**1.5.0**, [Docs](https://kit.svelte.jp/docs/page-options#config), [#8740](https://github.com/sveltejs/kit/pull/8740))
+- 新たな snapshot メカニズムにより、一時的な DOM の state を、たとえナビゲーション後やページリロード後でも保持できるようになりました (**1.5.0**,[Docs](https://kit.svelte.jp/docs/snapshots), [#8710](https://github.com/sveltejs/kit/pull/8710))
+- `OPTIONS` が server method として使用できるようになりました (**1.6.0**, [Docs](https://kit.svelte.jp/docs/routing#server), [#8731](https://github.com/sveltejs/kit/pull/8731))
+- 正しくないエクスポートに対するリッチなエラーメッセージが追加されました (**1.7.0**, [#9055](https://github.com/sveltejs/kit/pull/9055))
+- server load 関数で promise のストリーミングができるようになりました (**1.8.0**, [Docs](https://kit.svelte.jp/docs/load#streaming-with-promises), [#8901](https://github.com/sveltejs/kit/pull/8901))
+- 新たな設定オプションである `preloadStrategy` のおかげで、特定のブラウザ向けに、インポートの 'ウォーターフォール' を避けるためのプリロードのチューニングをすることがやりやすくなりました (**1.8.4**, [Docs](https://kit.svelte.jp/docs/configuration#output), [#9179](https://github.com/sveltejs/kit/pull/9179))
+- 新たな `paths.relative` オプションは、`paths.assets` と `paths.base` の解釈をコントロールすることができます (**1.9.0**, [Docs](https://kit.svelte.jp/docs/configuration#paths), [#9220](https://github.com/sveltejs/kit/pull/9220))
 
 ## What's new in Svelte and Language Tools
 
-- The REPL on `svelte.dev` now supports the `exports` field in `package.json` ([#445](https://github.com/sveltejs/sites/pull/445))
-- The new Call Hierarchy feature lets you see where a function or a class is called and follow the call stack up (**extensions-107.1.0**, [#1889](https://github.com/sveltejs/language-tools/pull/1889))
-- `declarationMap` support has been added to the Svelte extension. Now "go to definition" on `.svelte` files will navigate to the source code when a library has declaration maps (**extensions-107.1.0**, [#1878](https://github.com/sveltejs/language-tools/pull/1878))
-- [TypeScript Inlay Hints](https://code.visualstudio.com/docs/typescript/typescript-editing#_inlay-hints) support is now available via the Svelte Extension. Enable them with `javascript.inlayHints.*` or `typescript.inlayHints.*` (**extensions-107.1.0**, [#1855](https://github.com/sveltejs/language-tools/pull/1855))
+- `svelte.dev` の REPL が、`package.json` の `exports` フィールドをサポートしました ([#445](https://github.com/sveltejs/sites/pull/445))
+- 新たな呼び出し階層(Call Hierarchy)機能により、どこの関数やクラスが呼び出されたのか確認し、コールスタックをたどることができるようになりました (**extensions-107.1.0**, [#1889](https://github.com/sveltejs/language-tools/pull/1889))
+- `declarationMap` のサポートが Svelte extension に追加されました。ライブラリに declaration map がある場合、`.svelte` ファイル上で "go to definition" を押すとソースコードに移動します (**extensions-107.1.0**, [#1878](https://github.com/sveltejs/language-tools/pull/1878))
+- [TypeScript Inlay Hints](https://code.visualstudio.com/docs/typescript/typescript-editing#_inlay-hints) のサポートが Svelte Extension で使えるようになりました。`javascript.inlayHints.*` や `typescript.inlayHints.*` で有効化してください (**extensions-107.1.0**, [#1855](https://github.com/sveltejs/language-tools/pull/1855))
 
-\*for all the changes to the Svelte compiler, including unreleased changes, check out the [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md).
+\*Svelte コンパイラに対する全ての変更については、まだ未リリースの変更も含め、[CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md)  をご確認ください。
 
 ---
 
@@ -71,7 +80,7 @@ _To Watch or Hear_
 
 _To Read_
 
-- [Svelte Language Server Example](https://github.com/volarjs/svelte-language-tools) by VolarJS
+- [Svelte Language Server Example](https://github.com/volarjs/svelte-language-tools) by VolarJS 
 - [How I Made My App 2.4x Faster Switching to Svelte](https://blog.flotes.app/posts/flotes-2x-faster) by Erik Verduin
 - [Smooth Page Transitions with SvelteKit](https://www.philkruft.dev/blog/smooth-page-transitions-with-sveltekit/) and [How to Build a Static SvelteKit Site](https://www.philkruft.dev/blog/how-to-build-a-static-sveltekit-site/) by Phil Kruft
 - [Blazing fast PWAs with SEO power using SvelteKit and Ionic](https://ionic.io/blog/pwas-using-sveltekit-and-ionic) by Tommertom

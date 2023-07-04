@@ -1,33 +1,42 @@
 ---
-title: "What's new in Svelte: July 2022"
-description: 'Faster SSR, language tools improvements and a new paid contributor!'
+title: "What's new in Svelte: 2022年7月"
+description: "より高速な SSR、language tools の改善と新たな paid contributor!"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-july-2022
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-From faster SSR to support for Vitest and Storybook in SvelteKit, there's a lot to cover in this month's newsletter...
+SSR の高速化から SvelteKit における Vitest と Storybook のサポートまで、今月のニュースレターは盛り沢山です…
 
-So let's dive in!
+それでは見ていきましょう!
 
 ## OpenCollective funding drives Svelte forward
 
-Svelte supporters have donated approximately $80,000 to [the project on OpenCollective](https://opencollective.com/svelte). We're happy to share that the funds are being drawn on to move Svelte forward in a meaningful way. **[@gtm-nayan](https://github.com/gtm-nayan)** has begun triaging and fixing SvelteKit issues this past month as a paid contributor to the project to help us get SvelteKit to a 1.0 level of stability! @gtm-nayan has been an active member of the Svelte community for quite some time and is well known for writing the bot that helps keep our Discord server running. We're happy that this funding has allowed Svelte to get much more of his time.
+Svelte の支援者の方々は、約 $80,000 を [OpenCollective のプロジェクト](https://opencollective.com/svelte) に寄付してくれました。この資金が、Svelte を有意義に前進させるために使用されていることを、私たちは嬉しく思っています。**[@gtm-nayan](https://github.com/gtm-nayan)** 氏は SvelteKit を 1.0 レベルに安定させるため、プロジェクトの paid contributor として先月から issue のトリアージと修正を行っています! @gtm-nayan はずっと長い間 Svelte コミュニティのアクティブなメンバーであり、私たちの Discord サーバーの運営を助ける bot を書いていることでも知られています。今回の資金提供により、彼がより多くの時間を Svelte に使えるようになったことを嬉しく思います。
 
-We will also be utilizing OpenCollective funds to allow Svelte core maintainers to attend [Svelte Summit](https://www.sveltesummit.com/) in person this fall. Thanks to everyone who has donated so far!
+また、OpenCollective の資金を活用して、Svelte のコアメンテナーが秋の [Svelte Summit](https://www.sveltesummit.com/) に現地参加できるようにする予定です。寄付してくださった皆様、ありがとうございます!
 
 ## What's new in Svelte & Language Tools
 
-- [learn.svelte.dev](https://learn.svelte.dev/) is a new way to learn Svelte and SvelteKit from the ground up that is currently in development
-- Faster SSR is coming in the next Svelte release. A PR two years in the making, resulting in up to 3x faster rendering in some benchmarking tests! ([PR](https://github.com/sveltejs/svelte/pull/5701))
-- "Find File References" ([0.14.28](https://github.com/sveltejs/language-tools/releases/tag/language-server-0.14.28)) and "Find Component References" ([0.14.29](https://github.com/sveltejs/language-tools/releases/tag/language-server-0.14.29)) in the latest versions of the Svelte extension shows where Svelte files and components have been imported and used ([Demo](https://twitter.com/dummdidumm_/status/1532459709604716544/photo/1))
-- The Svelte extension now supports CSS path completion ([0.14.29](https://github.com/sveltejs/language-tools/releases/tag/language-server-0.14.29))
+- [learn.svelte.dev](https://learn.svelte.dev/) は、Svelte と SvelteKit を1から学ぶための新しい方法で、現在開発中です
+- SSR の高速化が Svelte の次のリリースに取り込まれます。2年以上費やされた PR で、いくつかのベンチマークテストによれば、レンダリングが3倍高速になりました! ([PR](https://github.com/sveltejs/svelte/pull/5701))
+- Svelte extension の最新版で、"Find File References" ([0.14.28](https://github.com/sveltejs/language-tools/releases/tag/language-server-0.14.28)) と "Find Component References" ([0.14.29](https://github.com/sveltejs/language-tools/releases/tag/language-server-0.14.29)) が追加され、Svelte ファイルと Svelte コンポーネントがインポートされている場所がわかるようになりました ([Demo](https://twitter.com/dummdidumm_/status/1532459709604716544/photo/1))
+- Svelte extension が CSS path の補完をサポートしました ([0.14.29](https://github.com/sveltejs/language-tools/releases/tag/language-server-0.14.29))
 
 ## What's new in SvelteKit
 
-- Introduced `@sveltejs/kit/experimental/vite` which allows SvelteKit to interoperate with other tools in the Vite ecosystem like Vitest and Storybook ([#5094](https://github.com/sveltejs/kit/pull/5094)). Please [leave feedback](https://github.com/sveltejs/kit/issues/5184) as to whether the feature works and is helpful as we consider taking it out of experimental and making `vite.config.js` required for all users
-- Streaming in endpoints is now supported ([#3419](https://github.com/sveltejs/kit/issues/3419)). This was enabled by switching to the Undici `fetch` implementation ([#5117](https://github.com/sveltejs/kit/pull/5117))
-- Static assets can now be symlinked in development environments ([#5089](https://github.com/sveltejs/kit/pull/5089))
-- `server` and `prod` environment variables are now available as a corollary to `browser` and `dev` ([#5251](https://github.com/sveltejs/kit/pull/5251))
+- Vitest や Storybook などの、Vite エコシステムの他のツールと SvelteKit の総合運用を可能にする `@sveltejs/kit/experimental/vite` が作成されました ([#5094](https://github.com/sveltejs/kit/pull/5094))。この機能を experimental から外して全てのユーザーに対して `vite.config.js` を必須にするか検討するため、この機能が動作するか、役に立つかどうか、[フィードバック](https://github.com/sveltejs/kit/issues/5184) をお願いします
+- エンドポイントで Streaming がサポートされました ([#3419](https://github.com/sveltejs/kit/issues/3419))。これは Undici の `fetch` 実装に切り替えることで可能になりました ([#5117](https://github.com/sveltejs/kit/pull/5117))
+- 開発環境において、静的なアセットをシンボリックリンクできるようになりました ([#5089](https://github.com/sveltejs/kit/pull/5089))
+- `server` と `prod` 環境変数が利用できるようになりました。これは `browser` と `dev` にそれぞれ対応するものです ([#5251](https://github.com/sveltejs/kit/pull/5251))
 
 ---
 
@@ -94,8 +103,8 @@ _To Read_
 - [Svelte Component Snippets](https://marketplace.visualstudio.com/items?itemName=brysonbw.svelte-component-snippets) is a VS Code extension with access to common Svelte snippets
 - [Svelte Confetti](https://github.com/Mitcheljager/svelte-confetti) adds a little bit of flair to your app with some confetti 🎊
 
-What did we miss? Let us know on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs) to add your voice.
+もし見落としがありましたら、[Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.com/invite/yy75DKs) で教えてください。
 
-Don't forget that you can also join us in-person at the Svelte Summit in Stockholm! Come join us for two days of awesome Svelte content! [Get your tickets now](https://www.sveltesummit.com/).
+ストックホルムで開催される Svelte Summit に現地参加することもできますので、お忘れなく! Svelteの素晴らしいコンテンツでいっぱいの2日間に是非加わってください! [チケットはこちらです](https://www.sveltesummit.com/)。
 
-See y'all next month!
+また来月お会いしましょう!

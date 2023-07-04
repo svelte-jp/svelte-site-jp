@@ -1,45 +1,54 @@
 ---
-title: "What's new in Svelte: December 2022"
-description: 'Rounding the corner to SvelteKit 1.0'
+title: "What's new in Svelte: 2022年12月"
+description: "SvelteKit 1.0 はもう間近"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-december-2022
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-SvelteKit 1.0 is just around the corner! With [99% of the milestone issues completed](https://github.com/sveltejs/kit/milestone/2), there's a lot of new changes from the last month to cover...
+SvelteKit 1.0 はもう間近です！[マイルストーンにあるイシューの99%が完了したので](https://github.com/sveltejs/kit/milestone/2)、先月のたくさんの変更点をカバーしなければなりません…
 
-Let's get to it!
+それでは参りましょう！
 
 ## What's new in SvelteKit
 
-- Use the `willUnload` property to find out if the navigation will result the app being unloaded (full page reload/closing/leaving to another page). ([#6813](https://github.com/sveltejs/kit/pull/6813))
-- `__data.json` requests now allows for caching while ensuring we cache matching responses for all invalidation scenarios ([#7532](https://github.com/sveltejs/kit/pull/7532))
-- Linking to `<a name="hash">` tags is now supported ([#7596](https://github.com/sveltejs/kit/pull/7596))
-- Throwing redirects in the `handle` hook is now supported ([#7612](https://github.com/sveltejs/kit/pull/7612))
-- A fallback component will now be added automatically for layouts without one ([#7619](https://github.com/sveltejs/kit/pull/7619))
-- The new `preload` function within the `resolve` hook determines what files should be added to the <head> tag to preload it ([Docs](https://kit.svelte.dev/docs/hooks#server-hooks-handle), [#4963](https://github.com/sveltejs/kit/pull/4963), [#7704](https://github.com/sveltejs/kit/pull/7704))
-- `version` is now available via `$app/environment` ([#7689](https://github.com/sveltejs/kit/pull/7689), [#7694](https://github.com/sveltejs/kit/pull/7694))
-- `handleError` can now return a promise ([#7780](https://github.com/sveltejs/kit/pull/7780))
+- ナビゲーションの結果、アプリがアンロード(フルページリロード / クローズ / 別ページへの離脱)されるかどうかを調べるには、`willUnload` プロパティを使用します。([#6813](https://github.com/sveltejs/kit/pull/6813))
+- `__data.json` リクエストがキャッシュできるようになり、すべての再取得シナリオ(invalidation scenarios)にマッチするレスポンスをキャッシュすることを保証します ([#7532](https://github.com/sveltejs/kit/pull/7532))
+- `<a name="hash">` タグへのリンクがサポートされました ([#7596](https://github.com/sveltejs/kit/pull/7596))
+- `handle` hook でリダイレクトをスローすることがサポートされました ([#7612](https://github.com/sveltejs/kit/pull/7612))
+- フォールバックコンポーネントがないレイアウトには、自動的にフォールバックコンポーネントが追加されるようになりました ([#7619](https://github.com/sveltejs/kit/pull/7619))
+- `resolve` hook にある新しい `preload` 関数は、どのファイルをプリロードのために <head> タグに追加するかを決定します ([Docs](https://kit.svelte.jp/docs/hooks#server-hooks-handle), [#4963](https://github.com/sveltejs/kit/pull/4963), [#7704](https://github.com/sveltejs/kit/pull/7704))
+- `version` が `$app/environment` 経由で使えるようになりました ([#7689](https://github.com/sveltejs/kit/pull/7689), [#7694](https://github.com/sveltejs/kit/pull/7694))
+- `handleError` が promise を返すようになりました ([#7780](https://github.com/sveltejs/kit/pull/7780))
 
 **Breaking changes:**
 
-- `routeId` is now `route.id` ([#7450](https://github.com/sveltejs/kit/pull/7450))
-- 'load' has been renamed to 'enter' and 'unload' to 'leave' in the `beforeNavigate` and `afterNavigate` methods. `beforeNavigate` is now called once with type 'unload' on external navigation and will no longer run during redirects ([#7502](https://github.com/sveltejs/kit/pull/7502), [#7529](https://github.com/sveltejs/kit/pull/7529), [#7588](https://github.com/sveltejs/kit/pull/7588))
-- The `redirect` helper will now only allow status codes between 300-308 for redirects and only `error` status codes between 400-599 are allowed ([#7767](https://github.com/sveltejs/kit/pull/7767)) ([#7615](https://github.com/sveltejs/kit/pull/7615), [#7767](https://github.com/sveltejs/kit/pull/7767))
-- Special characters will now be encoded with hex/unicode escape sequences in route directory names ([#7644](https://github.com/sveltejs/kit/pull/7644))
-- devalue is now used to (de)serialize action data - this is only a breaking change for everyone who fetches the actions directly and doesn't go through `use:enhance` ([#7494](https://github.com/sveltejs/kit/pull/7494))
-- `trailingSlash` is now a page option, rather than configuration ([#7719](https://github.com/sveltejs/kit/pull/7719))
-- The client-side router now ignores links outside `%sveltekit.body%` ([#7766](https://github.com/sveltejs/kit/pull/7766))
-- `prerendering` is now named `building`, and `config.kit.prerender.enabled` has been removed ([#7762](https://github.com/sveltejs/kit/pull/7762))
-- `getStaticDirectory()` has been removed from the builder API ([#7809](https://github.com/sveltejs/kit/pull/7809))
-- The `format` option has been removed from `generateManifest(...)` ([#7820](https://github.com/sveltejs/kit/pull/7820))
-- `data-sveltekit-prefetch` has been replaced with `-preload-code` and `-preload-data`, `prefetch` is now `preloadData` and `prefetchRoutes` is now `preloadCode` ([#7776](https://github.com/sveltejs/kit/pull/7776), [#7776](https://github.com/sveltejs/kit/pull/7776))
-- `SubmitFunction` has been moved from `$app/forms` into `@sveltejs/kit` ([#7003](https://github.com/sveltejs/kit/pull/7003))
+- `routeId` が `route.id` になりました ([#7450](https://github.com/sveltejs/kit/pull/7450))
+- `beforeNavigate` メソッドと `afterNavigate` メソッドの 'load' は 'enter' に、'unload' は 'leave' にリネームされました。外部へのナビゲーションの際に、`beforeNavigate` は type 'leave' を引数にとって一回だけ呼び出され、リダイレクトの際には実行されなくなりました ([#7502](https://github.com/sveltejs/kit/pull/7502), [#7529](https://github.com/sveltejs/kit/pull/7529), [#7588](https://github.com/sveltejs/kit/pull/7588))
+- `redirect` ヘルパーは、リダイレクト時はステータスコードの 300-308 のみを許可し、`error` ステータスコードの場合は 400-599 のみを許可するようになりました ([#7767](https://github.com/sveltejs/kit/pull/7767)) ([#7615](https://github.com/sveltejs/kit/pull/7615), [#7767](https://github.com/sveltejs/kit/pull/7767))
+- ルート(route)ディレクトリ名の特殊文字は、hex/unicode のエスケープシーケンスでエンコードされるようになりました ([#7644](https://github.com/sveltejs/kit/pull/7644))
+- action data の(デ)シリアライズに devalue が使用されるようになりました - これは、`use:enhance` を使わずに直接 action を fetch する方にとっては breaking change です ([#7494](https://github.com/sveltejs/kit/pull/7494))
+- `trailingSlash` が configuration ではなく page option になりました ([#7719](https://github.com/sveltejs/kit/pull/7719))
+- クライアントサイドのルーターは、`%sveltekit.body%` の外にあるリンクを無視するようになりました ([#7766](https://github.com/sveltejs/kit/pull/7766))
+- `prerendering` は `building` にリネームされ、`config.kit.prerender.enabled` は削除されました ([#7762](https://github.com/sveltejs/kit/pull/7762))
+- `getStaticDirectory()` は builder API から削除されました ([#7809](https://github.com/sveltejs/kit/pull/7809))
+- `format` オプションが `generateManifest(...)` から削除されました ([#7820](https://github.com/sveltejs/kit/pull/7820))
+- `data-sveltekit-prefetch` は `-preload-code` と `-preload-data` に置き換えられ、`prefetch` は `preloadData` になり、`prefetchRoutes` は `preloadCode` になりました ([#7776](https://github.com/sveltejs/kit/pull/7776), [#7776](https://github.com/sveltejs/kit/pull/7776))
+- `SubmitFunction` は `$app/forms` から `@sveltejs/kit` に移動しました ([#7003](https://github.com/sveltejs/kit/pull/7003))
 
 ## New in Svelte
 
-- The css compiler options of `css: false` and `css: true` have been replaced with `'external' | 'injected' | 'none'` settings to speed up compilation for `ssr` builds and improve clarity (**3.53.0**)
+- css コンパイラオプションの `css: false` と `css: true` は、`'external' | 'injected' | 'none'` 設定に置き換えられ、`ssr` ビルド向けのコンパイルが高速化し、わかりやすさが改善されました (**3.53.0**)
 
-For all the changes to the Svelte compiler, including unreleased changes, check out the [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md).
+Svelte compiler に対する全ての変更については、まだ未リリースの変更も含め、[CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md) をご確認ください。
 
 ---
 
@@ -100,6 +109,6 @@ _To Read_
 - [svelte-lazyimage-cache](https://github.com/binsarjr/svelte-lazyimage-cache) is a Lazy Image component with IntersectionObserver and cache action
 - [threlte v5.0](https://www.reddit.com/r/sveltejs/comments/ywit18/threlte_v50_is_here_a_completely_new_developer/) is a completely new developer experience that is faster, more powerful, and incredibly flexible
 
-That's it for this month! Let us know if we missed anything on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.gg/svelte)
+今月はこれでおしまいです！見落としなどございましたら [Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.gg/svelte) にてお知らせください。
 
-See ya next near 🎆
+それではまた来年 🎆

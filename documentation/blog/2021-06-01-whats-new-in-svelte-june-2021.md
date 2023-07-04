@@ -1,37 +1,42 @@
 ---
-title: "What's new in Svelte: June 2021"
-description: Progress towards SvelteKit 1.0 and tighter TypeScript/Svelte integrations in language tools
+title: "What's new in Svelte: 2021年6月"
+description: SvelteKit 1.0に向けた進捗と language tools における TypeScript/Svelte 統合の強化
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-june-2021
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-This month, we saw lots of contributions to SvelteKit and its docs. The language tools also got some new features, most notably deeper integration with Svelte files within JavaScript or TypeScript files. Let's jump into the updates...
+今月は、SvelteKit とそのドキュメントに多くの貢献がありました。language tools にもいくつか新機能が追加され、特に注目すべきは JavaScript または TypeScript ファイルと Svelte ファイルの深い統合です。それではアップデートに参りましょう…
 
 ## New in SvelteKit
-
-- `svelte.config.js` config files are now loaded in ESM format (`.js` instead of `.cjs`).
-- AMP pages will now use the rendered CSS, rather than emitted CSS
-- `svelte-check` has been added to the TypeScript template ([sveltejs/kit#1556](https://github.com/sveltejs/kit/pull/1556))
-- Support for https keypair [sveltejs/kit#1456](https://github.com/sveltejs/kit/pull/1456)
-- Now bundling Vite with SvelteKit and using an upgraded version. Remove Vite from your `package.json` if it's there
-- Etags for binary responses [sveltejs/kit#1382](https://github.com/sveltejs/kit/pull/1382)
-- Renamed `$layout` to `__layout` and `$error` to `__error`
-- Removed `getContext` in favor of `request.locals`
-- Renamed `.svelte` output directory to `.svelte-kit`. Update your `.gitignore` accordingly
-- `trailingSlash: 'never' | 'always' | 'ignore'` is now available in the config. This should make it easier to build sites that work with static hosting providers that expect a trailing slash for `index.html` pages, and provides an escape hatch for anyone that needs more complex behaviour.
+- `svelte.config.js` コンフィグファイルが ESM フォーマットでロードされるようになりました (`.cjs` ではなく `.js`).
+- AMP ページでレンダリングされた CSS が使われるようになります
+- `svelte-check` が TypeScript テンプレートに追加されました ([sveltejs/kit#1556](https://github.com/sveltejs/kit/pull/1556)) 
+- https キーペアのサポート [sveltejs/kit#1456](https://github.com/sveltejs/kit/pull/1456) 
+- 現在は SvelteKit に Vite をバンドルし、アップグレードしたバージョンを使用しています。もし `package.json` に Vite がある場合は、それを削除します 
+- バイナリレスポンスのための Etag [sveltejs/kit#1382](https://github.com/sveltejs/kit/pull/1382) 
+- `$layout` から `__layout`、`$error` から `__error` にリネームしました
+- `getContext` を削除し、代わりに `request.locals` を使用します 
+- 出力ディレクトリを `.svelte` から `.svelte-kit` にリネームしました。適宜 `.gitignore` を更新してください。
+- `trailingSlash: 'never' | 'always' | 'ignore'` がコンフィグで使用できるようになりました。これにより、`index.html` ページの末尾にスラッシュをつけることを前提とした静的ホスティングプロバイダで動作するサイトの構築が簡単になり、より複雑な動作を必要とする人向けのエスケープハッチが提供されることになります。
 
 ## Notable bug fixes in SvelteKit
-
-- `adapter-netlify` got a fix [sveltejs/kit#1467](https://github.com/sveltejs/kit/pull/1467) and new documentation in the readme https://github.com/sveltejs/kit/tree/master/packages/adapter-netlify
-- The router will no longer intercept navigation for URLs that the app does not own. This fixes a crash for apps that have `<a>` elements on the page with the same origin but don't share a base path with the app.
-- Hash only changes are now handled by the router fixing the browser's "back" navigation between hash changes in some circumstances.
+- `adapter-netlify` が [sveltejs/kit#1467](https://github.com/sveltejs/kit/pull/1467) で修正され、[readme](https://github.com/sveltejs/kit/tree/master/packages/adapter-netlify) に新しいドキュメントが作成されました。
+- アプリが所有していないURLのナビゲーションをルーターがインターセプトしなくなりました。これにより、同じオリジンでベースパスを共有していない `<a>` 要素をページに持つアプリのクラッシュが修正されました。
+- ハッシュのみの変更がルーターによって処理されるようになり、ある状況でハッシュ変更中にブラウザの"戻る"ナビゲーションが実行されてしまうことが修正されました。
 
 ## New in Svelte & Language Tools
-
-- Svelte 3.38.1 and 3.38.2 fixed an issue with hydration that was causing duplicate elements. If you're seeing this in your project, be sure to update the latest version!
-- A new TypeScript plugin provides deeper integration with Svelte files within JavaScript or TypeScript files. This includes diagnostics, references and renaming of variables. It comes packaged with the VS Code extension but is turned off by default for now. You can enable it through [this setting](https://github.com/sveltejs/language-tools/tree/master/packages/svelte-vscode#svelteenable-ts-plugin). We encourage you to test it out and [provide feedback](https://github.com/sveltejs/language-tools/issues/580)
-- In the latest version of `svelte-check` you can now provide the path to your `tsconfig.json` or `jsconfig.json`. Example: `svelte-check --tsconfig "./tsconfig.json"`. This ensures the diagnostics are only run on files that are referenced in that config. It also runs diagnostics on JavaScript and/or TypeScript files which removes the need to run another check (like `tsc --noEmit`) for non-Svelte files (`svelte-check` version [**1.6.0**](https://github.com/sveltejs/language-tools/releases/tag/svelte-check-1.6.0))
-- The VS Code extension and `svelte-check` got a new major release. Previously, properties that had no initializer (`export let foo;`) were only required if the user was using both TypeScript and activated `strict` mode. This is changed now: People using TypeScript, and those using `checkJs` also in JavaScript files, will now always have these properties marked as required (`svelte-check` version [**2.0.0**](https://github.com/sveltejs/language-tools/releases/tag/svelte-check-2.0.0), extension version [**105.0.0**](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.0.0))
+- Svelte 3.38.1 と 3.38.2 ではハイドレーションで要素の重複が発生する問題が修正されました。もしこの問題が発生している場合は最新のバージョンにアップデートしてください！
+- 新しい TypeScriptプラグインは、JavaScriptやTypeScriptファイルとSvelteファイルのより深い統合を提供します。これには変数の診断、参照、名前変更などが含まれます。このプラグインは VS Code extension にパッケージされていますが、現在はデフォルトでオフになっています。[こちらの設定](https://github.com/sveltejs/language-tools/tree/master/packages/svelte-vscode#svelteenable-ts-plugin)で有効にすることができます。是非お試しいただき、[フィードバックをお寄せください](https://github.com/sveltejs/language-tools/issues/580)
+- 最新バージョンの `svelte-check` は `tsconfig.json` や `jsconfig.json` のパスを指定できるようになりました。例: `svelte-check --tsconfig "./tsconfig.json"`。 これにより、そのコンフィグで参照されているファイルに対してのみ診断が行われます。また、JavaScriptやTypeScriptのファイルに対しても診断が実行されるため、Svelte 以外のファイルに対して (`tsc --noEmit` のような) 別のチェックを実行する必要がなくなります (`svelte-check` version [**1.6.0**](https://github.com/sveltejs/language-tools/releases/tag/svelte-check-1.6.0))
+- VS Code extension と `svelte-check` が新しくメジャーリリースされました。以前は、イニシャライザを持たないプロパティ (`export let foo;`) は、ユーザが TypeScript を使用していて、かつ `strict` モードを有効にしている場合にのみ必須とされました。これが変更されました。TypeScriptを使用している場合や、JavaScriptでも `checkJs` を使用している場合は、これらのプロパティが常に必須としてマークされるようになりました (`svelte-check` version [**2.0.0**](https://github.com/sveltejs/language-tools/releases/tag/svelte-check-2.0.0), extension version [**105.0.0**](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.0.0))
 
 ---
 
@@ -39,25 +44,25 @@ This month, we saw lots of contributions to SvelteKit and its docs. The language
 
 **Apps & Sites**
 
-- [vidu](https://github.com/pa-nic/vidu) is a minimal web analytics collector and dashboard
-- [River Runner](https://river-runner.samlearner.com/) is a virtual way to follow rivers downstream - built with Mapbox and Svelte.
-- [JSDoc Type Generator](https://rafistrauss.github.io/jsdoc-generator/) generates JSDoc types for valid JSON.
-- [pagereview.io](https://pagereview.io/) is a website feedback tool that lets you leave comments directly on the site being reviewed.
-- [gamesroom.io](https://gamesroom.io/) is an online board game platform with video chat built-in.
-- [Greedy Goblin](https://greedygoblin-fe11c.web.app/) is a recipe app for old-school Runescape players.
-- [hashbrown.geopjr.dev](https://hashbrown.geopjr.dev/) is a GNOME-shell inspired webpage to learn about, explore the source code and download the Hashbrown GTK app ([link to source](https://github.com/GeopJr/Hashbrown/tree/website)).
+- [vidu](https://github.com/pa-nic/vidu) はミニマルな Web アナリティクスコレクターとダッシュボードです
+- [River Runner](https://river-runner.samlearner.com/) は川の流れを仮想的に追うことができ、 Mapbox と Svelte で構築されています。
+- [JSDoc Type Generator](https://rafistrauss.github.io/jsdoc-generator/) は有効なJSONの JSDoc 型定義を生成します。
+- [pagereview.io](https://pagereview.io/) は Webサイトのフィードバックツールで、レビューするサイトに直接コメントを残すことができます。
+- [gamesroom.io](https://gamesroom.io/) はビデオチャットが組み込まれているオンラインボードゲームプラットフォームです。
+- [Greedy Goblin](https://greedygoblin-fe11c.web.app/) はオールドスクールな Runescape プレイヤーのためのレシピアプリです。
+- [hashbrown.geopjr.dev](https://hashbrown.geopjr.dev/) は GNOME-shell にインスパイアされたWebページで、ソースコードについて学んだり、調べたり、Hashbrown GTK アプリをダウンロードすることができます ([ソースのリンク](https://github.com/GeopJr/Hashbrown/tree/website))。
 
 **Libraries, Tools & Components**
 
-- [svelte-image-crop](https://novacbn.github.io/svelte-image-crop/) is a simple click'n'drag image cropping library using Web APIs.
-- [svelte-datepicker](https://github.com/andrew-secret/svelte-datepicker) is a lightweight and inclusive date picker build with Svelte.
-- [svelte-regex-router](https://www.npmjs.com/package/svelte-regex-router) is a simple, lightweight library for you to easily handle routes in your Svelte application.
-- [Svelte Micro](https://www.npmjs.com/package/svelte-micro) is a light & reactive one-component router for Svelte.
-- [svelte-entity-store](https://www.npmjs.com/package/svelte-entity-store) is to provide a simple, generic solution for storing collections of entity objects.
-- [svelte-animation-store](https://github.com/joshnuss/svelte-animation-store) is a store that is based on Svelte's tweened store, that lets you pause, continue, reset, replay, reverse or adjust speed of a tween.
+- [svelte-image-crop](https://novacbn.github.io/svelte-image-crop/) は、Web APIを利用したシンプルなクリック＆ドラッグ式の画像切り抜きライブラリです。
+- [svelte-datepicker](https://github.com/andrew-secret/svelte-datepicker) は、Svelteで構築された軽量で包括的な date picker です。
+- [svelte-regex-router](https://www.npmjs.com/package/svelte-regex-router) は、Svelteアプリケーションでルーティングを簡単に扱うための、シンプルで軽量なライブラリです。
+- [Svelte Micro](https://www.npmjs.com/package/svelte-micro) は、Svelte向けの軽量かつリアクティブな単一コンポーネントルーターです。
+- [svelte-entity-store](https://www.npmjs.com/package/svelte-entity-store) は、エンティティオブジェクトのコレクションを保存するためのシンプルで汎用的なソリューションを提供します。
+- [svelte-animation-store](https://github.com/joshnuss/svelte-animation-store) は、Svelteのトゥイーンストアをベースにしたストアで、トゥイーンの一時停止、継続、リセット、リプレイ、リバース、スピード調整などを行うことができます。
 
-**Want to contribute a component?** Submit a [Component](https://sveltesociety.dev/components) to the Svelte Society site by making [a PR to this file](https://github.com/svelte-society/sveltesociety.dev/blob/master/src/pages/components/components.json).
+**自分のコンポーネントを投稿してみたいですか？** [このファイルに対するPR](https://github.com/svelte-society/sveltesociety.dev/blob/master/src/pages/components/components.json) を作成し、[コンポーネント](https://sveltesociety.dev/components) を Svelte Society site に提出してください。
 
 ## See you next month!
 
-Did we miss something? Join us on [Svelte Society](https://sveltesociety.dev/), [Reddit](https://www.reddit.com/r/sveltejs/) and [Discord](https://discord.com/invite/yy75DKs)!
+なにかご意見がありますか？ [Svelte Society](https://sveltesociety.dev/)、[Reddit](https://www.reddit.com/r/sveltejs/)、[Discord](https://discord.com/invite/yy75DKs)にジョインしてください！

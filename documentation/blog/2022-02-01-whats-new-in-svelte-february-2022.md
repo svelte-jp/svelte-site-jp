@@ -1,44 +1,51 @@
 ---
-title: "What's new in Svelte: February 2022"
-description: 'Rapid-fire releases across Svelte, SvelteKit and the community'
+title: "What's new in Svelte: 2022年2月"
+description: "Svelte、SvelteKit、コミュニティを横断し、畳み掛けるようにリリース"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-february-2022
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-Happy February, everyone! Over the last month or so, we've seen Svelte and SvelteKit [develop at rapid speed](accelerating-sveltes-development), new community rules across the [Reddit](https://www.reddit.com/r/sveltejs/comments/s9n8ou/new_rules/), [GitHub](https://github.com/sveltejs/community/blob/main/CODE_OF_CONDUCT.md) and [Discord](https://discord.com/channels/457912077277855764/831611707667382303/935264550436102315), and quite a few amazing apps, tutorials and libraries.
+Happy February, everyone! ここ1か月ほどで、Svelte と SvelteKit の [開発が加速し](accelerating-sveltes-development)、[Reddit](https://www.reddit.com/r/sveltejs/comments/s9n8ou/new_rules/)、[GitHub](https://github.com/sveltejs/community/blob/main/CODE_OF_CONDUCT.md)、[Discord](https://discord.com/channels/457912077277855764/831611707667382303/935264550436102315) で新しいコミュニティのルールができ、そしてかなりの数の素晴らしいアプリ、チュートリアル、ライブラリがリリースされました。
 
-Let's take a look...
+それでは見ていきましょう…
 
 ## Highlights from the Svelte changelog
-
-- **3.45.0** brought a [new a11y warning `a11y-no-redundant-roles`](https://svelte.dev/docs#accessibility-warnings-a11y-no-redundant-roles), destructuring and caching fixes
-- **3.46.0** added the much requested [`{@const}` tag](https://svelte.dev/docs#template-syntax-const) and [`style:` directive](https://svelte.dev/docs#template-syntax-element-directives-style-property)
-- Check out **3.46.1 - 3.46.3** for fixes to the `{@const}` tag and `style:` directive, along with a number of fixes to animations
-- [AST output is now available in the Svelte REPL](https://svelte.dev/repl/hello-world)
+- **3.45.0** では、[新しい a11y の warning である `a11y-no-redundant-roles`](https://svelte.jp/docs#accessibility-warnings-a11y-no-redundant-roles) と、分割代入およびキャッシュの修正が行われました
+- **3.46.0** では、要望が多かった [`{@const}` tag](https://svelte.jp/docs#template-syntax-const) と [`style:` directive](https://svelte.jp/docs#template-syntax-element-directives-style-property) が追加されました
+- **3.46.1 - 3.46.3** では、`{@const}` タグと `style:` ディレクティブの修正、アニメーションに関する多くの修正が行われました
+- [Svelte REPL で AST が出力できるようになりました](https://svelte.dev/repl/hello-world)
 
 ## What's new in SvelteKit
 
-- `inlineStyleThreshold` allows you to specify where inline stylesheets are inserted into the page ([Docs](https://kit.svelte.dev/docs/configuration#inlinestylethreshold), [#2620](https://github.com/sveltejs/kit/pull/2620))
-- `beforeNavigate`/`afterNavigate` lifecycle functions lets you add functionality before or after a page navigation ([Docs](https://kit.svelte.dev/docs/modules#$app-navigation), [#3293](https://github.com/sveltejs/kit/pull/3293))
-- Platform context can now be passed from adapters ([Docs](https://kit.svelte.dev/docs/adapters#supported-environments-platform-specific-context), [#3429](https://github.com/sveltejs/kit/pull/3429))
-- Hooks now have an `ssr` parameter in `resolve` to make it easier to skip SSR, when needed ([Docs](https://kit.svelte.dev/docs/hooks#handle), [#2804](https://github.com/sveltejs/kit/pull/2804))
-- `$page.stuff` provides a mechanism for pages to pass data 'upward' to layouts ([Docs](https://kit.svelte.dev/docs/loading#input-stuff), [#3252](https://github.com/sveltejs/kit/pull/3252))
-- Fallthrough routes let you specify where to route when an route can't be loaded ([Docs](https://kit.svelte.dev/docs/routing#advanced-routing-fallthrough-routes), [#3217](https://github.com/sveltejs/kit/pull/3217))
+- `inlineStyleThreshold` によって、CSS ファイルをインラインスタイルシートにしてページに挿入するかどうか指定できるようになりました ([Docs](https://kit.svelte.jp/docs/configuration#inlinestylethreshold), [#2620](https://github.com/sveltejs/kit/pull/2620))
+- `beforeNavigate`/`afterNavigate` ライフサイクル関数によって、ページナビゲーションの前後に機能を追加することができるようになりました ([Docs](https://kit.svelte.jp/docs/modules#$app-navigation), [#3293](https://github.com/sveltejs/kit/pull/3293))
+- プラットフォーム固有のコンテキストを、adapter から渡せるようになりました ([Docs](https://kit.svelte.jp/docs/adapters#supported-environments-platform-specific-context), [#3429](https://github.com/sveltejs/kit/pull/3429))
+- Hooks の `resolve` 関数に `ssr` パラメーターが追加され、必要に応じて SSR を簡単にスキップできるようになりました ([Docs](https://kit.svelte.jp/docs/hooks#handle), [#2804](https://github.com/sveltejs/kit/pull/2804))
+- `$page.stuff` は、ページがレイアウトに対してデータを '上向きに' 渡すためのメカニズムを提供します ([Docs](https://kit.svelte.jp/docs/loading#input-stuff), [#3252](https://github.com/sveltejs/kit/pull/3252))
+- Fallthrough routes によって、ルート(route)が読み込めないときのルーティング先を指定することができます ([Docs](https://kit.svelte.jp/docs/routing#advanced-routing-fallthrough-routes), [#3217](https://github.com/sveltejs/kit/pull/3217))
 
 **New configs**
 
-- Content Security Policy (CSP) is now supported for increased security when using inline javascript or stylesheets ([Docs](https://kit.svelte.dev/docs/configuration#csp), [#3499](https://github.com/sveltejs/kit/pull/3499))
-- `kit.routes` config allows you to customise public/private modules during build ([Docs](https://kit.svelte.dev/docs/configuration#routes), [#3576](https://github.com/sveltejs/kit/pull/3576))
-- `prerender.createIndexFiles` config lets you prerender index.html files as their subfolder's name ([Docs](https://kit.svelte.dev/docs/configuration#prerender), [#2632](https://github.com/sveltejs/kit/pull/2632))
-- HTTP methods can now be overridden using `kit.methodOverride` ([Docs](https://kit.svelte.dev/docs/routing#endpoints-http-method-overrides), [#2989](https://github.com/sveltejs/kit/pull/2989))
+- Content Security Policy (CSP) がサポートされ、インラインの JavaScript と スタイルシートを使用するときのセキュリティが強化されます ([Docs](https://kit.svelte.jp/docs/configuration#csp), [#3499](https://github.com/sveltejs/kit/pull/3499))
+- `kit.routes` の設定で、ビルド時に、どのモジュールをパブリック/プライベートにするかカスタマイズできるようになりました ([Docs](https://kit.svelte.jp/docs/configuration#routes), [#3576](https://github.com/sveltejs/kit/pull/3576))
+- `prerender.createIndexFiles` の設定で、index.html をサブフォルダの名前でプリレンダリングできるようになりました ([Docs](https://kit.svelte.jp/docs/configuration#prerender), [#2632](https://github.com/sveltejs/kit/pull/2632))
+- `kit.methodOverride` を使用することで、HTTP メソッドをオーバーライドできるようになりました ([Docs](https://kit.svelte.jp/docs/routing#endpoints-http-method-overrides), [#2989](https://github.com/sveltejs/kit/pull/2989))
 
 **Config changes**
 
-- `config.kit.hydrate` and `config.kit.router` are now nested under `config.kit.browser` ([Docs](https://kit.svelte.dev/docs/configuration#browser), [3578](https://github.com/sveltejs/kit/pull/3578))
+- `config.kit.hydrate` と `config.kit.router` が `config.kit.browser` の配下に移動されました ([Docs](https://kit.svelte.jp/docs/configuration#browser), [3578](https://github.com/sveltejs/kit/pull/3578))
 
 **Breaking change**
 
-- use `Request` and `Response` objects in endpoints and hooks ([#3384](https://github.com/sveltejs/kit/pull/3384))
+- エンドポイント(endpoints) と Hooks で、`Request` オブジェクトと `Response` オブジェクト が使われるようになりました ([#3384](https://github.com/sveltejs/kit/pull/3384))
 
 ---
 
@@ -46,29 +53,29 @@ Let's take a look...
 
 **Apps & Sites**
 
-- [timb(re)](https://paullj.github.io/timb) is a live music programming environment
-- [Music for Programming](https://musicforprogramming.net/latest/) is a series of mixes intended for listening while `${task}` to focus the brain and inspire the mind
-- [Team Tale](https://teamtale.app/) allows two authors to write the same story in a tag-team sort of fashion
-- [Puzzlez](https://www.puzzlez.io/) is an online place to play Sudoku and Wordle
-- [Closed Caption Creator](https://www.closedcaptioncreator.com/) makes it easy to add subtitles to your video on Windows, Mac and Google Chrome
-- [SC3Lab](https://sc3-lab.netlify.app/) is a code generator for experimenting with svelte-cubed and three.js
-- [Donkeytype](https://github.com/0ql/Donkeytype) is a minimalistic and lightweight typingtest inspired by Monkeytype.
-- [Above](https://above.silas.pro/) is a visual routine timer built for the ADHD/autistic mind
-- [base.report](https://base.report/) is a modern research platform for serious investors
-- [String](https://string.kampsy.xyz/) turns your Phone into a secure portable audio recorder, making it easy to capture and share personal notes, family moments, classroom lectures, and more
-- [The Raytracer Challenge REPL](https://github.com/jakobwesthoff/the_raytracer_challenge_repl) provides a live editor interface to configure a raytraced scene and render it live in any modern browser
-- [awesome-svelte-kit](https://github.com/janosh/awesome-svelte-kit) is a list of awesome examples of SvelteKit in the wild
-- [Map Projection Explorer](https://www.geo-projections.com/) lets you explore different map projections and explains their differences
-- [Rubiks](https://github.com/MeharGaur/rubiks) is a Rubik's Cube simulator
-- [Pianisto](https://pianisto.net/) is a working piano made with SVG, ToneJS and a lot of patience
+- [timb(re)](https://paullj.github.io/timb) は、ライブミュージックプログラミング環境です
+- [Music for Programming](https://musicforprogramming.net/latest/) は、`${task}` 中に聴くことで脳を集中させやる気を起こすことを目的としてミックスシリーズです
+- [Team Tale](https://teamtale.app/) は、1つのストーリーを2人の執筆者がタッグを組むような形で書くことができます
+- [Puzzlez](https://www.puzzlez.io/) は、数独と Wordle をオンラインでプレイできます
+- [Closed Caption Creator](https://www.closedcaptioncreator.com/) は、Windows、Mac、Google Chrome で、あなたのビデオに簡単に字幕を付けられます
+- [SC3Lab](https://sc3-lab.netlify.app/) は、svelte-cubed and three.js を使用した実験的なコードジェネレーターです
+- [Donkeytype](https://github.com/0ql/Donkeytype) は、Monkeytype にインスパイアされた、ミニマルで軽量なタイピングテストです
+- [Above](https://above.silas.pro/) は、ADHD/自閉症の方のために作られたビジュアル・ルーティーン・タイマーです
+- [base.report](https://base.report/) は、本格的な投資家向けのモダンなリサーチプラットフォームです
+- [String](https://string.kampsy.xyz/) は、あなたのスマートフォンをセキュアでポータブルなオーディオレコーダーに変身させ、個人的なメモ、家族の思い出、講義などを記録して共有するのを簡単にしてくれます
+- [The Raytracer Challenge REPL](https://github.com/jakobwesthoff/the_raytracer_challenge_repl) は、シーンのレイトレーシングを設定してそれをレンダリングするライブ・エディター・インタフェースで、モダンなブラウザで動作します
+- [awesome-svelte-kit](https://github.com/janosh/awesome-svelte-kit) は、SvelteKit の素晴らしい example のリストです
+- [Map Projection Explorer](https://www.geo-projections.com/) は、様々な地図の投影法を調べ、その違いを明白にすることができます
+- [Rubiks](https://github.com/MeharGaur/rubiks) はルービックキューブのシミュレーターです 
+- [Pianisto](https://pianisto.net/) は、SVG と ToneJS と多くの忍耐によって作られた、実際に動くピアノです
 
-Want to work on a SvelteKit site with others, [try contributing to the Svelte Society site](https://github.com/svelte-society/sveltesociety-2021/issues)!
+みんなで SvelteKit サイト に取り組んでみたいなら、[Svelte Society のサイトへのコントリビュートにトライしてみてください](https://github.com/svelte-society/sveltesociety-2021/issues)!
 
 **Learning and Listening**
 
 _To Read_
 
-- [Accelerating Svelte's Development](https://svelte.dev/blog/accelerating-sveltes-development) by Ben McCann
+- [Svelte の開発を加速する(Accelerating Svelte's Development)](https://svelte.jp/blog/accelerating-sveltes-development) by Ben McCann
 - [Storybook for Vite](https://storybook.js.org/blog/storybook-for-vite/)
 - [Let's learn SvelteKit by building a static Markdown blog from scratch](https://joshcollinsworth.com/blog/build-static-sveltekit-markdown-blog) by Josh Collinsworth
 - [Building an iOS app with Svelte, Capacitor and Firebase](https://harryherskowitz.com/2022/01/05/tapedrop-app.html) by Harry Herskowitz
@@ -95,20 +102,20 @@ _To Listen To_
 
 **Libraries, Tools & Components**
 
-- [threlte](https://github.com/grischaerbe/threlte) is a three.js component library for Svelte
-- [svelte-formify](https://github.com/nodify-at/svelte-formify) is a library to manage and validate forms that uses decorators to define validations
-- [gQuery](https://github.com/leveluptuts/gQuery) is a GraphQL Fetcher & Cache for Svelte Kit
-- [Unlock-protocol](https://github.com/novum-insights/sveltekit-unlock-firebase) is an integration to help login with MetaMask, Firebase, and paywall customers
-- [AgnosticUI](https://github.com/AgnosticUI/agnosticui) is a set of UI primitives that start their lives in clean HTML and CSS
-- [Vitebook](https://github.com/vitebook/vitebook) is a fast and lightweight alternative to Storybook that's powered by Vite
-- [SwyxKit](https://swyxkit.netlify.app/) is an opinionated blog starter for SvelteKit + Tailwind + Netlify. Refreshed for 2022!
-- [svelte-themes](https://github.com/beynar/svelte-themes) is an abstraction for themes in your SvelteKit app
-- [svelte-transition](https://www.npmjs.com/package/svelte-transition) is a Svelte component to make using CSS class based transitions easier - ideally suited for use with TailwindCSS
-- [Svelte Inview](https://www.npmjs.com/package/svelte-inview) is a Svelte action that monitors an element enters or leaves the viewport/parent element
-- [svelte-inline-compile](https://github.com/DockYard/svelte-inline-compile) is a babel transform that allows for a much more pleasant experience when testing svelte components using Jest and `@testing-library/svelte`
-- [@feltcoop/svelte-mutable-store](https://github.com/feltcoop/svelte-mutable-store) is a Svelte store for mutable values with an `immutable` compiler option
-- [headless-svelte-ui](https://www.npmjs.com/package/@bojalelabs/headless-svelte-ui) is a group of headless components that can be used in building Svelte Apps.
+- [threlte](https://github.com/grischaerbe/threlte) は Svelte 向けの three.js コンポーネントライブラリ
+- [svelte-formify](https://github.com/nodify-at/svelte-formify) は、フォームの管理とバリデーションを行うライブラリで、デコレーターを使用してバリデーションを定義します
+- [gQuery](https://github.com/leveluptuts/gQuery) は、SvelteKit 向けの GraphQL Fetcher & Cache です
+- [Unlock-protocol](https://github.com/novum-insights/sveltekit-unlock-firebase) は、MetaMask、Firebase、paywall のユーザーのログインを支援するインテグレーションです
+- [AgnosticUI](https://github.com/AgnosticUI/agnosticui) は、クリーンな HTML と CSS で構成されている UI プリミティブのセットです
+- [Vitebook](https://github.com/vitebook/vitebook) は、高速で軽量な Storybook の代替で、Vite を使用しています
+- [SwyxKit](https://swyxkit.netlify.app/) は、SvelteKit + Tailwind + Netlify を使用したオピニオネイテッドなブログ・スターターです。2022年に向け新しくなりました！
+- [svelte-themes](https://github.com/beynar/svelte-themes) は、SvelteKit アプリのテーマを抽象化したものです
+- [svelte-transition](https://www.npmjs.com/package/svelte-transition) は、CSS クラスベースのトランジションを簡単にする Svelte コンポーネントです - TailwindCSS と一緒に使用するのが望ましいです
+- [Svelte Inview](https://www.npmjs.com/package/svelte-inview) は、viewport/親要素 への要素の出入りを監視する Svelte アクションです
+- [svelte-inline-compile](https://github.com/DockYard/svelte-inline-compile) は、Jest と `@testing-library/svelte` を使って Svelte コンポーネントをテストする際に、より快適な体験を得るための Babel transform です
+- [@feltcoop/svelte-mutable-store](https://github.com/feltcoop/svelte-mutable-store) は、`immutable` コンパイラオプションでもミュータブルな値を扱える Svelte ストアです
+- [headless-svelte-ui](https://www.npmjs.com/package/@bojalelabs/headless-svelte-ui) は、Svelte アプリを構築する際に使用できるヘッドレスコンポーネント(headless components)集です
 
-Did we miss something? Need help bringing your next idea to life in Svelte? Join us on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs).
+なにか見落としがありましたか？Svelte でアイデアを実現するのに助けが必要ですか？ [Reddit](https://www.reddit.com/r/sveltejs/) または [Discord](https://discord.com/invite/yy75DKs) にご参加ください。
 
-See ya next month!
+また来月お会いしましょう！

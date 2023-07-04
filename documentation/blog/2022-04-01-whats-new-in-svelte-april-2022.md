@@ -1,40 +1,49 @@
 ---
-title: "What's new in Svelte: April 2022"
-description: 'Goodbye fallthrough routes, hello param validators!'
+title: "What's new in Svelte: 2022年4月"
+description: "フォールスルールートにさようなら、param validatorにこんにちは！"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-april-2022
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-This month, we felt a shift in the way SvelteKit handles page properties. The last holdout of the use-cases that required fallthrough routes, validating parameter properties, has been replaced by a more specific solution.
+今月は、SvelteKit のページプロパティの扱い方に変更がありました。フォールスルールート(fallthrough routes)を必要とするユースケースの最後の難関「パラメータプロパティの検証」が、より具体的なソリューションに置き換えられました。
 
-More on that, and what else is new in Svelte, as we dive in...
+より詳細な情報と、その他 Svelte の新機能について見ていきましょう…
 
 ## What's new in SvelteKit
 
-- Param matchers allow you to check if a url parameter matches before rendering a page - replacing the need for fallthrough routes for this purpose ([Docs](https://kit.svelte.dev/docs/routing#advanced-routing-matching), [#4334](https://github.com/sveltejs/kit/pull/4334))
-- Explicit redirects can now be handled directly from endpoints ([#4260](https://github.com/sveltejs/kit/pull/4260))
-- `svelte-kit sync` ([#4182](https://github.com/sveltejs/kit/pull/4182)), TypeScript 4.6 ([#4190](https://github.com/sveltejs/kit/pull/4190)) and Vite 2.9 were released - adding non-blocking dependency optimization and experimental CSS source maps in dev mode as well as a number of bug fixes contributed by the SvelteKit team ([#4468](https://github.com/sveltejs/kit/pull/4468))
+- Param matchers により、ページをレンダリングする前に URL パラメータがマッチするかチェックできるようになりました。フォールスルールート(fallthrough routes)で URL パラメータをチェックしていた場合は、これに置き換えてください ([Docs](https://kit.svelte.jp/docs/routing#advanced-routing-matching), [#4334](https://github.com/sveltejs/kit/pull/4334))
+- 明示的なリダイレクトをエンドポイントで直接扱えるようになりました ([#4260](https://github.com/sveltejs/kit/pull/4260))
+- `svelte-kit sync` ([#4182](https://github.com/sveltejs/kit/pull/4182))、TypeScript 4.6 ([#4190](https://github.com/sveltejs/kit/pull/4190))、Vite 2.9 がリリースされました。ノンブロッキングな依存関係の最適化、開発モードでの実験的な CSS source map、SvelteKit チームのコントリビュートによるいくつかのバグフィックスが追加されています ([#4468](https://github.com/sveltejs/kit/pull/4468))
 
 **New Config Options**
 
-- `outDir` fixes path issues in monorepos and other situations where the desired output directory is outside the project directory ([Docs](https://kit.svelte.dev/docs/configuration#outdir), [#4176](https://github.com/sveltejs/kit/pull/4176))
-- `endpointExtensions` prevents files other than .js and .ts files from being treated as endpoints, unless you specify endpointExtensions ([Docs](https://kit.svelte.dev/docs/configuration#endpointextensions), [#4197](https://github.com/sveltejs/kit/pull/4197))
-- `prerender.default` lets you prerender every page without having to write `export const prerender = true` in every page file ([Docs](https://kit.svelte.dev/docs/configuration#prerender), [#4192](https://github.com/sveltejs/kit/pull/4192))
+- `outDir` により、モノレポや、プロジェクトディレクトリの外側に出力ディレクトリを置きたい状況におけるパスの問題が解決します ([Docs](https://kit.svelte.jp/docs/configuration#outdir), [#4176](https://github.com/sveltejs/kit/pull/4176))
+- `endpointExtensions` により、ご自身で endpointExtensions を指定しない限り、.js と .ts 以外のファイルがエンドポイントとして扱われるのを防ぎます ([Docs](https://kit.svelte.jp/docs/configuration#endpointextensions), [#4197](https://github.com/sveltejs/kit/pull/4197))
+- `prerender.default` により、全てのページファイルに `export const prerender = true` を書かなくても全てのページをプリレンダリングすることができるようになりました ([Docs](https://kit.svelte.jp/docs/configuration#prerender), [#4192](https://github.com/sveltejs/kit/pull/4192))
 
 **Breaking Changes**
 
-- Fallthrough routes have been removed. For migration tips, check out the PR ([#4330](https://github.com/sveltejs/kit/pull/4330))
-- `tabindex="-1"` is only added to `<body>` during navigation ([#4140](https://github.com/sveltejs/kit/pull/4140) and [#4184](https://github.com/sveltejs/kit/pull/4184))
-- Adapters are now required to supply a `getClientAddress` function ([#4289](https://github.com/sveltejs/kit/pull/4289))
-- `InputProps` and `OutputProps` can now be typed separately in generated `Load` ([#4305](https://github.com/sveltejs/kit/pull/4305))
-- The `\$` character is no longer allowed in dynamic parameters ([#4334](https://github.com/sveltejs/kit/pull/4334))
-- `svelte-kit package` has been marked as experimental so changes to it after Kit 1.0 will not be considered breaking ([#4164](https://github.com/sveltejs/kit/pull/4164))
+- フォールスルールート(Fallthrough routes)が削除されました。マイグレーションのための tips については、PR を確認してみてください ([#4330](https://github.com/sveltejs/kit/pull/4330))
+- `tabindex="-1"` がナビゲーションの間 `<body>` にのみ追加されるようになります ([#4140](https://github.com/sveltejs/kit/pull/4140)、[#4184](https://github.com/sveltejs/kit/pull/4184))
+- Adapter は `getClientAddress` 関数を提供する必要があります ([#4289](https://github.com/sveltejs/kit/pull/4289))
+- `InputProps` と `OutputProps` は、生成される `Load` において別々に型付けされるようになりました ([#4305](https://github.com/sveltejs/kit/pull/4305))
+- `\$` 文字が動的なパラメータとして使えなくなりました ([#4334](https://github.com/sveltejs/kit/pull/4334))
+- `svelte-kit package` が experimental としてマークされ、Kit 1.0 以降に変更があっても breaking と見なされません ([#4164](https://github.com/sveltejs/kit/pull/4164))
 
 ## New across the Svelte ecosystem
 
-- Svelte: Lots of new types for TypeScript and Svelte plugin users - including `style:` directives and Svelte Actions (**3.46.4** and **3.46.5**)
-- Language Tools: Svelte project files are now importable/findable through references without having them imported in a TS file ([105.13.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.13.0))
-- Language Tools: Region folding is now supported in html with `<!--#region-->`/`<!--#endregion-->` ([105.13.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.13.0))
+- Svelte: TypeScript、Svelte plugin ユーザー向けに新しい型が多く追加されました。`style:` ディレクティブや Svelte Actions も含まれます (**3.46.4**、**3.46.5**)
+- Language Tools: Svelte のプロジェクトファイルを、TS ファイルでインポートしていなくても参照(reference)からインポート/検索できるようになりました ([105.13.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.13.0))
+- Language Tools: html で、 `<!--#region-->`/`<!--#endregion-->` で折りたたみができるようになりました ([105.13.0](https://github.com/sveltejs/language-tools/releases/tag/extensions-105.13.0))
 
 ---
 
@@ -42,29 +51,29 @@ More on that, and what else is new in Svelte, as we dive in...
 
 **Apps & Sites built with Svelte**
 
-- [Launcher](https://launcher.team/) is an open-source app launcher powered by SvelteKit, Prisma, and Tailwind
-- [Paaster](https://paaster.io/) is a secure by default end to end encrypted pastebin built with Svelte, Vite, TypeScript, Python, Starlette, rclone & Docker.
-- [Simple AF Video Converter](https://github.com/berlyozzy/Simple-AF-Video-Converter) is an Electron wrapper around ffmpeg.wasm to make converting videos between formats easier
-- [Streamchaser](https://github.com/streamchaser/streamchaser) seeks to simplify movie, series and documentary search through a centralized entertainment technology platform
-- [Svelte Color Picker](https://github.com/V-Py/svelte-material-color-picker) is a simple color picker made with Svelte
-- [ConcertMash](https://github.com/mcmxcdev/ConcertMash) is a small website that interacts with the Spotify API and generates new playlists based on the upcoming concerts you're attending
-- [Modulus](https://modulus.vision/) is a Design+Code Think Tank conceived with the main mission to evolve design and technology
-- [Multiply](https://www.multiply.us/) is an integrated PR and Social agency moving at the speed of culture
-- [yia!](https://www.yia.co.nz/) is a Young Innovator Award competition in New Zealand
-- [Write to Russia](https://www.writetorussia.org/index) is a community email writing platform to communicate with public `.ru` email addresses
-- [Markdown Playground](https://github.com/Petros-K/markdown-playground) is an online playground dedicated for your markdown experiments.
-- [RatherMisty](https://rathermisty.com/) is a no frills weather app with weather data from Open-Meteo
-- [Minecraft Profile Pic (MCPFP)](https://github.com/MauritsWilke/mcpfp) is a site to generate Minecraft profile pictures with ease
-- [WebGL Fluid Simulation](https://github.com/jpaquim/svelte-webgl-fluid-simulation) is a configurable fluid simulation built with Svelte and WebGL
-- [This @NobelPeaceOslo exhibition](https://twitter.com/perbyhring/status/1504754949791621120) was built using printed graphics, projected motion graphics, particle animations and generative sound design
+- [Launcher](https://launcher.team/) はオープンソースのアプリランチャーです。SvelteKit、Prisma、Tailwind を使用しています
+- [Paaster](https://paaster.io/) は end to end で暗号化された pastebin で、デフォルトで安全です。Svelte、Vite、TypeScript、Python、Starlette、rclone、Docker で構築されています
+- [Simple AF Video Converter](https://github.com/berlyozzy/Simple-AF-Video-Converter) は ffmpeg.wasm の Electron ラッパーです。フォーマット間の動画変換を簡単に行うことができます。
+- [Streamchaser](https://github.com/streamchaser/streamchaser) は、一元化されたエンターテイメントテクノロジープラットフォームを通じて、映画やシリーズ、ドキュメンタリーなどの検索をシンプルにすることを追求しています
+- [Svelte Color Picker](https://github.com/V-Py/svelte-material-color-picker) はシンプルなカラーピッカーで、Svelteで構築されています
+- [ConcertMash](https://github.com/mcmxcdev/ConcertMash) は、Spotify API を使用してあなたが参加する予定のコンサートに基づいた新しいプレイリストを生成する小さな web サイトです
+- [Modulus](https://modulus.vision/) はデザイン+コードのシンクタンクで、デザインとテクノロジーを進化させることを主なミッションとしています。
+- [Multiply](https://www.multiply.us/) はカルチャーのスピードに合わせた PR とソーシャルの総合エージェンシーです
+- [yia!](https://www.yia.co.nz/) はニュージーランドの Young Innovator Award コンペティションです
+- [Write to Russia](https://www.writetorussia.org/index) は、パブリックな `.ru` のメールアドレスとやり取りするためのコミュニティメール作成プラットフォームです
+- [Markdown Playground](https://github.com/Petros-K/markdown-playground) は、markdown 色々試してみるのに特化したオンラインの playground です 
+- [RatherMisty](https://rathermisty.com/) は装飾を省いた天気予報アプリで、Open-Meteo の気象データを使用しています
+- [Minecraft Profile Pic (MCPFP)](https://github.com/MauritsWilke/mcpfp) は Minecraft のプロフィール画像を簡単に生成できるサイトです
+- [WebGL Fluid Simulation](https://github.com/jpaquim/svelte-webgl-fluid-simulation) は様々な設定が可能な流体シミュレーションで、Svelte と WebGL で構築されています
+- [この @NobelPeaceOslo の展示](https://twitter.com/perbyhring/status/1504754949791621120) は、プリントグラフィックス、プロジェクションモーショングラフィックス、パーティクルアニメーション、ジェネレーティブサウンドデザインを用いて構築されています
 
-Itching to contribute to a modern SvelteKit website? [Help build the Svelte Society site](https://github.com/svelte-society/sveltesociety.dev/issues)!
+モダンな SvelteKit webサイト に貢献してみたいですか？[Svelte Society のサイト構築を手伝っていただけませんか](https://github.com/svelte-society/sveltesociety.dev/issues)!
 
 **Learning Resources**
 
 _To Attend_
 
-- [Svelte Summit: Spring](https://www.sveltesummit.com/) will take place on April 30, 2022! Join us for the 5th virtual Svelte conference on [YouTube](https://www.sveltesummit.com/) and Discord 🍾
+- [Svelte Summit: Spring](https://www.sveltesummit.com/) が2022年4月30日に開催されます！[YouTube](https://www.sveltesummit.com/) と Discord で、5回目のバーチャルな Svelte カンファレンスに是非ご参加ください 🍾
 
 _To Read_
 
@@ -78,7 +87,7 @@ _To Read_
 - [Lazy-Loading Firebase with SvelteKit](https://www.captaincodeman.com/lazy-loading-firebase-with-sveltekit) and [HeadlessUI Components with Svelte](https://www.captaincodeman.com/headlessui-components-with-svelte) by Captain Codeman
 - [SvelteKit Accessibility Testing: Automated CI A11y Tests](https://rodneylab.com/sveltekit-accessibility-testing/) by Rodney Lab
 - [Getting Started with KitQL and GraphCMS](https://scottspence.com/posts/getting-started-with-kitql-and-graphcms) by Scott Spence
-- [React ⇆ Svelte Cheatsheet](https://dev.to/joshnuss/react-to-svelte-cheatsheet-1a2a) lists the similarities and differences between the two libraries - by Joshua Nussbaum
+- [React ⇆ Svelte Cheatsheet](https://dev.to/joshnuss/react-to-svelte-cheatsheet-1a2a) は、2つのライブラリの類似点と相違点のリストです - by Joshua Nussbaum
 
 _To Watch_
 
@@ -92,17 +101,17 @@ _To Watch_
 
 **Libraries, Tools & Components**
 
-- [SvelTable](https://sveltable.io/) is a feature rich, data table component built with Svelte
-- [svelte-cyberComp](https://github.com/Cybersteam00/svelte-cyberComp) is a powerful, lightweight component library written in Svelte and TypeScript
-- [Flowbite Svelte](https://github.com/shinokada/flowbite-svelte) is an unofficial Flowbite component library for Svelte
-- [Svelte-Tide-Project](https://github.com/jbertovic/svelte-tide-project) is a starter template for Svelte frontend apps with Rust Tide backend server
-- [Fetch Inject](https://github.com/vhscom/fetch-inject#sveltekit) implements a performance optimization technique for managing asynchronous JavaScript dependencies - now with Svelte support
-- [svelte-utterances](https://github.com/shinokada/svelte-utterances) is a lightweight comments widget built on GitHub issues
-- [Liquivelte](https://github.com/malipetek/liquivelte-vscode) allows you to create your Shopify theme with Svelte-like components
-- [@storyblok/svelte](https://github.com/storyblok/storyblok-svelte) is the Svelte SDK you need to interact with Storyblok API and enable the Real-time Visual Editing Experience
-- [@svelte-on-solana/wallet-adapter](https://github.com/svelte-on-solana/wallet-adapter) is a modular TypeScript wallet adapter and UI components for Solana/Anchor applications using SvelteJS as framework
-- [svelte-lookat](https://www.npmjs.com/package/svelte-lookat) creates a div which makes all its children follow the mouse cursor or the user's face when using a mobile phone
+- [SvelTable](https://sveltable.io/) は多機能なデータテーブルコンポーネントで、Svelteで構築されています
+- [svelte-cyberComp](https://github.com/Cybersteam00/svelte-cyberComp) はパワフルで軽量な Svelte コンポーネントで、Svelte と TypeScript で書かれています
+- [Flowbite Svelte](https://github.com/shinokada/flowbite-svelte) は Svelte 向けの非公式な Flowbite コンポーネントライブラリです
+- [Svelte-Tide-Project](https://github.com/jbertovic/svelte-tide-project) は、フロントエンドに Svelte、バックエンドに Rust の Tide を使った スターター・テンプレートです
+- [Fetch Inject](https://github.com/vhscom/fetch-inject#sveltekit) は非同期な JavaScript の依存関係を管理するためのパフォーマンス最適化の実装で、Svelte をサポートし始めました
+- [svelte-utterances](https://github.com/shinokada/svelte-utterances) は GitHub issues をベースにした軽量なコメントウィジェットです
+- [Liquivelte](https://github.com/malipetek/liquivelte-vscode) は、Svelte ライクなコンポーネントで Shopify のテーマを構築することができます
+- [@storyblok/svelte](https://github.com/storyblok/storyblok-svelte) は、Storyblok API を使用するのに必要な Svelte SDK で、リアルタイムでビジュアル編集が可能となります
+- [@svelte-on-solana/wallet-adapter](https://github.com/svelte-on-solana/wallet-adapter) は Solana/Anchor アプリケーション向けのモジュラーな TypeScript wallet adapter と UI コンポーネント で、フレームワークとして SvelteJS を使用しています
+- [svelte-lookat](https://www.npmjs.com/package/svelte-lookat) は、その子要素がマウスカーソル(モバイルの場合はユーザーの顔)に追従するような div を作成します
 
-Join us on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs) to continue the conversation.
+この続きは [Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.com/invite/yy75DKs) で！
 
-See y'all next month!
+また来月お会いしましょう！

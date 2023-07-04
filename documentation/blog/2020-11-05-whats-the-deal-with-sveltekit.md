@@ -1,17 +1,25 @@
 ---
-title: What's the deal with SvelteKit?
-description: We're rethinking how to build Svelte apps. Here's what you need to know
+title: SvelteKitとは (What's the deal with SvelteKit?)
+description: Svelteアプリの構築方法を再考しています。これはあなたが知っておくべきことです
 author: Rich Harris
 authorURL: https://twitter.com/rich_harris
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-the-deal-with-sveltekit
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-<aside><p>If you <em>didn't</em> attend Svelte Summit, you can catch up on the <a href="https://www.youtube.com/c/SvelteSociety/videos">Svelte Society YouTube page</a></p></aside>
+<aside><p>もし Svelte Summit に参加<em>していない</em>場合は、こちらの <a href="https://www.youtube.com/c/SvelteSociety/videos">Svelte Society YouTube page</a> からご覧いただけます。</p></aside>
 
-If you attended [Svelte Summit](https://sveltesummit.com/) last month you may have seen my talk, Futuristic Web Development, in which I finally tackled one of the most frequently asked questions about Svelte: when will Sapper reach version 1.0?
+先月の [Svelte Summit](https://sveltesummit.com/) に参加していたなら、私の講演「Futuristic Web Development」をご覧になったかもしれません。この講演で、Svelte に関する FAQ の中で最も頻繁に寄せられる「Sapper がバージョン1.0に到達するのはいつですか？」という質問にようやく答えました。
 
-The answer: never.
+答え: 到達しません。
 
-This was slightly tongue-in-cheek — as the talk explains, it's really more of a rewrite of Sapper coupled with a rebrand — but it raised a lot of new questions from the community, and it's time we offered a bit more clarity on what you can expect from Sapper's successor, SvelteKit.
+これはちょっとした皮肉で、この講演で説明したように、実際には Sapper の書き換えとリブランドが行われています。しかし、コミュニティからは新しい質問が多く寄せられるようになり、Sapper の後継である SvelteKit にはどんなことが期待できるのかもう少し明確にする時が来ました。
 
 <div class="max">
 <figure style="max-width: 960px; margin: 0 auto">
@@ -25,70 +33,75 @@ This was slightly tongue-in-cheek — as the talk explains, it's really more of 
 
 ## What's Sapper?
 
-[Sapper](https://sapper.svelte.dev) is an _app framework_ (or 'metaframework') built on top of Svelte (which is a _component_ framework). Its job is to make it easy to build Svelte apps with all the modern best practices like server-side rendering (SSR) and code-splitting, and to provide a project structure that makes development productive and fun. It uses _filesystem-based routing_ (as popularised by [Next](https://nextjs.org/) and adopted by many other frameworks, albeit with some enhancements) — your project's file structure mirrors the structure of the app itself.
+[Sapper](https://sapper.svelte.dev) は _アプリケーションフレームワーク_ (または 'メタフレームワーク') で、Svelte (_コンポーネント_ フレームワーク) の上に構築されています。その目的は、サーバーサイドレンダリング (SSR) やコード分割など、最新のベストプラクティスをすべて備えた Svelte アプリの構築を簡単にすること、そして開発が生産的かつ楽しくなるようなプロジェクト構造を提供することです。_ファイルシステムベースのルーティング_ ([Next](https://nextjs.org/) によって普及し、他の多くのフレームワークでも採用されていますが、いくつか機能を強化しています) を使用しており、プロジェクトのファイル構造がアプリ自体の構造を反映しています。
 
-While the Svelte homepage and documentation encourages you to [degit](https://github.com/Rich-Harris/degit) the [sveltejs/template](https://github.com/sveltejs/template) repo to start building an app, Sapper has long been our recommended way to build apps; this very blog post is (at the time of writing!) rendered with Sapper.
+Svelte のホームページやドキュメントでは [degit](https://github.com/Rich-Harris/degit) と [sveltejs/template](https://github.com/sveltejs/template) リポジトリを使ってアプリの構築を始めることが推奨されていますが、Sapper は長い間、アプリ構築をするための私達のお勧めの方法でした。このブログ記事も(執筆時点では) Sapper によってレンダリングされています。
+
 
 ## Why are we migrating to something new?
 
-Firstly, the distinction between [sveltejs/template](https://github.com/sveltejs/template) and [sveltejs/sapper-template](https://github.com/sveltejs/sapper-template) is confusing, particularly to newcomers to Svelte. Having a single recommended way to start building apps with Svelte will bring enormous benefits: we simplify onboarding, reduce the maintenance and support burden, and can potentially begin to explore the new possibilities that are unlocked by having a predictable project structure. (This last part is deliberately vague because it will take time to fully understand what those possibilities are.)
+まず最初に、[sveltejs/template](https://github.com/sveltejs/template) と [sveltejs/sapper-template](https://github.com/sveltejs/sapper-template) の区別は混乱を招きます、特に Svelte を初めて利用する人には。Svelte でアプリを構築し始めるのに、推奨する方法が1つであれば、大きなメリットがもたらされるでしょう。オンボーディングをシンプルにし、メンテナンスとサポートの負担を減らし、潜在的には予測しやすいプロジェクト構造によって解き放たれる新しい可能性を探り始めることができます。(最後の部分は、その可能性を完全に理解するには時間がかかるため、意図的に曖昧にしています)
 
-Aside from all that, we've been tempted by the thought of rewriting Sapper for a while. This is partly because the codebase has become a little unkempt over the years ([Sapper started in 2017](/blog/sapper-towards-the-ideal-web-app-framework)), but mostly because the web has changed a lot recently, and it's time to rethink some of our foundational assumptions.
+それはさておき、私たちはしばらくの間 Sapper を書き直すという考えに惹かれていました。長年に渡りコードベースが少し荒れてきたというのもありますが ([Sapper は2017年にスタート](/blog/sapper-towards-the-ideal-web-app-framework))、大きな理由は、ここ最近 Web に多くの変化があったからで、基本的な前提をいくつか再考する時期が来ています。
+
 
 ## How is this new thing different?
 
-The first of those foundational assumptions is that you need to use a module bundler like [webpack](https://webpack.js.org/) or [Rollup](https://rollupjs.org/) to build apps. These tools trace the dependency graph of your application, analysing and transforming code along the way (turning Svelte components to JS modules, for example), in order to create bundles of code that can run anywhere. As the original creator of Rollup, I can attest that it is a surprisingly complex problem with fiendish edge cases.
+基本的な前提の1つは、アプリをビルドするのに [webpack](https://webpack.js.org/) や [Rollup](http://rollupjs.org/) のようなモジュールバンドラーを使う必要があるということです。これらのツールはアプリケーションの依存関係グラフをトレースし、解析し、コードを変換 (例えば、Svelte コンポーネントを JS モジュールに変換するなど) して、どこでも実行できるコードのバンドルを作成します。私は Rollup の最初の作者として、これが驚くほど複雑な問題で厄介なエッジケースがあると証言できます。
 
-You certainly needed a bundler several years ago, because browsers didn't natively support the `import` keyword, but it's much less true today. Right now, we're seeing the rise of the _unbundled development_ workflow, which is radically simpler: instead of eagerly bundling your app, a dev server can serve modules (converted to JavaScript, if necessary) _on-demand_, meaning startup is essentially instantaneous however large your app becomes.
+確かにここ数年はバンドラーが必要でした。ブラウザーが `import` キーワードをネイティブにサポートしていなかったからです。しかし今日ではそれほど当てはまりません。現在では、 _バンドルしない_ 開発ワークフローが台頭しており、これは根本的にシンプルです。アプリをバンドルする代わりに、開発サーバーが (必要に応じて JavaScript に変換された) モジュールを _オンデマンド_ でサーブします。つまり、アプリが大きくなったとしても基本的にはすぐに起動できることを意味します。
 
-[Snowpack](https://www.snowpack.dev/) is at the vanguard of this movement, and it's what powers SvelteKit. It's astonishingly fast, and has a beautiful development experience (hot module reloading, error overlays and so on), and we've been working closely with the Snowpack team on features like SSR. The hot module reloading is particularly revelatory if you're used to using Sapper with Rollup (which has never had first-class HMR support owing to its architecture, which prioritises the most efficient output).
+[Snowpack](https://www.snowpack.dev/) はこのムーブメントの先駆者であり、SvelteKit の原動力です。驚くほど高速で、素晴らしい開発体験(ホットモジュールリロード、エラーオーバーレイなど)を備えており、私達は SSR などの機能で Snowpack チームと緊密に連携しています。ホットモジュールリロードは特に、Sapper と Rollup (最も効率的なアウトプットを優先し、ファーストクラスのHMRサポートを持たないアーキテクチャ) を使用することに慣れている方にとっては新たな発見があります。
 
-That's not to say we're abandoning bundlers altogether. It's still essential to optimise your app for production, and SvelteKit uses Rollup to make your apps as fast and lean as they possibly can be (which includes things like extracting styles into static `.css` files).
+バンドラーを完全に捨てるわけではありません。アプリをプロダクション向けに最適化することは依然として不可欠で、SvelteKit は Rollup を使用してアプリを可能な限り速く小さいものにします (これには、静的な `.css` ファイルへの style の抽出なども含まれます) 。
 
-The other foundational assumption is that a server-rendered app needs, well, a server. Sapper effectively has two modes — `sapper build`, which creates a standalone app that has to run on a Node server, and `sapper export` which bakes your app out as a collection of static files suitable for hosting on services like GitHub Pages.
+他の基本的な前提としては、サーバーレンダリングされたアプリには、サーバーが必要である、というものがあります。Sapper には事実上2つのモードがあります。Nodeサーバー上で実行されるスタンドアローンアプリを作る `sapper build` と、アプリを GitHub Pages のようなサービスでのホスティングに適した静的ファイルのコレクションに仕上げる `sapper export` です。
 
-Static files can go pretty much anywhere, but running a Node server (and monitoring/scaling it etc) is less straightforward. Nowadays we're witnessing a shift towards _serverless platforms_, in which you as the app author don't need to think about the server your code is running on, with all the attendant complexity. You can get Sapper apps running on serverless platforms, thanks to things like [vercel-sapper](https://github.com/thgh/vercel-sapper), but it's certainly not what you'd call idiomatic.
+静的ファイルはどこにでも置くことができますが、Node サーバーの実行 (とモニタリング/スケーリングなど) はそれほど簡単ではありません。今日では、サーバーレスプラットフォームへの移行を目にします。サーバーレスプラットフォームでは、アプリの作者はコードが実行されているサーバーやそれに伴う複雑さについて考える必要がありません。[vercel-sapper](https://github.com/thgh/vercel-sapper) などのおかげで Sapper アプリをサーバーレスプラットフォームで実行することができますが、確かに慣用的であるとは言えません。
 
-<aside><p>It'll still be possible to create both Node apps and fully pre-rendered (aka exported) sites</a></p></aside>
+<aside><p>Node アプリと完全にプリレンダリングされた (つまりエクスポートされた) サイトの両方を作ることは可能です</a></p></aside>
 
-SvelteKit fully embraces the serverless paradigm, and will launch with support for all the major serverless providers, with an 'adapter' API for targeting any platforms that we don't officially cater to. In addition, we'll be able to do partial pre-rendering, which means that static pages can be generated at build time but dynamic ones get rendered on-demand.
+SvelteKit はサーバーレスパラダイムを完全に取り入れており、メジャーなサーバーレスプロバイダを全てサポートする予定です。公式には対応していないプラットフォームをターゲットにするための 'adapter' API も用意されます。さらに、部分的なプリレンダリングも可能になるでしょう。つまり、静的なページはビルド時に生成することができ、動的なページはオンデマンドでレンダリングするということです。 
 
 ## When can I start using it?
 
-If you're feeling brave, you can start right now:
+勇気がある方は、今すぐ始められます。
 
 ```bash
 npm init svelte@next
 ```
 
-This will scaffold a new project and install the `@sveltejs/kit` CLI, which provides the tools for developing and building an app.
+これによって新しいプロジェクトが作成され、`@sveltejs/kit` CLI がインストールされてアプリの開発とビルドのためのツールが提供されます。
 
-We don't recommend it though! There are no docs, and we won't be able to offer any form of support. It's also likely to break often.
+ですが推奨はしません！ドキュメントはありませんし、どんな形式のサポートも提供できないでしょう。また、頻繁に壊れる可能性もあります。
 
-The work is being done in a private monorepo while we're still in exploration mode. Our plan is to get a public beta ready and announce it here once we've closed a few issues — the repo itself will remain private at that time, but we'll create a place to collect feedback from the YOLO crowd. After that, we'll work towards a 1.0 release which will involve opening the repo up.
+私達はまだ探索モードなので、プライベートなモノレポで作業を進めています。私たちの計画では、いくつかの Issue を解決したら、パブリックベータを準備し、ここで発表します。その時点ではリポジトリをプライベートなままにしておく予定ですが、皆様からのフィードバックを集める場を設ける予定です。その後で、1.0 リリースに向けて作業を進め、リポジトリを公開する予定です。
 
-I'm not going to make any firm promises about timings, because I don't like to break promises. But I _think_ we're talking about weeks rather than months.
+私は約束を破るのが好きではないので、時期について確固たる約束はできません。しかし、数ヶ月ではなく数週間の話だと*考えて*います。
 
 ## What if I don't want to use SvelteKit?
 
-You won't have to — it will always be possible to use Svelte as a standalone package or via a bundler integration like [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte). We think it's essential that you can bend Svelte to fit your workflow, however esoteric, and use third-party app frameworks like [Elder.js](https://github.com/Elderjs/elderjs), [Routify](https://routify.dev/), [Plenti](https://plenti.co/), [Crown](https://crownframework.com/), [JungleJS](https://www.junglejs.org/) and others.
+使用する必要はありません。Svelte をスタンドアローンパッケージとして、または [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなバンドラーインテグレーションを介して使用することは常に可能です。どんなに難解なワークフローであってもそれにフィットするよう柔軟に対応できることや、[Elder.js](https://github.com/Elderjs/elderjs)、[Routify](https://routify.dev/)、[Plenti](https://plenti.co/)、[Crown](https://crownframework.com/)、[JungleJS](https://www.junglejs.org/) などのサードパーティのアプリケーションフレームワークを使えることが重要だと考えています。
+
 
 ## TypeScript?
 
-Don't worry, we won't launch without full TypeScript support.
+心配しないで、TypeScript をフルにサポートせずにローンチするつもりはありません。
+
 
 ## How can I migrate my existing Sapper apps?
 
-For the most part, it should be relatively straightforward to migrate a Sapper codebase.
+ほとんどの場合、Sapper のコードベースを移行するのは比較的簡単なはずです。
 
-There are some unavoidable changes (being able to run on serverless platforms means we need to replace custom `server.js` files and `(req, res) => {...}` functions with more portable equivalents), and we're taking the opportunity to fix a few design flaws, but on the whole a SvelteKit app will feel very familiar to Sapper users.
+いくつかの避けられない変更があり (サーバーレスプラットフォームで実行できるようにするということは、カスタムの `server.js` ファイルと `(req, res) => {...}` 関数をよりポータブルなもので置き換える必要があるということを意味します) 、この機会にいくつかの設計上の欠点を修正していますが、全体的には SvelteKit アプリは Sapper ユーザーにとって非常に馴染みのあるものになっています。
 
-Detailed migration guides will accompany the 1.0 launch.
+詳細な移行ガイドは 1.0 と一緒に提供されるでしょう。
 
 ## How can I contribute?
 
-Keep your eyes peeled for announcements about when we'll launch the public beta and open up the repo. (Also, blog post TODO but I would be remiss if I didn't mention that we now have an [OpenCollective](https://opencollective.com/svelte) where you can contribute financially to the project if it's been valuable to you. Many, many thanks to those of you who already have.)
+パブリックベータのローンチやリポジトリの公開の時期に関する発表をお見逃しなく。(また、ブログ記事に書く予定ですが、私たちは [OpenCollective](https://opencollective.com/svelte) を開始しており、もしこのプロジェクトがあなたにとって価値がある場合に財政的な貢献ができることをお伝えしておかなければなりません。すでに寄付してくださった方々にはとても、とても感謝しています)
+
 
 ## Where can I learn more?
 
-Follow [@sveltejs](https://twitter.com/sveltejs) and [@SvelteSociety](https://twitter.com/SvelteSociety) on Twitter, and visit [svelte.dev/chat](https://svelte.dev/chat). You should also subscribe to [Svelte Radio](https://www.svelteradio.com/), where Kevin and his co-hosts will grill me about this project on an upcoming episode (and between now and next week when we record it, [reply to this Twitter thread](https://twitter.com/Rich_Harris/status/1323376048571121665) with your additional questions).
+Twitter で [@sveltejs](https://twitter.com/sveltejs) と [@SvelteSociety](https://twitter.com/SvelteSociety) をフォローしてください。また、[svelte.dev/chat](https://svelte.dev/chat) にお越しください。また、[Svelte Radio](https://www.svelteradio.com/) を購読してください。次回のエピソードでKevinと共同ホストがこのプロジェクトについて私に質問する予定です (今から来週の収録までの間に、質問があれば[このTwitterのスレッドに返信してください](https://twitter.com/Rich_Harris/status/1323376048571121665))。

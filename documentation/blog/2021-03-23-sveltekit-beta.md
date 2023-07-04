@@ -1,65 +1,73 @@
 ---
-title: SvelteKit is in public beta
-description: And we'd love to have your feedback
+title: SvelteKitがpublic betaに到達しました(SvelteKit is in public beta)
+description: 皆様からのフィードバックをお待ちしております
 author: Rich Harris
 authorURL: https://twitter.com/rich_harris
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/sveltekit-beta
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-<aside><p>Previously: <a href="/blog/whats-the-deal-with-sveltekit">What's the deal with SvelteKit?</a></p></aside>
+<aside><p>前回: <a href="/blog/whats-the-deal-with-sveltekit">What's the deal with SvelteKit?</a></p></aside>
 
-It's time. After five months and hundreds of commits, you're finally invited to try out the SvelteKit beta. It's not finished — there are a few known bugs and several missing features — but we're really happy with how it's shaping up and can't wait for you to try it.
+お待たせしました。5か月という期間、何百ものコミットを経て、ついにSvelteKitのベータ版をお試し頂けるようになりました。まだ完成はしていません — いくつか既知のバグや、不足している機能がありますが — 私たちは出来栄えにとても満足しており、皆様に試して頂くのが待ちきれません。
 
-Starting a new project is easy:
+新しいプロジェクトの開始は簡単です:
 
 ```bash
-# create the project
+# プロジェクト作成
 mkdir my-app
 cd my-app
 npm init svelte@next
 
-# install dependencies
+# 依存関係をインストール
 npm install
 
-# start dev server and open a browser tab
+# 開発サーバを開始してブラウザタブを開く
 npm run dev -- --open
 ```
 
-You'll find documentation at [kit.svelte.dev/docs](https://kit.svelte.dev/docs). If you have a [Sapper](https://sapper.svelte.dev) app that you'd like to migrate to SvelteKit, you'll find instructions at [kit.svelte.dev/docs/migrating](https://kit.svelte.dev/docs/migrating).
+ドキュメントは [kit.svelte.dev/docs](https://kit.svelte.dev/docs)(訳注:[日本語版](https://kit.svelte.jp/docs))にあります。もし [Sapper](https://sapper.svelte.dev) アプリをSvelteKitに移行したい場合は、[kit.svelte.dev/docs/migrating](https://kit.svelte.dev/docs/migrating) (訳注:[日本語版](https://kit.svelte.jp/docs/migrating))に解説がございます。
 
-The source code is available at [github.com/sveltejs/kit](https://github.com/sveltejs/kit). Issues and pull requests are disabled while we finish getting our house in order, but we'll be making it fully open in the near future.
+ソースコードは [github.com/sveltejs/kit](https://github.com/sveltejs/kit) で公開しています。issueとpull requestは整理が完了するまで無効にしておりますが、近い将来、完全に公開する予定です。
 
-## Wait, what is SvelteKit?
+## 待って、SvelteKitって何？(Wait, what is SvelteKit?)
 
-Think of it as [Next](https://nextjs.org/) for Svelte. It's a framework for building apps with Svelte, complete with server-side rendering, routing, code-splitting for JS and CSS, adapters for different serverless platforms and so on.
+Svelteにとっての [Next](https://nextjs.org/) のようなものだとお考えください。Svelteでアプリを構築するためのフレームワークであり、サーバーサイドレンダリング、ルーティング、JSやCSSのコード分割、様々なサーバーレスプラットフォームへのアダプターなどが完備されています。
 
-If you're familiar with [Sapper](https://sapper.svelte.dev), SvelteKit is Sapper's successor.
+[Sapper](https://sapper.svelte.dev) に精通されている方にとっては、SvelteKitはSapperの後継です。
 
-## From Snowpack to Vite
+## SnowpackからViteに(From Snowpack to Vite)
 
-One thing that might seem surprising after the [announcement video](/blog/whats-the-deal-with-sveltekit), in which I waxed lyrical about [Snowpack](https://www.snowpack.dev/), is that SvelteKit uses [Vite](https://vitejs.dev) under the hood. When we tried Snowpack back when we started thinking about what form SvelteKit should take, it was love at first sight.
+[Snowpack](https://www.snowpack.dev/) について熱弁を振るった[アナウンスビデオ](/blog/whats-the-deal-with-sveltekit) の後では驚かれるかもしれませんが、SvelteKitは内部で [Vite](https://vitejs.dev) を使用しています。SvelteKitがどんな構成をとるべきか考え始めた頃に Snowpack を試したのですが、一目惚れでした。
 
-Snowpack created an entirely new category of dev tooling. Rather than _bundling_ your app in development, as we've been doing with webpack and Rollup for the last several years, Snowpack is an _unbundled dev server_ that uses the browser's native `import` and does 1:1 transformations of things like Svelte components on the fly. As a result you get quick startup, simple caching and instant hot module reloading. Once you experience this way of working, it will ruin you for anything else.
+Snowpack は開発ツールの完全に新しいカテゴリーを生み出しました。ここ数年の webpack や Rollup のように開発中のアプリを _バンドル_ するのではなく、Snowpack はブラウザのネイティブな `import` を使用して、動作中にSvelteコンポーネントなどを 1:1 で変換する _バンドルしない開発サーバー_ です。その結果、迅速な起動、シンプルなキャッシング、即時のホットモジュールリロードを実現しています。一度この方法を経験すると、もう今までの方法に戻りたくなくなります。
 
-Vite falls into the same category as Snowpack. While Vite 1 wasn't suitable for SvelteKit — it was Vue-centric (Vite and Vue are both created by [Evan You](https://twitter.com/youyuxi)) and made server-side rendering difficult — Vite 2 is framework-agnostic and designed with SSR at the core. It also has powerful features, like CSS code-splitting, that we previously had to implement ourselves. When we evaluated the two technologies side-by-side we were forced to conclude that Vite is a closer match for SvelteKit's requirements and would give us the best chance to deliver the framework of our imaginations.
+Vite は Snowpack と同じカテゴリーに属します。Vite 1 はVue中心 (ViteとVueはどちらも [Evan You](https://twitter.com/youyuxi) が開発しています) でサーバーサイドレンダリングが難しかったためSvelteKitには適していませんでしたが、Vite 2 はフレームワークにとらわれず、SSRを中心に設計されています。また、CSSのコード分割など、以前は自分たちで実装しなければならなかった強力な機能を備えています。2つのテクノロジーを並べて評価したところ、ViteのほうがSvelteKitの要件にマッチしており、私たちが考えているフレームワークを実現できる可能性が高いと結論づけざるを得ませんでした。
 
-We owe a deep debt of gratitude to the Snowpack team, both for the close collaboration earlier in development and for lighting the path that web development will take over the next few years. It's a wonderful tool, and you should absolutely try it out.
+開発の初期段階に緊密に協力してくれたこと、また、今後数年のWeb開発の道筋を示してくれたことの両方について、Snowpackチームに深い感謝の意を表します。とても素晴らしいツールなので、是非試してみてください。
 
-## Dogfooding as extreme sport
+## エクストリームスポーツとしてのドッグフーディング(Dogfooding as extreme sport)
 
-SvelteKit is very much in beta, but that doesn't mean it hasn't been used in production.
+SvelteKit はまだベータ版ですが、プロダクションで使われていないわけではありません。
 
-My day job is at the New York Times, where I've spent much of the last twelve months working on our [coronavirus tracker](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html). It uses a customised version of the workflow that powers the majority of graphics at the Times, which isn't designed for large multi-page projects. When we decided late last year to create pages for each of the ~3,000 counties in the US, we quickly realised we would need to completely rearchitect the project.
+私の本業は New York Times で、過去12か月のほとんどを [coronavirus tracker](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) の開発に費やしてきました。これは Times のグラフィックの大半を担うワークフローのカスタマイズバージョンを使用していますが、大規模な複数ページのプロジェクト向けには設計されていません。昨年末、アメリカの~3,000もの郡ごとにページを作成することを決めたとき、プロジェクトを完全に再構築する必要があると気付きました。
 
-Even though it was far from ready, SvelteKit was the only framework that matched our esoteric requirements. (Anyone who has worked in a newsroom and done battle with their CMS will know what I'm talking about.) Today it powers our [county risk pages](https://www.nytimes.com/interactive/2021/us/tom-green-texas-covid-cases.html) and we're in the process of migrating existing pages to the SvelteKit app.
+SvelteKitは、まだ完成していないにもかかわらず、私たちの難解な要件にマッチする唯一のフレームワークでした(ニュースルームで働き、CMSと格闘したことが有る人なら、私が言っていることがわかると思います)。現在では、[county risk pages](https://www.nytimes.com/interactive/2021/us/tom-green-texas-covid-cases.html) にも使用されており、既存のページをSvelteKitアプリに移行しているところです。
 
-<aside><p>I am eternally grateful for my coworkers' forbearance.</p></aside>
+<aside><p>同僚たちの忍耐力には永遠に感謝します。</p></aside>
 
-Using unfinished software to build an app that will be seen by millions of people is a risk, and in general I don't recommend it. But it has enabled us to develop the app much faster, and has made the framework itself much stronger than it otherwise would be.
+何百万人もの人に見てもらうアプリを作るのに未完成のソフトウェアを使用するのはリスクがありますし、一般的にはおすすめできません。しかし、これによってアプリの開発を大幅に速くすることができましたし、フレームワーク自体も以前よりずっと強固になりました。
 
-## The road to 1.0
+## 1.0に向けたロードマップ(The road to 1.0)
 
-You can see the list of outstanding issues with the 1.0 milestone on our [issue tracker](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0). Alongside that work, we plan to upgrade the documentation and add more [adapters](https://kit.svelte.dev/docs/adapters).
+1.0マイルストーンの未解決のissueは [issue tracker](https://github.com/sveltejs/kit/issues?q=is%3Aopen+is%3Aissue+milestone%3A1.0) で確認できます。その作業に加えて、ドキュメントをアップグレードし、[adapters](https://kit.svelte.jp/docs/adapters) を追加する予定です。
 
-Most importantly though, we need your feedback to help us make the best possible app framework. Try it out, and let us know which pieces are missing.
+最も重要なことは、私たちが最高のアプリケーションフレームワークを作るためには、皆さんからのフィードバックが必要であるということです。実際に使ってみて、足りない部分を教えてください。
 
-Many thanks to everyone who has tried SvelteKit out despite the 'here be dragons' warnings and lack of documentation; your back-channel feedback has been invaluable. In particular, I want to acknowledge the work of [GrygrFlzr](https://github.com/GrygrFlzr), who maintained unofficial docs and a fork that added Windows support when we lacked it; and [dominikg](https://github.com/dominikg) whose work on [Svite](https://github.com/svitejs/svite) laid essential groundwork for SvelteKit's Vite integration. Both have now been welcomed onto the team.
+'here be dragons' という警告や、ドキュメントの不足にもかかわらず、SvelteKitを試してくださった皆様に感謝します。バックチャンネルのフィードバックは非常に貴重でした。特に、非公式のドキュメントと不足していたWindowsサポートを追加したフォークをメンテしてくれた [GrygrFlzr](https://github.com/GrygrFlzr) と、 [Svite](https://github.com/svitejs/svite) でSvelteKitのViteインテグレーションの重要な基礎を築いた [dominikg](https://github.com/dominikg) に感謝したいと思います。この度、両名ともチームに迎え入れられました。

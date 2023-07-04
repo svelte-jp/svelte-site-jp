@@ -1,41 +1,48 @@
 ---
-title: "What's new in Svelte: May 2023"
-description: 'New Ambassadors, a new ESLint plugin and a whole bunch of SvelteHack submissions'
+title: "What's new in Svelte: 2023年5月"
+description: "新たなアンバサダー、新たな ESLint plugin、そして SvelteHack の全応募を一挙公開"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-may-2023
+> 
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容についてはsvelte.devの原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-Before we dive into the updates, there's a few announcements worth mentioning at the top:
+最新情報に飛び込む前に、まず最初に特別なアナウンスがあります:
 
 ## New Svelte Ambassadors
 
-Regular features of this newsletter and all-around great content creators for Svelte [JoyOfCode](https://www.youtube.com/@JoyofCodeDev) and [HuntaByte](https://www.youtube.com/@Huntabyte) have been appointed as Svelte Ambassadors. Ambassadors are people who are well known for their helpfulness and contributions and for upholding Svelte’s reputation as a friendly, welcoming community, and we’re deeply grateful for their involvement!
+このニュースレターでも定期的にフィーチャーされている、素晴らしい Svelte コンテンツのクリエーターである [JoyOfCode](https://www.youtube.com/@JoyofCodeDev) と [HuntaByte](https://www.youtube.com/@Huntabyte) が Svelte アンバサダーに任命されました。Svelte のアンバサダーの方々はその親切さと貢献がよく知られており、そして Svelte がフレンドリーで歓迎されるコミュニティであるという評判を維持してくれていて、私たちはアンバサダーの方々に深く感謝しています。
 
 ## SvelteHack winners will be announced May 6th
 
-In a just a few days, we'll find out who won [SvelteHack](https://hack.sveltesociety.dev/) - the Svelte Hackathon that took place between February 17th and April 17th. Tune in to [Svelte Summit](https://www.sveltesummit.com/) on May 6th to see if your favorite project was chosen 👀
+2/17から4/17にかけて開催された [SvelteHack](https://hack.sveltesociety.dev/) の優勝者があと数日で発表されます。あなたが好きなプロジェクトが選ばれたかどうか、5/6 の [Svelte Summit](https://www.sveltesummit.com/) をご覧ください 👀
 
-Lots of submissions to the hackathon are featured in this month's showcase... but first, let's see what's new!
+今月のショーケースにはたくさんのハッカソンへの応募作品を紹介しています… でもまずは、最新情報を見ていきましょう！
 
 ## What's new in Svelte
 
-- `style` blocks now support CSS `@container` queries (**3.58.0**)
-- `bind:innerText` is now available for `contenteditable` elements (**3.58.0**)
-- A new accessability warning, `a11y-interactive-supports-focus` will now warn when interactive elements are not focusable (**3.58.0**)
+- `style` ブロックで CSS `@container` クエリがサポートされました (**3.58.0**)
+- `bind:innerText` が `contenteditable` 要素でサポートされました (**3.58.0**)
+- 新たなアクセシビリティ警告 `a11y-interactive-supports-focus` は、インタラクティブな要素がフォーカスできないようになっているときに警告してくれます (**3.58.0**)
 
-For all the changes to the Svelte compiler, including unreleased changes, check out the [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md).
+Svelte コンパイラに対する全ての変更については、まだ未リリースの変更も含め、[CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md)  をご確認ください。
 
 ## What's new in SvelteKit
 
-- When hot module reloading (HMR) is enabled, the page will reload after an error is fixed (**1.14.0**, [#9497](https://github.com/sveltejs/kit/pull/9497))
-- Two apps loaded into the same html page can now be loaded simultaneously in "embedded" mode (**1.15.7**, [#9610](https://github.com/sveltejs/kit/pull/9610))
-- Vite's compilation will now log warnings for packages that use the `svelte` field to resolve Svelte files differently than standard Vite resolve (**vite-plugin-svelte@2.1.0**, **kit@1.15.8**)
+- ホットモジュールリローディング (HMR) が有効なとき、エラーが修正されたあとにページがリロードされるようになりました (**1.14.0**, [#9497](https://github.com/sveltejs/kit/pull/9497))
+- 同じ html ページにロードされた2つのアプリを、"embedded" モードで同時に読み込めるようになりました (**1.15.7**, [#9610](https://github.com/sveltejs/kit/pull/9610))
+- Vite のコンパイルで、標準の Vite resolve ではなく `svelte` フィールドを使用して Svelte ファイルの resolve を行うパッケージに対し、警告のログを出力するようになりました (**vite-plugin-svelte@2.1.0**, **kit@1.15.8**)
 
 ## What's new in Language Tools
-
-- Support for `<svelte:document>` ([#1958](https://github.com/sveltejs/language-tools/pull/1958)) and intellisense report for new bindings ([#1957](https://github.com/sveltejs/language-tools/pull/1957)) (**107.3.0**)
-- The new fix-all menu option for the "Quick fix..." makes it easy to "Add all missing imports" and other detected errors (**107.3.0**, [#1939](https://github.com/sveltejs/language-tools/pull/1939))
-- We have a new and better official [ESLint plugin](https://github.com/sveltejs/eslint-plugin-svelte)! Previous support for Svelte in ESLint did not handle the template AST well, resulting in false positive/negatives and a high barrier to custom ESLint rules. This new official version is based on [ota-meshi](https://github.com/ota-meshi)'s [svelte-eslint-parser](https://github.com/sveltejs/svelte-eslint-parser) and is ready for prime time. Try it out and [share your feedback](https://github.com/sveltejs/eslint-plugin-svelte/issues)!
+- `<svelte:document>` がサポートされ ([#1958](https://github.com/sveltejs/language-tools/pull/1958))、新たなバインディング向けのインテリセンスレポートがサポートされました ([#1957](https://github.com/sveltejs/language-tools/pull/1957)) (**107.3.0**)
+- "Quick fix..." の新たな fix-all メニューオプションで、"Add all missing imports" や other detected errors が簡単にできるようになりました (**107.3.0**, [#1939](https://github.com/sveltejs/language-tools/pull/1939))
+- 公式の [ESLint plugin](https://github.com/sveltejs/eslint-plugin-svelte) が新しく、より良くなりました！これまでの ESLint の Svelte に対するサポートは、テンプレートの AST をうまく扱えず、偽陽性/偽陰性になってしまったり、カスタムの ESLint ルールを作成するのに高い障壁がありました。この新しい公式バージョンは [ota-meshi](https://github.com/ota-meshi) の [svelte-eslint-parser](https://github.com/sveltejs/svelte-eslint-parser) がベースとなっており、すぐにお使いいただけます。トライしてみて、[フィードバックをシェアしてください](https://github.com/sveltejs/eslint-plugin-svelte/issues)！
 
 ---
 
@@ -112,6 +119,6 @@ _To Read_
 - [Lucia](https://lucia-auth.com/blog/lucia-1) just reached 1.0 for their simple and flexible auth library for SvelteKit
 - [svelte-stepper](https://github.com/efstajas/svelte-stepper) is a simple library for building animated stepper flows with Svelte
 
-As always, feel free to let us know if we missed anything on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.gg/svelte).
+いつも通り、見落としなどございましたら [Reddit](https://www.reddit.com/r/sveltejs/) や [Discord](https://discord.gg/svelte) にてお気軽にお知らせください。
 
-See ya next time!
+また次回お会いしましょう！

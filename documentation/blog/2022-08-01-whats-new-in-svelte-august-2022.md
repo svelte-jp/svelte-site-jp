@@ -1,47 +1,56 @@
 ---
-title: "What's new in Svelte: August 2022"
-description: "Changes to SvelteKit's `load` before 1.0 plus support for Vite 3 and `vite.config.js`!"
+title: "What's new in Svelte: 2022年8月"
+description: "1.0 前の SvelteKit の `load` の変更、Vite 3 サポート、そして `vite.config.js`!"
 author: Dani Sandoval
 authorURL: https://dreamindani.com
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/whats-new-in-svelte-august-2022
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-There's a lot to cover this month... big changes are coming to SvelteKit's design before 1.0 can be completed. If you haven't already, check out Rich's Discussion, [Fixing `load`, and tightening up SvelteKit's design before 1.0 #5748](https://github.com/sveltejs/kit/discussions/5748).
+今月は盛り沢山です… 1.0 が完了する前に、SvelteKit の設計に大きな変更があります。まだご存知ないようでしたら、Rich さんの Discussion [Fixing `load`, and tightening up SvelteKit's design before 1.0 #5748](https://github.com/sveltejs/kit/discussions/5748) をチェックしてみてください。
 
-Also, [@dummdidumm](https://github.com/dummdidumm) (Simon H) [has joined Vercel to work on Svelte full-time](https://twitter.com/dummdidumm_/status/1549041206348222464) and [@tcc-sejohnson](https://github.com/tcc-sejohnson) has joined the group of SvelteKit maintainers! We're super excited to have additional maintainers now dedicated to working on Svelte and SvelteKit and have already been noticing their impact. July was the third largest month for SvelteKit changes since its inception!
+また、[@dummdidumm](https://github.com/dummdidumm) (Simon H) 氏が [Vercel に加わり、フルタイムで Svelte に取り組むことになりました](https://twitter.com/dummdidumm_/status/1549041206348222464)。そして [@tcc-sejohnson](https://github.com/tcc-sejohnson) 氏が SvelteKit メンテナーのグループに加わりました! Svelte と SvelteKit の開発に専念できるメンテナーが増え、すでに大きなインパクトを与えています。7月には、SvelteKit の開始以来、3番目に大きな変更がありました!
 
-Now onto the rest of the updates...
+それではアップデートの残りを見ていきましょう…
 
 ## What's new in SvelteKit
 
-- Dynamically imported styles are now included during SSR ([#5138](https://github.com/sveltejs/kit/pull/5138))
-- Improvements to routes and prop updates to prevent unnecessary rerendering ([#5654](https://github.com/sveltejs/kit/pull/5654), [#5671](https://github.com/sveltejs/kit/pull/5671))
-- Lots of improvements to error handling ([#4665](https://github.com/sveltejs/kit/pull/4665), [#5622](https://github.com/sveltejs/kit/pull/5622), [#5619](https://github.com/sveltejs/kit/pull/5619), [#5616](https://github.com/sveltejs/kit/pull/5616))
-- Custom Vite modes are now respected in SSR builds ([#5602](https://github.com/sveltejs/kit/pull/5602))
-- Custom Vite config locations are now supported ([#5705](https://github.com/sveltejs/kit/pull/5705))
-- Private environment variables (aka "secrets") are now much more secure. Now if you accidentally import them to client-side code, you'll see an error ([#5663](https://github.com/sveltejs/kit/pull/5663), [Docs](https://kit.svelte.dev/docs/configuration#env))
-- Vercel's v3 build output API is now being used in `adapter-vercel` ([#5514](https://github.com/sveltejs/kit/pull/5514))
-- `vite-plugin-svelte` has reached 1.0 and now supports Vite 3. You'll notice new default ports for `dev` (port 5173) and `preview` (port 4173) ([#5005](https://github.com/sveltejs/kit/pull/5005), [vite-plugin-svelte CHANGELOG](https://github.com/sveltejs/vite-plugin-svelte/blob/main/packages/vite-plugin-svelte/CHANGELOG.md))
+- 動的にインポートされた style が、SSR時に含まれるようになりました ([#5138](https://github.com/sveltejs/kit/pull/5138))
+- ルート(routes)とプロパティの更新が改善され、不必要な再レンダリングを防ぐようになりました ([#5654](https://github.com/sveltejs/kit/pull/5654), [#5671](https://github.com/sveltejs/kit/pull/5671))
+- エラーハンドリングが多く改善されました ([#4665](https://github.com/sveltejs/kit/pull/4665), [#5622](https://github.com/sveltejs/kit/pull/5622), [#5619](https://github.com/sveltejs/kit/pull/5619), [#5616](https://github.com/sveltejs/kit/pull/5616))
+- カスタムの Vite mode が SSR ビルドの際に有効になりました(原文 : Custom Vite modes are now respected in SSR builds) ([#5602](https://github.com/sveltejs/kit/pull/5602))
+- カスタムの Vite config locations がサポートされました ([#5705](https://github.com/sveltejs/kit/pull/5705))
+- プライベートな環境変数 (aka "secrets") がよりセキュアになりました。もしそれらが誤ってクライアントサイドのコードにインポートされても、エラーになります ([#5663](https://github.com/sveltejs/kit/pull/5663), [Docs](https://kit.svelte.jp/docs/configuration#env))
+- Vercel v3 build output API が `adapter-vercel` で使用されるようになりました ([#5514](https://github.com/sveltejs/kit/pull/5514))
+- `vite-plugin-svelte` が 1.0 となり、Vite 3 がサポートされました。デフォルトのポートが、`dev` (port 5173) と `preview` (port 4173) でそれぞれ新しくなっています ([#5005](https://github.com/sveltejs/kit/pull/5005), [vite-plugin-svelte CHANGELOG](https://github.com/sveltejs/vite-plugin-svelte/blob/main/packages/vite-plugin-svelte/CHANGELOG.md))
 
 **Breaking changes:**
 
-- `mode`, `prod` and `server` are no longer available in `$app/env` ([#5602](https://github.com/sveltejs/kit/pull/5602))
-- `svelte-kit` CLI commands are now run using the `vite` command and `vite.config.js` is required. This will allow first-class support with other projects in the Vite ecosystem like Vitest and Storybook ([#5332](https://github.com/sveltejs/kit/pull/5332), [Docs](https://kit.svelte.dev/docs/project-structure#project-files-vite-config-js))
-- `endpointExtensions` is now `moduleExtensions` and can be used to filter param matchers ([#5085](https://github.com/sveltejs/kit/pull/5085), [Docs](https://kit.svelte.dev/docs/configuration#moduleextensions))
-- Node 16.9 is now the minimum version for SvelteKit ([#5395](https://github.com/sveltejs/kit/pull/5395))
-- %-encoded filenames are now allowed. If you had a `%` in your route, you must now encode it with `%25` ([#5056](https://github.com/sveltejs/kit/pull/5056))
-- Endpoint method names are now uppercased to match HTTP specifications ([#5513](https://github.com/sveltejs/kit/pull/5513), [Docs](https://kit.svelte.dev/docs/routing#endpoints))
-- `writeStatic` has been removed to align with Vite's config ([#5618](https://github.com/sveltejs/kit/pull/5618))
-- `transformPage` is now `transformPageChunk` ([#5657](https://github.com/sveltejs/kit/pull/5657), [Docs](https://kit.svelte.dev/docs/hooks#handle))
-- The `prepare` script is no longer needed in `package.json` ([#5760](https://github.com/sveltejs/kit/pull/5760))
-- `adapter-node` no longer does any compression while we wait for a [bug fix in the `compression` library](https://github.com/expressjs/compression/pull/183) ([#5560](https://github.com/sveltejs/kit/pull/5506))
+- `$app/env` の `mode`、`prod`、`server` が使用できなくなりました  ([#5602](https://github.com/sveltejs/kit/pull/5602))
+- `svelte-kit` CLI コマンドは `vite` コマンドを使うようになり、`vite.config.js` が必須になりました。これにより、Vitest や Storybook など、Vite エコシステムの他のプロジェクトのファーストクラスのサポートが可能になります ([#5332](https://github.com/sveltejs/kit/pull/5332), [Docs](https://kit.svelte.jp/docs/project-structure#project-files-vite-config-js))
+- `endpointExtensions` は `moduleExtensions` となり、param matchers をフィルタできるようになりました ([#5085](https://github.com/sveltejs/kit/pull/5085), [Docs](https://kit.svelte.jp/docs/configuration#moduleextensions))
+- Node 16.9 が SvelteKit の minimum version になりました ([#5395](https://github.com/sveltejs/kit/pull/5395))
+- %-エンコードされたファイル名が使えるようになりました。ルート(route)に `%` を使用する場合は、エンコードして `%25` にしなければなりません ([#5056](https://github.com/sveltejs/kit/pull/5056))
+- HTTP の仕様に合わせるため、Endpoint のメソッド名はアッパーケースになりました ([#5513](https://github.com/sveltejs/kit/pull/5513), [Docs](https://kit.svelte.jp/docs/routing#endpoints))
+- Vite の設定に合わせるため、`writeStatic` が削除されました ([#5618](https://github.com/sveltejs/kit/pull/5618))
+- `transformPage` は `transformPageChunk` になりました ([#5657](https://github.com/sveltejs/kit/pull/5657), [Docs](https://kit.svelte.jp/docs/hooks#handle))
+- `prepare` script が `package.json` から不要になりました ([#5760](https://github.com/sveltejs/kit/pull/5760))
+- [`compression` ライブラリのバグが修正されるまで](https://github.com/expressjs/compression/pull/183)、`adapter-node` は圧縮しないようになりました ([#5560](https://github.com/sveltejs/kit/pull/5506))
 
-For a full list of changes, check out kit's [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md).
+変更の全リストは、kit の [CHANGELOG](https://github.com/sveltejs/kit/blob/master/packages/kit/CHANGELOG.md) をご覧ください。
 
 ## What's new in Svelte & Language Tools
 
-- The `@layer` [CSS at-rule](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer) is now supported in Svelte components (**3.49.0**, [PR](https://github.com/sveltejs/svelte/issues/7504))
-- The `inert` [HTML attribute](https://html.spec.whatwg.org/multipage/interaction.html#the-inert-attribute) is now supported in Svelte's language tools and plugins (**105.20.0**, [PR](https://github.com/sveltejs/language-tools/pull/1565))
-- The Svelte plugin will now use `SvelteComponentTyped` typings, if available (**105.19.0**, [PR](https://github.com/sveltejs/language-tools/pull/1548))
+- `@layer` [CSS at-rule](https://developer.mozilla.org/ja/docs/Web/CSS/@layer) が Svelte コンポーネントでサポートされました (**3.49.0**, [PR](https://github.com/sveltejs/svelte/issues/7504))
+- `inert` [HTML 属性](https://html.spec.whatwg.org/multipage/interaction.html#the-inert-attribute) が Svelte の language tool とプラグインでサポートされました (**105.20.0**, [PR](https://github.com/sveltejs/language-tools/pull/1565))
+- Svelte プラグインは、利用可能な場合は、`SvelteComponentTyped` の型付けを使用するようになりました (**105.19.0**, [PR](https://github.com/sveltejs/language-tools/pull/1548))
 
 ---
 
@@ -118,8 +127,8 @@ _Tech Demos_
 - [svelte-slides](https://github.com/rajasegar/svelte-slides) is a slide show template for Svelte using Reveal.js
 - [Svelte Theme Light](https://marketplace.visualstudio.com/items?itemName=webmaek.svelte-theme-light) is a Visual Studio Code theme based on the Svelte REPL
 
-Did we miss anything? Let us know on [Reddit](https://www.reddit.com/r/sveltejs/) or [Discord](https://discord.com/invite/yy75DKs)!
+もし見落としがありましたら、[Reddit](https://www.reddit.com/r/sveltejs/) か [Discord](https://discord.com/invite/yy75DKs) にどうぞ!
 
-Still looking for something to do in September? Come join us at the Svelte Summit in Stockholm! [Get your tickets now](https://www.sveltesummit.com/).
+9月に何かやりたいことをお探しでしたら、ストックホルムで開催される Svelte Summit に参加してみませんか! [チケットはこちらです](https://www.sveltesummit.com/)。
 
-See ya next month!
+また来月!

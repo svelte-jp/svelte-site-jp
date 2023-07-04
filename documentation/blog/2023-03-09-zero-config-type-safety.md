@@ -1,25 +1,34 @@
 ---
 title: Zero-effort type safety
-description: More convenience and correctness, less boilerplate
+description: ボイラープレートなしで、より便利に、より正しく
 author: Simon Holthausen
 authorURL: https://twitter.com/dummdidumm_
 ---
+> 翻訳 : Svelte 日本コミュニティ  
+> 原文 : https://svelte.dev/blog/zero-config-type-safety
+>
+> 日本語版は原文をよりよく理解するための参考となることを目的としています。  
+> 正確な内容については svelte.dev の原文を参照してください。  
+> 日本語訳に誤解を招く内容がある場合は下記のいずれかからお知らせください。
+>
+> - [svelte-jp/svelte-site-jp(GitHub)](https://github.com/svelte-jp/svelte-site-jp)
+> - [Svelte 日本(Discord)](https://discord.com/invite/YTXq3ZtBbx)
 
-By sprinkling type annotations into your SvelteKit apps, you can get full type safety across the network — the `data` in your page has a type that's inferred from the return values of the `load` functions that generated that data, without you having to explicitly declare anything. It's one of those things that you come to wonder how you ever lived without.
+SvelteKit アプリに型アノテーションをたくさん書くと、ネットワークをまたいでも完全な型安全性が手に入ります — あなたのページの `data` には、その data を生成する `load` 関数の戻り値から推論された型があり、明示的に何かを宣言する必要はありません。これなしで今までどうやって生活してきたのだろう、と考えさせられるようなことの1つです。
 
-But what if we didn't even need the annotations? Since `load` and `data` are part of the framework, can't the framework type them for us? This is, after all, what computers are for — doing the boring bits so we can focus on the creative stuff.
+でも、型アノテーションが不要になったとしたら？ `load` と `data` はフレームワークの一部ですし、フレームワークが私たちのために型付けできないものでしょうか？ これは結局、コンピューターが何のためにあるのか、ということです — 退屈なことをやってくれるから、私たちはクリエイティブなことに集中することができるのです。
 
-As of today, yes: it can.
+そして今日現在、それができるようになりました。
 
 <video src="https://sveltejs.github.io/assets/video/zero-config-types.mp4" controls muted playsinline></video>
 
-If you're using VSCode, just upgrade the Svelte extension to the latest version, and you'll never have to annotate your `load` functions or `data` props again. Extensions for other editors can also use this feature, as long as they support the Language Server Protocol and TypeScript plugins. It even works with the latest version of our CLI diagnostics tool `svelte-check`!
+VSCode をお使いでしたら、Svelte extension を最新バージョンにアップグレードするだけです。これでもう今後、`load` 関数や `data` プロパティにアノテーションを付ける必要はありません。他のエディタ向けの Extension でも、それが Language Server Protocol と TypeScript plugin をサポートしていればこの機能を使うことができます。CLI 診断ツール `svelte-check` の最新バージョンでも動作します！
 
-Before we dive in, let's recap how type safety works in SvelteKit.
+詳細に入る前に、SvelteKit の型安全性の仕組みについておさらいしましょう。
 
 ## Generated types
 
-In SvelteKit, you get the data for a page in a `load` function. You _could_ type the event by using `ServerLoadEvent` from `@sveltejs/kit`:
+SvelteKit では、`load` 関数でページの data を取得します。`@sveltejs/kit` から `ServerLoadEvent` をインポートして、この event に型を付けることができます:
 
 ```ts
 const database = {
@@ -38,9 +47,9 @@ export async function load(event: ServerLoadEvent) {
 }
 ```
 
-This works, but we can do better. Notice that we accidentally wrote `event.params.post`, even though the parameter is called `slug` (because of the `[slug]` in the filename) rather than `post`. You could type `params` yourself by adding a generic argument to `ServerLoadEvent`, but that's brittle.
+動作しますが、もっと良くすることができます。このコード例では、パラメーターは `post` ではなく `slug` (ファイル名に `[slug]` とあるため) ですが、誤って `event.params.post` と書いてしまっていることにお気付きでしょうか。`ServerLoadEvent` にジェネリクスの型引数を追加して自分で `params` に型付けすることもできますが、柔軟性がなく壊れやすいです。
 
-This is where our automatic type generation comes in. Every route directory has a hidden `$types.d.ts` file with route-specific types:
+そこで、自動型生成の出番です。全てのルート(route)ディレクトリには、それぞれのルート固有(route-specific)の型を持つ `$types.d.ts` という隠しファイルがあります:
 
 ```diff
 // src/routes/blog/[slug]/+page.server.ts
@@ -55,9 +64,9 @@ export async function load(event: PageServerLoadEvent) {
 }
 ```
 
-This reveals our typo, as it now errors on the `params.post` property access. Besides narrowing the parameter types, it also narrows the types for `await event.parent()` and the `data` passed from a server `load` function to a universal `load` function. Notice that we’re now using `PageServerLoadEvent`, to distinguish it from `LayoutServerLoadEvent`.
+これによって `params.post` プロパティにアクセスしようとするとエラーとなり、打ち間違い(typo)がわかるようになります。パラメーターの型を絞り込むだけでなく、`await event.parent()` の型や、server `load` 関数や universal `load` 関数から渡される `data` の型も絞り込むことができます。`LayoutServerLoadEvent` と区別するため、`PageServerLoadEvent` を使用していることにご注意ください。
 
-After we have loaded our data, we want to display it in our `+page.svelte`. The same type generation mechanism ensures that the type of `data` is correct:
+data をロードしたあと、それを `+page.svelte` で表示したいと思います。同じ型生成メカニズムが、`data` の型が正しいことを保証します:
 
 ```svelte
 <!-- src/routes/blog/[slug]/+page.svelte -->
@@ -74,7 +83,7 @@ After we have loaded our data, we want to display it in our `+page.svelte`. The 
 
 ## Virtual files
 
-When running the dev server or the build, types are auto-generated. Thanks to the file-system based routing, SvelteKit is able to infer things like the correct parameters or parent data by traversing the route tree. The result is outputted into one `$types.d.ts` file for each route, which looks roughly like this:
+開発サーバー(dev server)、またはビルド(build)を実行しているときに、型が自動で生成されます。ファイルシステムベースルーティングのおかげで、SvelteKit はルートツリー(route tree)をトラバースし、正しいパラメーターや親の data を推論することができます。各ルート(route)ごとに1つの `$types.d.ts` ファイルが出力されますが、大体以下のようになります:
 
 ```ts
 // @errors: 2344 2694 2307
@@ -98,7 +107,7 @@ export type PageData = Kit.ReturnType<
 >;
 ```
 
-We don't actually write `$types.d.ts` into your `src` directory — that would be messy, and no-one likes messy code. Instead, we use a TypeScript feature called [`rootDirs`](https://www.typescriptlang.org/tsconfig#rootDirs), which lets us map ‘virtual’ directories to real ones. By setting `rootDirs` to the project root (the default) and additionally to `.svelte-kit/types` (the output folder of all the generated types) and then mirroring the route structure inside it we get the desired behavior:
+`$types.d.ts` を実際に `src` ディレクトリに書き込んでいるわけではありません — ちょっとごちゃごちゃしますし、ごちゃごちゃしたコードが好きな人はいません。代わりに、TypeScript の [`rootDirs`](https://www.typescriptlang.org/ja/tsconfig#rootDirs) という機能を使用し、‘virtual’ ディレクトリを実際のディレクトリにマップします。`rootDirs` に、プロジェクトの root (デフォルト) と、さらに `.svelte-kit/types` (全ての generated types の出力フォルダ) を設定し、その中でルート構造(route structure)をミラーリングすることで、この挙動を実現しています:
 
 ```
 // on disk:
@@ -129,7 +138,7 @@ src/
 
 ## Type safety without types
 
-Thanks to the automatic type generation we get advanced type safety. Wouldn't it be great though if we could just omit writing the types at all? As of today you can do exactly that:
+自動型生成のおかげで、高度な型安全性を実現しています。ただ、もし型を書くのをすべて省略できるようになったとしたら素晴らしいと思いませんか？今日現在、まさにそれができるようになりました:
 
 ```diff
 // src/routes/blog/[slug]/+page.server.ts
@@ -152,20 +161,20 @@ Thanks to the automatic type generation we get advanced type safety. Wouldn't it
 </script>
 ```
 
-While this is super convenient, this isn't just about that. It's also about _correctness_: When copying and pasting code it's easy to accidentally get `PageServerLoadEvent` mixed up with `LayoutServerLoadEvent` or `PageLoadEvent`, for example — similar types with subtle differences. Svelte's major insight was that by writing code in a declarative way we can get the machine to do the bulk of the work for us, correctly and efficiently. This is no different — by leveraging strong framework conventions like `+page` files, we can make it easier to do the right thing than to do the wrong thing.
+これはとても便利ですが、それだけではありません。より _正しい_ のです: コードをコピーペーストするときに、例えば `PageServerLoadEvent` と `LayoutServerLoadEvent` と `PageLoadEvent` のような、似ているが少し違う型を混同してしまうことがよくあります。Svelte の主な考え方は、コードを宣言的に書くことで、機械が私たちのためにほとんどの作業を、それも正しく効率的にやってくれる、というものでした。これも同じです — `+page` ファイルのような強いフレームワークの規約を活用すれば、間違いをするのが難しくなり、正しいことをするほうが簡単になるのです。
 
-This works for all exports from SvelteKit files (`+page`, `+layout`, `+server`, `hooks`, `params` and so on) and for `data`, `form` and `snapshot` properties in `+page/layout.svelte` files.
+これは SvelteKit ファイル (`+page`、`+layout`、`+server`、`hooks`、`params` など) からのすべての export と、`+page/layout.svelte` ファイルの `data`、`form`、`snapshot` プロパティで動作します。
 
-To use this feature with VS Code install the latest version of the Svelte for VS Code extension. For other IDEs, use the latest versions of the Svelte language server and the Svelte TypeScript plugin. Beyond the editor, our command line tool `svelte-check` also knows how to add these annotations since version 3.1.1.
+VS Code でこの機能を使用するには、Svelte for VS Code extension の最新バージョンをインストールしてください。他の IDE では、Svelte language server と Svelte TypeScript plugin の最新バージョンを使用してください。エディタ以外では、コマンドラインツール `svelte-check` でも、バージョン 3.1.1 以降であればこれらのアノテーションを追加する方法が組み込まれています。
 
 ## How does it work?
 
-Getting this to work required changes to both the language server (which powers the IntelliSense in Svelte files) and the TypeScript plugin (which makes TypeScript understand Svelte files from within `.ts/js` files). In both we auto-insert the correct types at the correct positions and tell TypeScript to use our virtual augmented file instead of the original untyped file. That in combination with mapping the generated and original positions back and forth gives the desired result. Since `svelte-check` reuses parts of the language server under the hood, it gets that feature for free without further adjustments.
+この機能を実現するには、(Svelte ファイルのインテリセンスを行ってくれる) language server と、(TypeScript に `.ts/js` ファイルの内部から Svelte ファイルを理解させる) TypeScript plugin の両方を変更する必要がありました。両方とも、正しい型を正しいポジションに自動挿入し、オリジナルの型付けされていないファイルではなく拡張された仮想ファイルを使用するよう TypeScript に指示します。生成されたファイルのポジションとオリジナルファイルのポジションを前後にマッピングして組み合わせることで、これを実現しています。`svelte-check` は language server の一部を再利用しているため、調整することなくこの機能が使えます。
 
-We'd like to thank the Next.js team for [inspiring](https://twitter.com/shuding_/status/1625263297573400578) this feature.
+この機能は Next.js チームから[インスパイア](https://twitter.com/shuding_/status/1625263297573400578)されました。Next.js チームに感謝します。
 
 ## What's next
 
-For the future we want to look into making even more areas of SvelteKit type-safe — links for example, be it in your HTML or through programmatically calling `goto`.
+将来的には、SvelteKit のさらに多くの領域を型安全にすることを検討したいと思っています — 例えばリンクは、HTML の中や、プログラム的に `goto` を呼び出していますよね。
 
-TypeScript is eating the JavaScript world — and we're here for it! We care deeply about first class type safety in SvelteKit, and we provide you the tools to make the experience as smooth as possible — one that also scales beautifully to larger Svelte code bases — regardless of whether you use TypeScript or typed JavaScript through JSDoc.
+TypeScript は JavaScript の世界を席巻しています — 私たちはそれに夢中です！ 私たちは SvelteKit のファーストクラスの型安全性に深く取り組んでおり、TypeScript を使用するか JSDoc で型付けされた JavaScript を使用するかに関わらず、より大規模な Svelte コードベースにも美しくスケールすることができる、できる限り開発体験をスムーズにするツールを提供します。
