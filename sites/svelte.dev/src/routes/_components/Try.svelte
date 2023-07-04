@@ -7,12 +7,12 @@
 	<Section --background="var(--background-2)">
 		<div class="grid" style="--columns: 2">
 			<div class="copy">
-				<h2>see for yourself</h2>
+				<h2>使ってみる</h2>
 				<div>
-					Try it locally, <a target="_blank" rel="noreferrer" href="https://sveltekit.new"
-						>on StackBlitz</a
-					>, or with
-					<a target="_blank" href="https://learn.svelte.dev">the interactive tutorial</a>.
+					ローカルで試すか、<a target="_blank" rel="noreferrer" href="https://sveltekit.new"
+						>StackBlitz で試す</a
+					>か、
+					<a target="_blank" href="https://learn.svelte.jp">インタラクティブなチュートリアル</a>をお試しください。
 				</div>
 			</div>
 

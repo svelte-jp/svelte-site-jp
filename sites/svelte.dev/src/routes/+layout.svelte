@@ -35,9 +35,9 @@
 			</svelte:fragment>
 
 			<svelte:fragment slot="external-links">
-				<a href="https://learn.svelte.dev/">Tutorial</a>
+				<a href="https://learn.svelte.jp/">Tutorial</a>
 
-				<a href="https://kit.svelte.dev">SvelteKit</a>
+				<a href="https://kit.svelte.jp">SvelteKit</a>
 
 				<Separator />
 

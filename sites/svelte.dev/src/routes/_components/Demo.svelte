@@ -6,25 +6,25 @@
 		{
 			id: 'hello-world',
 			title: 'Hello World',
-			description: 'Svelte components are built on top of HTML. Just add data.'
+			description: 'Svelte components は HTML 上に構築されています。そこにデータを追加しただけです。'
 		},
 		{
 			id: 'nested-components',
 			title: 'Scoped CSS',
 			description:
-				'CSS is component-scoped by default — no more style collisions or specificity wars. Or you can <a href="/blog/svelte-css-in-js">use your favourite CSS-in-JS library</a >.'
+				'CSS はデフォルトでコンポーネントスコープ(component-scoped)です — スタイルの衝突や、詳細度に苦戦することはもうありません。また、<a href="/blog/svelte-css-in-js">お好きな CSS-in-JS ライブラリ</a >を使うこともできます。'
 		},
 		{
 			id: 'reactive-assignments',
 			title: 'Reactivity',
 			description:
-				'Trigger efficient, granular updates by assigning to local variables. The compiler does the rest.'
+				'ローカル変数への代入によって、効率的できめ細やかな更新がトリガーされます。残りはコンパイラがやってくれます。'
 		},
 		{
 			id: 'svg-transitions',
 			title: 'Transitions',
 			description:
-				'Build beautiful UIs with a powerful, performant transition engine built right into the framework.'
+				'このフレームワークに組み込まれているパワフルでハイパフォーマンスなトランジションエンジンにより、美しい UI を構築できます。'
 		}
 	];
 
@@ -36,7 +36,7 @@
 </svelte:head>
 
 <Section --background="var(--sk-back-2)">
-	<h3>build with ease</h3>
+	<h3>簡単に作れる</h3>
 
 	<div class="container">
 		<div class="controls">

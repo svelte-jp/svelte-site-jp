@@ -6,7 +6,7 @@
 
 <Section --background="var(--sk-back-2">
 	<p class="intro">
-		Svelte is made possible by the work of hundreds of supporters.
+		Svelte は何百人ものサポーターの協力によって支えられています。
 	</p>
 
 	<div class="layout">
@@ -31,7 +31,7 @@
 
 		<div class="donors blurb">
 			<h3>donors</h3>
-			<p><a href="https://opencollective.com/svelte">Support us on OpenCollective</a></p>
+			<p><a href="https://opencollective.com/svelte">OpenCollective で支援する</a></p>
 		</div>
 
 		<div class="donors grid">
