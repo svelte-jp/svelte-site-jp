@@ -2,15 +2,15 @@
 title: svelte
 ---
 
-The `svelte` package exposes [lifecycle functions](https://learn.svelte.dev/tutorial/onmount) and the [context API](https://learn.svelte.dev/tutorial/context-api).
+`svelte` パッケージは、[ライフサイクル関数](https://learn.svelte.jp/tutorial/onmount) と [context API](https://learn.svelte.jp/tutorial/context-api) を公開します。
 
 ## `onMount`
 
 > EXPORT_SNIPPET: svelte#onMount
 
-The `onMount` function schedules a callback to run as soon as the component has been mounted to the DOM. It must be called during the component's initialisation (but doesn't need to live _inside_ the component; it can be called from an external module).
+`onMount` 関数は、コンポーネントが DOM にマウントされるとすぐに実行されるコールバックをスケジュールします。これはコンポーネントの初期化中に呼び出されなければなりません (ただし、コンポーネントの _中に_ に置く必要はありません。外部モジュールから呼び出すことができます)。
 
-`onMount` does not run inside a [server-side component](/docs/server-side-component-api).
+`onMount` は [サーバーサイドコンポーネント](/docs/server-side-component-api) の内部では実行されません。
 
 ```svelte
 <script>
@@ -22,7 +22,7 @@ The `onMount` function schedules a callback to run as soon as the component has 
 </script>
 ```
 
-If a function is returned from `onMount`, it will be called when the component is unmounted.
+`onMount` から関数が返された場合、それはコンポーネントがアンマウントされたときに呼び出されます。
 
 ```svelte
 <script>
@@ -38,15 +38,15 @@ If a function is returned from `onMount`, it will be called when the component i
 </script>
 ```
 
-> This behaviour will only work when the function passed to `onMount` _synchronously_ returns a value. `async` functions always return a `Promise`, and as such cannot _synchronously_ return a function.
+> この挙動は、`onMount` に渡された関数が _同期的に_ 値を返す場合にのみ動作します。`async` の関数は常に `Promise` を返すため、 _同期的に_ 値を返すことはできません。
 
 ## `beforeUpdate`
 
 > EXPORT_SNIPPET: svelte#beforeUpdate
 
-Schedules a callback to run immediately before the component is updated after any state change.
+状態(state)が変化した後、コンポーネントが更新される直前に実行されるコールバックをスケジュールします。
 
-> The first time the callback runs will be before the initial `onMount`
+> このコールバックが最初に実行されるのは、最初の `onMount` の前になります。
 
 ```svelte
 <script>
@@ -62,9 +62,9 @@ Schedules a callback to run immediately before the component is updated after an
 
 > EXPORT_SNIPPET: svelte#afterUpdate
 
-Schedules a callback to run immediately after the component has been updated.
+コンポーネントが更新された直後に実行するコールバックをスケジュールします。
 
-> The first time the callback runs will be after the initial `onMount`
+> このコールバックが最初に実行されるのは、最初の `onMount` の後になります。
 
 ```svelte
 <script>
@@ -80,9 +80,9 @@ Schedules a callback to run immediately after the component has been updated.
 
 > EXPORT_SNIPPET: svelte#onDestroy
 
-Schedules a callback to run immediately before the component is unmounted.
+コンポーネントがアンマウントされる直前に実行されるコールバックをスケジュールします。
 
-Out of `onMount`, `beforeUpdate`, `afterUpdate` and `onDestroy`, this is the only one that runs inside a server-side component.
+`onMount`, `beforeUpdate`, `afterUpdate`, `onDestroy` のうち、`onDestroy` だけがサーバサイドコンポーネントの中で動作します。
 
 ```svelte
 <script>
@@ -98,7 +98,7 @@ Out of `onMount`, `beforeUpdate`, `afterUpdate` and `onDestroy`, this is the onl
 
 > EXPORT_SNIPPET: svelte#tick
 
-Returns a promise that resolves once any pending state changes have been applied, or in the next microtask if there are none.
+保留中の状態(pending state)の変更が適用されると resolve する promise を返すか、何もない場合は、その次のマイクロタスクで実行されます。
 
 ```svelte
 <script>
@@ -116,9 +116,9 @@ Returns a promise that resolves once any pending state changes have been applied
 
 > EXPORT_SNIPPET: svelte#setContext
 
-Associates an arbitrary `context` object with the current component and the specified `key` and returns that object. The context is then available to children of the component (including slotted content) with `getContext`.
+任意の `context` オブジェクトを、現在のコンポーネントと指定された `key` に関連付け、そのオブジェクトを返します。その context は、コンポーネントの子 (slot のコンテンツを含む) で、`getContext` を使用して利用できるようになります。
 
-Like lifecycle functions, this must be called during component initialisation.
+ライフサイクル関数と同様に、これはコンポーネントの初期化時に呼ばれなければなりません。
 
 ```svelte
 <script>
@@ -128,13 +128,13 @@ Like lifecycle functions, this must be called during component initialisation.
 </script>
 ```
 
-> Context is not inherently reactive. If you need reactive values in context then you can pass a store into context, which _will_ be reactive.
+> context は本質的にリアクティブではありません。context にリアクティブな値が必要な場合は、context にストアを渡すことができます。これはリアクティブになります。
 
 ## `getContext`
 
 > EXPORT_SNIPPET: svelte#getContext
 
-Retrieves the context that belongs to the closest parent component with the specified `key`. Must be called during component initialisation.
+指定された `key` を持つ、最も近い親コンポーネントに属する context を取得します。コンポーネントの初期化中に呼び出されなければなりません。
 
 ```svelte
 <script>
@@ -148,7 +148,7 @@ Retrieves the context that belongs to the closest parent component with the spec
 
 > EXPORT_SNIPPET: svelte#hasContext
 
-Checks whether a given `key` has been set in the context of a parent component. Must be called during component initialisation.
+与えられた `key` が親コンポーネントの context に設定されているかどうかをチェックします。コンポーネントの初期化時に呼び出されなければなりません。
 
 ```svelte
 <script>
@@ -164,7 +164,7 @@ Checks whether a given `key` has been set in the context of a parent component. 
 
 > EXPORT_SNIPPET: svelte#getAllContexts
 
-Retrieves the whole context map that belongs to the closest parent component. Must be called during component initialisation. Useful, for example, if you programmatically create a component and want to pass the existing context to it.
+最も近い親コンポーネントにある全ての context マップを取得します。これはコンポーネントの初期化中に呼び出す必要があります。例えば、プログラムでコンポーネントを作成し、既存の context を渡したい場合などに便利です。
 
 ```svelte
 <script>
@@ -178,9 +178,9 @@ Retrieves the whole context map that belongs to the closest parent component. Mu
 
 > EXPORT_SNIPPET: svelte#createEventDispatcher
 
-Creates an event dispatcher that can be used to dispatch [component events](/docs/component-directives#on-eventname). Event dispatchers are functions that can take two arguments: `name` and `detail`.
+[コンポーネントイベント](/docs/component-directives#on-eventname) をディスパッチするのに使用できるイベントディスパッチャを作成します。 イベントディスパッチャは、`name` と ` detail` の2つの引数を取る関数です。 
 
-Component events created with `createEventDispatcher` create a [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent). These events do not [bubble](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture). The `detail` argument corresponds to the [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) property and can contain any type of data.
+`createEventDispatcher` で作成されたコンポーネントイベントは [CustomEvent](https://developer.mozilla.org/ja/docs/Web/API/CustomEvent) を作成します。これらのイベントは[バブリング(Bubbling)](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture)しません。引数 `detail` は [CustomEvent.detail](https://developer.mozilla.org/ja/docs/Web/API/CustomEvent/detail) プロパティに対応し、任意のタイプのデータを含むことができます。
 
 ```svelte
 <script>
@@ -192,7 +192,7 @@ Component events created with `createEventDispatcher` create a [CustomEvent](htt
 <button on:click={() => dispatch('notify', 'detail value')}>Fire Event</button>
 ```
 
-Events dispatched from child components can be listened to in their parent. Any data provided when the event was dispatched is available on the `detail` property of the event object.
+子コンポーネントからディスパッチされたイベントは、親でリスンできます。イベントがディスパッチされたときに提供されたデータはすべて、イベントオブジェクトの `detail` プロパティで利用できます。 
 
 ```svelte
 <script>
@@ -204,7 +204,7 @@ Events dispatched from child components can be listened to in their parent. Any 
 <Child on:notify={callbackFunction} />
 ```
 
-Events can be cancelable by passing a third parameter to the dispatch function. The function returns `false` if the event is cancelled with `event.preventDefault()`, otherwise it returns `true`.
+dispatch 関数に3番目のパラメータを渡すことで、イベントがキャンセルできるようになります。もしイベントが `event.preventDefault()` によってキャンセルされると、その関数は `false` を返します。それ以外の場合は `true` を返します。
 
 ```svelte
 <script>
@@ -223,7 +223,7 @@ Events can be cancelable by passing a third parameter to the dispatch function. 
 </script>
 ```
 
-You can type the event dispatcher to define which events it can receive. This will make your code more type safe both within the component (wrong calls are flagged) and when using the component (types of the events are now narrowed). See [here](typescript#script-lang-ts-events) how to do it.
+イベントディスパッチャを型付けすることで、受け取るイベントを定義することができます。これにより、コンポーネント内でも(間違った呼び出しはフラグが立つ)、コンポーネントを使用する場合でも(イベントの型が絞れる)、コードがより型安全になります。その方法については[こちら](typescript#script-lang-ts-events)をご参照ください。
 
 ## Types
 

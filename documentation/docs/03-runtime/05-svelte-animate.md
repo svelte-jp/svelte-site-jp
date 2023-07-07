@@ -2,7 +2,7 @@
 title: 'svelte/animate'
 ---
 
-The `svelte/animate` module exports one function for use with Svelte [animations](/docs/element-directives#animate-fn).
+`svelte/animate` モジュールは、Svelte [animations](/docs/element-directives#animate-fn) で使用するための関数を1つエクスポートします。
 
 ## `flip`
 
@@ -12,20 +12,20 @@ The `svelte/animate` module exports one function for use with Svelte [animations
 animate:flip={params}
 ```
 
-The `flip` function calculates the start and end position of an element and animates between them, translating the `x` and `y` values. `flip` stands for [First, Last, Invert, Play](https://aerotwist.com/blog/flip-your-animations/).
+`flip` 関数は要素の開始位置と終了位置を計算し、その間で `x` と `y` の値を変換してアニメーションを行います。`flip` は [First, Last, Invert, Play](https://aerotwist.com/blog/flip-your-animations/) の略です。
 
-`flip` accepts the following parameters:
+`flip` は以下のパラメータを受け付けます。
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `duration` (`number` | `function`, default `d => Math.sqrt(d) * 120`) — see below
-- `easing` (`function`, default `cubicOut`) — an [easing function](/docs/svelte-easing)
+- `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+- `duration` (`number` | `function`, default `d => Math.sqrt(d) * 120`) — 下記を参照してください
+- `easing` (`function`, default `cubicOut`) — [イージング関数](/docs/svelte-easing)
 
-`duration` can be provided as either:
+`duration` は、以下のいずれかを指定することができます。
 
-- a `number`, in milliseconds.
-- a function, `distance: number => duration: number`, receiving the distance the element will travel in pixels and returning the duration in milliseconds. This allows you to assign a duration that is relative to the distance travelled by each element.
+- `number` — ミリ秒単位です。
+- 関数 `distance: number => duration: number` — 要素の移動距離をピクセル単位で受け取り、その時間をミリ秒単位で返します。これにより、各要素の持続時間に対する移動距離を割り当てることができます。
 
-You can see a full example on the [animations tutorial](https://learn.svelte.dev/tutorial/animate).
+[アニメーションのチュートリアル](https://learn.svelte.jp/tutorial/animate)で完全な例をご覧ください。
 
 ```svelte
 <script>

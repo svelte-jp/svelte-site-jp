@@ -2,7 +2,7 @@
 title: svelte/action
 ---
 
-Actions are functions that are called when an element is created. They can return an object with a `destroy` method that is called after the element is unmounted:
+action は、要素が作成されたときに呼び出される関数です。要素がアンマウントされたときに呼び出される `destroy` メソッドをもつオブジェクトを返すことができます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -22,9 +22,9 @@ Actions are functions that are called when an element is created. They can retur
 <div use:foo />
 ```
 
-An action can have a parameter. If the returned value has an `update` method, it will be called immediately after Svelte has applied updates to the markup whenever that parameter changes.
+action はパラメータを取ることができます。戻り値に `update` メソッドがあると、そのパラメータが変化するときはいつも、Svelte がマークアップに更新を適用した直後にそのメソッドが呼び出されます。
 
-> Don't worry that we're redeclaring the `foo` function for every component instance — Svelte will hoist any functions that don't depend on local state out of the component definition.
+> すべてのコンポーネントインスタンスに対して `foo` 関数を再宣言しているという事実について心配する必要はありません。Svelte は、ローカル状態に依存しない関数をコンポーネント定義から巻き上げます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -53,7 +53,7 @@ An action can have a parameter. If the returned value has an `update` method, it
 
 ## Attributes
 
-Sometimes actions emit custom events and apply custom attributes to the element they are applied to. To support this, actions typed with `Action` or `ActionReturn` type can have a last parameter, `Attributes`:
+action がカスタムイベントを発行し、適用する要素にカスタム属性を適用することがあります。これをサポートするために、`Action` 型または `ActionReturn` 型の action は最後のパラメータとして `Attributes` を持つことができます： `Attributes` は `ActionReturn` 型の action の最後のパラメータです：
 
 ```svelte
 <!--- file: App.svelte --->

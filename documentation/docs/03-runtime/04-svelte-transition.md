@@ -2,7 +2,7 @@
 title: 'svelte/transition'
 ---
 
-The `svelte/transition` module exports seven functions: `fade`, `blur`, `fly`, `slide`, `scale`, `draw` and `crossfade`. They are for use with Svelte [`transitions`](/docs/element-directives#transition-fn).
+`svelte/transition` モジュールは `fade`、`blur`、`fly`、 `slide`、`scale`、`draw`、`crossfade` の7つの関数をエクスポートします。これらは Svelte [`transitions`](/docs/element-directives#transition-fn) で使用します。
 
 ## `fade`
 
@@ -20,15 +20,15 @@ in:fade={params}
 out:fade={params}
 ```
 
-Animates the opacity of an element from 0 to the current opacity for `in` transitions and from the current opacity to 0 for `out` transitions.
+要素の opacity を、`in` トランジションでは 0 から現在の opacity まで、`out` トランジションでは現在の opacity から 0 までアニメーションします。
 
-`fade` accepts the following parameters:
+`fade` は以下のパラメータを受け付けます。
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `duration` (`number`, default 400) — milliseconds the transition lasts
-- `easing` (`function`, default `linear`) — an [easing function](/docs/svelte-easing)
+- `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+- `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+- `easing` (`function`, default `linear`) — [イージング関数](/docs/svelte-easing)
 
-You can see the `fade` transition in action in the [transition tutorial](https://learn.svelte.dev/tutorial/transition).
+[transition チュートリアル](https://learn.svelte.jp/tutorial/transition)で `fade` トランジションの動作を見ることができまで `fade` トランジションの動作を見ることができます。
 
 ```svelte
 <script>
@@ -56,15 +56,15 @@ in:blur={params}
 out:blur={params}
 ```
 
-Animates a `blur` filter alongside an element's opacity.
+要素の opacity に合わせて `blur` フィルタをアニメーション化します。
 
-`blur` accepts the following parameters:
+`blur` は以下のパラメータを受け付けます。
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `duration` (`number`, default 400) — milliseconds the transition lasts
-- `easing` (`function`, default `cubicInOut`) — an [easing function](/docs/svelte-easing)
-- `opacity` (`number`, default 0) - the opacity value to animate out to and in from
-- `amount` (`number | string`, default 5) - the size of the blur. Supports css units (for example: `"4rem"`). The default unit is `px`
+- `delay` (`number`, default 0) —開始前の待ち時間のミリ秒
+- `duration` (`number`, default 400) — アニメーションの持続時間のミリ秒
+- `easing` (`function`, default `cubicInOut`) — [イージング関数](/docs/svelte-easing)
+- `opacity` (`number`, default 0) - アニメーションする opacity の値 (out の場合はこの値に、in の場合はこの値から)
+- `amount` (`number | string`, default 5) - ぼかし(blur)のサイズ。css の単位 (例: `"4rem"`) をサポートしています。デフォルトの単位は `px` です
 
 ```svelte
 <script>
@@ -92,19 +92,19 @@ in:fly={params}
 out:fly={params}
 ```
 
-Animates the x and y positions and the opacity of an element. `in` transitions animate from the provided values, passed as parameters to the element's default values. `out` transitions animate from the element's default values to the provided values.
+要素の x と y の位置と opacity をアニメーション化します。`in` トランジションは、パラメータとして指定された値から要素のデフォルトの値にアニメーションします。`out` トランジションは、要素のデフォルトの値から指定された値にアニメーションします。
 
-`fly` accepts the following parameters:
+`fly` は以下のパラメータを受け付けます。
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `duration` (`number`, default 400) — milliseconds the transition lasts
-- `easing` (`function`, default `cubicOut`) — an [easing function](/docs/svelte-easing)
-- `x` (`number | string`, default 0) - the x offset to animate out to and in from
-- `y` (`number | string`, default 0) - the y offset to animate out to and in from
-- `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+- `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+- `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+- `easing` (`function`, default `cubicOut`) — [イージング関数](/docs/svelte-easing)
+- `x` (`number | string`, default 0) - アニメーションで移動する x 位置のオフセット (out の場合はこの値に、in の場合はこの値から)
+- `y` (`number | string`, default 0) - アニメーションで移動する y 位置のオフセット (out の場合はこの値に、in の場合はこの値から)
+- `opacity` (`number`, default 0) - アニメーションする opacity の値 (out の場合はこの値に、in の場合はこの値から)
 
-x and y use `px` by default but support css units, for example `x: '100vw'` or `y: '50%'`.
-You can see the `fly` transition in action in the [transition tutorial](https://learn.svelte.dev/tutorial/adding-parameters-to-transitions).
+x と y はデフォルトで `px` を使用しますが、css の単位もサポートしています。例えば `x: '100vw'` や `y: '50%'` にすることができます。
+`fly` トランジションの動作は [トランジションチュートリアル](https://learn.svelte.jp/tutorial/adding-parameters-to-transitions)で見ることができます。
 
 ```svelte
 <script>
@@ -137,15 +137,15 @@ in:slide={params}
 out:slide={params}
 ```
 
-Slides an element in and out.
+要素をスライドさせて出し入れします。
 
-`slide` accepts the following parameters:
+`slide` は下記のパラメータを受け付けます。
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `duration` (`number`, default 400) — milliseconds the transition lasts
-- `easing` (`function`, default `cubicOut`) — an [easing function](/docs/svelte-easing)
+- `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+- `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+- `easing` (`function`, default `cubicOut`) — [イージング関数](/docs/svelte-easing)
 
-* `axis` (`x` | `y`, default `y`) — the axis of motion along which the transition occurs
+* `axis` (`x` | `y`, default `y`) — トランジションが発生するモーションの軸
 
 ```svelte
 <script>
@@ -176,15 +176,15 @@ in:scale={params}
 out:scale={params}
 ```
 
-Animates the opacity and scale of an element. `in` transitions animate from an element's current (default) values to the provided values, passed as parameters. `out` transitions animate from the provided values to an element's default values.
+要素の opacity と scale をアニメーション化します。`in` トランジションは、要素の現在の(デフォルトの)値からパラメータとして渡された値にアニメーションします。`out` トランジションは、指定された値から要素のデフォルト値にアニメーションします。
 
-`scale` accepts the following parameters:
+`scale` は以下のパラメータを受け付けます。
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `duration` (`number`, default 400) — milliseconds the transition lasts
-- `easing` (`function`, default `cubicOut`) — an [easing function](/docs/svelte-easing)
-- `start` (`number`, default 0) - the scale value to animate out to and in from
-- `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+- `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+- `duration` (`number`, default 400) — トランジションの持続時間のミリ秒
+- `easing` (`function`, default `cubicOut`) — [イージング関数](/docs/svelte-easing)
+- `start` (`number`, default 0) - アニメーションする scale の値 (out の場合はこの値に、in の場合はこの値から)
+- `opacity` (`number`, default 0) - アニメーションする opacity の値 (out の場合はこの値に、in の場合はこの値から)
 
 ```svelte
 <script>
@@ -215,16 +215,16 @@ in:draw={params}
 out:draw={params}
 ```
 
-Animates the stroke of an SVG element, like a snake in a tube. `in` transitions begin with the path invisible and draw the path to the screen over time. `out` transitions start in a visible state and gradually erase the path. `draw` only works with elements that have a `getTotalLength` method, like `<path>` and `<polyline>`.
+SVG 要素のストロークを蛇が管の中を進むようにアニメーション化します。`in` トランジションはパスが見えない状態から始まり、時間の経過とともにパスが画面に描画されます。`out` トランジションはパスが見える状態から始まり、徐々にパスを消していきます。`draw` は `<path>` や `<polyline>` のように `getTotalLength` メソッドを持つ要素でのみ動作します。
 
-`draw` accepts the following parameters:
+`draw` は以下のパラメータを受け付けます。
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `speed` (`number`, default undefined) - the speed of the animation, see below.
-- `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
-- `easing` (`function`, default `cubicInOut`) — an [easing function](/docs/svelte-easing)
+- `delay` (`number`, default 0) — 開始前の待ち時間のミリ秒
+- `speed` (`number`, default undefined) - アニメーションの速度、下記を参照してください
+- `duration` (`number` | `function`, default 800) — トランジションの持続時間のミリ秒
+- `easing` (`function`, default `cubicInOut`) — [イージング関数](/docs/svelte-easing)
 
-The `speed` parameter is a means of setting the duration of the transition relative to the path's length. It is a modifier that is applied to the length of the path: `duration = length / speed`. A path that is 1000 pixels with a speed of 1 will have a duration of `1000ms`, setting the speed to `0.5` will double that duration and setting it to `2` will halve it.
+速度パラメータ `speed` はパスの長さに対する遷移の持続時間を設定する手段です。これはパスの長さに適用される修飾子で `duration = length / speed` となります。1000ピクセルで速度が1のパスの持続時間は `1000ms` であり、速度を `0.5` に設定すると持続時間は2倍になり、`2` に設定すると半分になります。
 
 ```svelte
 <script>
@@ -250,14 +250,14 @@ The `speed` parameter is a means of setting the duration of the transition relat
 
 > EXPORT_SNIPPET: svelte/transition#crossfade
 
-The `crossfade` function creates a pair of [transitions](/docs/element-directives#transition-fn) called `send` and `receive`. When an element is 'sent', it looks for a corresponding element being 'received', and generates a transition that transforms the element to its counterpart's position and fades it out. When an element is 'received', the reverse happens. If there is no counterpart, the `fallback` transition is used.
+`crossfade` 関数は `send` と `receive` という [トランジション](/docs/element-directives#transition-fn)のペアを作成します。ある要素が「送信」されると、それに対応する「受信」される要素を探し、その要素を相手の位置に変換してフェードアウトさせるトランジションを生成します。要素が「受信」されると、その逆が起こります。対応する要素がない場合は、`fallback` トランジションが使用されます。
 
-`crossfade` accepts the following parameters:
+`crossfade` は下のパラメータを受け付けます:
 
-- `delay` (`number`, default 0) — milliseconds before starting
-- `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
-- `easing` (`function`, default `cubicOut`) — an [easing function](/docs/svelte-easing)
-- `fallback` (`function`) — A fallback [transition](/docs/element-directives#transition-fn) to use for send when there is no matching element being received, and for receive when there is no element being sent.
+- `delay` (`number`, default 0) — 開始するまでのミリ秒
+- `duration` (`number` | `function`, default 800) — トランジションが継続するミリ秒
+- `easing` (`function`, default `cubicOut`) — [イージング関数](/docs/svelte-easing)
+- `fallback` (`function`) — 受信している要素に一致するものがない場合の送信時や、送信している要素がない場合の受信時に使用するフォールバック[トランジション](/docs/element-directives#transition-fn)です。
 
 ```svelte
 <script>

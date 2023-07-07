@@ -2,21 +2,21 @@
 title: 'svelte/store'
 ---
 
-The `svelte/store` module exports functions for creating [readable](/docs/svelte-store#readable), [writable](/docs/svelte-store#writable) and [derived](/docs/svelte-store#derived) stores.
+`svelte/store` モジュールは、[readable](/docs/svelte-store#readable)、[writable](/docs/svelte-store#writable)、[derived](/docs/svelte-store#derived) ストア(store)を作成する関数をエクスポートします。
 
-Keep in mind that you don't _have_ to use these functions to enjoy the [reactive `$store` syntax](/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values) in your components. Any object that correctly implements `.subscribe`, unsubscribe, and (optionally) `.set` is a valid store, and will work both with the special syntax, and with Svelte's built-in [`derived` stores](/docs/svelte-store#derived).
+コンポーネントで[リアクティブな `$store` 構文](/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values)を便利に使う際に、これらの関数を使用しなくてもよいことを覚えておいてください。`.subscribe` とそのサブスクライブの解除、（オプションで）`.set` を正しく実装したオブジェクトは有効なストアであり、この特別な構文でも Svelte 組み込みの [`derived` ストア](/docs/svelte-store#derived)でも機能します。
 
-This makes it possible to wrap almost any other reactive state handling library for use in Svelte. Read more about the [store contract](/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values) to see what a correct implementation looks like.
+これにより、リアクティブな状態を扱うほぼすべての他のライブラリを、Svelte で使用するためにラップすることが可能になります。正しい実装がどのようなものか理解するために、[ストアコントラクト(store contract)](/docs/svelte-components#script-4-prefix-stores-with-$-to-access-their-values) も読んでみてください。
 
 ## `writable`
 
 > EXPORT_SNIPPET: svelte/store#writable
 
-Function that creates a store which has values that can be set from 'outside' components. It gets created as an object with additional `set` and `update` methods.
+コンポーネントの'外側'からでも値を設定することができるストアを作成する関数。これは、`set` メソッド と `update` メソッドを併せ持つオブジェクトとして作成されます。
 
-`set` is a method that takes one argument which is the value to be set. The store value gets set to the value of the argument if the store value is not already equal to it.
+`set` は1つの引数を取るメソッドです。この引数はストアの値に設定されるものです。ストアの値が引数の値と等しくない場合、引数の値がストアの値に設定されます。
 
-`update` is a method that takes one argument which is a callback. The callback takes the existing store value as its argument and returns the new value to be set to the store.
+`update` は1つの引数を取る関数です。この引数はコールバックです。このコールバックは、既存のストアの値を引数に取り、ストアに設定される新しい値を返します。
 
 ```js
 /// file: store.js
@@ -33,7 +33,7 @@ count.set(1); // logs '1'
 count.update((n) => n + 1); // logs '2'
 ```
 
-If a function is passed as the second argument, it will be called when the number of subscribers goes from zero to one (but not from one to two, etc). That function will be passed a `set` function which changes the value of the store, and an `update` function which works like the `update` method on the store, taking a callback to calculate the store's new value from its old value. It must return a `stop` function that is called when the subscriber count goes from one to zero.
+第2引数に関数が渡された場合、その関数はサブスクライバーの数が0から1になると呼び出されます (ただし、1から2になった場合などには呼び出されません)。その関数には、ストアの値を変更する `set` 関数と、ストアの `update` メソッドのようにストアの古い値から新しい値を計算するコールバックを取る `update` 関数が渡されます。サブスクライバーの数が1から0になったときに呼び出される `stop` 関数を返す必要があります。
 
 ```js
 /// file: store.js
@@ -53,13 +53,13 @@ const unsubscribe = count.subscribe((value) => {
 unsubscribe(); // logs 'no more subscribers'
 ```
 
-Note that the value of a `writable` is lost when it is destroyed, for example when the page is refreshed. However, you can write your own logic to sync the value to for example the `localStorage`.
+`writable` の値は、例えばページが更新されたときなど、破棄されたときに失われるので注意してください。ただし、`localStorage` などに値を同期する独自ロジックを作ることはできます。
 
 ## `readable`
 
 > EXPORT_SNIPPET: svelte/store#readable
 
-Creates a store whose value cannot be set from 'outside', the first argument is the store's initial value, and the second argument to `readable` is the same as the second argument to `writable`.
+「外側」から値を設定できないストアを作成します。`readable` の第1引数はストアの初期値で、の第2引数は `writable` の第2引数と同じです。
 
 ```js
 <!--- file: App.svelte --->
@@ -89,9 +89,9 @@ const ticktock = readable('tick', (set, update) => {
 
 > EXPORT_SNIPPET: svelte/store#derived
 
-Derives a store from one or more other stores. The callback runs initially when the first subscriber subscribes and then whenever the store dependencies change.
+1つ以上の他のストアからストアを派生させます。コールバックは、最初のサブスクライバーがサブスクライブしたときに最初に実行され、それからはストアが依存しているものが変化するたびに実行されます。
 
-In the simplest version, `derived` takes a single store, and the callback returns a derived value.
+最もシンプルな例だと、`derived` は単一のストアを受け取り、コールバックは派生値を返します。
 
 ```ts
 // @filename: ambient.d.ts
@@ -110,9 +110,9 @@ import { derived } from 'svelte/store';
 const doubled = derived(a, ($a) => $a * 2);
 ```
 
-The callback can set a value asynchronously by accepting a second argument, `set`, and an optional third argument, `update`, calling either or both of them when appropriate.
+コールバックは、第2引数に `set` を、オプションで第3引数に `update` を受け取り、適宜どちらかまたは両方を呼び出し、非同期に値を設定できます。
 
-In this case, you can also pass a third argument to `derived` — the initial value of the derived store before `set` or `update` is first called. If no initial value is specified, the store's initial value will be `undefined`.
+この場合、`derived` に第3引数として、`set` や `update` が最初に呼び出される前の derived ストアの初期値を渡すこともできます。もし初期値が指定されない場合、ストアの初期値は `undefined` となります。
 
 ```js
 // @filename: ambient.d.ts
@@ -141,7 +141,7 @@ const delayedIncrement = derived(a, ($a, set, update) => {
 });
 ```
 
-If you return a function from the callback, it will be called when a) the callback runs again, or b) the last subscriber unsubscribes.
+コールバックから関数を返すと、a）コールバックが再度実行される時や b）最後のサブスクライバーがサブスクライブを解除する時に呼び出されます。
 
 ```js
 // @filename: ambient.d.ts
@@ -172,7 +172,7 @@ const tick = derived(
 );
 ```
 
-In both cases, an array of arguments can be passed as the first argument instead of a single store.
+どちらの場合も、第1引数として、ストア1つではなく、引数の配列を渡すことができます。
 
 ```ts
 // @filename: ambient.d.ts
@@ -201,7 +201,7 @@ const delayed = derived([a, b], ([$a, $b], set) => {
 
 > EXPORT_SNIPPET: svelte/store#readonly
 
-This simple helper function makes a store readonly. You can still subscribe to the changes from the original one using this new readable store.
+このシンプルはヘルパー関数は、ストアを読み取り専用(readonly)にすることができます。新しい readable ストアを使用して、オリジナルのストアからの変更をサブスクライブすることができます。
 
 ```js
 import { readonly, writable } from 'svelte/store';
@@ -220,9 +220,9 @@ readableStore.set(2); // ERROR
 
 > EXPORT_SNIPPET: svelte/store#get
 
-Generally, you should read the value of a store by subscribing to it and using the value as it changes over time. Occasionally, you may need to retrieve the value of a store to which you're not subscribed. `get` allows you to do so.
+通常は、ストアの値を読み取るには、そのストアをサブスクライブし、時間とともに変化する値を使用したほうがよいでしょう。しかし、場合によっては、サブスクライブしていないストア値を取得する必要があります。`get` はそれができます。
 
-> This works by creating a subscription, reading the value, then unsubscribing. It's therefore not recommended in hot code paths.
+> 内部的には、サブスクリプションを作成し、値を読み取ってから、サブスクリプションを解除する、ということを行っています。したがって、ホットコードパスではお勧めしません。
 
 ```js
 // @filename: ambient.d.ts
