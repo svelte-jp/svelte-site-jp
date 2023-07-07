@@ -53,7 +53,7 @@ action はパラメータを取ることができます。戻り値に `update` 
 
 ## Attributes
 
-action がカスタムイベントを発行し、適用する要素にカスタム属性を適用することがあります。これをサポートするために、`Action` 型または `ActionReturn` 型の action は最後のパラメータとして `Attributes` を持つことができます： `Attributes` は `ActionReturn` 型の action の最後のパラメータです：
+action がカスタムイベントを発行し、適用する要素にカスタム属性を適用することがあります。これをサポートするために、`Action` 型または `ActionReturn` 型の action は最後のパラメータとして `Attributes` を持つことができます:
 
 ```svelte
 <!--- file: App.svelte --->
