@@ -16,9 +16,9 @@ title: Special elements
 <slot prop={value} />
 ```
 
-Components can have child content, in the same way that elements can.
+コンポーネントは要素と同じ様に、子コンテンツを持つことができます。
 
-The content is exposed in the child component using the `<slot>` element, which can contain fallback content that is rendered if no children are provided.
+コンテンツは `<slot>` 要素を用いて子コンポーネントに公開されます。子が提供されない場合にレンダリングされるフォールバックのコンテンツを含めることができます。
 
 ```svelte
 <!-- Widget.svelte -->
@@ -37,13 +37,13 @@ The content is exposed in the child component using the `<slot>` element, which 
 </Widget>
 ```
 
-Note: If you want to render regular `<slot>` element, You can use `<svelte:element this="slot" />`.
+Note: 通常の `<slot>` 要素をレンダリングしたい場合は、`<svelte:element this="slot" />` を使用します。
 
 Note: If you want to render regular `<slot>` element, You can use `<svelte:element this="slot" />`.
 
 ### `<slot name="`_name_`">`
 
-Named slots allow consumers to target specific areas. They can also have fallback content.
+名前付き slot (Named slot) は、特定の場所をターゲットにすることを可能にします。 また、フォールバックのコンテンツを含むこともできます。
 
 ```svelte
 <!-- Widget.svelte -->
@@ -60,8 +60,8 @@ Named slots allow consumers to target specific areas. They can also have fallbac
 </Widget>
 ```
 
-Components can be placed in a named slot using the syntax `<Component slot="name" />`.
-In order to place content in a slot without using a wrapper element, you can use the special element `<svelte:fragment>`.
+`<Component slot="name" />` という構文を使って、コンポーネントを名前付き slot に入れることができます。
+ラッパー要素無しでコンテンツを slot に入れるために、特別な要素 `<svelte:fragment>` を使うことができます。
 
 ```svelte
 <!-- Widget.svelte -->
@@ -83,16 +83,16 @@ In order to place content in a slot without using a wrapper element, you can use
 
 ### $$slots
 
-`$$slots` is an object whose keys are the names of the slots passed into the component by the parent. If the parent does not pass in a slot with a particular name, that name will not be present in `$$slots`. This allows components to render a slot (and other elements, like wrappers for styling) only if the parent provides it.
+`$$slots` は、親からコンポーネントに渡された slot の名前が key となるオブジェクトです。親が特定の名前の slot を渡さなかった場合、その名前は `$$slots` には存在しません。これにより、親が slot を指定した場合にのみコンポーネントが slot (と他の要素、例えばスタイリング用のラッパーなど)をレンダリングすることができます。
 
-Note that explicitly passing in an empty named slot will add that slot's name to `$$slots`. For example, if a parent passes `<div slot="title" />` to a child component, `$$slots.title` will be truthy within the child.
+明示的に空の名前付き slot を渡すと、その slot の名前が `$$slots` に追加されることにご注意ください。例えば、親が `<div slot="title" />` を子コンポーネントに渡した場合、`$$slots.title` は子コンポーネント内で有効になります。
 
 ```svelte
 <!-- Card.svelte -->
 <div>
 	<slot name="title" />
 	{#if $$slots.description}
-		<!-- This <hr> and slot will render only if a slot named "description" is provided. -->
+		<!-- この <hr> と slot は、"description" という名前の slot が提供されている場合にのみレンダリングされます。 -->
 		<hr />
 		<slot name="description" />
 	{/if}
@@ -101,15 +101,15 @@ Note that explicitly passing in an empty named slot will add that slot's name to
 <!-- App.svelte -->
 <Card>
 	<h1 slot="title">Blog Post Title</h1>
-	<!-- No slot named "description" was provided so the optional slot will not be rendered. -->
+	<!-- "description"という名前の slot は提供されていないので、該当しない slot はレンダリングされません。 -->
 </Card>
 ```
 
 ### `<slot key={`_value_`}>`
 
-Slots can be rendered zero or more times and can pass values _back_ to the parent using props. The parent exposes the values to the slot template using the `let:` directive.
+slot は0回以上レンダリングすることができ、props を使って親に値を _戻す_ ことができます。親はその値を `let:` ディレクティブを使って slot テンプレートに公開します。
 
-The usual shorthand rules apply — `let:item` is equivalent to `let:item={item}`, and `<slot {item}>` is equivalent to `<slot item={item}>`.
+通常の短縮ルールが適用されます — `let:item` は `let:item={item}` と同等であり、`<slot {item}>` は `<slot item={item}>` と同等です。
 
 ```svelte
 <!-- FancyList.svelte -->
@@ -127,7 +127,7 @@ The usual shorthand rules apply — `let:item` is equivalent to `let:item={item}
 </FancyList>
 ```
 
-Named slots can also expose values. The `let:` directive goes on the element with the `slot` attribute.
+名前付き slot は値を公開することもできます。`let:` ディレクティブは `slot` 属性を持つ要素に適用されます。
 
 ```svelte
 <!-- FancyList.svelte -->
@@ -150,9 +150,9 @@ Named slots can also expose values. The `let:` directive goes on the element wit
 
 ## `<svelte:self>`
 
-The `<svelte:self>` element allows a component to include itself, recursively.
+`<svelte:self>` 要素を使用すると、コンポーネントにそれ自体を再帰的に含めることができます。
 
-It cannot appear at the top level of your markup; it must be inside an if or each block or passed to a component's slot to prevent an infinite loop.
+マークアップのトップレベルに置くことはできません。また、無限ループを防ぐために、 `if` や `each` ブロックの内側に入れるか、コンポーネントの slot に渡す必要があります。
 
 ```svelte
 <script>
@@ -174,9 +174,9 @@ It cannot appear at the top level of your markup; it must be inside an if or eac
 <svelte:component this={expression} />
 ```
 
-The `<svelte:component>` element renders a component dynamically, using the component constructor specified as the `this` property. When the property changes, the component is destroyed and recreated.
+`<svelte:component>` 要素は、 `this` プロパティで指定されたコンポーネントのコンストラクタを用いて、コンポーネントを動的にレンダリングします。プロパティが変更されると、コンポーネントは破棄されて再生成されます。
 
-If `this` is falsy, no component is rendered.
+`this` が falsy である場合、コンポーネントはレンダリングされません。
 
 ```svelte
 <svelte:component this={currentSelection.component} foo={bar} />
@@ -188,13 +188,13 @@ If `this` is falsy, no component is rendered.
 <svelte:element this={expression} />
 ```
 
-The `<svelte:element>` element lets you render an element of a dynamically specified type. This is useful for example when displaying rich text content from a CMS. Any properties and event listeners present will be applied to the element.
+`<svelte:element>` 要素は、動的に指定されたタイプの要素をレンダリングさせることができます。これは例えば、CMS のリッチなテキストコンテンツを表示する場合などに便利です。プロパティやリスナーが存在する場合は、その要素に適用されます。
 
-The only supported binding is `bind:this`, since the element type-specific bindings that Svelte does at build time (e.g. `bind:value` for input elements) do not work with a dynamic tag type.
+Svelte がビルド時に処理する、要素タイプ固有のバインディング (例: input 要素 の `bind:value`) は動的なタグタイプでは動作しないため、サポートされているバインディングは `bind:this` のみです。
 
-If `this` has a nullish value, the element and its children will not be rendered.
+`this` が nullish な値である場合、その要素と子要素はレンダリングされません。
 
-If `this` is the name of a [void element](https://developer.mozilla.org/en-US/docs/Glossary/Void_element) (e.g., `br`) and `<svelte:element>` has child elements, a runtime error will be thrown in development mode.
+`this` が[空要素(void element)](https://developer.mozilla.org/ja/docs/Glossary/Void_element)のタグ名 (例えば `br`) で、`<svelte:element>` が子要素を持っている場合、開発モードの場合はランタイムエラーがスローされます。
 
 ```svelte
 <script>
@@ -217,9 +217,9 @@ If `this` is the name of a [void element](https://developer.mozilla.org/en-US/do
 <svelte:window bind:prop={value} />
 ```
 
-The `<svelte:window>` element allows you to add event listeners to the `window` object without worrying about removing them when the component is destroyed, or checking for the existence of `window` when server-side rendering.
+`<svelte:window>` 要素を使うと、コンポーネントが破棄されたときにイベントリスナーを削除したり、サーバサイドでレンダリングするときに `window` が存在するかどうかをチェックしたりすることなく、`window` オブジェクトにイベントリスナーを追加することができます。
 
-Unlike `<svelte:self>`, this element may only appear at the top level of your component and must never be inside a block or element.
+`<svelte:self>` とは逆に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```svelte
 <script>
@@ -232,7 +232,7 @@ Unlike `<svelte:self>`, this element may only appear at the top level of your co
 <svelte:window on:keydown={handleKeydown} />
 ```
 
-You can also bind to the following properties:
+また、以下のプロパティをバインドすることもできます:
 
 - `innerWidth`
 - `innerHeight`
@@ -240,16 +240,16 @@ You can also bind to the following properties:
 - `outerHeight`
 - `scrollX`
 - `scrollY`
-- `online` — an alias for `window.navigator.onLine`
+- `online` — `window.navigator.onLine` の別名です
 - `devicePixelRatio`
 
-All except `scrollX` and `scrollY` are readonly.
+`scrollX` と `scrollY` 以外はすべて読取専用です。
 
 ```svelte
 <svelte:window bind:scrollY={y} />
 ```
 
-> Note that the page will not be scrolled to the initial value to avoid accessibility issues. Only subsequent changes to the bound variable of `scrollX` and `scrollY` will cause scrolling. However, if the scrolling behaviour is desired, call `scrollTo()` in `onMount()`.
+> アクセシビリティの問題を避けるため、ページは初期値にスクロールされないことにご注意ください。`scrollX` と `scrollY` にバインドされている変数が変更された後にのみ、スクロールが発生します。ただし、スクロールの挙動が必要であれば、`onMount()` 内で `scrollTo()` を呼び出してください。
 
 ## `<svelte:document>`
 
@@ -261,20 +261,20 @@ All except `scrollX` and `scrollY` are readonly.
 <svelte:document bind:prop={value} />
 ```
 
-Similarly to `<svelte:window>`, this element allows you to add listeners to events on `document`, such as `visibilitychange`, which don't fire on `window`. It also lets you use [actions](/docs/element-directives#use-action) on `document`.
+`<svelte:window>` と似ていますが、この要素では、`window` では発生しない `visibilitychange` などのイベントに対するリスナーを `document` に追加することができます。また、`document` で [action](/docs/element-directives#use-action) を使用することもできます。
 
-As with `<svelte:window>`, this element may only appear the top level of your component and must never be inside a block or element.
+`<svelte:window>` と同様、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```svelte
 <svelte:document on:visibilitychange={handleVisibilityChange} use:someAction />
 ```
 
-You can also bind to the following properties:
+以下のプロパティをバインドすることもできます:
 
 - `fullscreenElement`
 - `visibilityState`
 
-All are readonly.
+すべて読取専用です。
 
 ## `<svelte:body>`
 
@@ -282,9 +282,9 @@ All are readonly.
 <svelte:body on:event={handler} />
 ```
 
-Similarly to `<svelte:window>`, this element allows you to add listeners to events on `document.body`, such as `mouseenter` and `mouseleave`, which don't fire on `window`. It also lets you use [actions](/docs/element-directives#use-action) on the `<body>` element.
+`<svelte:window>` と似ていますが、この要素では、`window` では発生しない `mouseenter` や `mouseleave` などのイベントに対するリスナーを `document.body` に追加することができます。また、`<body>` 要素で [action](/docs/element-directives#use-action) を使用することもできます。
 
-As with `<svelte:window>` and `<svelte:document>`, this element may only appear the top level of your component and must never be inside a block or element.
+`<svelte:window>`、`<svelte:document>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```svelte
 <svelte:body on:mouseenter={handleMouseenter} on:mouseleave={handleMouseleave} use:someAction />
@@ -296,9 +296,9 @@ As with `<svelte:window>` and `<svelte:document>`, this element may only appear 
 <svelte:head>...</svelte:head>
 ```
 
-This element makes it possible to insert elements into `document.head`. During server-side rendering, `head` content is exposed separately to the main `html` content.
+この要素を使うと、 `document.head` に要素を挿入することができます。サーバサイドのレンダリングでは、`head` の内容はメインの `html` の内容とは別に公開されます。
 
-As with `<svelte:window>`, `<svelte:document>` and `<svelte:body>`, this element may only appear at the top level of your component and must never be inside a block or element.
+`<svelte:window>`、`<svelte:document>`、`<svelte:body>` と同様に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```svelte
 <svelte:head>
@@ -313,14 +313,14 @@ As with `<svelte:window>`, `<svelte:document>` and `<svelte:body>`, this element
 <svelte:options option={value} />
 ```
 
-The `<svelte:options>` element provides a place to specify per-component compiler options, which are detailed in the [compiler section](/docs/svelte-compiler#compile). The possible options are:
+`<svelte:options>` 要素を使用すると、コンポーネントごとにコンパイラオプションを指定することができます。これらは [コンパイラセクション](/docs/svelte-compiler#compile) で詳しく説明されています。使用できるオプションは以下の通りです。
 
-- `immutable={true}` — you never use mutable data, so the compiler can do simple referential equality checks to determine if values have changed
-- `immutable={false}` — the default. Svelte will be more conservative about whether or not mutable objects have changed
-- `accessors={true}` — adds getters and setters for the component's props
-- `accessors={false}` — the default
-- `namespace="..."` — the namespace where this component will be used, most commonly "svg"; use the "foreign" namespace to opt out of case-insensitive attribute names and HTML-specific warnings
-- `customElement="..."` — the name to use when compiling this component as a custom element
+- `immutable={true}` — ミュータブルなデータは絶対に使いません。そのため、コンパイラは値が変更されたかどうかを判断するために単純な参照等価性チェックを行うことができます
+- `immutable={false}` — デフォルトです。Svelte は、ミュータブルなオブジェクトが変更されたかどうかについて、より保守的になります
+- `accessors={true}` — コンポーネントの props の getter と setter を追加します
+- `accessors={false}` — デフォルトです
+- `namespace="..."` — このコンポーネントが使用される名前空間、よく指定されるのは "svg" です。大文字小文字を区別しない属性名とHTML固有の警告を除外するには "foreign" 名前空間を使用します
+- `customElement="..."` — このコンポーネントをカスタム要素(custom element)としてコンパイルする際に使用する名前
 
 ```svelte
 <svelte:options customElement="my-custom-element" />
@@ -328,7 +328,7 @@ The `<svelte:options>` element provides a place to specify per-component compile
 
 ## `<svelte:fragment>`
 
-The `<svelte:fragment>` element allows you to place content in a [named slot](/docs/special-elements#slot-slot-name-name) without wrapping it in a container DOM element. This keeps the flow layout of your document intact.
+`<svelte:fragment>` 要素によって、コンテナとなる DOM 要素でラップすることなく[名前付き slot](/docs/special-elements#slot-slot-name-name) にコンテンツを入れることができます。これにより、ドキュメントのフローレイアウトがそのまま維持されます。
 
 ```svelte
 <!-- Widget.svelte -->

@@ -8,13 +8,13 @@ title: Component directives
 on:eventname={handler}
 ```
 
-Components can emit events using [createEventDispatcher](/docs/svelte#createeventdispatcher), or by forwarding DOM events. Listening for component events looks the same as listening for DOM events:
+コンポーネントは [createEventDispatcher](/docs/svelte#createeventdispatcher) を用いるか、または DOM イベントを転送(forward)することでイベントを発火することができます。コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
 
 ```svelte
 <SomeComponent on:whatever={handler} />
 ```
 
-As with DOM events, if the `on:` directive is used without a value, the component will _forward_ the event, meaning that a consumer of the component can listen for it.
+DOM イベントと同様に、`on:` ディレクティブが値なしで使われる場合、コンポーネントはイベントを転送(forward)しますが、これはコンポーネントを使用する側でイベントをリッスンできることを意味します。
 
 ```svelte
 <SomeComponent on:whatever />
@@ -26,15 +26,15 @@ As with DOM events, if the `on:` directive is used without a value, the componen
 --style-props="anycssvalue"
 ```
 
-You can also pass styles as props to components for the purposes of theming, using CSS custom properties.
+テーマ設定のためにスタイルをプロパティとしてコンポーネントに渡すことができます。これには CSS カスタムプロパティを使用します。
 
-Svelte's implementation is essentially syntactic sugar for adding a wrapper element. This example:
+Svelte の実装は、本質的にはラッパー要素を追加するためのシンタックスシュガー(糖衣構文)です。この例では:
 
 ```svelte
 <Slider bind:value min={0} --rail-color="black" --track-color="rgb(0, 0, 255)" />
 ```
 
-Desugars to this:
+デシュガー(脱糖)すると:
 
 ```svelte
 <div style="display: contents; --rail-color: black; --track-color: rgb(0, 0, 255)">
@@ -42,9 +42,9 @@ Desugars to this:
 </div>
 ```
 
-**Note**: Since this is an extra `<div>`, beware that your CSS structure might accidentally target this. Be mindful of this added wrapper element when using this feature.
+**注意**: 余分な `<div>` が追加されるため、あなたのCSS構造が誤ってこれをターゲットにしてしまう可能性があるので注意してください。この機能を使用する際は、この追加されるラッパー要素に気をつけてください。
 
-For SVG namespace, the example above desugars into using `<g>` instead:
+SVG namespace の場合、上記の例はデシュガー(脱糖)すると `<g>` が代わりに使用されます:
 
 ```svelte
 <g style="--rail-color: black; --track-color: rgb(0, 0, 255)">
@@ -52,9 +52,9 @@ For SVG namespace, the example above desugars into using `<g>` instead:
 </g>
 ```
 
-**Note**: Since this is an extra `<g>`, beware that your CSS structure might accidentally target this. Be mindful of this added wrapper element when using this feature.
+**Note**: 余分な `<g>` が追加されるため、あなたのCSS構造が誤ってこれをターゲットにしてしまう可能性があるので注意してください。この機能を利用する際は、この追加されるラッパー要素に気をつけてください。
 
-Svelte's CSS Variables support allows for easily themeable components:
+Svelte の CSS Variables サポートによって、テーマに沿ったコンポーネントを簡単に作ることができます:
 
 ```svelte
 <!-- Slider.svelte -->
@@ -65,7 +65,7 @@ Svelte's CSS Variables support allows for easily themeable components:
 </style>
 ```
 
-So you can set a high-level theme color:
+ハイレベルなテーマカラーを設定できますし、
 
 ```css
 /* global.css */
@@ -74,7 +74,7 @@ html {
 }
 ```
 
-Or override it at the consumer level:
+コンシューマーレベルでそれをオーバーライドできます。
 
 ```svelte
 <Slider --rail-color="goldenrod" />
@@ -86,7 +86,7 @@ Or override it at the consumer level:
 bind:property={variable}
 ```
 
-You can bind to component props using the same syntax as for elements.
+要素の場合と同じ構文を用いてコンポーネントの props をバインドすることができます。
 
 ```svelte
 <Keypad bind:value={pin} />
@@ -98,9 +98,9 @@ You can bind to component props using the same syntax as for elements.
 bind:this={component_instance}
 ```
 
-Components also support `bind:this`, allowing you to interact with component instances programmatically.
+コンポーネントは `bind:this` もサポートしており、これを用いることでコンポーネントのインスタンスをプログラムで操作できるようになります。
 
-> Note that we can't do `{cart.empty}` since `cart` is `undefined` when the button is first rendered and throws an error.
+> ボタンが最初にレンダリングされるときには `cart` が `undefined` であり、エラーを投げるので、`{cart.empty}` を実行できないことに注意してください。
 
 ```svelte
 <ShoppingCart bind:this={cart} />

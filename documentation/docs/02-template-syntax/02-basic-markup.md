@@ -2,9 +2,9 @@
 title: Basic markup
 ---
 
-## Tags
+## タグ(Tags) <!--tags-->
 
-A lowercase tag, like `<div>`, denotes a regular HTML element. A capitalised tag, such as `<Widget>` or `<Namespace.Widget>`, indicates a _component_.
+`<div>` のような小文字のタグは、通常の HTML 要素を表します。大文字のタグ、例えば`<Widget>` や `<Namespace.Widget>` は コンポーネント を表します。
 
 ```svelte
 <script>
@@ -16,9 +16,9 @@ A lowercase tag, like `<div>`, denotes a regular HTML element. A capitalised tag
 </div>
 ```
 
-## Attributes and props
+## 属性(attributes) と props <!--attributes-and-props-->
 
-By default, attributes work exactly like their HTML counterparts.
+デフォルトでは、属性は HTML と全く同じように動作します。
 
 ```svelte
 <div class="foo">
@@ -26,40 +26,40 @@ By default, attributes work exactly like their HTML counterparts.
 </div>
 ```
 
-As in HTML, values may be unquoted.
+HTML のように、値は引用符で囲まれていない場合があります。
 
 ```svelte
 <input type="checkbox" />
 ```
 
-Attribute values can contain JavaScript expressions.
+属性値には JavaScript の式を含めることができます。
 
 ```svelte
 <a href="page/{p}">page {p}</a>
 ```
 
-Or they can _be_ JavaScript expressions.
+あるいは、JavaScript の式にすることもできます。
 
 ```svelte
 <button disabled={!clickable}>...</button>
 ```
 
-Boolean attributes are included on the element if their value is [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy) and excluded if it's [falsy](https://developer.mozilla.org/en-US/docs/Glossary/Falsy).
+Boolean の属性は、その値が [truthy](https://developer.mozilla.org/ja/docs/Glossary/Truthy) であれば要素に含まれ、[falsy](https://developer.mozilla.org/ja/docs/Glossary/Falsy) であれば除外されます。
 
-All other attributes are included unless their value is [nullish](https://developer.mozilla.org/en-US/docs/Glossary/Nullish) (`null` or `undefined`).
+それ以外の属性は、その値が [nullish](https://developer.mozilla.org/ja/docs/Glossary/Nullish) (`null` または `undefined`) でない限り含まれます。
 
 ```svelte
 <input required={false} placeholder="This input field is not required" />
 <div title={null}>This div has no title attribute</div>
 ```
 
-An expression might include characters that would cause syntax highlighting to fail in regular HTML, so quoting the value is permitted. The quotes do not affect how the value is parsed:
+式には、通常の HTML ではシンタックスハイライトに失敗するような文字が含まれている可能性があるので、値を引用符で囲むことが許可されています。引用符は値の解析方法には影響しません。
 
 ```svelte
 <button disabled={number !== 42}>...</button>
 ```
 
-When the attribute name and value match (`name={name}`), they can be replaced with `{name}`.
+属性名と値が一致する場合(`name={name}`)は、`{name}` で置き換えることができます。
 
 ```svelte
 <button {disabled}>...</button>
@@ -68,39 +68,39 @@ When the attribute name and value match (`name={name}`), they can be replaced wi
 -->
 ```
 
-By convention, values passed to components are referred to as _properties_ or _props_ rather than _attributes_, which are a feature of the DOM.
+慣習として、コンポーネントに渡される値は DOM の機能である _属性_ ではなく、_プロパティ(properties)_ または _props_ と呼ばれます。
 
-As with elements, `name={name}` can be replaced with the `{name}` shorthand.
+要素の場合と同様に、`name={name}` は `{name}` の短縮形に置き換えることができます。
 
 ```svelte
 <Widget foo={bar} answer={42} text="hello" />
 ```
 
-_Spread attributes_ allow many attributes or properties to be passed to an element or component at once.
+_スプレッド属性_ は、多くの属性やプロパティを一度に要素やコンポーネントに渡すことができます。
 
-An element or component can have multiple spread attributes, interspersed with regular ones.
+要素またはコンポーネントは、通常のものと混在させて、複数のスプレッド属性を持つことができます。
 
 ```svelte
 <Widget {...things} />
 ```
 
-`$$props` references all props that are passed to a component, including ones that are not declared with `export`. It is not generally recommended, as it is difficult for Svelte to optimise. But it can be useful in rare cases – for example, when you don't know at compile time what props might be passed to a component.
+`$$props` は、`export` で宣言されていないものも含めて、コンポーネントに渡されるすべてのプロパティ(props)を参照します。これは Svelte にとって最適化が難しくなるので、一般的には推奨されません。しかし、コンパイル時にどのようなプロパティがコンポーネントに渡されるかわからない場合など、稀なケースでは便利です。
 
 ```svelte
 <Widget {...$$props} />
 ```
 
-`$$restProps` contains only the props which are _not_ declared with `export`. It can be used to pass down other unknown attributes to an element in a component. It shares the same optimisation problems as `$$props`, and is likewise not recommended.
+`$$restProps` には、`export` で宣言されていないプロパティ(props)のみが含まれます。これは他の未知の属性をコンポーネントの要素に渡すために使用できます。`$$props` と同じ最適化の問題を共有しており、同様に推奨されません。
 
 ```svelte
 <input {...$$restProps} />
 ```
 
-> The `value` attribute of an `input` element or its children `option` elements must not be set with spread attributes when using `bind:group` or `bind:checked`. Svelte needs to be able to see the element's `value` directly in the markup in these cases so that it can link it to the bound variable.
+> `input` 要素やその子要素である `option` 要素の `value` 属性は、`bind:group` や `bind:checked` を使用している場合、スプレッド属性で設定してはいけません。このような場合、Svelte はその要素の `value` をマークアップの中で直接確認する必要があります、そうすることでバインドされた変数にリンクすることができるからです。
 
-> Sometimes, the attribute order matters as Svelte sets attributes sequentially in JavaScript. For example, `<input type="range" min="0" max="1" value={0.5} step="0.1"/>`, Svelte will attempt to set the value to `1` (rounding up from 0.5 as the step by default is 1), and then set the step to `0.1`. To fix this, change it to `<input type="range" min="0" max="1" step="0.1" value={0.5}/>`.
+> Svelte は JavaScript で属性を順番に設定するため、その属性の順番が問題になることがあります。例えば、`<input type="range" min="0" max="1" value={0.5} step="0.1"/>` の場合、Svelte は value に `1` を設定し (step のデフォルトが 1 であるため、0.5 から切り上げられてしまいます)、そしてそのあとで step に `0.1` を設定します。これを修正するには、順序を `<input type="range" min="0" max="1" step="0.1" value={0.5}/>` のように変更してください。
 
-> Another example is `<img src="..." loading="lazy" />`. Svelte will set the img `src` before making the img element `loading="lazy"`, which is probably too late. Change this to `<img loading="lazy" src="...">` to make the image lazily loaded.
+> 別の例としては `<img src="..." loading="lazy" />` があります。Svelte は、img 要素を `loading="lazy"` にする前に、img の `src` を設定しますが、これでは遅すぎます。画像を遅延読み込みさせるには、`<img loading="lazy" src="...">` のように変更してください。
 
 ## Text expressions
 
@@ -108,9 +108,9 @@ An element or component can have multiple spread attributes, interspersed with r
 {expression}
 ```
 
-Text can also contain JavaScript expressions:
+テキストにも JavaScript の式(expression)を含めることができます。
 
-> If you're using a regular expression (`RegExp`) [literal notation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#literal_notation_and_constructor), you'll need to wrap it in parentheses.
+> 正規表現 (`RegExp`) の [リテラル記法](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#literal_notation_and_constructor)を使用する場合、括弧で囲う必要があります。
 
 ```svelte
 <h1>Hello {name}!</h1>
@@ -121,13 +121,13 @@ Text can also contain JavaScript expressions:
 
 ## Comments
 
-You can use HTML comments inside components.
+コンポーネント内で HTML コメントを使用することができます。
 
 ```svelte
 <!-- this is a comment! --><h1>Hello world</h1>
 ```
 
-Comments beginning with `svelte-ignore` disable warnings for the next block of markup. Usually, these are accessibility warnings; make sure that you're disabling them for a good reason.
+`svelte-ignore` で始まるコメントは、マークアップの次のブロックに対する警告を無効にします。通常、これらはアクセシビリティの警告です。正当な理由で警告を無効にしていることを確認してください。
 
 ```svelte
 <!-- svelte-ignore a11y-autofocus -->

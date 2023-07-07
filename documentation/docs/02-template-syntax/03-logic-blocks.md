@@ -16,7 +16,7 @@ title: Logic blocks
 {#if expression}...{:else}...{/if}
 ```
 
-Content that is conditionally rendered can be wrapped in an if block.
+条件付きでレンダリングされるコンテンツは、if ブロックで囲むことができます。
 
 ```svelte
 {#if answer === 42}
@@ -24,7 +24,7 @@ Content that is conditionally rendered can be wrapped in an if block.
 {/if}
 ```
 
-Additional conditions can be added with `{:else if expression}`, optionally ending in an `{:else}` clause.
+追加の条件は `{:else if expression}` で付け足すことができ、`{:else}` 句で終わらせることもできます。
 
 ```svelte
 {#if porridge.temperature > 100}
@@ -36,7 +36,7 @@ Additional conditions can be added with `{:else if expression}`, optionally endi
 {/if}
 ```
 
-(Blocks don't have to wrap elements, they can also wrap text within elements!)
+(ブロックは要素をラップする必要はなく、要素の中のテキストをラップすることもできます！)
 
 ## {#each ...}
 
@@ -60,7 +60,7 @@ Additional conditions can be added with `{:else if expression}`, optionally endi
 {#each expression as name}...{:else}...{/each}
 ```
 
-Iterating over lists of values can be done with an each block.
+each ブロックで値のリストの反復処理ができます。
 
 ```svelte
 <h1>Shopping list</h1>
@@ -71,9 +71,9 @@ Iterating over lists of values can be done with an each block.
 </ul>
 ```
 
-You can use each blocks to iterate over any array or array-like value — that is, any object with a `length` property.
+配列や配列のような値（つまり `length` プロパティを持つオブジェクト）を反復処理するのに each ブロックを使用できます。
 
-An each block can also specify an _index_, equivalent to the second argument in an `array.map(...)` callback:
+each ブロックは `array.map(...)` のコールバックの第二引数に相当する _インデックス_ を指定することもできます。
 
 ```svelte
 {#each items as item, i}
@@ -81,20 +81,20 @@ An each block can also specify an _index_, equivalent to the second argument in 
 {/each}
 ```
 
-If a _key_ expression is provided — which must uniquely identify each list item — Svelte will use it to diff the list when data changes, rather than adding or removing items at the end. The key can be any object, but strings and numbers are recommended since they allow identity to persist when the objects themselves change.
+_key_ の式（各リストアイテムを一意に識別できる必要があります）が与えられた場合、Svelte は、データが変化したときに（末尾にアイテムを追加したり削除するのではなく）その key を使用してリストの差分を取ります。key はどんなオブジェクトでもよいですが、そのオブジェクト自体が変更されたときに同一性を維持できるようにするため、文字列か数値をお勧めします。
 
 ```svelte
 {#each items as item (item.id)}
 	<li>{item.name} x {item.qty}</li>
 {/each}
 
-<!-- or with additional index value -->
+<!-- もしくはインデックスを追加 -->
 {#each items as item, i (item.id)}
 	<li>{i + 1}: {item.name} x {item.qty}</li>
 {/each}
 ```
 
-You can freely use destructuring and rest patterns in each blocks.
+each ブロックでは分割代入や残余構文のパターンを自由に使えます。
 
 ```svelte
 {#each items as { id, name, qty }, i (id)}
@@ -110,7 +110,7 @@ You can freely use destructuring and rest patterns in each blocks.
 {/each}
 ```
 
-An each block can also have an `{:else}` clause, which is rendered if the list is empty.
+each ブロックには `{:else}` 句を入れることもできます。これはリストが空の場合にレンダリングされます。
 
 ```svelte
 {#each todos as todo}
@@ -120,7 +120,7 @@ An each block can also have an `{:else}` clause, which is rendered if the list i
 {/each}
 ```
 
-Since Svelte 4 it is possible to iterate over iterables like `Map` or `Set`. Iterables need to be finite and static (they shouldn't change while being iterated over). Under the hood, they are transformed to an array using `Array.from` before being passed off to rendering. If you're writing performance-sensitive code, try to avoid iterables and use regular arrays as they are more performant.
+Svelte 4 からは `Map` や `Set` などの iterables を反復処理することが可能です。iterables は有限で静的 (反復処理中に変化してはならない)でなければいけません。内部では、レンダリングに渡される前に `Array.from` を使用して配列に変換しています。もしパフォーマンスが要求されるコードを書くのであれば、iterables を避け、通常の配列を使用してください、そのほうがよりパフォーマンスが良くなります。
 
 ## {#await ...}
 
@@ -140,7 +140,7 @@ Since Svelte 4 it is possible to iterate over iterables like `Map` or `Set`. Ite
 {#await expression catch name}...{/await}
 ```
 
-Await blocks allow you to branch on the three possible states of a Promise — pending, fulfilled or rejected. In SSR mode, only the pending state will be rendered on the server.
+await ブロックを使用すると、Promise が取りうる 3 つの状態（pending(保留中)、fulfilled(成功)、rejected(失敗)）に分岐できます。SSR モードでは、サーバー上では pending の状態だけがレンダリングされます。
 
 ```svelte
 {#await promise}
@@ -155,7 +155,7 @@ Await blocks allow you to branch on the three possible states of a Promise — p
 {/await}
 ```
 
-The `catch` block can be omitted if you don't need to render anything when the promise rejects (or no error is possible).
+promise が rejected、つまり失敗した時に何もレンダリングする必要がない場合（もしくはエラーが発生しない場合）は `catch` ブロックを省略できます。
 
 ```svelte
 {#await promise}
@@ -167,7 +167,7 @@ The `catch` block can be omitted if you don't need to render anything when the p
 {/await}
 ```
 
-If you don't care about the pending state, you can also omit the initial block.
+pending の状態を気にする必要がない場合は、最初のブロックを省略することもできます。
 
 ```svelte
 {#await promise then value}
@@ -175,7 +175,7 @@ If you don't care about the pending state, you can also omit the initial block.
 {/await}
 ```
 
-Similarly, if you only want to show the error state, you can omit the `then` block.
+同様に、エラー状態のみを表示したい場合は `then` ブロックを省略できます。
 
 ```svelte
 {#await promise catch error}
@@ -189,9 +189,9 @@ Similarly, if you only want to show the error state, you can omit the `then` blo
 {#key expression}...{/key}
 ```
 
-Key blocks destroy and recreate their contents when the value of an expression changes.
+key ブロックは式(expression)の値が変更されたときに、その中身を破棄して再作成します。
 
-This is useful if you want an element to play its transition whenever a value changes.
+これは、ある値が変更されるたびに要素のトランジションを再生したい場合に便利です。
 
 ```svelte
 {#key value}
@@ -199,7 +199,7 @@ This is useful if you want an element to play its transition whenever a value ch
 {/key}
 ```
 
-When used around components, this will cause them to be reinstantiated and reinitialised.
+コンポーネントを囲んで使用した場合、コンポーネントの再インスタンス化と再初期化をもたらします。
 
 ```svelte
 {#key value}

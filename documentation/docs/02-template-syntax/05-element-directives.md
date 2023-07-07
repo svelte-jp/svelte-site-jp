@@ -2,7 +2,7 @@
 title: Element directives
 ---
 
-As well as attributes, elements can have _directives_, which control the element's behaviour in some way.
+要素には、属性と同じように _ディレクティブ(directives)_ を持たせることができます。これによって要素の動作を制御します。
 
 ## on:_eventname_
 
@@ -14,7 +14,7 @@ on:eventname={handler}
 on:eventname|modifiers={handler}
 ```
 
-Use the `on:` directive to listen to DOM events.
+DOM イベントをリッスンするには `on:` ディレクティブを使用します。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -32,7 +32,7 @@ Use the `on:` directive to listen to DOM events.
 </button>
 ```
 
-Handlers can be declared inline with no performance penalty. As with attributes, directive values may be quoted for the sake of syntax highlighters.
+ハンドラはパフォーマンスを低下させることなくインラインで宣言できます。 属性と同様、ディレクティブの値はシンタックスハイライトのために引用符で囲むことができます。
 
 ```svelte
 <button on:click={() => (count += 1)}>
@@ -40,36 +40,36 @@ Handlers can be declared inline with no performance penalty. As with attributes,
 </button>
 ```
 
-Add _modifiers_ to DOM events with the `|` character.
+`|` の文字を使って DOM イベントに _修飾子(modifiers)_ を追加します。
 
 ```svelte
 <form on:submit|preventDefault={handleSubmit}>
-	<!-- the `submit` event's default is prevented,
-	     so the page won't reload -->
+	<!-- `submit` イベントのデフォルトの動作が止められているため
+	     ページはリロードされません -->
 </form>
 ```
 
-The following modifiers are available:
+次の修飾子を使用できます:
 
-- `preventDefault` — calls `event.preventDefault()` before running the handler
-- `stopPropagation` — calls `event.stopPropagation()`, preventing the event reaching the next element
-- `stopImmediatePropagation` - calls `event.stopImmediatePropagation()`, preventing other listeners of the same event from being fired.
-- `passive` — improves scrolling performance on touch/wheel events (Svelte will add it automatically where it's safe to do so)
-- `nonpassive` — explicitly set `passive: false`
-- `capture` — fires the handler during the _capture_ phase instead of the _bubbling_ phase
-- `once` — remove the handler after the first time it runs
-- `self` — only trigger handler if `event.target` is the element itself
-- `trusted` — only trigger handler if `event.isTrusted` is `true`. I.e. if the event is triggered by a user action.
+- `preventDefault` — ハンドラを実行する前に `event.preventDefault()` を呼び出します
+- `stopPropagation` — `event.stopPropagation()` を呼び出し、イベントが次の要素に到達するのを防ぎます
+- `stopImmediatePropagation` - `event.stopImmediatePropagation()` を呼び出し、同じイベントの他のリスナーが呼び出されるのを防ぎます
+- `passive` — タッチ/ホイールイベントのスクロールパフォーマンスを向上させます（Svelte は自動的に追加しても安全な箇所に追加します）
+- `nonpassive` — 明示的に `passive: false` を設定します
+- `capture` — _バブリング(bubbling)_ フェーズではなく _キャプチャ(capture)_ フェーズ中にハンドラを実行します
+- `once` — ハンドラが最初に実行された後、そのハンドラを削除します
+- `self` — `event.target` がその要素自体だった場合のみハンドラをトリガします
+- `trusted` — `event.isTrusted` が `true` の場合にのみハンドラをトリガします。つまり、ユーザーのアクションによってイベントがトリガされた場合です。
 
-Modifiers can be chained together, e.g. `on:click|once|capture={...}`.
+修飾子は連鎖させることができます。例 `on:click|once|capture={...}`
 
-If the `on:` directive is used without a value, the component will _forward_ the event, meaning that a consumer of the component can listen for it.
+`on:` ディレクティブが値なしで使用された場合、コンポーネントはイベントを _転送(forward)_ します。つまりコンポーネントを使用する側がイベントをリッスンできます。
 
 ```svelte
-<button on:click> The component itself will emit the click event </button>
+<button on:click> コンポーネント自体がクリックイベントを発火します </button>
 ```
 
-It's possible to have multiple event listeners for the same event:
+同じイベントに対して複数のイベントリスナを持つことができます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -94,9 +94,9 @@ It's possible to have multiple event listeners for the same event:
 bind:property={variable}
 ```
 
-Data ordinarily flows down, from parent to child. The `bind:` directive allows data to flow the other way, from child to parent. Most bindings are specific to particular elements.
+データは通常、親から子へと流れていきます。`bind:` ディレクティブにより、データを子から親へと逆方向に流すことができます。ほとんどのバインディングは特定の要素に固有のものです。
 
-The simplest bindings reflect the value of a property, such as `input.value`.
+もっともシンプルなバインディングは、`input.value` のようなプロパティの値を反映します。
 
 ```svelte
 <input bind:value={name} />
@@ -105,7 +105,7 @@ The simplest bindings reflect the value of a property, such as `input.value`.
 <input type="checkbox" bind:checked={yes} />
 ```
 
-If the name matches the value, you can use a shorthand.
+名前が値と一致する場合は、省略形を使用できます。
 
 ```svelte
 <input bind:value />
@@ -114,21 +114,21 @@ If the name matches the value, you can use a shorthand.
 -->
 ```
 
-Numeric input values are coerced; even though `input.value` is a string as far as the DOM is concerned, Svelte will treat it as a number. If the input is empty or invalid (in the case of `type="number"`), the value is `undefined`.
+数値の入力値は強制されます。つまり、DOM に関する限り `input.value` は文字列ですが、Svelte はそれを数値として扱います。入力が empty や 無効な値の場合 (`type="number"` であれば) 値は `undefined` になります。
 
 ```svelte
 <input type="number" bind:value={num} />
 <input type="range" bind:value={num} />
 ```
 
-On `<input>` elements with `type="file"`, you can use `bind:files` to get the [`FileList` of selected files](https://developer.mozilla.org/en-US/docs/Web/API/FileList). It is readonly.
+`type="file"` である `<input>` 要素では、[選択ファイルの `FileList`](https://developer.mozilla.org/ja/docs/Web/API/FileList) を取得するために `bind:files` を使用できます。これは読み取り専用です。
 
 ```svelte
 <label for="avatar">Upload a picture:</label>
 <input accept="image/png, image/jpeg" bind:files id="avatar" name="avatar" type="file" />
 ```
 
-If you're using `bind:` directives together with `on:` directives, the order that they're defined in affects the value of the bound variable when the event handler is called.
+`bind:` ディレクティブと `on:` ディレクティブを一緒に使用する場合、イベントハンドラが呼ばれた際には、定義された順番がバインドされた変数の値に影響します。
 
 ```svelte
 <script>
@@ -142,11 +142,11 @@ If you're using `bind:` directives together with `on:` directives, the order tha
 />
 ```
 
-Here we were binding to the value of a text input, which uses the `input` event. Bindings on other elements may use different events such as `change`.
+ここではテキストの input の値を、`input` イベントを使用してバインドしています。他の要素のバインディングでは、例えば `change` などの異なるイベントが使用されることになります。
 
 ## Binding `<select>` value
 
-A `<select>` value binding corresponds to the `value` property on the selected `<option>`, which can be any value (not just strings, as is normally the case in the DOM).
+`<select>` 値のバインディングは、選択された `<option>` の `value` プロパティに対応しており、(通常の DOM のように文字列だけでなく)どんな値でも設定できます。
 
 ```svelte
 <select bind:value={selected}>
@@ -156,7 +156,7 @@ A `<select>` value binding corresponds to the `value` property on the selected `
 </select>
 ```
 
-A `<select multiple>` element behaves similarly to a checkbox group. The bound variable is an array with an entry corresponding to the `value` property of each selected `<option>`.
+`<select multiple>` 要素はチェックボックスのグループと同様の動作になります。バインドされる変数は、選択される各 `<option>` の `value` プロパティに対応するエントリーの配列です。
 
 ```svelte
 <select multiple bind:value={fillings}>
@@ -167,7 +167,7 @@ A `<select multiple>` element behaves similarly to a checkbox group. The bound v
 </select>
 ```
 
-When the value of an `<option>` matches its text content, the attribute can be omitted.
+`<option>` の値がテキスト内容と一致する場合、`value` 属性は省略できます。
 
 ```svelte
 <select multiple bind:value={fillings}>
@@ -178,19 +178,19 @@ When the value of an `<option>` matches its text content, the attribute can be o
 </select>
 ```
 
-Elements with the `contenteditable` attribute support the following bindings:
+`contenteditable` 属性を持つ要素は以下のバインディングをサポートします:
 
-- [`innerHTML`](https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML)
-- [`innerText`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText)
-- [`textContent`](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent)
+- [`innerHTML`](https://developer.mozilla.org/ja/docs/Web/API/Element/innerHTML)
+- [`innerText`](https://developer.mozilla.org/ja/docs/Web/API/HTMLElement/innerText)
+- [`textContent`](https://developer.mozilla.org/ja/docs/Web/API/Node/textContent)
 
-There are slight differences between each of these, read more about them [here](https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#Differences_from_innerText).
+それぞれ少し違いがありますので、詳細は[こちら](https://developer.mozilla.org/ja/docs/Web/API/Node/textContent#Differences_from_innerText)をお読みください。
 
 ```svelte
 <div contenteditable="true" bind:innerHTML={html} />
 ```
 
-`<details>` elements support binding to the `open` property.
+`<details>` 要素は `open` プロパティのバインディングをサポートします。
 
 ```svelte
 <details bind:open={isOpen}>
@@ -201,25 +201,25 @@ There are slight differences between each of these, read more about them [here](
 
 ## Media element bindings
 
-Media elements (`<audio>` and `<video>`) have their own set of bindings — seven _readonly_ ones...
+Media 要素 (`<audio>` と `<video>`) には、独自のバインディングのセットがあります — 7つの _読み取り専用(readonly)_ バインディングと…
 
-- `duration` (readonly) — the total duration of the video, in seconds
-- `buffered` (readonly) — an array of `{start, end}` objects
-- `played` (readonly) — ditto
-- `seekable` (readonly) — ditto
+- `duration` (readonly) — 動画の総再生時間(秒単位)です
+- `buffered` (readonly) —  `{start, end}` オブジェクトの配列です
+- `played` (readonly) — 同上
+- `seekable` (readonly) — 同上
 - `seeking` (readonly) — boolean
 - `ended` (readonly) — boolean
-- `readyState` (readonly) — number between (and including) 0 and 4
+- `readyState` (readonly) — 0 から 4 までの数値
 
-...and five _two-way_ bindings:
+…そして5つの _双方向(two-way)_ バインディングがあります。
 
-- `currentTime` — the current playback time in the video, in seconds
-- `playbackRate` — how fast or slow to play the video, where 1 is 'normal'
-- `paused` — this one should be self-explanatory
-- `volume` — a value between 0 and 1
-- `muted` — a boolean value indicating whether the player is muted
+- `currentTime` — 動画の現在の再生時間、秒単位です
+- `playbackRate` — どれぐらい早く、または遅く動画を再生するか、1 が '通常値' です
+- `paused` — これは自明のはずです
+- `volume` — 0 から 1 の間の値です
+- `muted` — booleanの値で、`true` はミュートになります
 
-Videos additionally have readonly `videoWidth` and `videoHeight` bindings.
+動画にはさらに、`videoWidth` と `videoHeight` という読み取り専用のバインディングがあります。
 
 ```svelte
 <video
@@ -243,10 +243,10 @@ Videos additionally have readonly `videoWidth` and `videoHeight` bindings.
 
 ## Image element bindings
 
-Image elements (`<img>`) have two readonly bindings:
+Image 要素 (`<img>`) には2つの読取専用バインディングがあります:
 
-- `naturalWidth` (readonly) — the original width of the image, available after the image has loaded
-- `naturalHeight` (readonly) — the original height of the image, available after the image has loaded
+- `naturalWidth` (readonly) — 画像(image)のオリジナルの width で、画像がロードされたあとに使用することができます。
+- `naturalHeight` (readonly) — 画像(image)のオリジナルの height で、画像がロードされたあとに使用することができます。
 
 ```svelte
 <img
@@ -257,7 +257,7 @@ Image elements (`<img>`) have two readonly bindings:
 
 ## Block-level element bindings
 
-Block-level elements have 4 read-only bindings, measured using a technique similar to [this one](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/):
+ブロックレベル要素は、[この方法](http://www.backalleycoder.com/2013/03/18/cross-browser-event-based-element-resize-detection/)と同様の手法で測定された4つの読み取り専用バインディングを持っています。
 
 - `clientWidth`
 - `clientHeight`
@@ -276,7 +276,7 @@ Block-level elements have 4 read-only bindings, measured using a technique simil
 bind:group={variable}
 ```
 
-Inputs that work together can use `bind:group`.
+グループ化させる input には `bind:group` を使用できます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -287,19 +287,19 @@ Inputs that work together can use `bind:group`.
 	let fillings = [];
 </script>
 
-<!-- grouped radio inputs are mutually exclusive -->
+<!-- こちらのグループ化された radio input は相互に排他的です -->
 <input type="radio" bind:group={tortilla} value="Plain" />
 <input type="radio" bind:group={tortilla} value="Whole wheat" />
 <input type="radio" bind:group={tortilla} value="Spinach" />
 
-<!-- grouped checkbox inputs populate an array -->
+<!-- こちらのグループ化された checkbox input は配列にデータを挿入します -->
 <input type="checkbox" bind:group={fillings} value="Rice" />
 <input type="checkbox" bind:group={fillings} value="Beans" />
 <input type="checkbox" bind:group={fillings} value="Cheese" />
 <input type="checkbox" bind:group={fillings} value="Guac (extra)" />
 ```
 
-> `bind:group` only works if the inputs are in the same Svelte component.
+> `bind:group` は複数の input が同じ Svelte コンポーネントにある場合にのみ機能します。
 
 ## bind:this
 
@@ -307,7 +307,7 @@ Inputs that work together can use `bind:group`.
 bind:this={dom_node}
 ```
 
-To get a reference to a DOM node, use `bind:this`.
+DOM ノードを参照するには `bind:this` を使用します。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -336,17 +336,17 @@ class:name={value}
 class:name
 ```
 
-A `class:` directive provides a shorter way of toggling a class on an element.
+`class:` ディレクティブは要素の class を切り替えるための簡単な方法を提供します。
 
 ```svelte
-<!-- These are equivalent -->
+<!-- この2つは同等です -->
 <div class={isActive ? 'active' : ''}>...</div>
 <div class:active={isActive}>...</div>
 
-<!-- Shorthand, for when name and value match -->
+<!-- 名前と値が一致する場合の短縮形 -->
 <div class:active>...</div>
 
-<!-- Multiple class toggles can be included -->
+<!-- 複数のクラスの切り替えを含めることができます -->
 <div class:active class:inactive={!active} class:isAdmin>...</div>
 ```
 
@@ -364,27 +364,27 @@ style:property="value"
 style:property
 ```
 
-The `style:` directive provides a shorthand for setting multiple styles on an element.
+`style:` ディレクティブは、要素に対して複数のスタイルをセットするためのショートハンドを提供します。
 
 ```svelte
-<!-- These are equivalent -->
+<!-- この2つは同等です -->
 <div style:color="red">...</div>
 <div style="color: red;">...</div>
 
-<!-- Variables can be used -->
+<!-- 変数を使用することができます -->
 <div style:color={myColor}>...</div>
 
-<!-- Shorthand, for when property and variable name match -->
+<!-- プロパティと変数の名前が一致する場合の短縮形 -->
 <div style:color>...</div>
 
-<!-- Multiple styles can be included -->
+<!-- 複数のスタイルを含めることができます -->
 <div style:color style:width="12rem" style:background-color={darkMode ? 'black' : 'white'}>...</div>
 
-<!-- Styles can be marked as important -->
+<!-- スタイルを important としてマークすることができます -->
 <div style:color|important="red">...</div>
 ```
 
-When `style:` directives are combined with `style` attributes, the directives will take precedence:
+`style:` ディレクティブを `style` 属性と一緒に使用ている場合、`style:` ディレクティブのほうが優先されます。
 
 ```svelte
 <div style="color: blue;" style:color="red">This will be red</div>
@@ -408,7 +408,7 @@ action = (node: HTMLElement, parameters: any) => {
 }
 ```
 
-Actions are functions that are called when an element is created. They can return an object with a `destroy` method that is called after the element is unmounted:
+action は、要素が作成されるときに呼び出される関数です。要素がアンマウントされるときに呼び出される `destroy` メソッドをもつオブジェクトを返すことができます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -428,9 +428,9 @@ Actions are functions that are called when an element is created. They can retur
 <div use:foo />
 ```
 
-An action can have a parameter. If the returned value has an `update` method, it will be called whenever that parameter changes, immediately after Svelte has applied updates to the markup.
+action はパラメータを取ることができます。戻り値に `update` メソッドがある場合は、そのパラメータが変化するたびに、Svelte がマークアップに更新を適用した直後に、そのメソッドが呼び出されます。
 
-> Don't worry about the fact that we're redeclaring the `foo` function for every component instance — Svelte will hoist any functions that don't depend on local state out of the component definition.
+> すべてのコンポーネントインスタンスに対して `foo` 関数を再宣言していることについて心配する必要はありません。Svelte は、ローカル状態に依存しない関数をコンポーネント定義から巻き上げます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -456,7 +456,7 @@ An action can have a parameter. If the returned value has an `update` method, it
 <div use:foo={bar} />
 ```
 
-Read more in the [`svelte/action`](/docs/svelte-action) page.
+詳細については [`svelte/action`](/docs/svelte-action) ページをご参照ください。
 
 ## transition:_fn_
 
@@ -495,11 +495,11 @@ transition = (node: HTMLElement, params: any, options: { direction: 'in' | 'out'
 }
 ```
 
-A transition is triggered by an element entering or leaving the DOM as a result of a state change.
+トランジションは、状態変化の結果として DOM に出入りする要素によってトリガーされます。
 
-When a block is transitioning out, all elements inside the block, including those that do not have their own transitions, are kept in the DOM until every transition in the block has been completed.
+ブロックが外へのトランジションをしているとき、ブロック内のすべての要素（独自のトランジションを持たない要素を含む）は、ブロック内のすべてのトランジジョンが完了するまで DOM に保持されます。
 
-The `transition:` directive indicates a _bidirectional_ transition, which means it can be smoothly reversed while the transition is in progress.
+`transition:` ディレクティブは _双方向(bidirectional)_ トランジションであり、トランジションが進行している間でもスムーズに反転させることができます。
 
 ```svelte
 {#if visible}
@@ -507,7 +507,7 @@ The `transition:` directive indicates a _bidirectional_ transition, which means 
 {/if}
 ```
 
-Transitions are local by default (in Svelte 3, they were global by default). Local transitions only play when the block they belong to is created or destroyed, _not_ when parent blocks are created or destroyed.
+トランジションはデフォルトでローカル(local)です (Svelte 3 では、デフォルトでグローバル(global)でした)。ローカルトランジションは、属するブロックが作成または破棄されるときにのみ再生され、親ブロックが作成または破棄されるときには再生されません。
 
 ```svelte
 {#if x}
@@ -521,13 +521,13 @@ Transitions are local by default (in Svelte 3, they were global by default). Loc
 {/if}
 ```
 
-> By default intro transitions will not play on first render. You can modify this behaviour by setting `intro: true` when you [create a component](/docs#run-time-client-side-component-api) and marking the transition as `global`.
+> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](/docs#run-time-client-side-component-api) ときに `intro: true` を設定し、トランジションを `global` にマークすることで変更できます。
 
 ## Transition parameters
 
-Like actions, transitions can have parameters.
+action と同様に、トランジションはパラメータを持つことができます。
 
-(The double `{{curlies}}` aren't a special syntax; this is an object literal inside an expression tag.)
+(二重の `{{中括弧}}` は特殊な構文ではありません。これは式タグ内のオブジェクトリテラルです)
 
 ```svelte
 {#if visible}
@@ -537,11 +537,11 @@ Like actions, transitions can have parameters.
 
 ## Custom transition functions
 
-Transitions can use custom functions. If the returned object has a `css` function, Svelte will create a CSS animation that plays on the element.
+トランジションはカスタム関数を使うことができます。返されたオブジェクトに `css` 関数があれば、Svelte は要素上で再生される CSS アニメーションを作成します。
 
-The `t` argument passed to `css` is a value between `0` and `1` after the `easing` function has been applied. _In_ transitions run from `0` to `1`, _out_ transitions run from `1` to `0` — in other words, `1` is the element's natural state, as though no transition had been applied. The `u` argument is equal to `1 - t`.
+`css` に渡される `t` 引数は `easing` 関数を適用した後の `0` から `1` の間の値です。 _in_ トランジションは `0` から `1` まで、_out_ トランジションは `1` から `0` までの間で実行されます — 言い換えれば、`1` はトランジションが適用されていないかのような要素の自然な状態です。 引数 `u` は `1 - t` と等しくなります。
 
-The function is called repeatedly _before_ the transition begins, with different `t` and `u` arguments.
+この関数はトランジションが始まる前に、`t` と `u` の引数を変えて繰り返し呼び出されます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -572,9 +572,9 @@ The function is called repeatedly _before_ the transition begins, with different
 {/if}
 ```
 
-A custom transition function can also return a `tick` function, which is called _during_ the transition with the same `t` and `u` arguments.
+カスタムのトランジション関数は `tick` 関数を返すこともでき、これはトランジション中に同じ `t` と `u` の引数を取って呼び出されます。
 
-> If it's possible to use `css` instead of `tick`, do so — CSS animations can run off the main thread, preventing jank on slower devices.
+> `tick` の代わりに `css` を使うことが可能ならば、そうしてください — CSS アニメーションはメインスレッドの外で実行することができるため、遅いデバイスでのジャンクを防ぐことができます。
 
 ```svelte
 <!--- file: App.svelte --->
@@ -610,17 +610,17 @@ A custom transition function can also return a `tick` function, which is called 
 {/if}
 ```
 
-If a transition returns a function instead of a transition object, the function will be called in the next microtask. This allows multiple transitions to coordinate, making [crossfade effects](https://learn.svelte.dev/tutorial/deferred-transitions) possible.
+トランジションがトランジションオブジェクトではなく関数を返す場合、その関数は次のマイクロタスクで呼び出されます。これにより、複数のトランジションを調整することができ、[クロスフェード効果](https://learn.svelte.dev/tutorial/deferred-transitions) が可能になります。
 
-Transition functions also receive a third argument, `options`, which contains information about the transition.
+トランジション関数は3つ目の引数 `options` を取ることができ、これにはトランジションの情報が含まれています。
 
-Available values in the `options` object are:
+`options` オブジェクトで利用可能な値は以下の通りです:
 
-- `direction` - one of `in`, `out`, or `both` depending on the type of transition
+- `direction` - トランジションのタイプに応じて、`in`、`out`、`both` のいずれか
 
 ## Transition events
 
-An element with transitions will dispatch the following events in addition to any standard DOM events:
+トランジションを持つ要素は、標準の DOM イベントに加えて以下のイベントをディスパッチします。
 
 - `introstart`
 - `introend`
@@ -691,9 +691,9 @@ out:fn|local
 out:fn|local={params}
 ```
 
-Similar to `transition:`, but only applies to elements entering (`in:`) or leaving (`out:`) the DOM.
+`transition:` に似ていますが、`in:` は DOM に入る要素だけに、`out:` は出る要素だけに適用されます。
 
-Unlike with `transition:`, transitions applied with `in:` and `out:` are not bidirectional — an in transition will continue to 'play' alongside the out transition, rather than reversing, if the block is outroed while the transition is in progress. If an out transition is aborted, transitions will restart from scratch.
+`transition:` とは違って、`in:` と `out:` を適用したトランジションは双方向ではありません。つまり、もしトランジションの最中にブロックが外に出された場合、反転するのではなく、in のトランジションは out のトランジションと一緒に「再生」し続けます。out のトランジションが中断された場合、トランジションは最初から再開されます。
 
 ```svelte
 {#if visible}
@@ -736,9 +736,9 @@ DOMRect {
 }
 ```
 
-An animation is triggered when the contents of a [keyed each block](/docs/logic-blocks#each) are re-ordered. Animations do not run when an element is added or removed, only when the index of an existing data item within the each block changes. Animate directives must be on an element that is an _immediate_ child of a keyed each block.
+アニメーションは、[key 付き each ブロック(keyed each block)](/docs/logic-blocks#each) の中身が並び替えられたときに発生します。アニメーションは、要素が追加または削除されたときには実行されず、each ブロックの既存のデータアイテムのインデックスが変更されたときにのみ実行されます。animate ディレクティブは、key 付き each ブロックの _直接の_ 子要素に付けなければいけません。
 
-Animations can be used with Svelte's [built-in animation functions](/docs/svelte-animate) or [custom animation functions](/docs/element-directives#custom-transition-functions).
+アニメーションは Svelte の[組み込みアニメーション関数](/docs/svelte-animate) または [カスタムアニメーション関数](/docs/element-directives#custom-transition-functions) を使用することができます。
 
 ```svelte
 <!-- When `list` is reordered the animation will run-->
@@ -749,9 +749,9 @@ Animations can be used with Svelte's [built-in animation functions](/docs/svelte
 
 ## Animation Parameters
 
-As with actions and transitions, animations can have parameters.
+action やトランジションと同様に、アニメーションはパラメータを持つことができます。
 
-(The double `{{curlies}}` aren't a special syntax; this is an object literal inside an expression tag.)
+(二重の `{{中括弧}}` は特殊な構文ではありません。これは式タグ内のオブジェクトリテラルです)
 
 ```svelte
 {#each list as item, index (item)}
@@ -761,13 +761,13 @@ As with actions and transitions, animations can have parameters.
 
 ## Custom animation functions
 
-Animations can use custom functions that provide the `node`, an `animation` object and any `parameters` as arguments. The `animation` parameter is an object containing `from` and `to` properties each containing a [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties) describing the geometry of the element in its `start` and `end` positions. The `from` property is the DOMRect of the element in its starting position, and the `to` property is the DOMRect of the element in its final position after the list has been reordered and the DOM updated.
+アニメーションは、`node`、`animation` オブジェクト、および任意の `parameters` を引数に取るカスタム関数を使用することができます。`animation` パラメータは、`from` と `to` プロパティを含むオブジェクトで、それぞれ要素の `start` と `end` の位置におけるジオメトリを記述した [DOMRect](https://developer.mozilla.org/ja/docs/Web/API/DOMRect#Properties) を含みます。`from` プロパティは要素の開始位置の DOMRect であり、`to` プロパティはリストが並び替えられ DOM が更新された後の最終位置の DOMRect です。
 
-If the returned object has a `css` method, Svelte will create a CSS animation that plays on the element.
+返されたオブジェクトが `css` メソッドを持つ場合、Svelte は要素上で再生される CSS アニメーションを作成します。
 
-The `t` argument passed to `css` is a value that goes from `0` and `1` after the `easing` function has been applied. The `u` argument is equal to `1 - t`.
+`css` に渡される `t` 引数は `easing` 関数が適用された後の `0` と `1` の値です。引数 `u` は `1 - t` に等しい値です。
 
-The function is called repeatedly _before_ the animation begins, with different `t` and `u` arguments.
+この関数はアニメーションが始まる前に、`t` と `u` の引数を変えて繰り返し呼び出されます。
 
 <!-- TODO: Types -->
 
@@ -801,9 +801,9 @@ The function is called repeatedly _before_ the animation begins, with different 
 {/each}
 ```
 
-A custom animation function can also return a `tick` function, which is called _during_ the animation with the same `t` and `u` arguments.
+カスタムアニメーション関数は `tick` 関数を返すこともでき、これはアニメーションの中に同じ `t` と `u` の引数を取って呼び出されます。
 
-> If it's possible to use `css` instead of `tick`, do so — CSS animations can run off the main thread, preventing jank on slower devices.
+> `tick` の代わりに `css` を使うことが可能ならば、そうしてください — CSS アニメーションはメインスレッドの外で実行することができるため、遅いデバイスでのジャンクを防ぐことができます。
 
 ```svelte
 <!--- file: App.svelte --->

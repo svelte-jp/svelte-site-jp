@@ -8,11 +8,11 @@ title: Special tags
 {@html expression}
 ```
 
-In a text expression, characters like `<` and `>` are escaped; however, with HTML expressions, they're not.
+テキストの式では、 `<` や `>` のような文字はエスケープされますが、HTML の式ではエスケープされません。
 
-The expression should be valid standalone HTML — `{@html "<div>"}content{@html "</div>"}` will _not_ work, because `</div>` is not valid HTML. It also will _not_ compile Svelte code.
+HTML の式は単独で正しい HTML になっている必要があります。`{@html "<div>"}content{@html "</div>"}` は `</div>` の部分が正しい HTML ではないため、動作しません。また、Svelteコードをコンパイルすることもできません。
 
-> Svelte does not sanitize expressions before injecting HTML. If the data comes from an untrusted source, you must sanitize it, or you are exposing your users to an XSS vulnerability.
+> Svelte は HTML を挿入する前に式をサニタイズしません。データが信頼できないソースからのものである場合は自分でサニタイズする必要があります。そうしないと、ユーザーを XSS の脆弱性にさらしてしまいます。
 
 ```svelte
 <div class="blog-post">
@@ -31,7 +31,7 @@ The expression should be valid standalone HTML — `{@html "<div>"}content{@html
 {@debug var1, var2, ..., varN}
 ```
 
-The `{@debug ...}` tag offers an alternative to `console.log(...)`. It logs the values of specific variables whenever they change, and pauses code execution if you have devtools open.
+`{@debug ...}` タグは `console.log(...)` の代わりになります。指定した変数の値が変更されるたびログに出力し、devtools を開いている場合はコードの実行を一時停止します。
 
 ```svelte
 <script>
@@ -46,21 +46,21 @@ The `{@debug ...}` tag offers an alternative to `console.log(...)`. It logs the 
 <h1>Hello {user.firstname}!</h1>
 ```
 
-`{@debug ...}` accepts a comma-separated list of variable names (not arbitrary expressions).
+`{@debug ...}` はカンマ区切りの（任意の式ではなく）変数名のリストを受け取ります。
 
 ```svelte
-<!-- Compiles -->
+<!-- コンパイルできる -->
 {@debug user}
 {@debug user1, user2, user3}
 
-<!-- WON'T compile -->
+<!-- コンパイルできない -->
 {@debug user.firstname}
 {@debug myArray[0]}
 {@debug !isReady}
 {@debug typeof user === 'object'}
 ```
 
-The `{@debug}` tag without any arguments will insert a `debugger` statement that gets triggered when _any_ state changes, as opposed to the specified variables.
+引数なしの `{@debug}` タグは、（変数を指定した場合とは逆に）何らかの状態が変化した時にトリガされる `debugger` 文を挿入します。
 
 ## {@const ...}
 
@@ -68,7 +68,7 @@ The `{@debug}` tag without any arguments will insert a `debugger` statement that
 {@const assignment}
 ```
 
-The `{@const ...}` tag defines a local constant.
+`{@const ...}` タグはローカル定数を定義します。
 
 ```svelte
 <script>
@@ -81,4 +81,4 @@ The `{@const ...}` tag defines a local constant.
 {/each}
 ```
 
-`{@const}` is only allowed as direct child of `{#if}`, `{:else if}`, `{:else}`, `{#each}`, `{:then}`, `{:catch}`, `<Component />` or `<svelte:fragment />`.
+`{@const}` は、`{#if}`、`{:else if}`、`{:else}`、`{#each}`、`{:then}`、`{:catch}`、`<Component />`、`<svelte:fragment />` の直下にのみ配置することができます。
