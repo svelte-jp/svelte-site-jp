@@ -2,9 +2,9 @@
 title: 'svelte/register'
 ---
 
-> This API is removed in Svelte 4. `require` hooks are deprecated and current Node versions understand ESM. Use a bundler like Vite or our full-stack framework [SvelteKit](https://kit.svelte.dev) instead to create JavaScript modules from Svelte components.
+> この API は Svelte 4 で削除されました。`require` hooks は非推奨で、現在の Node のバージョンでは、ESM に対応しています。Svelte コンポーネントから JavaScript モジュールを作成するには、Vite のようなバンドラーを使用するか、私たちのフルスタックフレームワークである [SvelteKit](https://kit.svelte.jp)を使用してください。
 
-To render Svelte components in Node.js without bundling, use `require('svelte/register')`. After that, you can use `require` to include any `.svelte` file.
+Svelteコンポーネントをビルドせずに Node.js でレンダリングするには、`require('svelte/register')`を使います。その後 `require` を使って `.svelte` ファイルをインクルードすることができます。
 
 ```js
 // @noErrors
@@ -17,9 +17,9 @@ const App = require('./App.svelte').default;
 const { html, css, head } = App.render({ answer: 42 });
 ```
 
-> The `.default` is necessary because we're converting from native JavaScript modules to the CommonJS modules recognised by Node. Note that if your component imports JavaScript modules, they will fail to load in Node and you will need to use a bundler instead.
+> `.default`は、ネイティブの JavaScript モジュールから Node が認識する CommonJS モジュールに変換するために必要です。コンポーネントが JavaScript モジュールをインポートすると、Node での読み込みに失敗するので、代わりにバンドラを使う必要があることに注意してください。
 
-To set compile options, or to use a custom file extension, call the `register` hook as a function:
+コンパイルオプションを設定したり、カスタムファイルの拡張子を使用したりするには、`register` フックを関数として呼び出します。
 
 ```js
 // @noErrors
