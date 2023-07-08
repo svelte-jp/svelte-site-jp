@@ -16,7 +16,7 @@
 			<span style="white-space: nowrap;">サイバネティクスで強化された</span> <br /> web アプリ
 		</strong>
 		<div class="buttons">
-			<a href="https://learn.svelte.dev" rel="external" class="cta">
+			<a href="https://learn.svelte.jp" rel="external" class="cta">
 				チュートリアル<Icon name="external-link" size="1em" />
 			</a>
 			<a href="/docs/introduction" class="cta basic">ドキュメントを読む</a>
