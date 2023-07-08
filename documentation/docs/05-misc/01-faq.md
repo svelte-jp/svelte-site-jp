@@ -2,35 +2,35 @@
 title: Frequently asked questions
 ---
 
-## I'm new to Svelte. Where should I start?
+## Svelte は初めてです。どこから始めればいいですか？ <!--i-m-new-to-svelte-where-should-i-start-->
 
-We think the best way to get started is playing through the interactive [tutorial](https://learn.svelte.dev/). Each step there is mainly focused on one specific aspect and is easy to follow. You'll be editing and running real Svelte components right in your browser.
+始めるにあたって、ベストな方法はインタラクティブな[チュートリアル](https://learn.svelte.jp/) を一通りやってみることです。個々のステップでは1つの特定の側面にフォーカスしており、学習しやすくなっています。ブラウザで本物の Svelte コンポーネントを編集して実行することができます。
 
-Five to ten minutes should be enough to get you up and running. An hour and a half should get you through the entire tutorial.
+5分から10分あれば、すぐに始められます。1時間半でチュートリアル全体をこなせるでしょう。
 
-## Where can I get support?
+## サポートはどこで受けられますか？ <!--where-can-i-get-support-->
 
-If your question is about certain syntax, the [API page](https://svelte.dev/docs) is a good place to start.
+特定の構文に関する質問がある場合は、最初は [API ページ](https://svelte.dev/docs) が参考になると思います。
 
-Stack Overflow is a popular forum to ask code-level questions or if you’re stuck with a specific error. Read through the existing questions tagged with [Svelte](https://stackoverflow.com/questions/tagged/svelte+or+svelte-3) or [ask your own](https://stackoverflow.com/questions/ask?tags=svelte)!
+Stack Overflow はコードレベルの質問やエラーで詰まった際に利用されている人気のフォーラムです。[Svelte](https://stackoverflow.com/questions/tagged/svelte+or+svelte-3) とタグづけられた既存の質問を読んだり、または[自分で質問](https://stackoverflow.com/questions/ask?tags=svelte)してみてください！
 
-There are online forums and chats which are a great place for discussion about best practices, application architecture or just to get to know fellow Svelte users. [Our Discord](https://svelte.dev/chat) or [the Reddit channel](https://www.reddit.com/r/sveltejs/) are examples of that. If you have an answerable code-level question, Stack Overflow is usually a better fit.
+ベストプラクティスやアプリケーションアーキテクチャについて議論したり、他の Svelte ユーザーと交流する場所としてオンラインのフォーラムやチャットがあります。例えば [私たちの Discord](https://svelte.dev/chat) や、[Reddit のチャンネル](https://www.reddit.com/r/sveltejs/) などです。コードレベルの質問がある場合は、Stack Overflowの方が適切です。
 
-## Are there any third-party resources?
+## サードパーティのリソースはありますか？ <!--are-there-any-third-party-resources-->
 
-Svelte Society maintains a [list of books and videos](https://sveltesociety.dev/resources).
+Svelte Society が [本やビデオのリスト](https://sveltesociety.dev/resources) を管理しています。
 
-## How can I get VS Code to syntax-highlight my .svelte files?
+## VS Code で .svelte ファイルにシンタックスハイライトをあてるにはどうすればよいですか? <!--how-can-i-get-vs-code-to-syntax-highlight-my-svelte-files-->
 
-There is an [official VS Code extension for Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+[公式の VS Code extension for Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) があります。
 
-## Is there a tool to automatically format my .svelte files?
+## .svelte ファイルを自動的にフォーマットするツールはありますか？ <!--is-there-a-tool-to-automatically-format-my-svelte-files-->
 
-You can use prettier with the [prettier-plugin-svelte](https://www.npmjs.com/package/prettier-plugin-svelte) plugin.
+[prettier-plugin-svelte](https://www.npmjs.com/package/prettier-plugin-svelte) プラグインで prettier を使用できます。
 
-## How do I document my components?
+## コンポーネントのドキュメントを作成する方法はありますか？ <!--how-do-i-document-my-components-->
 
-In editors which use the Svelte Language Server you can document Components, functions and exports using specially formatted comments.
+Svelte Language Server を使用するエディターでは、特別なフォーマットのコメントを使用することで、コンポーネント、関数、およびエクスポートを文書化することができます。
 
 ````svelte
 <script>
@@ -57,13 +57,13 @@ It will show up on hover.
 </main>
 ````
 
-Note: The `@component` is necessary in the HTML comment which describes your component.
+Note: コンポーネントについて記述する HTML コメントには `@component` が必要です。
 
-## What about TypeScript support?
+## What about TypeScript support? <!--what-about-typescript-support-->
 
-You need to install a preprocessor such as [svelte-preprocess](https://github.com/sveltejs/svelte-preprocess). You can run type checking from the command line with [svelte-check](https://www.npmjs.com/package/svelte-check).
+[svelte-preprocess](https://github.com/sveltejs/svelte-preprocess) などのプリプロセッサをインストールする必要があります。[svelte-check](https://www.npmjs.com/package/svelte-check) を使用すると、コマンドラインからタイプチェックを実行できます。
 
-To declare the type of a reactive variable in a Svelte template, you should use the following syntax:
+Svelte テンプレートでリアクティブ変数の型を宣言するには、次の構文を使用します。
 
 ```ts
 const count: number = 100;
@@ -73,7 +73,7 @@ let x: number;
 $: x = count + 1;
 ```
 
-To import a type or interface make sure to use [TypeScript's `type` modifier](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export):
+型(type)またはインタフェース(interface)をインポートするには、[TypeScript の `type` 修飾子](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export)を使用します:
 
 ```ts
 // @filename: SomeFile.ts
@@ -86,29 +86,30 @@ export interface SomeInterface {
 import type { SomeInterface } from './SomeFile';
 ```
 
-You must use the `type` modifier because `svelte-preprocess` doesn't know whether an import is a type or a value — it only transpiles one file at a time without knowledge of the other files and therefore can't safely erase imports which only contain types without this modifier present.
+`svelte-preprocess` はインポートが型であるか値であるかを認識しないため、 `type` 修飾子を使用する必要があります。 `svelte-preprocess` は他のファイルを認識することなく一度に1つのファイルのみをトランスパイルするため、この修飾子が存在しない型のみを含むインポートを安全に消去することはできません。
 
-## Does Svelte scale?
+## Svelte はスケールしますか？ <!--does-svelte-scale-->
 
-There will be a blog post about this eventually, but in the meantime, check out [this issue](https://github.com/sveltejs/svelte/issues/2546).
+これについてはそのうちブログに書く予定ですが、それまでは[こちらの issue](https://github.com/sveltejs/svelte/issues/2546) をご確認ください。
 
-## Is there a UI component library?
+## UI コンポーネントライブラリはありますか？ <!--is-there-a-ui-component-library-->
 
 There are several UI component libraries as well as standalone components. Find them under the [components section](https://sveltesociety.dev/components#design-systems) of the Svelte Society website.
+単独のコンポーネントだけではなく、いくつかの UI コンポーネントライブラリがあります。Svelte Society Web サイトの [components section](https://sveltesociety.dev/components#design-systems) で探してみてください。
 
-## How do I test Svelte apps?
+## Svelte アプリをテストするにはどうすればよいですか？ <!--how-do-i-test-svelte-apps-->
 
-How your application is structured and where logic is defined will determine the best way to ensure it is properly tested. It is important to note that not all logic belongs within a component - this includes concerns such as data transformation, cross-component state management, and logging, among others. Remember that the Svelte library has its own test suite, so you do not need to write tests to validate implementation details provided by Svelte.
+アプリケーションの構造がどうなっているか、ロジックがどこに定義されているかによって、適切にテストするための最適な方法が決まります。データ変換、コンポーネント間の状態管理、ロギングなど、すべてのロジックがコンポーネント内にあるわけではないことに注意することが重要です。Svelte ライブラリは独自のテストスイートを持っているので、Svelte が提供する実装の詳細を検証するためにテストを書く必要はないことを忘れないでください。
 
-A Svelte application will typically have three different types of tests: Unit, Component, and End-to-End (E2E).
+Svelte アプリケーションには、通常3種類のテストがあります： ユニット(Unit)、コンポーネント(Component)、End-to-End(E2E) です。
 
-_Unit Tests_: Focus on testing business logic in isolation. Often this is validating individual functions and edge cases. By minimizing the surface area of these tests they can be kept lean and fast, and by extracting as much logic as possible from your Svelte components more of your application can be covered using them. When creating a new SvelteKit project, you will be asked whether you would like to setup [Vitest](https://vitest.dev/) for unit testing. There are a number of other test runners that could be used as well.
+_ユニットテスト(Unit Tests)_： ビジネスロジックを単独でテストすることに重点を置いています。多くの場合、これは個々の機能やエッジケースを検証するものです。また、Svelte コンポーネントから可能な限り多くのロジックを抽出することで、よりアプリケーションの多くの部分をこれらのテストでカバーすることができます。新しい SvelteKit プロジェクトを作成する際、ユニットテストのために [Vitest](https://vitest.dev/) をセットアップするかどうか尋ねられます。その他にも、使用可能なテストランナーが多数あります。
 
-_Component Tests_: Validating that a Svelte component mounts and interacts as expected throughout its lifecycle requires a tool that provides a Document Object Model (DOM). Components can be compiled (since Svelte is a compiler and not a normal library) and mounted to allow asserting against element structure, listeners, state, and all the other capabilities provided by a Svelte component. Tools for component testing range from an in-memory implementation like jsdom paired with a test runner like [Vitest](https://vitest.dev/) to solutions that leverage an actual browser to provide a visual testing capability such as [Playwright](https://playwright.dev/docs/test-components) or [Cypress](https://www.cypress.io/).
+_コンポーネントテスト(Component Tests)_: Svelteコンポーネントがマウントされ、そのライフサイクルを通じて期待通りに動作することを検証するには、ドキュメントオブジェクトモデル（DOM）を提供するツールが必要です。コンポーネントはコンパイルされ (Svelteはコンパイラであり、通常のライブラリではないため)、マウントし、要素の構造、リスナー、ステート、および Svelte コンポーネントが提供する他のすべての機能に対してアサートすることができます。コンポーネントテストのためのツールは、jsdom のようなインメモリ実装と [Vitest](https://vitest.dev/) のようなテストランナーの組み合わせから、[Playwright](https://playwright.dev/docs/test-components)、[Cypress](https://www.cypress.io/) など、実際のブラウザを活用して視覚的なテスト機能を提供するソリューションまで、さまざまです。
 
-_End-to-End Tests_: To ensure your users are able to interact with your application it is necessary to test it as a whole in a manner as close to production as possible. This is done by writing end-to-end (E2E) tests which load and interact with a deployed version of your application in order to simulate how the user will interact with your application. When creating a new SvelteKit project, you will be asked whether you would like to setup [Playwright](https://playwright.dev/) for end-to-end testing. There are many other E2E test libraries available for use as well.
+_End-to-End Tests_: ユーザーがアプリケーションを操作できることを確認するために、可能な限り本番に近い方法で全体としてテストすることが必要です。これは、ユーザーがアプリケーションをどのように操作するかをシミュレートするために、アプリケーションのデプロイされたバージョンをロードして操作する End-to-End (E2E) テストを書くことによって行われます。新しい SvelteKit プロジェクトを作成する際、End-to-End テスト用に [Playwright](https://playwright.dev/) をセットアップするかどうか尋ねられます。他にも多くの E2E テストライブラリがありますので、ご利用ください。
 
-Some resources for getting started with testing:
+テストを始めるためのリソースをいくつか紹介します：
 
 - [Svelte Testing Library](https://testing-library.com/docs/svelte-testing-library/example/)
 - [Svelte Component Testing in Cypress](https://docs.cypress.io/guides/component-testing/svelte/overview)
@@ -117,26 +118,26 @@ Some resources for getting started with testing:
 - [Test Svelte components using Vitest & Playwright](https://davipon.hashnode.dev/test-svelte-component-using-vitest-playwright)
 - [Component testing with WebdriverIO](https://webdriver.io/docs/component-testing/svelte)
 
-## Is there a router?
+## ルーターはありますか？ <!--is-there-a-router-->
 
-The official routing library is [SvelteKit](https://kit.svelte.dev/). SvelteKit provides a filesystem router, server-side rendering (SSR), and hot module reloading (HMR) in one easy-to-use package. It shares similarities with Next.js for React.
+公式のルーティングライブラリは [SvelteKit](https://kit.svelte.jp/) です。SvelteKit は、ファイルシステムルーター、サーバーサイドレンダリング(SSR)、ホットモジュールリローディング(HMR)を1つの使いやすいパッケージで提供します。React にとっての Next.js に相当するものです。
 
-However, you can use any router library. A lot of people use [page.js](https://github.com/visionmedia/page.js). There's also [navaid](https://github.com/lukeed/navaid), which is very similar. And [universal-router](https://github.com/kriasoft/universal-router), which is isomorphic with child routes, but without built-in history support.
+しかしながら、任意のルーターライブラリを使用することもできます。多くの人が [page.js](https://github.com/visionmedia/page.js) を使っています。[navaid](https://github.com/lukeed/navaid)、というよく似たものもあります。[universal-router](https://github.com/kriasoft/universal-router) は子ルートもアイソモーフィックに扱えますが、ヒストリーのサポートは組み込まれていません。
 
-If you prefer a declarative HTML approach, there's the isomorphic [svelte-routing](https://github.com/EmilTholin/svelte-routing) library and a fork of it called [svelte-navigator](https://github.com/mefechoel/svelte-navigator) containing some additional functionality.
+宣言的な HTML によるアプローチを好むなら、 アイソモーフィックな [svelte-routing](https://github.com/EmilTholin/svelte-routing) というライブラリと、そのフォークでいくつかの機能が追加されている [svelte-navigator](https://github.com/mefechoel/svelte-navigator) があります。
 
-If you need hash-based routing on the client side, check out [svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router) or [abstract-state-router](https://github.com/TehShrike/abstract-state-router/).
+クライアント側でハッシュ・ベースのルーティングが必要な場合は、[svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router)、または [abstract-state-router](https://github.com/TehShrike/abstract-state-router/) を確認してみてください。
 
-[Routify](https://routify.dev) is another filesystem-based router, similar to SvelteKit's router. Version 3 supports Svelte's native SSR.
+[Routify](https://routify.dev) は SvelteKit のルーターによく似たファイルシステムベースのルーターです。Version 3 は Svelte のネイティブな SSR をサポートしています。
 
-You can see a [community-maintained list of routers on sveltesociety.dev](https://sveltesociety.dev/components#routers).
+[コミュニティがメンテナンスしているルーターのリストが sveltesociety.dev にあります](https://sveltesociety.dev/components#routers)ので、ご覧ください。
 
-## Is Svelte v2 still available?
+## Svelte v2 はまだ使えますか？ <!--is-svelte-v2-still-available-->
 
-New features aren't being added to it, and bugs will probably only be fixed if they are extremely nasty or present some sort of security vulnerability.
+新しい機能は追加されていませんし、バグはおそらく、非常に悪質な場合や、何らかのセキュリティ脆弱性がある場合にのみ修正されるでしょう。
 
-The documentation is still available [here](https://v2.svelte.dev/guide).
+ドキュメントはまだ[こちら](https://v2.svelte.dev/guide) から入手できます。
 
-## How do I do hot module reloading?
+## ホットモジュールリロードをするにはどうすればよいですか？ <!--how-do-i-do-hot-module-reloading-->
 
-We recommend using [SvelteKit](https://kit.svelte.dev/), which supports HMR out of the box and is built on top of [Vite](https://vitejs.dev/) and [svelte-hmr](https://github.com/sveltejs/svelte-hmr). There are also community plugins for [rollup](https://github.com/rixo/rollup-plugin-svelte-hot) and [webpack](https://github.com/sveltejs/svelte-loader).
+[SvelteKit](https://kit.svelte.jp/) の利用をお勧めします。SvelteKit は、すぐに利用可能な HMR をサポートし、[Vite](https://vitejs.dev/) と [svelte-hmr](https://github.com/sveltejs/svelte-hmr) をもとに構築されています。[rollup](https://github.com/rixo/rollup-plugin-svelte-hot) や [webpack](https://github.com/sveltejs/svelte-loader) のためのコミュニティプラグインもあります。
