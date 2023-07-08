@@ -22,6 +22,7 @@ authorURL: https://twitter.com/Rich_Harris
 多くのフレームワークで、`render()`関数を作ってアプリを構築します。例えばシンプルな [React](https://reactjs.org/) コンポーネントでは:
 
 ```js
+// @noErrors
 function HelloMessage(props) {
 	return (
 		<div className="greeting">

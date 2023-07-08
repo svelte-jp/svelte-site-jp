@@ -5,8 +5,10 @@ title: Key blocks
 Key ブロックは、式の値が変更されたときにその中身を破棄して再作成します。
 
 ```svelte
-{#key value}
-	<div transition:fade>{value}</div>
+{#key number}
+  <span style="display: inline-block" in:fade>
+    {number}
+  </span>
 {/key}
 ```
 

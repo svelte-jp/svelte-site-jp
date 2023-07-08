@@ -521,7 +521,7 @@ transition = (node: HTMLElement, params: any, options: { direction: 'in' | 'out'
 {/if}
 ```
 
-> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](/docs#run-time-client-side-component-api) ときに `intro: true` を設定し、トランジションを `global` にマークすることで変更できます。
+> デフォルトでは、イントロトランジションは最初のレンダリングでは再生されません。この動作は、[コンポーネントを作成する](/docs/client-side-component-api)ときに `intro: true` を設定し、トランジションを `global` にマークすることで変更できます。
 
 ## Transition parameters
 

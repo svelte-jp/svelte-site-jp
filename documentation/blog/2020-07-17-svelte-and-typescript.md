@@ -24,13 +24,9 @@ authorURL: https://twitter.com/orta
 
 ## 今すぐ試してみてください(Try it now)
 
-新しい Svelte TypeScript プロジェクトは [normal template](https://github.com/sveltejs/template) を利用して`node scripts/setupTypeScript.js` を実行することで開始できます。
+You can start a new Svelte TypeScript project using Svelte's official scaffolding CLI by running `npm create svelte@latest` and following the prompts. This sets up a new SvelteKit project for you.
 
-```bash
-npx degit sveltejs/template svelte-typescript-app
-cd svelte-typescript-app
-node scripts/setupTypeScript.js
-```
+Alternatively you can run `npm create vite@latest myapp -- --template svelte-ts` to scaffold a Vite project using Svelte and TypeScript.
 
 VS Code ユーザーの方は、(新しい) [公式の拡張機能](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) を使用していることを確認してください。これは James Birtles による人気の高い拡張機能に取って代わるものです。
 この記事の後半では、既存の Svelte プロジェクトで TypeScript を使用するための個々のステップについて詳しく説明します。

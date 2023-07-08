@@ -4,14 +4,23 @@ title: 'Accessibility warnings'
 
 アクセシビリティ（a11y と略されます）を正しく理解することは容易ではありませんが、Svelte は、アクセシブルではないマークアップを書くとコンパイル時に警告してくれます。しかし、多くのアクセシビリティの問題は、他の自動化されたツールを使用したり、手動でアプリケーションをテストするなど、実行時に特定できることを忘れないでください。
 
-Svelte が行うアクセシビリティチェックのリストは以下の通りです。
+具体的なユースケースにおいては、警告が正しくないこともあるかもしれません。このような偽陽性を無効にするには、`<!-- svelte-ignore a11y-<code> -->` というコメントをその警告が発生している行の上においてください。例:
+
+```svelte
+<!-- svelte-ignore a11y-autofocus -->
+<input autofocus />
+```
+
+Here is a list of accessibility checks Svelte will do for you.
 
 ## `a11y-accesskey`
 
 要素に `accesskey` を設定しないように強制します。アクセスキーとは、Web 開発者が要素にキーボードのショートカットを割り当てることができる HTML 属性です。キーボードショートカットと、スクリーンリーダーやキーボードのみのユーザが使用するキーボードコマンドの間に不整合があるとアクセシビリティ対応が複雑になるので、複雑さを避けるためにもアクセスキーを使用してはいけません。
 
+<!-- prettier-ignore -->
 ```svelte
-<!-- A11y: Avoid using accesskey (accesskeyの使用を避けましょう) --><div accessKey="z" />
+<!-- A11y: Avoid using accesskey (accesskeyの使用を避けましょう) -->
+<div accessKey="z" />
 ```
 
 ## `a11y-aria-activedescendant-has-tabindex`
@@ -69,8 +78,10 @@ DOM 要素の中には、ARIA role やステート、プロパティをサポー
 
 一部の DOM 要素は、スクリーンリーダーのナビゲーションに有用であるため、非表示にすべきではありません。
 
+<!-- prettier-ignore -->
 ```svelte
-<!-- A11y: <h2> element should not be hidden (<h2> 要素を非表示にしてはなりません) --><h2 aria-hidden="true">invisible header</h2>
+<!-- A11y: <h2> element should not be hidden (<h2> 要素を非表示にしてはなりません) -->
+<h2 aria-hidden="true">invisible header</h2>
 ```
 
 ## `a11y-img-redundant-alt`
@@ -170,8 +181,10 @@ DOM 要素の中には、ARIA role やステート、プロパティをサポー
 
 scope 属性は、`<th>` 要素でのみ使用してください。
 
+<!-- prettier-ignore -->
 ```svelte
-<!-- A11y: The scope attribute should only be used with <th> elements (scope属性は、<th>要素でのみ使用されます) --><div scope="row" />
+<!-- A11y: The scope attribute should only be used with <th> elements (scope 属性は、<th> 要素でのみ使用されます) -->
+<div scope="row" />
 ```
 
 ## `a11y-missing-attribute`
@@ -267,16 +280,30 @@ A non-interactive element does not support event handlers (mouse and key handler
 
 タブキーでのナビゲーションは、ページ上のインタラクティブに操作できる要素に限定する必要があります。
 
+<!-- prettier-ignore -->
 ```svelte
-<!-- A11y: noninteractive element cannot have nonnegative tabIndex value --><div tabindex="0" />
+<!-- A11y: noninteractive element cannot have nonnegative tabIndex value -->
+<div tabindex="0" />
+```
+
+## a11y-no-static-element-interactions
+
+Elements like `<div>` with interactive handlers like `click` must have an ARIA role.
+
+<!-- prettier-ignore -->
+```svelte
+<!-- A11y: <div> with click handler must have an ARIA role -->
+<div on:click={() => ''} />
 ```
 
 ## `a11y-positive-tabindex`
 
 `tabIndex` プロパティを正の値にすることは避けてください。要素が期待されるタブの順序から外れてしまい、キーボードユーザーに混乱を招くことになります。
 
+<!-- prettier-ignore -->
 ```svelte
-<!-- A11y: avoid tabindex values above zero (tabindexの値が0を超えないようにする) --><div tabindex="1" />
+<!-- A11y: avoid tabindex values above zero (tabindexの値が0を超えないようにする) -->
+<div tabindex="1" />
 ```
 
 ## `a11y-role-has-required-aria-props`
@@ -324,6 +351,8 @@ ARIA role を持つ要素は、その role に必要な属性をすべて持つ�
 
 ARIA role を持つ要素は有効で、抽象的でない ARIA role を使用しなければなりません。role の定義については、[WAI-ARIA](https://www.w3.org/TR/wai-aria/#role_definitions)サイトを参照してください。
 
+<!-- prettier-ignore -->
 ```svelte
-<!-- A11y: Unknown role 'toooltip' (did you mean 'tooltip'?) (不明な'toooltip' role（'tooltip'ではないでしょうか）) --><div role="toooltip" />
+<!-- A11y: Unknown role 'toooltip' (did you mean 'tooltip'?) (不明な'toooltip' role ('tooltip'では？)) -->
+<div role="toooltip" />
 ```

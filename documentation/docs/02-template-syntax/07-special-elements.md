@@ -39,8 +39,6 @@ title: Special elements
 
 Note: 通常の `<slot>` 要素をレンダリングしたい場合は、`<svelte:element this="slot" />` を使用します。
 
-Note: If you want to render regular `<slot>` element, You can use `<svelte:element this="slot" />`.
-
 ### `<slot name="`_name_`">`
 
 名前付き slot (Named slot) は、特定の場所をターゲットにすることを可能にします。 また、フォールバックのコンテンツを含むこともできます。
