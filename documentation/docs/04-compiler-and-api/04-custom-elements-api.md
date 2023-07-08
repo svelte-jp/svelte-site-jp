@@ -2,12 +2,12 @@
 title: 'Custom elements API'
 ---
 
-Svelte components can also be compiled to custom elements (aka web components) using the `customElement: true` compiler option. You should specify a tag name for the component using the `<svelte:options>` [element](/docs/special-elements#svelte-options).
+`customElement: true` コンパイラオプションを使って、Svelte コンポーネントを custom elements (別名 web components) にコンパイルすることもできます。コンポーネントのタグ名は `<svelte:options>` [element](/docs/special-elements#svelte-options) で指定する必要があります。
 
 ```svelte
 <svelte:options customElement="my-element" />
 
-<!-- in Svelte 3, do this instead:
+<!-- Svelte 3 の場合はこうしてください:
 <svelte:options tag="my-element" />
 -->
 
@@ -19,18 +19,18 @@ Svelte components can also be compiled to custom elements (aka web components) u
 <slot />
 ```
 
-You can leave out the tag name for any of your inner components which you don't want to expose and use them like regular Svelte components. Consumers of the component can still name it afterwards if needed, using the static `element` property which contains the custom element constructor and which is available when the `customElement` compiler option is `true`.
+公開したくない内部コンポーネントのタグ名を省略し、通常の Svelte コンポーネントのように使用することができます。必要に応じて、コンポーネントの使用者が、後から名前を付けることもできます。これを行うには、`customElement` コンパイラオプションを `true` にすると使えるようになる 静的な `element` プロパティを使用します (これには custom element のコンストラクタが含まれています)。
 
 ```js
 // @noErrors
 import MyElement from './MyElement.svelte';
 
 customElements.define('my-element', MyElement.element);
-// In Svelte 3, do this instead:
+// Svelte 3 の場合はこうしてください:
 // customElements.define('my-element', MyElement);
 ```
 
-Once a custom element has been defined, it can be used as a regular DOM element:
+一度 custom element が定義(define)されると、それを通常の DOM 要素として使用することができます。
 
 ```js
 document.body.innerHTML = `
@@ -40,9 +40,9 @@ document.body.innerHTML = `
 `;
 ```
 
-By default, custom elements are compiled with `accessors: true`, which means that any [props](/docs/basic-markup#attributes-and-props) are exposed as properties of the DOM element (as well as being readable/writable as attributes, where possible).
+デフォルトでは、custom elements は `accessors: true` でコンパイルされます。これは、任意の [props](/docs/basic-markup#attributes-and-props) が DOM 要素のプロパティとして公開されることを意味します (また、可能であれば属性として読み書きすることができます)。
 
-To prevent this, add `accessors={false}` to `<svelte:options>`.
+これを防ぐには、`<svelte:options>` に `accessors={false}` を追加します。
 
 ```js
 // @noErrors
@@ -57,11 +57,11 @@ el.name = 'everybody';
 
 ## Component options
 
-When constructing a custom element, you can tailor several aspects by defining `customElement` as an object within `<svelte:options>` since Svelte 4. This object comprises a mandatory `tag` property for the custom element's name, an optional `shadow` property that can be set to `"none"` to forgo shadow root creation (note that styles are then no longer encapsulated, and you can't use slots), and a `props` option, which offers the following settings:
+Svelte 4 から、custom element を作る際に、`<svelte:options>` 内のオブジェクトとして `customElement` を定義することで、様々な側面を調整できるようになりました。このオブジェクトは、custom element の名前として使用する必須の `tag` プロパティ、オプションの `shadow` プロパティと `props` で構成されています。この `shadow` プロパティを `"none"` に設定することで、shadow root の作成を省略することができます (その場合、スタイルはカプセル化されなくなり、slot を使用することができなくなることにご注意ください)。そして `props` オプションは、以下の設定を取ります:
 
-- `attribute: string`: To update a custom element's prop, you have two alternatives: either set the property on the custom element's reference as illustrated above or use an HTML attribute. For the latter, the default attribute name is the lowercase property name. Modify this by assigning `attribute: "<desired name>"`.
-- `reflect: boolean`: By default, updated prop values do not reflect back to the DOM. To enable this behavior, set `reflect: true`.
-- `type: 'String' | 'Boolean' | 'Number' | 'Array' | 'Object'`: While converting an attribute value to a prop value and reflecting it back, the prop value is assumed to be a `String` by default. This may not always be accurate. For instance, for a number type, define it using `type: "Number"`
+- `attribute: string`: custom element の prop を更新するには、2つの方法があります: 上記で説明したように、custom element の参照にプロパティを設定するか、HTML 属性を使用するか、です。後者の場合、デフォルトの属性名は小文字のプロパティ名です。これを変更するには、`attribute: "<desired name>"` を代入します。
+- `reflect: boolean`: デフォルトでは、更新された prop の値は DOM に反映されません。この動作を有効にするには、`reflect: true` を設定します。
+- `type: 'String' | 'Boolean' | 'Number' | 'Array' | 'Object'`: 属性の値を prop の値に変換してそれを反映させるとき、prop の値はデフォルトで `String` であると仮定されています。これがいつも正しいとは限りません。例えば、数値型の場合、`type: "Number"` と定義します
 
 ```svelte
 <svelte:options
@@ -81,15 +81,15 @@ When constructing a custom element, you can tailor several aspects by defining `
 ...
 ```
 
-## Caveats and limitations
+## 注意事項と制限 <!--caveats-and-limitations-->
 
-Custom elements can be a useful way to package components for consumption in a non-Svelte app, as they will work with vanilla HTML and JavaScript as well as [most frameworks](https://custom-elements-everywhere.com/). There are, however, some important differences to be aware of:
+custom elements は、非Svelteアプリで利用されるコンポーネントをパッケージ化するのに便利です。純粋な HTML と JavaScript の同様に、[ほとんどのフレームワーク](https://custom-elements-everywhere.com/) でも動作するからです。しかし、注意すべき重要な違いがいくつかあります。
 
-- Styles are _encapsulated_, rather than merely _scoped_ (unless you set `shadow: "none"`). This means that any non-component styles (such as you might have in a `global.css` file) will not apply to the custom element, including styles with the `:global(...)` modifier
-- Instead of being extracted out as a separate .css file, styles are inlined into the component as a JavaScript string
-- Custom elements are not generally suitable for server-side rendering, as the shadow DOM is invisible until JavaScript loads
-- In Svelte, slotted content renders _lazily_. In the DOM, it renders _eagerly_. In other words, it will always be created even if the component's `<slot>` element is inside an `{#if ...}` block. Similarly, including a `<slot>` in an `{#each ...}` block will not cause the slotted content to be rendered multiple times
-- The `let:` directive has no effect, because custom elements do not have a way to pass data to the parent component that fills the slot
-- Polyfills are required to support older browsers
+- スタイルは単なる _scoped_ ではなく _カプセル化(encapsulated)_ されています (`shadow: "none"` に設定していない限り)。つまり、コンポーネントのスタイルではないもの (例えば `global.css` ファイルにあるスタイルや、`:global(...)` 修飾子のスタイルなど)は、custom element には適用されないということです
+- スタイルは、別の .css ファイルとして抽出されるのではなく、JavaScript の文字列としてコンポーネントにインライン化されます
+- JavaScript が読み込まれるまで shadow DOM は見えないので、custom elements は一般的にサーバーサイドレンダリングには適していません。
+- Svelte では、スロットされるコンテンツ (slotted content) は _遅延して(lazily)_ レンダリングされます。DOMでは _先行して(eagerly)_ レンダリングします。言い換えれば、コンポーネントの `<slot>` 要素が `{#if ...}` ブロックの中にあっても、常に作成されます。同様に、`{#each ...}` ブロックの中に `<slot>` 要素を含めても、スロットされるコンテンツが何度もレンダリングされることはありません。
+- `let:` ディレクティブは何の効果もありません。なぜなら custom elements には slot を埋め込む側の親コンポーネントにデータを渡す手段がないからです
+- 古いブラウザをサポートするにはポリフィル(polyfill)が必要です。
 
-When a custom element written with Svelte is created or updated, the shadow dom will reflect the value in the next tick, not immediately. This way updates can be batched, and DOM moves which temporarily (but synchronously) detach the element from the DOM don't lead to unmounting the inner component.
+Svelte で書かれた custom element が作成または更新されると、shadow DOM はすぐにではなく次の tick で値を更新します。こうすることで更新をバッチにすることができ、要素を一時的に (しかし同期的に) DOM から切り離すような DOM 移動を行っても、内部コンポーネントのアンマウントにつながることはありません。

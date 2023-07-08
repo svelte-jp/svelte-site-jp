@@ -2,15 +2,15 @@
 title: 'svelte/compiler'
 ---
 
-Typically, you won't interact with the Svelte compiler directly, but will instead integrate it into your build system using a bundler plugin. The bundler plugin that the Svelte team most recommends and invests in is [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte). The [SvelteKit](https://kit.svelte.dev/) framework provides a setup leveraging `vite-plugin-svelte` to build applications as well as a [tool for packaging Svelte component libraries](https://kit.svelte.dev/docs/packaging). Svelte Society maintains a list of [other bundler plugins](https://sveltesociety.dev/tools/#bundling) for additional tools like Rollup and Webpack.
+通常、Svelte コンパイラと直接やり取りすることはありません。その代わり、バンドラープラグイン(bundler plugin)を使ってビルドシステムにインテグレートします。Svelte チームが最も推奨している、また注力もしているバンドラープラグインは [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) です。[SvelteKit](https://kit.svelte.jp/) フレームワークは `vite-plugin-svelte` を活用し、アプリケーションをビルドするためのセットアップと、[Svelte コンポーネントライブラリをパッケージングするツール](https://kit.svelte.jp/docs/packaging)を提供しています。Svelte Society には、Rollup や Webpack などのツール向けの [その他のバンドラープラグイン](https://sveltesociety.dev/tools/#bundling) のリストがあります。
 
-Nonetheless, it's useful to understand how to use the compiler, since bundler plugins generally expose compiler options to you.
+とはいえ、バンドラープラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
 
 ## compile
 
 > EXPORT_SNIPPET: svelte/compiler#compile
 
-This is where the magic happens. `svelte.compile` takes your component source code, and turns it into a JavaScript module that exports a class.
+ここでマジックが起こります。`svelte.compile` はあなたのコンポーネントのソースコードを使用して、クラスをエクスポートするJavaScriptモジュールに変えます。
 
 ```js
 // @filename: ambient.d.ts
@@ -29,9 +29,9 @@ const result = compile(source, {
 });
 ```
 
-Refer to [CompileOptions](#types-compileoptions) for all the available options.
+使用可能なすべてのオプションについては、[CompileOptions](#types-compileoptions) をご参照ください。
 
-The returned `result` object contains the code for your component, along with useful bits of metadata.
+戻り値の `result` オブジェクトには、あなたのコンポーネントのコードと、ちょっとした便利なメタデータが含まれています。
 
 ```ts
 // @filename: ambient.d.ts
@@ -47,13 +47,13 @@ import { compile } from 'svelte/compiler';
 const { js, css, ast, warnings, vars, stats } = compile(source);
 ```
 
-Refer to [CompileResult](#types-compileresult) for a full description of the compile result.
+コンパイルの result の完全な詳細については、[CompileResult](#types-compileresult) をご参照ください。
 
 ## parse
 
 > EXPORT_SNIPPET: svelte/compiler#parse
 
-The `parse` function parses a component, returning only its abstract syntax tree. Unlike compiling with the `generate: false` option, this will not perform any validation or other analysis of the component beyond parsing it. Note that the returned AST is not considered public API, so breaking changes could occur at any point in time.
+`parse` 関数はコンポーネントをパースし、その抽象構文木(abstract syntax tree)のみを返します。`generate: false` オプションを指定してコンパイルするのとは異なり、これはコンポーネントをパースするだけで、バリデーションやその他の解析を行いません。戻り値の AST はパブリックな API とは見なされないため、将来どこかのタイミングで破壊的な変更が発生する可能性があることにご注意ください。	
 
 ```js
 // @filename: ambient.d.ts
@@ -74,21 +74,21 @@ const ast = parse(source, { filename: 'App.svelte' });
 
 > EXPORT_SNIPPET: svelte/compiler#preprocess
 
-A number of [official and community-maintained preprocessing plugins](https://sveltesociety.dev/tools#preprocessors) are available to allow you to use Svelte with tools like TypeScript, PostCSS, SCSS, and Less.
+Svelte で TypeScript、PostCSS、SCSS、Less などのツールを利用できるようにするための [コミュニティでメンテナンスされているプリプロセッサプラグイン](https://sveltesociety.dev/tools#preprocessors) が多数用意されています。
 
-You can write your own preprocessor using the `svelte.preprocess` API.
+`svelte.preprocess` API を使って独自のプリプロセッサを書くことができます。
 
-The `preprocess` function provides convenient hooks for arbitrarily transforming component source code. For example, it can be used to convert a `<style lang="sass">` block into vanilla CSS.
+`preprocess` 関数は、コンポーネントのソースコードを任意に変換するための便利なフックを提供します。例えば、`<style lang="sass">` ブロックを純粋なCSSに変換するために使うことができます。
 
-The first argument is the component source code. The second is an array of _preprocessors_ (or a single preprocessor, if you only have one), where a preprocessor is an object with a `name` which is required, and `markup`, `script` and `style` functions, each of which is optional.
+最初の引数はコンポーネントのソースコードです。2番目の引数は、 _プリプロセッサ(preprocessor)_ の配列で (1つしかない場合は単独のプリプロセッサになります)、プリプロセッサは `name` (必須)と、`markup`、`script`、`style` 関数(それぞれオプション)を持つオブジェクトです。
 
-The `markup` function receives the entire component source text, along with the component's `filename` if it was specified in the third argument.
+`markup` 関数は、コンポーネントのソーステキスト全体と、第3引数にコンポーネントの `filename` が指定されている場合はそのコンポーネントの `filename` を受け取ります。
 
-The `script` and `style` functions receive the contents of `<script>` and `<style>` elements respectively (`content`) as well as the entire component source text (`markup`). In addition to `filename`, they get an object of the element's attributes.
+`script` 関数と `style` 関数はそれぞれ `<script>` と `<style>` 要素の内容 (`content`) とコンポーネントのソーステキスト全体 (`markup`) を受け取ります。これらの関数は `filename` に加えて要素の属性のオブジェクトを取得します。
 
-Each `markup`, `script` or `style` function must return an object (or a Promise that resolves to an object) with a `code` property, representing the transformed source code. Optionally they can return an array of `dependencies` which represents files to watch for changes, and a `map` object which is a sourcemap mapping back the transformation to the original code. `script` and `style` preprocessors can optionally return a record of attributes which represent the updated attributes on the script/style tag.
+`markup`、`script`、`style` 関数は、変換後のソースコードを表す `code` プロパティを持つオブジェクト (または resolve するとオブジェクトを返す promise) を返す必要があります。オプションで、変更を監視するファイルを表す `dependencies` の配列と、オリジナルと変換後のコードのマッピングをする sourcemap である `map` オブジェクトを返すことができます。`script` と `style` のプロプロセッサは、オプションで、script/style タグで更新された属性のレコードを返すことができます。
 
-> Preprocessor functions should return a `map` object whenever possible or else debugging becomes harder as stack traces can't link to the original code correctly.
+> プリプロセッサ関数は、可能な限り `map` オブジェクトを返すべきです。そうしないと、スタックトレースがオリジナルのコードに正しくリンクできないため、デバッグが難しくなります。
 
 ```js
 // @filename: ambient.d.ts
@@ -125,9 +125,9 @@ const { code } = await preprocess(
 );
 ```
 
-The `script` and `style` functions receive the contents of `<script>` and `<style>` elements respectively (`content`) as well as the entire component source text (`markup`). In addition to `filename`, they get an object of the element's attributes.
+`script` 関数と `style` 関数はそれぞれ `<script>` と `<style>` 要素の内容 (`content`) とコンポーネントのソーステキスト全体 (`markup`) を受け取ります。これらの関数は `filename` に加えて要素の属性のオブジェクトを取得します。
 
-If a `dependencies` array is returned, it will be included in the result object. This is used by packages like [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) and [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) to watch additional files for changes, in the case where your `<style>` tag has an `@import` (for example).
+`dependencies` の配列が返される場合、それは result オブジェクトに含まれます。これは例えば、[vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) や [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなパッケージで、`<style>` タグに `@import` がある場合など、追加のファイルのヘンクを監視するために使われます。
 
 ```ts
 // @filename: ambient.d.ts
@@ -201,9 +201,9 @@ const { code } = await preprocess(
 );
 ```
 
-Multiple preprocessors can be used together. The output of the first becomes the input to the second. Within one preprocessor, `markup` runs first, then `script` and `style`.
+複数のプリプロセッサを併用することができます。最初のプリプロセッサの出力は、2番目のプリプロセッサへの入力になります。プリプロセッサの中では、最初に `markup` 関数が実行され、次に `script`、そして `style` が実行されます。
 
-> In Svelte 3, all `markup` functions ran first, then all `script` and then all `style` preprocessors. This order was changed in Svelte 4.
+> Svelte 3 では、すべての `markup` 関数がまず実行され、それからすべての `script`、そしてすべての `style` が実行されていました。この順番は、Svelte 4 で変更されました。
 
 ```js
 // @errors: 2322
@@ -252,9 +252,9 @@ const { code } = await preprocess(source, [
 
 > EXPORT_SNIPPET: svelte/compiler#walk
 
-The `walk` function provides a way to walk the abstract syntax trees generated by the parser, using the compiler's own built-in instance of [estree-walker](https://github.com/Rich-Harris/estree-walker).
+`walk` 関数はパーサーによって生成された抽象構文木(abstract syntax trees)をウォークする方法を提供します。コンパイラの組み込みの [estree-walker](https://github.com/Rich-Harris/estree-walker) のインスタンスを使用します。
 
-The walker takes an abstract syntax tree to walk and an object with two optional methods: `enter` and `leave`. For each node, `enter` is called (if present). Then, unless `this.skip()` is called during `enter`, each of the children are traversed, and then `leave` is called on the node.
+walker は、walk する抽象構文木と、オプションの2つのメソッド `enter` と `leave` を持つオブジェクトを受け取ります。各ノードに対して、(存在すれば) `enter` が呼び出されます。そして `enter` を実行している間に `this.skip()` が呼ばれない限り、それぞれの子を巡回し、それからノード上で `leave` が呼ばれます。
 
 ```js
 // @filename: ambient.d.ts
@@ -289,7 +289,7 @@ walk(ast, {
 
 > EXPORT_SNIPPET: svelte/compiler#VERSION
 
-The current version, as set in package.json.
+package.json に設定されている現在のバージョンです。
 
 ```js
 import { VERSION } from 'svelte/compiler';

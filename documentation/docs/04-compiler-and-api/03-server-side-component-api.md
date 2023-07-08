@@ -7,11 +7,11 @@ title: 'Server-side component API'
 const result = Component.render(...)
 ```
 
-Unlike client-side components, server-side components don't have a lifespan after you render them — their whole job is to create some HTML and CSS. For that reason, the API is somewhat different.
+クライアントサイドコンポーネントとは異なり、サーバーサイドコンポーネントはレンダリングしてもライフサイクルがありません — HTML と CSS を作成するだけです。そのため API が多少異なります。
 
-A server-side component exposes a `render` method that can be called with optional props. It returns an object with `head`, `html`, and `css` properties, where `head` contains the contents of any `<svelte:head>` elements encountered.
+サーバーサイドコンポーネントは任意の props を取って呼び出す `render` メソッドを公開しています。呼び出すと、`head`、 `html`、 `css` プロパティを持つオブジェクトを返します。この `head` には `<svelte:head>` 要素の内容が含まれています。
 
-You can import a Svelte component directly into Node using [`svelte/register`](/docs/svelte-register).
+[`svelte/register`](/docs/svelte-register) を使用すると、Svelte コンポーネントを直接 Node にインポートすることができます。
 
 ```js
 // @noErrors
@@ -24,18 +24,18 @@ const { head, html, css } = App.render({
 });
 ```
 
-The `.render()` method accepts the following parameters:
+`.render()` メソッドは以下のパラメータを受け取ります:
 
 | parameter | default | description                                        |
 | --------- | ------- | -------------------------------------------------- |
-| `props`   | `{}`    | An object of properties to supply to the component |
-| `options` | `{}`    | An object of options                               |
+| `props`   | `{}`    | コンポーネントに渡すプロパティのオブジェクト              |
+| `options` | `{}`    | オプションのオブジェクト                               |
 
-The `options` object takes in the following options:
+`options` オブジェクトは、以下のオプションを取ります:
 
 | option    | default     | description                                                              |
 | --------- | ----------- | ------------------------------------------------------------------------ |
-| `context` | `new Map()` | A `Map` of root-level context key-value pairs to supply to the component |
+| `context` | `new Map()` | コンポーネントに提供するルートレベルの context の key-value ペアの `Map`         |
 
 ```js
 // @noErrors
