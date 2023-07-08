@@ -8,11 +8,11 @@
 </script>
 
 <svelte:head>
-	<title>Svelte • Cybernetically enhanced web apps</title>
+	<title>Svelte • サイバネティクスで強化されたwebアプリ</title>
 
 	<meta name="twitter:title" content="Svelte" />
-	<meta name="twitter:description" content="Cybernetically enhanced web apps" />
-	<meta name="Description" content="Cybernetically enhanced web apps" />
+	<meta name="twitter:description" content="サイバネティクスで強化されたwebアプリ" />
+	<meta name="Description" content="サイバネティクスで強化されたwebアプリ" />
 </svelte:head>
 
 <h1 class="visually-hidden">Svelte</h1>
