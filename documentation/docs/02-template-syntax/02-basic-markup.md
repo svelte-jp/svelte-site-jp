@@ -28,8 +28,9 @@ title: Basic markup
 
 HTML のように、値は引用符で囲まれていない場合があります。
 
+<!-- prettier-ignore -->
 ```svelte
-<input type="checkbox" />
+<input type=checkbox />
 ```
 
 属性値には JavaScript の式を含めることができます。
