@@ -187,8 +187,8 @@ importers:
         specifier: ^2.4.2
         version: 2.4.2(svelte@packages+svelte)(vite@4.3.9)
       '@tomoam/site-kit':
-        specifier: 6.0.0-next.18.1
-        version: 6.0.0-next.18.1(@sveltejs/kit@1.22.0)(svelte@packages+svelte)
+        specifier: 6.0.0-next.20
+        version: 6.0.0-next.20(@sveltejs/kit@1.22.0)(svelte@packages+svelte)
       '@types/cookie':
         specifier: ^0.5.1
         version: 0.5.1
@@ -1859,11 +1859,11 @@ packages:
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
     dev: true
 
-  /@tomoam/site-kit@6.0.0-next.18.1(@sveltejs/kit@1.22.0)(svelte@packages+svelte):
-    resolution: {integrity: sha512-kt5CYS1Gi2AiVUrKUybkXTzX5u56mD2Isw2fI8FS3zqK/VXOrVRE/NczNOIKo0jKJF/edn6vwb0ln88opbG7+Q==}
+  /@tomoam/site-kit@6.0.0-next.20(@sveltejs/kit@1.22.0)(svelte@packages+svelte):
+    resolution: {integrity: sha512-0KClAdSsHWHKyUvY1umxr1ycSDtGJU8kXPB6jnKmITv4gZiTYHia8YY9AI4chqpt/rHGs/LU0kuIMfH+hS7zlw==}
     peerDependencies:
-      '@sveltejs/kit': ^1.0.0
-      svelte: ^3.54.0 || ^4.0.0-next.1 || ^4.0.0
+      '@sveltejs/kit': ^1.20.0
+      svelte: ^4.0.0
     dependencies:
       '@sveltejs/kit': 1.22.0(svelte@packages+svelte)(vite@4.3.9)
       esm-env: 1.0.0
