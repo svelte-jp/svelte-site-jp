@@ -56,8 +56,9 @@ Boolean の属性は、その値が [truthy](https://developer.mozilla.org/ja/do
 
 式には、通常の HTML ではシンタックスハイライトに失敗するような文字が含まれている可能性があるので、値を引用符で囲むことが許可されています。引用符は値の解析方法には影響しません。
 
+<!-- prettier-ignore -->
 ```svelte
-<button disabled={number !== 42}>...</button>
+<button disabled="{number !== 42}">...</button>
 ```
 
 属性名と値が一致する場合(`name={name}`)は、`{name}` で置き換えることができます。
@@ -85,13 +86,13 @@ _スプレッド属性_ は、多くの属性やプロパティを一度に要�
 <Widget {...things} />
 ```
 
-`$$props` は、`export` で宣言されていないものも含めて、コンポーネントに渡されるすべてのプロパティ(props)を参照します。これは Svelte にとって最適化が難しくなるので、一般的には推奨されません。しかし、コンパイル時にどのようなプロパティがコンポーネントに渡されるかわからない場合など、稀なケースでは便利です。
+`$$props` は、`export` で宣言されていないものも含めて、コンポーネントに渡されるすべてのプロパティ(props)を参照します。`$$props` を使用すると、特定のプロパティを参照するときよりもパフォーマンスが低下します。なぜなら、どのプロパティを変更した場合でも、Svelte は `$$props` のすべての使用を再チェックするからです。しかし、例えばコンパイル時にどのようなプロパティがコンポーネントに渡されるかわからない場合などには便利です。
 
 ```svelte
 <Widget {...$$props} />
 ```
 
-`$$restProps` には、`export` で宣言されていないプロパティ(props)のみが含まれます。これは他の未知の属性をコンポーネントの要素に渡すために使用できます。`$$props` と同じ最適化の問題を共有しており、同様に推奨されません。
+`$$restProps` には、`export` で宣言されていないプロパティ(props)のみが含まれます。これは他の未知の属性をコンポーネントの要素に渡すために使用できます。`$$props` と同じように、特定のプロパティへのアクセスをするときと比較してパフォーマンスが低下するという特性があります。
 
 ```svelte
 <input {...$$restProps} />
@@ -113,11 +114,12 @@ _スプレッド属性_ は、多くの属性やプロパティを一度に要�
 
 > 正規表現 (`RegExp`) の [リテラル記法](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#literal_notation_and_constructor)を使用する場合、括弧で囲う必要があります。
 
+<!-- prettier-ignore -->
 ```svelte
 <h1>Hello {name}!</h1>
 <p>{a} + {b} = {a + b}.</p>
 
-<div>{/^[A-Za-z ]+$/.test(value) ? x : y}</div>
+<div>{(/^[A-Za-z ]+$/).test(value) ? x : y}</div>
 ```
 
 ## Comments

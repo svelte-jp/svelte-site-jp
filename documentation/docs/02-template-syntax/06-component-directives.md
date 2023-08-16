@@ -8,13 +8,34 @@ title: Component directives
 on:eventname={handler}
 ```
 
-コンポーネントは [createEventDispatcher](/docs/svelte#createeventdispatcher) を用いるか、または DOM イベントを転送(forward)することでイベントを発火することができます。コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
+コンポーネントは [`createEventDispatcher`](/docs/svelte#createeventdispatcher) を用いるか、または DOM イベントを転送(forward)することでイベントを発火することができます。
+
+```svelte
+<!-- SomeComponent.svelte -->
+<script>
+  import { createEventDispatcher } from 'svelte';
+
+  const dispatch = createEventDispatcher();
+</script>
+
+<!-- programmatic dispatching -->
+<button on:click={() => dispatch('hello')}>
+  one
+</button>
+
+<!-- declarative event forwarding -->
+<button on:click>
+  two
+</button>
+```
+
+コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
 
 ```svelte
 <SomeComponent on:whatever={handler} />
 ```
 
-DOM イベントと同様に、`on:` ディレクティブが値なしで使われる場合、コンポーネントはイベントを転送(forward)しますが、これはコンポーネントを使用する側でイベントをリッスンできることを意味します。
+DOM イベントと同様に、`on:` ディレクティブが値なしで使われる場合、イベントは転送(forward)されます、これはつまり、コンポーネントを使用する側でイベントをリッスンできることを意味します。
 
 ```svelte
 <SomeComponent on:whatever />
@@ -92,6 +113,8 @@ bind:property={variable}
 <Keypad bind:value={pin} />
 ```
 
+While Svelte props are reactive without binding, that reactivity only flows downward into the component by default. Using `bind:property` allows changes to the property from within the component to flow back up out of the component.
+
 ## bind:this
 
 ```svelte
@@ -100,10 +123,10 @@ bind:this={component_instance}
 
 コンポーネントは `bind:this` もサポートしており、これを用いることでコンポーネントのインスタンスをプログラムで操作できるようになります。
 
-> ボタンが最初にレンダリングされるときには `cart` が `undefined` であり、エラーを投げるので、`{cart.empty}` を実行できないことに注意してください。
-
 ```svelte
 <ShoppingCart bind:this={cart} />
 
 <button on:click={() => cart.empty()}> Empty shopping cart </button>
 ```
+
+> ボタンが最初にレンダリングされるときには `cart` が `undefined` であり、エラーを投げるので、`{cart.empty}` を実行できないことに注意してください。

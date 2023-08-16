@@ -11,9 +11,9 @@
 
 <div class="hero">
 	<div class="hero-content">
-		<img alt="Svelte logotype" class="logotype" src={SvelteLogotype} />
+		<img alt="Svelte logotype" class="logotype" src={SvelteLogotype} width="300" height="56" />
 		<strong>
-			<span style="white-space: nowrap;">サイバネティクスで強化された</span> <br /> web アプリ
+			<span style="white-space: nowrap">サイバネティクスで強化された</span> <br /> web アプリ
 		</strong>
 		<div class="buttons">
 			<a href="https://learn.svelte.jp" rel="external" class="cta">
@@ -114,6 +114,7 @@
 
 	.logotype {
 		width: min(45vw, 40em);
+		height: auto;
 	}
 
 	@media (min-width: 800px) {

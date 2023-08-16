@@ -738,7 +738,7 @@ DOMRect {
 
 アニメーションは、[key 付き each ブロック(keyed each block)](/docs/logic-blocks#each) の中身が並び替えられたときに発生します。アニメーションは、要素が追加または削除されたときには実行されず、each ブロックの既存のデータアイテムのインデックスが変更されたときにのみ実行されます。animate ディレクティブは、key 付き each ブロックの _直接の_ 子要素に付けなければいけません。
 
-アニメーションは Svelte の[組み込みアニメーション関数](/docs/svelte-animate) または [カスタムアニメーション関数](/docs/element-directives#custom-transition-functions) を使用することができます。
+アニメーションは Svelte の[組み込みアニメーション関数](/docs/svelte-animate) または [カスタムアニメーション関数](/docs/element-directives#custom-animation-functions) を使用することができます。
 
 ```svelte
 <!-- When `list` is reordered the animation will run-->

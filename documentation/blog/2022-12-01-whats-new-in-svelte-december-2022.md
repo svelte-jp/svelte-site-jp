@@ -56,7 +56,7 @@ Svelte compiler に対する全ての変更については、まだ未リリー�
 
 **Apps & Sites built with Svelte**
 
-- [Appwrite's new console](https://github.com/appwrite/console) makes its secure backend server for web, mobile & Flutter developers avaiable in the browser
+- [Appwrite's new console](https://github.com/appwrite/console) makes its secure backend server for web, mobile & Flutter developers available in the browser
 - [RepoMagic](https://www.repomagic.com/) is a search and analytics tool for GitHub
 - [Podman Desktop](https://github.com/containers/podman-desktop) is a graphical tool for developing on containers and Kubernetes
 - [Ballerine](https://github.com/ballerine-io/ballerine) is a Know Your Customer (KYC) UX for any vertical or geography using modular building blocks, components, and 3rd party integrations

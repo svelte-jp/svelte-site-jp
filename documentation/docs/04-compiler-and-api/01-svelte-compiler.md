@@ -125,8 +125,6 @@ const { code } = await preprocess(
 );
 ```
 
-`script` 関数と `style` 関数はそれぞれ `<script>` と `<style>` 要素の内容 (`content`) とコンポーネントのソーステキスト全体 (`markup`) を受け取ります。これらの関数は `filename` に加えて要素の属性のオブジェクトを取得します。
-
 `dependencies` の配列が返される場合、それは result オブジェクトに含まれます。これは例えば、[vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) や [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなパッケージで、`<style>` タグに `@import` がある場合など、追加のファイルのヘンクを監視するために使われます。
 
 ```ts
