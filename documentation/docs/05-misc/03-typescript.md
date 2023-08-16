@@ -10,7 +10,7 @@ To use TypeScript within Svelte components, you need to add a preprocessor that 
 
 ### Using SvelteKit or Vite
 
-The easiest way to get started is scaffolding a new SvelteKit project by typing `npm create svelte@latest`, following the prompts and chosing the TypeScript option.
+The easiest way to get started is scaffolding a new SvelteKit project by typing `npm create svelte@latest`, following the prompts and choosing the TypeScript option.
 
 ```ts
 /// file: svelte.config.js
@@ -97,8 +97,8 @@ Events can be typed with `createEventDispatcher`:
 
 	const dispatch = createEventDispatcher<{
 		event: null; // does not accept a payload
-		type: string; // has a required string payload
-		click: string | null; // has an optional string payload
+		click: string; // has a required string payload
+		type: string | null; // has an optional string payload
 	}>();
 
 	function handleClick() {
@@ -139,6 +139,26 @@ declare namespace svelteHTML {
 ```
 
 Then make sure that `d.ts` file is referenced in your `tsconfig.json`. If it reads something like `"include": ["src/**/*"]` and your `d.ts` file is inside `src`, it should work. You may need to reload for the changes to take effect.
+
+Since Svelte version 4.2 / `svelte-check` version 3.5 / VS Code extension version 107.10.0 you can also declare the typings by augmenting the `svelte/elements` module like this:
+
+```ts
+/// file: additional-svelte-typings.d.ts
+import { HTMLButtonAttributes } from 'svelte/elements'
+
+declare module 'svelte/elements' {
+    export interface SvelteHTMLElements {
+        'custom-button': HTMLButtonAttributes;
+    }
+
+	// allows for more granular control over what element to add the typings to
+    export interface HTMLButtonAttributes {
+        'veryexperimentalattribute'?: string;
+    }
+}
+
+export {}; // ensure this is not an ambient module, else types will be overridden instead of augmented
+```
 
 ## Experimental advanced typings
 
