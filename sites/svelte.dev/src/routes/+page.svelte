@@ -1,5 +1,6 @@
 <script>
-	import { Blurb, Footer, TrySection } from '@sveltejs/site-kit/home';
+	import { Blurb, Footer } from '@sveltejs/site-kit/home';
+	import { TrySection } from '@tomoam/site-kit/home';
 	import Demo from './_components/Demo.svelte';
 	import Hero from './_components/Hero.svelte';
 	import Supporters from './_components/Supporters/index.svelte';
