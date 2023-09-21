@@ -106,11 +106,13 @@ _スプレッド属性_ は、多くの属性やプロパティを一度に要�
 
 ## Text expressions
 
+JavaScript の式(expression)は、中括弧で囲むことでテキストとして使用することができます。
+
 ```svelte
 {expression}
 ```
 
-テキストにも JavaScript の式(expression)を含めることができます。
+[HTML entity](https://developer.mozilla.org/docs/Glossary/Entity) 文字列を使用することで、中括弧自体を Svelte テンプレート で使用することができます: `{` の場合は `&lbrace;` や `&lcub;` や `&#123;`、そして `}` の場合は `&rbrace;` や `&rcub;` や `&#125;` です。
 
 > 正規表現 (`RegExp`) の [リテラル記法](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#literal_notation_and_constructor)を使用する場合、括弧で囲う必要があります。
 

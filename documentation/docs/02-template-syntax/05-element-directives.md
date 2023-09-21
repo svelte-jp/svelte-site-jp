@@ -7,10 +7,12 @@ title: Element directives
 ## on:_eventname_
 
 ```svelte
+<!--- copy: false --->
 on:eventname={handler}
 ```
 
 ```svelte
+<!--- copy: false --->
 on:eventname|modifiers={handler}
 ```
 
@@ -72,7 +74,6 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 同じイベントに対して複数のイベントリスナを持つことができます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	let counter = 0;
 	function increment() {
@@ -91,6 +92,7 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 ## bind:_property_
 
 ```svelte
+<!--- copy: false --->
 bind:property={variable}
 ```
 
@@ -186,6 +188,8 @@ bind:property={variable}
 
 それぞれ少し違いがありますので、詳細は[こちら](https://developer.mozilla.org/ja/docs/Web/API/Node/textContent#Differences_from_innerText)をお読みください。
 
+<!-- for some reason puts the comment and html on same line -->
+<!-- prettier-ignore -->
 ```svelte
 <div contenteditable="true" bind:innerHTML={html} />
 ```
@@ -273,13 +277,13 @@ Image 要素 (`<img>`) には2つの読取専用バインディングがあり�
 ## bind:group
 
 ```svelte
+<!--- copy: false --->
 bind:group={variable}
 ```
 
 グループ化させる input には `bind:group` を使用できます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	let tortilla = 'Plain';
 
@@ -304,13 +308,13 @@ bind:group={variable}
 ## bind:this
 
 ```svelte
+<!--- copy: false --->
 bind:this={dom_node}
 ```
 
 DOM ノードを参照するには `bind:this` を使用します。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	import { onMount } from 'svelte';
 
@@ -329,10 +333,12 @@ DOM ノードを参照するには `bind:this` を使用します。
 ## class:_name_
 
 ```svelte
+<!--- copy: false --->
 class:name={value}
 ```
 
 ```svelte
+<!--- copy: false --->
 class:name
 ```
 
@@ -393,14 +399,17 @@ style:property
 ## use:_action_
 
 ```svelte
+<!--- copy: false --->
 use:action
 ```
 
 ```svelte
+<!--- copy: false --->
 use:action={parameters}
 ```
 
 ```ts
+/// copy: false
 // @noErrors
 action = (node: HTMLElement, parameters: any) => {
 	update?: (parameters: any) => void,
@@ -411,7 +420,6 @@ action = (node: HTMLElement, parameters: any) => {
 action は、要素が作成されるときに呼び出される関数です。要素がアンマウントされるときに呼び出される `destroy` メソッドをもつオブジェクトを返すことができます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	/** @type {import('svelte/action').Action}  */
 	function foo(node) {
@@ -433,7 +441,6 @@ action はパラメータを取ることができます。戻り値に `update` 
 > すべてのコンポーネントインスタンスに対して `foo` 関数を再宣言していることについて心配する必要はありません。Svelte は、ローカル状態に依存しない関数をコンポーネント定義から巻き上げます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	export let bar;
 
@@ -461,30 +468,37 @@ action はパラメータを取ることができます。戻り値に `update` 
 ## transition:_fn_
 
 ```svelte
+<!--- copy: false --->
 transition:fn
 ```
 
 ```svelte
+<!--- copy: false --->
 transition:fn={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 transition:fn|global
 ```
 
 ```svelte
+<!--- copy: false --->
 transition:fn|global={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 transition:fn|local
 ```
 
 ```svelte
+<!--- copy: false --->
 transition:fn|local={params}
 ```
 
 ```js
+/// copy: false
 // @noErrors
 transition = (node: HTMLElement, params: any, options: { direction: 'in' | 'out' | 'both' }) => {
 	delay?: number,
@@ -544,7 +558,6 @@ action と同様に、トランジションはパラメータを持つことが�
 この関数はトランジションが始まる前に、`t` と `u` の引数を変えて繰り返し呼び出されます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	import { elasticOut } from 'svelte/easing';
 
@@ -644,50 +657,62 @@ action と同様に、トランジションはパラメータを持つことが�
 ## in:_fn_/out:_fn_
 
 ```svelte
+<!--- copy: false --->
 in:fn
 ```
 
 ```svelte
+<!--- copy: false --->
 in:fn={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:fn|global
 ```
 
 ```svelte
+<!--- copy: false --->
 in:fn|global={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:fn|local
 ```
 
 ```svelte
+<!--- copy: false --->
 in:fn|local={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fn
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fn={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fn|global
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fn|global={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fn|local
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fn|local={params}
 ```
 
@@ -704,14 +729,17 @@ out:fn|local={params}
 ## animate:_fn_
 
 ```svelte
+<!--- copy: false --->
 animate:name
 ```
 
 ```svelte
+<!--- copy: false --->
 animate:name={params}
 ```
 
 ```js
+/// copy: false
 // @noErrors
 animation = (node: HTMLElement, { from: DOMRect, to: DOMRect } , params: any) => {
 	delay?: number,
@@ -723,6 +751,7 @@ animation = (node: HTMLElement, { from: DOMRect, to: DOMRect } , params: any) =>
 ```
 
 ```ts
+/// copy: false
 // @noErrors
 DOMRect {
 	bottom: number,
@@ -772,7 +801,6 @@ action やトランジションと同様に、アニメーションはパラメ�
 <!-- TODO: Types -->
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	import { cubicOut } from 'svelte/easing';
 
@@ -806,7 +834,6 @@ action やトランジションと同様に、アニメーションはパラメ�
 > `tick` の代わりに `css` を使うことが可能ならば、そうしてください — CSS アニメーションはメインスレッドの外で実行することができるため、遅いデバイスでのジャンクを防ぐことができます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	import { cubicOut } from 'svelte/easing';
 

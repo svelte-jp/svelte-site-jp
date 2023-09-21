@@ -61,9 +61,7 @@ unsubscribe(); // logs 'no more subscribers'
 
 「外側」から値を設定できないストアを作成します。`readable` の第1引数はストアの初期値で、の第2引数は `writable` の第2引数と同じです。
 
-```js
-<!--- file: App.svelte --->
-// ---cut---
+```ts
 import { readable } from 'svelte/store';
 
 const time = readable(new Date(), (set) => {
@@ -114,7 +112,7 @@ const doubled = derived(a, ($a) => $a * 2);
 
 この場合、`derived` に第3引数として、`set` や `update` が最初に呼び出される前の derived ストアの初期値を渡すこともできます。もし初期値が指定されない場合、ストアの初期値は `undefined` となります。
 
-```js
+```ts
 // @filename: ambient.d.ts
 import { type Writable } from 'svelte/store';
 
@@ -129,13 +127,17 @@ export {};
 // ---cut---
 import { derived } from 'svelte/store';
 
-const delayed = derived(a, ($a, set) => {
-	setTimeout(() => set($a), 1000);
-}, 2000);
+const delayed = derived(
+	a,
+	($a, set) => {
+		setTimeout(() => set($a), 1000);
+	},
+	2000
+);
 
 const delayedIncrement = derived(a, ($a, set, update) => {
 	set($a);
-	setTimeout(() => update(x => x + 1), 1000);
+	setTimeout(() => update((x) => x + 1), 1000);
 	// every time $a produces a value, this produces two
 	// values, $a immediately and then $a + 1 a second later
 });
@@ -143,7 +145,7 @@ const delayedIncrement = derived(a, ($a, set, update) => {
 
 コールバックから関数を返すと、a）コールバックが再度実行される時や b）最後のサブスクライバーがサブスクライブを解除する時に呼び出されます。
 
-```js
+```ts
 // @filename: ambient.d.ts
 import { type Writable } from 'svelte/store';
 
@@ -224,7 +226,7 @@ readableStore.set(2); // ERROR
 
 > 内部的には、サブスクリプションを作成し、値を読み取ってから、サブスクリプションを解除する、ということを行っています。したがって、ホットコードパスではお勧めしません。
 
-```js
+```ts
 // @filename: ambient.d.ts
 import { type Writable } from 'svelte/store';
 

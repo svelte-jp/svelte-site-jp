@@ -5,28 +5,24 @@ title: Component directives
 ## on:_eventname_
 
 ```svelte
+<!--- copy: false --->
 on:eventname={handler}
 ```
 
 コンポーネントは [`createEventDispatcher`](/docs/svelte#createeventdispatcher) を用いるか、または DOM イベントを転送(forward)することでイベントを発火することができます。
 
 ```svelte
-<!-- SomeComponent.svelte -->
 <script>
-  import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
-  const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 </script>
 
 <!-- programmatic dispatching -->
-<button on:click={() => dispatch('hello')}>
-  one
-</button>
+<button on:click={() => dispatch('hello')}> one </button>
 
 <!-- declarative event forwarding -->
-<button on:click>
-  two
-</button>
+<button on:click> two </button>
 ```
 
 コンポーネントのイベントをリッスンするための書き方は、DOM イベントをリッスンする書き方と同じです:
@@ -44,6 +40,7 @@ DOM イベントと同様に、`on:` ディレクティブが値なしで使わ�
 ## --style-props
 
 ```svelte
+<!--- copy: false --->
 --style-props="anycssvalue"
 ```
 
@@ -78,7 +75,6 @@ SVG namespace の場合、上記の例はデシュガー(脱糖)すると `<g>` 
 Svelte の CSS Variables サポートによって、テーマに沿ったコンポーネントを簡単に作ることができます:
 
 ```svelte
-<!-- Slider.svelte -->
 <style>
 	.potato-slider-rail {
 		background-color: var(--rail-color, var(--theme-color, 'purple'));
@@ -118,6 +114,7 @@ While Svelte props are reactive without binding, that reactivity only flows down
 ## bind:this
 
 ```svelte
+<!--- copy: false --->
 bind:this={component_instance}
 ```
 

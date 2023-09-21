@@ -9,14 +9,17 @@ title: 'svelte/transition'
 > EXPORT_SNIPPET: svelte/transition#fade
 
 ```svelte
+<!--- copy: false --->
 transition:fade={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:fade={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fade={params}
 ```
 
@@ -45,14 +48,17 @@ out:fade={params}
 > EXPORT_SNIPPET: svelte/transition#blur
 
 ```svelte
+<!--- copy: false --->
 transition:blur={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:blur={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:blur={params}
 ```
 
@@ -81,14 +87,17 @@ out:blur={params}
 > EXPORT_SNIPPET: svelte/transition#fly
 
 ```svelte
+<!--- copy: false --->
 transition:fly={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:fly={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:fly={params}
 ```
 
@@ -126,14 +135,17 @@ x と y はデフォルトで `px` を使用しますが、css の単位もサ�
 > EXPORT_SNIPPET: svelte/transition#slide
 
 ```svelte
+<!--- copy: false --->
 transition:slide={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:slide={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:slide={params}
 ```
 
@@ -165,14 +177,17 @@ out:slide={params}
 > EXPORT_SNIPPET: svelte/transition#scale
 
 ```svelte
+<!--- copy: false --->
 transition:scale={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:scale={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:scale={params}
 ```
 
@@ -204,14 +219,17 @@ out:scale={params}
 > EXPORT_SNIPPET: svelte/transition#draw
 
 ```svelte
+<!--- copy: false --->
 transition:draw={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 in:draw={params}
 ```
 
 ```svelte
+<!--- copy: false --->
 out:draw={params}
 ```
 

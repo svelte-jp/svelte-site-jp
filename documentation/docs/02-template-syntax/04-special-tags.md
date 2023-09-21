@@ -5,6 +5,7 @@ title: Special tags
 ## {@html ...}
 
 ```svelte
+<!--- copy: false --->
 {@html expression}
 ```
 
@@ -24,10 +25,12 @@ HTML の式は単独で正しい HTML になっている必要があります。
 ## {@debug ...}
 
 ```svelte
+<!--- copy: false --->
 {@debug}
 ```
 
 ```svelte
+<!--- copy: false --->
 {@debug var1, var2, ..., varN}
 ```
 
@@ -65,6 +68,7 @@ HTML の式は単独で正しい HTML になっている必要があります。
 ## {@const ...}
 
 ```svelte
+<!--- copy: false --->
 {@const assignment}
 ```
 

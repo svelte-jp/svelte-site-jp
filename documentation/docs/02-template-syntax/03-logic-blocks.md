@@ -5,14 +5,17 @@ title: Logic blocks
 ## {#if ...}
 
 ```svelte
+<!--- copy: false  --->
 {#if expression}...{/if}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#if expression}...{:else if expression}...{/if}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#if expression}...{:else}...{/if}
 ```
 
@@ -41,22 +44,27 @@ title: Logic blocks
 ## {#each ...}
 
 ```svelte
+<!--- copy: false  --->
 {#each expression as name}...{/each}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#each expression as name, index}...{/each}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#each expression as name (key)}...{/each}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#each expression as name, index (key)}...{/each}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#each expression as name}...{:else}...{/each}
 ```
 
@@ -125,18 +133,22 @@ Svelte 4 からは `Map` や `Set` などの iterables を反復処理するこ�
 ## {#await ...}
 
 ```svelte
+<!--- copy: false  --->
 {#await expression}...{:then name}...{:catch name}...{/await}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#await expression}...{:then name}...{/await}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#await expression then name}...{/await}
 ```
 
 ```svelte
+<!--- copy: false  --->
 {#await expression catch name}...{/await}
 ```
 
@@ -186,6 +198,7 @@ pending の状態を気にする必要がない場合は、最初のブロック
 ## {#key ...}
 
 ```svelte
+<!--- copy: false  --->
 {#key expression}...{/key}
 ```
 

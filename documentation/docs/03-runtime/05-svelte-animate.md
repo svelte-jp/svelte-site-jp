@@ -9,6 +9,7 @@ title: 'svelte/animate'
 > EXPORT_SNIPPET: svelte/animate#flip
 
 ```svelte
+<!--- copy: false --->
 animate:flip={params}
 ```
 
