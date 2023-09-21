@@ -59,43 +59,13 @@ It will show up on hover.
 
 Note: コンポーネントについて記述する HTML コメントには `@component` が必要です。
 
-## What about TypeScript support? <!--what-about-typescript-support-->
-
-[svelte-preprocess](https://github.com/sveltejs/svelte-preprocess) などのプリプロセッサをインストールする必要があります。[svelte-check](https://www.npmjs.com/package/svelte-check) を使用すると、コマンドラインからタイプチェックを実行できます。
-
-Svelte テンプレートでリアクティブ変数の型を宣言するには、次の構文を使用します。
-
-```ts
-const count: number = 100;
-
-// ---cut---
-let x: number;
-$: x = count + 1;
-```
-
-型(type)またはインタフェース(interface)をインポートするには、[TypeScript の `type` 修飾子](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export)を使用します:
-
-```ts
-// @filename: SomeFile.ts
-export interface SomeInterface {
-	foo: string;
-}
-
-// @filename: index.ts
-// ---cut---
-import type { SomeInterface } from './SomeFile';
-```
-
-`svelte-preprocess` はインポートが型であるか値であるかを認識しないため、 `type` 修飾子を使用する必要があります。 `svelte-preprocess` は他のファイルを認識することなく一度に1つのファイルのみをトランスパイルするため、この修飾子が存在しない型のみを含むインポートを安全に消去することはできません。
-
 ## Svelte はスケールしますか？ <!--does-svelte-scale-->
 
 これについてはそのうちブログに書く予定ですが、それまでは[こちらの issue](https://github.com/sveltejs/svelte/issues/2546) をご確認ください。
 
 ## UI コンポーネントライブラリはありますか？ <!--is-there-a-ui-component-library-->
 
-There are several UI component libraries as well as standalone components. Find them under the [components section](https://sveltesociety.dev/components#design-systems) of the Svelte Society website.
-単独のコンポーネントだけではなく、いくつかの UI コンポーネントライブラリがあります。Svelte Society Web サイトの [components section](https://sveltesociety.dev/components#design-systems) で探してみてください。
+単独のコンポーネントだけではなく、いくつかの UI コンポーネントライブラリがあります。Svelte Society Web サイトの [components ページの design systems section](https://sveltesociety.dev/components#design-systems) で探してみてください。
 
 ## Svelte アプリをテストするにはどうすればよいですか？ <!--how-do-i-test-svelte-apps-->
 
@@ -131,6 +101,17 @@ _End-to-End Tests_: ユーザーがアプリケーションを操作できるこ
 [Routify](https://routify.dev) は SvelteKit のルーターによく似たファイルシステムベースのルーターです。Version 3 は Svelte のネイティブな SSR をサポートしています。
 
 [コミュニティがメンテナンスしているルーターのリストが sveltesociety.dev にあります](https://sveltesociety.dev/components#routers)ので、ご覧ください。
+
+## 未使用のスタイルを削除しないようにすることはできますか？ <!--can-i-tell-svelte-not-to-remove-my-unused-styles-->
+
+いいえ。Svelte はコンポーネントから未使用のスタイルを削除しますし、未使用のスタイルがある場合は警告します。こうしないと発生してしまう問題を防ぐためです。
+
+Svelte のコンポーネントスタイルのスコープは、そのコンポーネントに固有の class を生成し、それを Svelte の制御化にあるコンポーネント内の関連する要素に追加し、コンポーネントのスタイルにある各セレクタにもそれを追加することで機能しています。コンパイラが、スタイルセレクタがどの要素に適用されるかわからない場合に、そのスタイルを保持しておくと、2つの問題を引き起こす可能性があります:
+
+- そういったセレクタを保持したままスコープ用の class を追加した場合、当然そのセレクタはコンポーネント内の要素にマッチしない可能性が高く、もちろん子コンポーネントや `{@html ...}` で生成された要素にもマッチしません。
+- もしスコープ用の class を追加せずにそういったセレクタを保持した場合、そのスタイルはグローバルスタイルとなり、ページ全体に影響します。
+
+Svelte がコンパイル時に特定できないスタイルを指定する必要がある場合は、`:global(...)` を使用して明示的にグローバルスタイルを選択する必要があります。しかし、セレクタの一部だけを `:global(...)` で囲むことができることを覚えておいてください。`.foo :global(.bar) { ... }` は、コンポーネントの `.foo` 要素の中に存在する `.bar` 要素にスタイルをあてます。コンポーネントに親要素がある限りにおいて、このように部分的にグローバルセレクタを使用することで、ほとんどの場合、ご希望のスタイルを実現することができます。
 
 ## Svelte v2 はまだ使えますか？ <!--is-svelte-v2-still-available-->
 

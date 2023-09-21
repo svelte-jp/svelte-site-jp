@@ -5,7 +5,6 @@ title: svelte/action
 action は、要素が作成されたときに呼び出される関数です。要素がアンマウントされたときに呼び出される `destroy` メソッドをもつオブジェクトを返すことができます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	/** @type {import('svelte/action').Action}  */
 	function foo(node) {
@@ -27,7 +26,6 @@ action はパラメータを取ることができます。戻り値に `update` 
 > すべてのコンポーネントインスタンスに対して `foo` 関数を再宣言しているという事実について心配する必要はありません。Svelte は、ローカル状態に依存しない関数をコンポーネント定義から巻き上げます。
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	/** @type {string} */
 	export let bar;
@@ -56,7 +54,6 @@ action はパラメータを取ることができます。戻り値に `update` 
 action がカスタムイベントを発行し、適用する要素にカスタム属性を適用することがあります。これをサポートするために、`Action` 型または `ActionReturn` 型の action は最後のパラメータとして `Attributes` を持つことができます:
 
 ```svelte
-<!--- file: App.svelte --->
 <script>
 	/**
 	 * @type {import('svelte/action').Action<HTMLDivElement, { prop: any }, { 'on:emit': (e: CustomEvent<string>) => void }>}

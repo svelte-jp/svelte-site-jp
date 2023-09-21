@@ -90,7 +90,7 @@ Svelte で TypeScript、PostCSS、SCSS、Less などのツールを利用でき�
 
 > プリプロセッサ関数は、可能な限り `map` オブジェクトを返すべきです。そうしないと、スタックトレースがオリジナルのコードに正しくリンクできないため、デバッグが難しくなります。
 
-```js
+```ts
 // @filename: ambient.d.ts
 declare global {
 	var source: string;
@@ -128,6 +128,7 @@ const { code } = await preprocess(
 `dependencies` の配列が返される場合、それは result オブジェクトに含まれます。これは例えば、[vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) や [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) のようなパッケージで、`<style>` タグに `@import` がある場合など、追加のファイルのヘンクを監視するために使われます。
 
 ```ts
+/// file: preprocess-sass.js
 // @filename: ambient.d.ts
 declare global {
 	var source: string;
@@ -204,6 +205,7 @@ const { code } = await preprocess(
 > Svelte 3 では、すべての `markup` 関数がまず実行され、それからすべての `script`、そしてすべての `style` が実行されていました。この順番は、Svelte 4 で変更されました。
 
 ```js
+/// file: multiple-preprocessor.js
 // @errors: 2322
 // @filename: ambient.d.ts
 declare global {
@@ -255,6 +257,7 @@ const { code } = await preprocess(source, [
 walker は、walk する抽象構文木と、オプションの2つのメソッド `enter` と `leave` を持つオブジェクトを受け取ります。各ノードに対して、(存在すれば) `enter` が呼び出されます。そして `enter` を実行している間に `this.skip()` が呼ばれない限り、それぞれの子を巡回し、それからノード上で `leave` が呼ばれます。
 
 ```js
+/// file: compiler-walk.js
 // @filename: ambient.d.ts
 declare global {
 	var ast: import('estree').Node;

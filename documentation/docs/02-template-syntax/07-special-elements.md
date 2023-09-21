@@ -198,7 +198,6 @@ Svelte がビルド時に処理する、要素タイプ固有のバインディ�
 <script>
 	let tag = 'div';
 
-	/** @type {(e: MouseEvent) => void} */
 	export let handler;
 </script>
 

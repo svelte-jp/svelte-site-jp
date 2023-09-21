@@ -67,6 +67,7 @@ const app = new App({
 既存の DOM はコンポーネントと一致している必要はありません。Svelte は DOM をそのまま「修復」します。
 
 ```ts
+/// file: index.js
 // @filename: ambient.d.ts
 import { SvelteComponent, ComponentConstructorOptions } from 'svelte';
 
@@ -150,6 +151,7 @@ component.$on(ev, callback);
 呼び出されたときにイベントリスナーを削除する関数が返されます。
 
 ```ts
+/// file: index.js
 // @filename: ambient.d.ts
 import { SvelteComponent, ComponentConstructorOptions } from 'svelte';
 
@@ -231,6 +233,7 @@ component.prop = value;
 カスタム要素としてコンパイルする場合を除き、デフォルトでは `accessors` は `false` です。
 
 ```js
+/// file: index.js
 // @filename: ambient.d.ts
 import { SvelteComponent, ComponentConstructorOptions } from 'svelte';
 
