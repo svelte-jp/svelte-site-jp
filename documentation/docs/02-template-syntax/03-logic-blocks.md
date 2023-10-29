@@ -152,14 +152,16 @@ Svelte 4 からは `Map` や `Set` などの iterables を反復処理するこ�
 {#await expression catch name}...{/await}
 ```
 
-await ブロックを使用すると、Promise が取りうる 3 つの状態（pending(保留中)、fulfilled(成功)、rejected(失敗)）に分岐できます。SSR モードでは、サーバー上では pending の状態だけがレンダリングされます。
+await ブロックを使用すると、Promise が取りうる 3 つの状態（pending(保留中)、fulfilled(成功)、rejected(失敗)）に分岐できます。
+SSR モードでは、サーバー上では pending の状態だけがレンダリングされます。
+与えられた式(expression)が Promise ではない場合、fulfilled(成功)の状態だけがレンダリングされます (SSR モードでも同様です)。
 
 ```svelte
 {#await promise}
 	<!-- promise is pending -->
 	<p>waiting for the promise to resolve...</p>
 {:then value}
-	<!-- promise was fulfilled -->
+	<!-- promise was fulfilled or not a Promise -->
 	<p>The value is {value}</p>
 {:catch error}
 	<!-- promise was rejected -->
