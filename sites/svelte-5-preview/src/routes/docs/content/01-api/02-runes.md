@@ -2,17 +2,17 @@
 title: Runes
 ---
 
-Svelte 5 introduces _runes_, a powerful set of primitives for controlling reactivity inside your Svelte components and — for the first time — inside `.svelte.js` and `.svelte.ts` modules.
+Svelte 5 では _rune_ を導入します。これはリアクティビティをコントロールするためのパワフルなプリミティブセットで、Svelte コンポーネントはもちろん、今回ついに `.svelte.js` と `.svelte.ts` モジュールでも使えるようになりました。
 
-Runes are function-like symbols that provide instructions to the Svelte compiler. You don't need to import them from anywhere — when you use Svelte, they're part of the language.
+Rune は関数ライクなシンボルで、Svelte コンパイラに命令(instructions)を提供します。Svelte を使用するとき、これをインポートする必要はありません — これは言語の一部だからです。
 
-When you [opt in to runes mode](#how-to-opt-in), the non-runes features listed in the 'What this replaces' sections are no longer available.
+[rune モードを使用する](#how-to-opt-in)場合は、'What this replaces' セクションにリストアップされている非rune の機能は使用できません。
 
-> Check out the [Introducing runes](https://svelte.dev/blog/runes) blog post before diving into the docs!
+> このドキュメントに飛び込む前に、ブログ記事の [Rune 導入](https://svelte.jp/blog/runes) をチェックしてみてください！
 
 ## `$state`
 
-Reactive state is declared with the `$state` rune:
+リアクティブなステートは `$state` rune で宣言します:
 
 ```svelte
 <script>
@@ -24,13 +24,29 @@ Reactive state is declared with the `$state` rune:
 </button>
 ```
 
+また、class の field で `$state` を使用することもできます (public と private のどちらでも):
+
+```js
+// @errors: 7006 2554
+class Todo {
+	done = $state(false);
+	text = $state();
+
+	constructor(text) {
+		this.text = text;
+	}
+}
+```
+
+> この例では、コンパイラは `done` と `text` を、private field を参照する class prototype の `get`/`set` メソッドに変換します
+
 ### What this replaces
 
-In non-runes mode, a `let` declaration is treated as reactive state if it is updated at some point. Unlike `$state(...)`, which works anywhere in your app, `let` only behaves this way at the top level of a component.
+非 rune モードでは、`let` 宣言がありそれがどこかで更新されている場合にリアクティブなステートとして扱われます。`$state(...)` はアプリのどこでも動作しますが、`let` の場合はコンポーネントのトップレベルにある場合にのみリアクティブなステートとして振る舞います。
 
 ## `$derived`
 
-Derived state is declared with the `$derived` rune:
+派生するステートは `$derived` rune で宣言します:
 
 ```diff
 <script>
@@ -45,31 +61,33 @@ Derived state is declared with the `$derived` rune:
 +<p>{count} doubled is {doubled}</p>
 ```
 
-The expression inside `$derived(...)` should be free of side-effects. Svelte will disallow state changes (e.g. `count++`) inside derived expressions.
+`$derived(...)` の内側の式は、副作用 (side-effects) があってはいけません。Svelte は derived の内側の式でステートの変更 (例: `count++`) を許しません。
+
+`$state` と同様、class の fields で `$derived` を使用することができます。
 
 ### What this replaces
 
-The non-runes equivalent would be `$: double = count * 2`. There are some important differences to be aware of:
+非 rune における `$: double = count * 2` とおよそ同等ですが、気をつけるべき重要な違いがあります:
 
-- With the `$derived` rune, the value of `double` is always current (for example if you update `count` then immediately `console.log(double)`). With `$:` declarations, values are not updated until right before Svelte updates the DOM
-- In non-runes mode, Svelte determines the dependencies of `double` by statically analysing the `count * 2` expression. If you refactor it...
+- `$derived` rune の場合、`double` の値は常に最新です (例えば、`count` を更新してすぐに `console.log(double)` してみてください)。`$:` 宣言の場合、Svelte が DOM を更新する直前まで値が更新されません
+- 非 rune モードでは、Svelte は `count * 2` という式を静的に解析することで `double` の依存関係 (dependencies) を決定します。もしこのようにリファクタリングすると…
   ```js
   // @errors: 2304
   const doubleCount = () => count * 2;
   $: double = doubleCount();
   ```
-  ...that dependency information is lost, and `double` will no longer update when `count` changes. With runes, dependencies are instead tracked at runtime.
-- In non-runes mode, reactive statements are ordered _topologically_, meaning that in a case like this...
+  …依存関係の情報 (dependency information) が失われてしまい、`count` が変更されても `double` は更新されなくなります。rune では、依存関係 (dependencies) はランタイムが追跡します。
+- 非 rune モードでは、リアクティブステートメントは _トポロジカルに_ オーダーされるため、このようなケースでは…
   ```js
   // @errors: 2304
   $: triple = double + count;
   $: double = count * 2;
   ```
-  ...`double` will be calculated first despite the source order. In runes mode, `triple` cannot reference `double` before it has been declared.
+  …`double` はソースの順序に関係なく、最初に計算されます。rune モードでは、`triple` は `double` を参照できません。`double` が先に宣言されていないからです。
 
 ## `$effect`
 
-To run code whenever specific values change, or when a component is mounted to the DOM, we can use the `$effect` rune:
+ある値が変更されたときや、コンポーネントが DOM にマウントされたときにコードを実行するには、`$effect` rune を使用します:
 
 ```diff
 <script>
@@ -100,17 +118,17 @@ To run code whenever specific values change, or when a component is mounted to t
 
 ### What this replaces
 
-The `$effect` rune is roughly equivalent to `$:` when it's being used for side-effects (as opposed to declarations). There are some important differences:
+`$effect` rune は、(宣言に対してではなく) 副作用 (side-effects) のために使用されるときは、`$:` と大体同じです。重要な違いは以下の通りです:
 
-- Effects only run in the browser, not during server-side rendering
-- They run after the DOM has been updated, whereas `$:` statements run immediately _before_
-- You can return a cleanup function that will be called whenever the effect refires
+- effect はブラウザでのみ実行されます。サーバーサイドレンダリングでは実行されません。
+- これは DOM が更新された後に実行されますが、`$:` ステートメントはその直前に実行されます
+- effect が再実行される度に呼び出される cleanup 関数を返すことができます
 
-Additionally, you will most likely find you can use effects in all the places where you previously used `onMount` and `afterUpdate` (the latter of which will be deprecated in Svelte 5).
+さらに、`onMount` や `afterUpdate` を使用していたすべての場所でこの effect が使用できることに気がつくでしょう (後者は Svelte 5 で非推奨となります)。
 
 ## `$effect.pre`
 
-In rare cases, you may need to run code _before_ the DOM updates. For this we can use the `$effect.pre` rune:
+まれに、DOM が更新される前にコードを実行させたいことがあるでしょう。その場合は `$effect.pre` rune を使用します:
 
 ```svelte
 <script>
@@ -148,29 +166,29 @@ In rare cases, you may need to run code _before_ the DOM updates. For this we ca
 
 ### What this replaces
 
-Previously, you would have used `beforeUpdate`, which — like `afterUpdate` — is deprecated in Svelte 5.
+これまで `beforeUpdate` を使用してきた場所で使うことができます。`afterUpdate` と同様に、Svelte 5 では `beforeUpdate` は非推奨となります。
 
 ## `$props`
 
-To declare component props, use the `$props` rune:
+コンポーネントの props を宣言するには、`$props` rune を使用します:
 
 ```js
 let { optionalProp = 42, requiredProp } = $props();
 ```
 
-You can use familiar destructuring syntax to rename props, in cases where you need to (for example) use a reserved word like `catch` in `<MyComponent catch={22} />`:
+(例えば) `<MyComponent catch={22} />` にある `catch` のような予約語を使用する必要がある場合、馴染みのある分割構文 (destructuring syntax) を使用して props をリネームすることができます:
 
 ```js
 let { catch: theCatch } = $props();
 ```
 
-To get all properties, use rest syntax:
+全てのプロパティを取得するには、残余構文 (rest syntax) を使用します:
 
 ```js
 let { a, b, c, ...everythingElse } = $props();
 ```
 
-If you're using TypeScript, you can use type arguments:
+TypeScript を使用する場合、型引数 (type arguments) を使用することができます:
 
 ```ts
 type MyProps = any;
@@ -180,15 +198,15 @@ let { a, b, c, ...everythingElse } = $props<MyProps>();
 
 ### What this replaces
 
-`$props` replaces the `export let` and `export { x as y }` syntax for declaring props. It also replaces `$$props` and `$$restProps`, and the little-known `interface $$Props {...}` construct.
+`$props` は、props を宣言する `export let` と `export { x as y }` 構文を置き換えます。また、`$$props` と `$$restProps`、そして知る人ぞ知る `interface $$Props {...}` construct も置き換えます。
 
-Note that you can still use `export const` and `export function` to expose things to users of your component (if they're using `bind:this`, for example).
+なお、`export const` と `export function` を使用してコンポーネントのユーザーに諸々を公開することは可能です (例えば、`bind:this` を使用する場合など)。
 
 ## How to opt in
 
-Current Svelte code will continue to work without any adjustments. Components using the Svelte 4 syntax can use components using runes and vice versa.
+現在の Svelte のコードは調整することなく引き続き動作します。Svelte 4 の構文を使用しているコンポーネントは Rune を使用するコンポーネントを使用することができます。その逆も同様に使用できます。
 
-The easiest way to opt in to runes mode is to just start using them in your code. Alternatively, you can force the compiler into runes or non-runes mode either on a per-component basis...
+Rune モードを選択する最も簡単な方法は、コードで rune を実際に使用することです。他の方法としては、コンポーネントごとに rune モードか非 rune モードかをコンパイラに強制させることもできます…
 
 <!-- prettier-ignore -->
 ```svelte
@@ -197,7 +215,7 @@ The easiest way to opt in to runes mode is to just start using them in your code
 <svelte:options runes={true} />
 ```
 
-...or for your entire app:
+…または、アプリ全体に対して設定することもできます:
 
 ```js
 /// file: svelte.config.js

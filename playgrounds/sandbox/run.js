@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import glob from 'tiny-glob/sync.js';
 import minimist from 'minimist';
-import { compile, compileModule } from 'svelte/compiler';
+import { compile, compileModule, parse } from 'svelte/compiler';
 
 const argv = minimist(process.argv.slice(2));
 
@@ -34,16 +34,24 @@ for (const generate of ['client', 'server']) {
 		const input = `${cwd}/input/${file}`;
 		const source = fs.readFileSync(input, 'utf-8');
 
+		const output_js = `${cwd}/output/${generate}/${file}.js`;
+		const output_css = `${cwd}/output/${generate}/${file}.css`;
+
+		mkdirp(path.dirname(output_js));
+
+		if (generate === 'client') {
+			const ast = parse(source, {
+				modern: true
+			});
+
+			fs.writeFileSync(`${cwd}/output/${file}.json`, JSON.stringify(ast, null, '\t'));
+		}
+
 		const compiled = compile(source, {
 			filename: input,
 			generate,
 			runes: argv.runes
 		});
-
-		const output_js = `${cwd}/output/${generate}/${file}.js`;
-		const output_css = `${cwd}/output/${generate}/${file}.css`;
-
-		mkdirp(path.dirname(output_js));
 
 		fs.writeFileSync(output_js, compiled.js.code);
 		if (compiled.css) {

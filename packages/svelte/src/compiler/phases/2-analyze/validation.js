@@ -274,6 +274,10 @@ export const validation = {
 				error(node.expression, 'invalid-binding-value');
 			}
 
+			if (binding.kind === 'derived') {
+				error(node.expression, 'invalid-derived-binding');
+			}
+
 			// TODO handle mutations of non-state/props in runes mode
 		}
 
@@ -453,15 +457,6 @@ export const validation_legacy = merge(validation, a11y_validators, {
 		// TODO check if it's a store subscription that's called? How likely is it that someone uses a store that contains a function?
 		error(node.init, 'invalid-rune-usage', callee.name);
 	},
-	ExportNamedDeclaration(node) {
-		if (
-			node.declaration &&
-			node.declaration.type !== 'VariableDeclaration' &&
-			node.declaration.type !== 'FunctionDeclaration'
-		) {
-			error(node, 'TODO', 'whatever this is');
-		}
-	},
 	AssignmentExpression(node, { state, path }) {
 		const parent = path.at(-1);
 		if (parent && parent.type === 'ConstTag') return;
@@ -495,18 +490,25 @@ function validate_call_expression(node, scope, path) {
 	const rune = get_rune(node, scope);
 	if (rune === null) return;
 
-	if (rune === '$props' && path.at(-1)?.type !== 'VariableDeclarator') {
+	const parent = /** @type {import('#compiler').SvelteNode} */ (path.at(-1));
+
+	if (rune === '$props') {
+		if (parent.type === 'VariableDeclarator') return;
 		error(node, 'invalid-props-location');
-	} else if (
-		(rune === '$state' || rune === '$derived') &&
-		path.at(-1)?.type !== 'VariableDeclarator' &&
-		path.at(-1)?.type !== 'PropertyDefinition'
-	) {
+	}
+
+	if (rune === '$state' || rune === '$derived') {
+		if (parent.type === 'VariableDeclarator') return;
+		if (parent.type === 'PropertyDefinition' && !parent.static && !parent.computed) return;
 		error(node, rune === '$derived' ? 'invalid-derived-location' : 'invalid-state-location');
-	} else if (rune === '$effect') {
-		if (path.at(-1)?.type !== 'ExpressionStatement') {
+	}
+
+	if (rune === '$effect') {
+		if (parent.type !== 'ExpressionStatement') {
 			error(node, 'invalid-effect-location');
-		} else if (node.arguments.length !== 1) {
+		}
+
+		if (node.arguments.length !== 1) {
 			error(node, 'invalid-rune-args-length', '$effect', [1]);
 		}
 	}
@@ -555,6 +557,28 @@ export const validation_runes_js = {
 	},
 	UpdateExpression(node, { state }) {
 		validate_assignment(node, node.argument, state);
+	},
+	ClassBody(node, context) {
+		/** @type {string[]} */
+		const private_derived_state = [];
+
+		for (const definition of node.body) {
+			if (
+				definition.type === 'PropertyDefinition' &&
+				definition.key.type === 'PrivateIdentifier' &&
+				definition.value?.type === 'CallExpression'
+			) {
+				const rune = get_rune(definition.value, context.state.scope);
+				if (rune === '$derived') {
+					private_derived_state.push(definition.key.name);
+				}
+			}
+		}
+
+		context.next({
+			...context.state,
+			private_derived_state
+		});
 	}
 };
 
@@ -697,26 +721,5 @@ export const validation_runes = merge(validation, a11y_validators, {
 			}
 		}
 	},
-	ClassBody(node, context) {
-		/** @type {string[]} */
-		const private_derived_state = [];
-
-		for (const definition of node.body) {
-			if (
-				definition.type === 'PropertyDefinition' &&
-				definition.key.type === 'PrivateIdentifier' &&
-				definition.value?.type === 'CallExpression'
-			) {
-				const rune = get_rune(definition.value, context.state.scope);
-				if (rune === '$derived') {
-					private_derived_state.push(definition.key.name);
-				}
-			}
-		}
-
-		context.next({
-			...context.state,
-			private_derived_state
-		});
-	}
+	ClassBody: validation_runes_js.ClassBody
 });

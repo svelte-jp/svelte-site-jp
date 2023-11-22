@@ -64,6 +64,9 @@ importers:
       acorn:
         specifier: ^8.10.0
         version: 8.11.2
+      acorn-typescript:
+        specifier: ^1.4.11
+        version: 1.4.11(acorn@8.11.2)
       aria-query:
         specifier: ^5.3.0
         version: 5.3.0
@@ -104,6 +107,9 @@ importers:
       '@rollup/plugin-terser':
         specifier: ^0.4.4
         version: 0.4.4(rollup@4.3.0)
+      '@rollup/plugin-virtual':
+        specifier: ^3.0.2
+        version: 3.0.2(rollup@4.3.0)
       '@types/aria-query':
         specifier: ^5.0.3
         version: 5.0.4
@@ -1961,6 +1967,18 @@ packages:
       terser: 5.24.0
     dev: true
 
+  /@rollup/plugin-virtual@3.0.2(rollup@4.3.0):
+    resolution: {integrity: sha512-10monEYsBp3scM4/ND4LNH5Rxvh3e/cVeL3jWTgZ2SrQ+BmUoQcopVQvnaMcOnykb1VkxUFuDAN+0FnpTFRy2A==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 4.3.0
+    dev: true
+
   /@rollup/pluginutils@4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
@@ -2742,6 +2760,14 @@ packages:
     dependencies:
       acorn: 8.11.2
     dev: true
+
+  /acorn-typescript@1.4.11(acorn@8.11.2):
+    resolution: {integrity: sha512-cRGgp+4HMxMZAiMS61ZmQ3iuU/+A4g4ZYZsyLZdmvrEVN/TOwfJ40rPWcLqi3H5ut75SYAdOOJj6QGCcrkK57w==}
+    peerDependencies:
+      acorn: '>=8.9.0'
+    dependencies:
+      acorn: 8.11.2
+    dev: false
 
   /acorn-walk@8.3.0:
     resolution: {integrity: sha512-FS7hV565M5l1R08MXqo8odwMTB02C2UqzB17RVgu9EyuYFBqJZ3/ZY97sQD5FewVu1UyDFc1yztUDrAwT0EypA==}

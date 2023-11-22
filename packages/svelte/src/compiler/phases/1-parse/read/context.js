@@ -21,11 +21,15 @@ export default function read_context(parser) {
 
 	const code = full_char_code_at(parser.template, i);
 	if (isIdentifierStart(code, true)) {
+		const name = /** @type {string} */ (parser.read_identifier());
+		const annotation = read_type_annotation(parser);
+
 		return {
 			type: 'Identifier',
-			name: /** @type {string} */ (parser.read_identifier()),
+			name,
 			start,
-			end: parser.index
+			end: parser.index,
+			typeAnnotation: annotation
 		};
 	}
 
@@ -74,10 +78,44 @@ export default function read_context(parser) {
 		space_with_newline =
 			space_with_newline.slice(0, first_space) + space_with_newline.slice(first_space + 1);
 
-		return /** @type {any} */ (
-			parse_expression_at(`${space_with_newline}(${pattern_string} = 1)`, start - 1)
+		const expression = /** @type {any} */ (
+			parse_expression_at(`${space_with_newline}(${pattern_string} = 1)`, parser.ts, start - 1)
 		).left;
+
+		expression.typeAnnotation = read_type_annotation(parser);
+		if (expression.typeAnnotation) {
+			expression.end = expression.typeAnnotation.end;
+		}
+
+		return expression;
 	} catch (error) {
 		parser.acorn_error(error);
+	}
+}
+
+/**
+ * @param {import('../index.js').Parser} parser
+ * @returns {any}
+ */
+function read_type_annotation(parser) {
+	const index = parser.index;
+	parser.allow_whitespace();
+
+	if (parser.eat(':')) {
+		// we need to trick Acorn into parsing the type annotation
+		const insert = '_ as ';
+		let a = parser.index - insert.length;
+		const template = ' '.repeat(a) + insert + parser.template.slice(parser.index);
+		let expression = parse_expression_at(template, parser.ts, a);
+
+		// `array as item: string, index` becomes `string, index`, which is mistaken as a sequence expression - fix that
+		if (expression.type === 'SequenceExpression') {
+			expression = expression.expressions[0];
+		}
+
+		parser.index = /** @type {number} */ (expression.end);
+		return /** @type {any} */ (expression).typeAnnotation;
+	} else {
+		parser.index = index;
 	}
 }

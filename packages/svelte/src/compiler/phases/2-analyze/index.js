@@ -175,7 +175,7 @@ function get_delegated_event(node, context) {
 			// Bail-out if we reference anything from the EachBlock (for now) that mutates in non-runes mode,
 			((!context.state.analysis.runes && binding.kind === 'each') ||
 				// or any normal not reactive bindings that are mutated.
-				(binding.kind === 'normal' && context.state.analysis.runes) ||
+				binding.kind === 'normal' ||
 				// or any reactive imports (those are rewritten) (can only happen in legacy mode)
 				(binding.kind === 'state' && binding.declaration_kind === 'import')) &&
 			binding.mutated
@@ -577,7 +577,10 @@ const legacy_scope_tweaker = {
 			return next();
 		}
 
-		if (node.declaration.type === 'FunctionDeclaration') {
+		if (
+			node.declaration.type === 'FunctionDeclaration' ||
+			node.declaration.type === 'ClassDeclaration'
+		) {
 			state.analysis.exports.push({
 				name: /** @type {import('estree').Identifier} */ (node.declaration.id).name,
 				alias: null
@@ -671,17 +674,22 @@ const runes_scope_tweaker = {
 		}
 	},
 	ExportSpecifier(node, { state }) {
+		if (state.ast_type !== 'instance') return;
+
 		state.analysis.exports.push({
 			name: node.local.name,
 			alias: node.exported.name
 		});
 	},
 	ExportNamedDeclaration(node, { next, state }) {
-		if (!node.declaration) {
+		if (!node.declaration || state.ast_type !== 'instance') {
 			return next();
 		}
 
-		if (node.declaration.type === 'FunctionDeclaration') {
+		if (
+			node.declaration.type === 'FunctionDeclaration' ||
+			node.declaration.type === 'ClassDeclaration'
+		) {
 			state.analysis.exports.push({
 				name: /** @type {import('estree').Identifier} */ (node.declaration.id).name,
 				alias: null
