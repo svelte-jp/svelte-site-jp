@@ -443,7 +443,7 @@ export const validation = {
 };
 
 export const validation_legacy = merge(validation, a11y_validators, {
-	VariableDeclarator(node) {
+	VariableDeclarator(node, { state }) {
 		if (node.init?.type !== 'CallExpression') return;
 
 		const callee = node.init.callee;
@@ -454,8 +454,9 @@ export const validation_legacy = merge(validation, a11y_validators, {
 			return;
 		}
 
-		// TODO check if it's a store subscription that's called? How likely is it that someone uses a store that contains a function?
-		error(node.init, 'invalid-rune-usage', callee.name);
+		if (state.scope.get(callee.name)?.kind !== 'store_sub') {
+			error(node.init, 'invalid-rune-usage', callee.name);
+		}
 	},
 	AssignmentExpression(node, { state, path }) {
 		const parent = path.at(-1);
@@ -503,13 +504,19 @@ function validate_call_expression(node, scope, path) {
 		error(node, rune === '$derived' ? 'invalid-derived-location' : 'invalid-state-location');
 	}
 
-	if (rune === '$effect') {
+	if (rune === '$effect' || rune === '$effect.pre') {
 		if (parent.type !== 'ExpressionStatement') {
 			error(node, 'invalid-effect-location');
 		}
 
 		if (node.arguments.length !== 1) {
-			error(node, 'invalid-rune-args-length', '$effect', [1]);
+			error(node, 'invalid-rune-args-length', rune, [1]);
+		}
+	}
+
+	if (rune === '$effect.active') {
+		if (node.arguments.length !== 0) {
+			error(node, 'invalid-rune-args-length', '$effect.active', [0]);
 		}
 	}
 }
@@ -579,6 +586,21 @@ export const validation_runes_js = {
 			...context.state,
 			private_derived_state
 		});
+	},
+	ClassDeclaration(node, context) {
+		// In modules, we allow top-level module scope only, in components, we allow the component scope,
+		// which is function_depth of 1. With the exception of `new class` which is also not allowed at
+		// component scope level either.
+		const allowed_depth = context.state.ast_type === 'module' ? 0 : 1;
+
+		if (context.state.scope.function_depth > allowed_depth) {
+			warn(context.state.analysis.warnings, node, context.path, 'avoid-nested-class');
+		}
+	},
+	NewExpression(node, context) {
+		if (node.callee.type === 'ClassExpression' && context.state.scope.function_depth > 0) {
+			warn(context.state.analysis.warnings, node, context.path, 'avoid-inline-class');
+		}
 	}
 };
 
@@ -721,5 +743,8 @@ export const validation_runes = merge(validation, a11y_validators, {
 			}
 		}
 	},
-	ClassBody: validation_runes_js.ClassBody
+	// TODO this is a code smell. need to refactor this stuff
+	ClassBody: validation_runes_js.ClassBody,
+	ClassDeclaration: validation_runes_js.ClassDeclaration,
+	NewExpression: validation_runes_js.NewExpression
 });

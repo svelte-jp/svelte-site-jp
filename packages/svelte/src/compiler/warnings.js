@@ -192,11 +192,19 @@ const state = {
 };
 
 /** @satisfies {Warnings} */
+const performance = {
+	'avoid-inline-class': () =>
+		`Avoid 'new class' — instead, declare the class at the top level scope`,
+	'avoid-nested-class': () => `Avoid declaring classes below the top level scope`
+};
+
+/** @satisfies {Warnings} */
 const warnings = {
 	...css,
 	...attributes,
 	...runes,
 	...a11y,
+	...performance,
 	...state
 };
 

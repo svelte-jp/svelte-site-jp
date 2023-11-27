@@ -3,11 +3,7 @@ import { walk } from 'zimmerframe';
 import { is_element_node } from './nodes.js';
 import * as b from '../utils/builders.js';
 import { error } from '../errors.js';
-import {
-	extract_identifiers,
-	extract_identifiers_from_expression,
-	get_callee_name
-} from '../utils/ast.js';
+import { extract_identifiers, extract_identifiers_from_expression } from '../utils/ast.js';
 import { Runes } from './constants.js';
 
 export class Scope {
@@ -437,7 +433,7 @@ export function create_scopes(ast, root, allow_reactive_declarations, parent) {
 		SwitchStatement: create_block_scope,
 
 		ClassDeclaration(node, { state, next }) {
-			if (node.id) state.scope.declare(node.id, 'normal', 'const');
+			if (node.id) state.scope.declare(node.id, 'normal', 'const', node);
 			next();
 		},
 
@@ -499,12 +495,10 @@ export function create_scopes(ast, root, allow_reactive_declarations, parent) {
 			}
 
 			if (node.index) {
-				scope.declare(
-					b.id(node.index),
-					// TODO see logic in EachBlock in dom.ts
-					node.key ? 'derived' : 'normal',
-					'const'
-				);
+				const is_keyed =
+					node.key &&
+					(node.key.type !== 'Identifier' || !node.index || node.key.name !== node.index);
+				scope.declare(b.id(node.index), is_keyed ? 'derived' : 'normal', 'const');
 			}
 			if (node.key) visit(node.key, { scope });
 
@@ -561,6 +555,7 @@ export function create_scopes(ast, root, allow_reactive_declarations, parent) {
 		},
 
 		SnippetBlock(node, context) {
+			const state = context.state;
 			// Special-case for root-level snippets: they become part of the instance scope
 			const is_top_level = !context.path.at(-2);
 			let scope = state.scope;
@@ -668,15 +663,31 @@ export function set_scope(scopes) {
 
 /**
  * Returns the name of the rune if the given expression is a `CallExpression` using a rune.
- * @param {import('estree').Expression | null | undefined} node
+ * @param {import('estree').Node | null | undefined} node
  * @param {Scope} scope
  */
 export function get_rune(node, scope) {
-	const callee = get_callee_name(node);
-	if (callee === null || !Runes.includes(callee)) return null;
+	if (!node) return null;
+	if (node.type !== 'CallExpression') return null;
 
-	const binding = scope.get(callee);
+	let n = node.callee;
+
+	let joined = '';
+
+	while (n.type === 'MemberExpression') {
+		if (n.computed) return null;
+		if (n.property.type !== 'Identifier') return null;
+		joined = '.' + n.property.name + joined;
+		n = n.object;
+	}
+
+	if (n.type !== 'Identifier') return null;
+
+	joined = n.name + joined;
+	if (!Runes.includes(joined)) return null;
+
+	const binding = scope.get(n.name);
 	if (binding !== null) return null; // rune name, but references a variable or store
 
-	return callee;
+	return joined;
 }

@@ -51,11 +51,11 @@ class Todo {
 ```diff
 <script>
 	let count = $state(0);
-+	let double = $derived(count * 2);
++	let doubled = $derived(count * 2);
 </script>
 
 <button on:click={() => count++}>
-	{double}
+	{doubled}
 </button>
 
 +<p>{count} doubled is {doubled}</p>
@@ -92,13 +92,13 @@ class Todo {
 ```diff
 <script>
 	let count = $state(0);
-	let double = $derived(count * 2);
+	let doubled = $derived(count * 2);
 
 +	$effect(() => {
 +		// runs when the component is mounted, and again
-+		// whenever `count` or `double` change,
++		// whenever `count` or `doubled` change,
 +		// after the DOM has been updated
-+		console.log({ count, double });
++		console.log({ count, doubled });
 +
 +		return () => {
 +			// if a callback is provided, it will run
@@ -110,7 +110,7 @@ class Todo {
 </script>
 
 <button on:click={() => count++}>
-	{double}
+	{doubled}
 </button>
 
 <p>{count} doubled is {doubled}</p>
@@ -158,7 +158,7 @@ class Todo {
 </script>
 
 <div bind:this={div}>
-	{#each message as message}
+	{#each messages as message}
 		<p>{message}</p>
 	{/each}
 </div>
@@ -167,6 +167,24 @@ class Todo {
 ### What this replaces
 
 これまで `beforeUpdate` を使用してきた場所で使うことができます。`afterUpdate` と同様に、Svelte 5 では `beforeUpdate` は非推奨となります。
+
+## `$effect.active`
+
+The `$effect.active` rune is an advanced feature that tells you whether or not the code is running inside an effect or inside your template ([demo](/#H4sIAAAAAAAAE3XP0QrCMAwF0F-JRXAD595rLfgdzodRUyl0bVgzQcb-3VYFQfExl5tDMgvrPCYhT7MI_YBCiiOR2Aq-UxnSDT1jnlOcRlMSlczoiHUXOjYxpOhx5-O12rgAJg4UAwaGhDyR3Gxhjdai4V1v2N2wqus9tC3Y3ifMQjbehaqq4aBhLtEv_Or893icCsdLve-Caj8nBkU67zMO5HtGCfM3sKiWNKhV0zwVaBqd3x3ixVmHFyFLuJyXB-moOe8pAQAA)):
+
+```svelte
+<script>
+	console.log('in component setup:', $effect.active()); // false
+
+	$effect(() => {
+		console.log('in effect:', $effect.active()); // true
+	});
+</script>
+
+<p>in template: {$effect.active()}</p> <!-- true -->
+```
+
+This allows you to (for example) add things like subscriptions without causing memory leaks, by putting them in child effects.
 
 ## `$props`
 

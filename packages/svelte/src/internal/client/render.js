@@ -27,7 +27,8 @@ import {
 	EACH_INDEX_REACTIVE,
 	EACH_ITEM_REACTIVE,
 	PassiveDelegatedEvents,
-	DelegatedEvents
+	DelegatedEvents,
+	AttributeAliases
 } from '../../constants.js';
 import {
 	create_fragment_from_html,
@@ -60,7 +61,8 @@ import {
 	push,
 	current_component_context,
 	pop,
-	schedule_task
+	schedule_task,
+	managed_render_effect
 } from './runtime.js';
 import {
 	current_hydration_fragment,
@@ -133,7 +135,7 @@ export function svg_replace(node) {
  * @param {boolean} is_fragment
  * @param {boolean} use_clone_node
  * @param {null | Text | Comment | Element} anchor
- * @param {() => Element} [template_element_fn]
+ * @param {() => Node} [template_element_fn]
  * @returns {Element | DocumentFragment | Node[]}
  */
 function open_template(is_fragment, use_clone_node, anchor, template_element_fn) {
@@ -156,7 +158,7 @@ function open_template(is_fragment, use_clone_node, anchor, template_element_fn)
 /**
  * @param {null | Text | Comment | Element} anchor
  * @param {boolean} use_clone_node
- * @param {() => Element} [template_element_fn]
+ * @param {() => Node} [template_element_fn]
  * @returns {Element | DocumentFragment | Node[]}
  */
 /*#__NO_SIDE_EFFECTS__*/
@@ -167,12 +169,31 @@ export function open(anchor, use_clone_node, template_element_fn) {
 /**
  * @param {null | Text | Comment | Element} anchor
  * @param {boolean} use_clone_node
- * @param {() => Element} [template_element_fn]
+ * @param {() => Node} [template_element_fn]
  * @returns {Element | DocumentFragment | Node[]}
  */
 /*#__NO_SIDE_EFFECTS__*/
 export function open_frag(anchor, use_clone_node, template_element_fn) {
 	return open_template(true, use_clone_node, anchor, template_element_fn);
+}
+
+const space_template = template(' ', false);
+const comment_template = template('<!>', true);
+
+/**
+ * @param {null | Text | Comment | Element} anchor
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export function space(anchor) {
+	return open(anchor, true, space_template);
+}
+
+/**
+ * @param {null | Text | Comment | Element} anchor
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export function comment(anchor) {
+	return open_frag(anchor, true, comment_template);
 }
 
 /**
@@ -1205,14 +1226,21 @@ export function bind_prop(props, prop, value) {
 /**
  * @param {Element} element_or_component
  * @param {(value: unknown) => void} update
+ * @param {import('./types.js').MaybeSignal} binding
  * @returns {void}
  */
-export function bind_this(element_or_component, update) {
+export function bind_this(element_or_component, update, binding) {
 	untrack(() => {
 		update(element_or_component);
 		render_effect(() => () => {
-			untrack(() => {
-				update(null);
+			// Defer to the next tick so that all updates can be reconciled first.
+			// This solves the case where one variable is shared across multiple this-bindings.
+			render_effect(() => {
+				untrack(() => {
+					if (!is_signal(binding) || binding.v === element_or_component) {
+						update(null);
+					}
+				});
 			});
 		});
 	});
@@ -2675,10 +2703,11 @@ function get_setters(element) {
  * @param {Element & ElementCSSInlineStyle} dom
  * @param {Record<string, unknown> | null} prev
  * @param {Record<string, unknown>[]} attrs
+ * @param {boolean} lowercase_attributes
  * @param {string} css_hash
  * @returns {Record<string, unknown>}
  */
-export function spread_attributes(dom, prev, attrs, css_hash) {
+export function spread_attributes(dom, prev, attrs, lowercase_attributes, css_hash) {
 	const next = Object.assign({}, ...attrs);
 	const has_hash = css_hash.length !== 0;
 	for (const key in prev) {
@@ -2697,13 +2726,13 @@ export function spread_attributes(dom, prev, attrs, css_hash) {
 		let value = next[key];
 		if (value === prev?.[key]) continue;
 
-		const prefix = key.slice(0, 2);
+		const prefix = key[0] + key[1]; // this is faster than key.slice(0, 2)
 		if (prefix === '$$') continue;
 
 		if (prefix === 'on') {
 			/** @type {{ capture?: true }} */
 			const opts = {};
-			let event_name = key.slice(2).toLowerCase();
+			let event_name = key.slice(2);
 			const delegated = DelegatedEvents.includes(event_name);
 
 			if (
@@ -2735,25 +2764,33 @@ export function spread_attributes(dom, prev, attrs, css_hash) {
 		} else if (key === '__value' || key === 'value') {
 			// @ts-ignore
 			dom.value = dom[key] = dom.__value = value;
-		} else if (setters.includes(key)) {
-			if (DEV) {
-				check_src_in_dev_hydration(dom, key, value);
-			}
-			if (
-				current_hydration_fragment === null ||
-				//  @ts-ignore see attr method for an explanation of src/srcset
-				(dom[key] !== value && key !== 'src' && key !== 'srcset')
-			) {
-				// @ts-ignore
-				dom[key] = value;
-			}
-		} else if (typeof value !== 'function') {
-			if (has_hash && key === 'class') {
-				if (value) value += ' ';
-				value += css_hash;
+		} else {
+			let name = key;
+			if (lowercase_attributes) {
+				name = name.toLowerCase();
+				name = AttributeAliases[name] || name;
 			}
 
-			attr(dom, key, value);
+			if (setters.includes(name)) {
+				if (DEV) {
+					check_src_in_dev_hydration(dom, name, value);
+				}
+				if (
+					current_hydration_fragment === null ||
+					//  @ts-ignore see attr method for an explanation of src/srcset
+					(dom[name] !== value && name !== 'src' && name !== 'srcset')
+				) {
+					// @ts-ignore
+					dom[name] = value;
+				}
+			} else if (typeof value !== 'function') {
+				if (has_hash && name === 'class') {
+					if (value) value += ' ';
+					value += css_hash;
+				}
+
+				attr(dom, name, value);
+			}
 		}
 	}
 	return next;
@@ -2784,6 +2821,7 @@ export function spread_dynamic_element_attributes(node, prev, attrs, css_hash) {
 			/** @type {Element & ElementCSSInlineStyle} */ (node),
 			prev,
 			attrs,
+			node.namespaceURI !== 'http://www.w3.org/2000/svg',
 			css_hash
 		);
 	}
@@ -2877,7 +2915,7 @@ export function unwrap(value) {
  * @template {Record<string, any>} Props
  * @template {Record<string, any> | undefined} Exports
  * @template {Record<string, any>} Events
- * @param {import('../../main/public.js').SvelteComponent<Props, Events>} component
+ * @param {typeof import('../../main/public.js').SvelteComponent<Props, Events>} component
  * @param {{
  * 		target: Node;
  * 		props?: Props;
@@ -2996,7 +3034,7 @@ export function createRoot(component, options) {
  * @template {Record<string, any>} Props
  * @template {Record<string, any> | undefined} Exports
  * @template {Record<string, any>} Events
- * @param {import('../../main/public.js').SvelteComponent<Props, Events>} component
+ * @param {typeof import('../../main/public.js').SvelteComponent<Props, Events>} component
  * @param {{
  * 		target: Node;
  * 		props?: Props;
