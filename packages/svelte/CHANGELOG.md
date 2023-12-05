@@ -1,5 +1,69 @@
 # svelte
 
+## 5.0.0-next.17
+
+### Patch Changes
+
+- fix: improve `$inspect` type definition ([#9731](https://github.com/sveltejs/svelte/pull/9731))
+
+- fix: correctly inspect derived values ([#9731](https://github.com/sveltejs/svelte/pull/9731))
+
+## 5.0.0-next.16
+
+### Patch Changes
+
+- fix: delegate events on elements with bind-this ([#9696](https://github.com/sveltejs/svelte/pull/9696))
+
+- fix: ensure implicit children snippet renders correctly ([#9706](https://github.com/sveltejs/svelte/pull/9706))
+
+- fix: ensure `$slots` exists in runes mode ([#9718](https://github.com/sveltejs/svelte/pull/9718))
+
+- fix: allow `bind:this` with dynamic type on inputs ([#9713](https://github.com/sveltejs/svelte/pull/9713))
+
+- fix: port over props that were set prior to initialization ([#9704](https://github.com/sveltejs/svelte/pull/9704))
+
+- feat: $inspect rune ([#9705](https://github.com/sveltejs/svelte/pull/9705))
+
+- fix: keep fallback value after spread update not setting that prop ([#9717](https://github.com/sveltejs/svelte/pull/9717))
+
+- fix: tweak const tag parsing ([#9715](https://github.com/sveltejs/svelte/pull/9715))
+
+- chore: remove redundant hydration code ([#9698](https://github.com/sveltejs/svelte/pull/9698))
+
+- fix: improve template text node serialization ([#9722](https://github.com/sveltejs/svelte/pull/9722))
+
+- fix: improve infinite loop capturing ([#9721](https://github.com/sveltejs/svelte/pull/9721))
+
+## 5.0.0-next.15
+
+### Patch Changes
+
+- fix: add children to element typings ([#9679](https://github.com/sveltejs/svelte/pull/9679))
+
+- fix: handle ts expressions when dealing with runes ([#9681](https://github.com/sveltejs/svelte/pull/9681))
+
+## 5.0.0-next.14
+
+### Patch Changes
+
+- feat: warn on references to mutated non-state in template ([#9669](https://github.com/sveltejs/svelte/pull/9669))
+
+- fix: prevent reactive snippet from reinitializing unnecessarily ([#9665](https://github.com/sveltejs/svelte/pull/9665))
+
+- fix: take event attributes into account when checking a11y ([#9664](https://github.com/sveltejs/svelte/pull/9664))
+
+- feat: add $effect.root rune ([#9638](https://github.com/sveltejs/svelte/pull/9638))
+
+- feat: support type definition in {@const} ([#9609](https://github.com/sveltejs/svelte/pull/9609))
+
+- feat: ignore `src`, `srcset`, and `href` attributes when hydrating ([#9662](https://github.com/sveltejs/svelte/pull/9662))
+
+- chore: bump esrap ([#9649](https://github.com/sveltejs/svelte/pull/9649))
+
+- chore: improve `<svelte:element>` generated code ([#9648](https://github.com/sveltejs/svelte/pull/9648))
+
+- chore: prevent some unused variable creation ([#9571](https://github.com/sveltejs/svelte/pull/9571))
+
 ## 5.0.0-next.13
 
 ### Patch Changes

@@ -1,6 +1,11 @@
 import { walk } from 'zimmerframe';
 import { set_scope, get_rune } from '../../scope.js';
-import { extract_identifiers, extract_paths, is_event_attribute } from '../../../utils/ast.js';
+import {
+	extract_identifiers,
+	extract_paths,
+	is_event_attribute,
+	unwrap_ts_expression
+} from '../../../utils/ast.js';
 import * as b from '../../../utils/builders.js';
 import is_reference from 'is-reference';
 import {
@@ -168,7 +173,7 @@ function process_children(nodes, parent, { visit, state }) {
 			}
 
 			const expression = b.call(
-				'$.escape',
+				'$.escape_text',
 				/** @type {import('estree').Expression} */ (visit(node.expression))
 			);
 			state.template.push(t_expression(expression));
@@ -568,8 +573,9 @@ const javascript_visitors_runes = {
 		const declarations = [];
 
 		for (const declarator of node.declarations) {
-			const rune = get_rune(declarator.init, state.scope);
-			if (!rune || rune === '$effect.active') {
+			const init = unwrap_ts_expression(declarator.init);
+			const rune = get_rune(init, state.scope);
+			if (!rune || rune === '$effect.active' || rune === '$inspect') {
 				declarations.push(/** @type {import('estree').VariableDeclarator} */ (visit(declarator)));
 				continue;
 			}
@@ -579,7 +585,7 @@ const javascript_visitors_runes = {
 				continue;
 			}
 
-			const args = /** @type {import('estree').CallExpression} */ (declarator.init).arguments;
+			const args = /** @type {import('estree').CallExpression} */ (init).arguments;
 			const value =
 				args.length === 0
 					? b.id('undefined')
@@ -624,11 +630,23 @@ const javascript_visitors_runes = {
 		}
 		context.next();
 	},
-	CallExpression(node, { state, next }) {
+	CallExpression(node, { state, next, visit }) {
 		const rune = get_rune(node, state.scope);
 
 		if (rune === '$effect.active') {
 			return b.literal(false);
+		}
+
+		if (rune === '$inspect') {
+			if (state.options.dev) {
+				const args = /** @type {import('estree').Expression[]} */ (
+					node.arguments.map((arg) => visit(arg))
+				);
+
+				return b.call('console.log', ...args);
+			}
+
+			return b.unary('void', b.literal(0));
 		}
 
 		next();
@@ -1080,8 +1098,9 @@ const template_visitors = {
 		state.template.push(t_expression(id));
 	},
 	ConstTag(node, { state, visit }) {
-		const pattern = /** @type {import('estree').Pattern} */ (visit(node.expression.left));
-		const init = /** @type {import('estree').Expression} */ (visit(node.expression.right));
+		const declaration = node.declaration.declarations[0];
+		const pattern = /** @type {import('estree').Pattern} */ (visit(declaration.id));
+		const init = /** @type {import('estree').Expression} */ (visit(declaration.init));
 		state.init.push(b.declaration('const', pattern, init));
 	},
 	DebugTag(node, { state, visit }) {
@@ -1106,11 +1125,17 @@ const template_visitors = {
 		);
 	},
 	RenderTag(node, context) {
-		const snippet_function = context.state.options.dev
+		const state = context.state;
+		const [anchor, anchor_id] = serialize_anchor(state);
+
+		state.init.push(anchor);
+		state.template.push(t_expression(anchor_id));
+
+		const snippet_function = state.options.dev
 			? b.call('$.validate_snippet', node.expression)
 			: node.expression;
 		if (node.argument) {
-			context.state.template.push(
+			state.template.push(
 				t_statement(
 					b.stmt(
 						b.call(
@@ -1122,8 +1147,10 @@ const template_visitors = {
 				)
 			);
 		} else {
-			context.state.template.push(t_statement(b.stmt(b.call(snippet_function, b.id('$$payload')))));
+			state.template.push(t_statement(b.stmt(b.call(snippet_function, b.id('$$payload')))));
 		}
+
+		state.template.push(t_expression(anchor_id));
 	},
 	ClassDirective(node) {
 		error(node, 'INTERNAL', 'Node should have been handled elsewhere');
@@ -1416,8 +1443,6 @@ const template_visitors = {
 		state.template.push(t_expression(id));
 	},
 	SnippetBlock(node, context) {
-		const [dec, id] = serialize_anchor(context.state);
-
 		// TODO hoist where possible
 		/** @type {import('estree').Pattern[]} */
 		const args = [b.id('$$payload')];
@@ -1425,18 +1450,11 @@ const template_visitors = {
 			args.push(node.context);
 		}
 
-		const out = b.member_id('$$payload.out');
-
 		context.state.init.push(
 			b.function_declaration(
 				node.expression,
 				args,
-				b.block([
-					dec,
-					b.stmt(b.assignment('+=', out, id)),
-					.../** @type {import('estree').BlockStatement} */ (context.visit(node.body)).body,
-					b.stmt(b.assignment('+=', out, id))
-				])
+				/** @type {import('estree').BlockStatement} */ (context.visit(node.body))
 			)
 		);
 		if (context.state.options.dev) {

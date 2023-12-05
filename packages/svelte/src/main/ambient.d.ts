@@ -90,6 +90,34 @@ declare namespace $effect {
 	 * https://svelte-5-preview.vercel.app/docs/runes#$effect-active
 	 */
 	export function active(): boolean;
+
+	/**
+	 * The `$effect.root` rune is an advanced feature that creates a non-tracked scope that doesn't auto-cleanup. This is useful for
+	 * nested effects that you want to manually control. This rune also allows for creation of effects outside of the component
+	 * initialisation phase.
+	 *
+	 * Example:
+	 * ```svelte
+	 * <script>
+	 *   let count = $state(0);
+	 *
+	 *   const cleanup = $effect.root(() => {
+	 *	    $effect(() => {
+	 *				console.log(count);
+	 *			})
+	 *
+	 *      return () => {
+	 *        console.log('effect root cleanup');
+	 * 			}
+	 *   });
+	 * </script>
+	 *
+	 * <button onclick={() => cleanup()}>cleanup</button>
+	 * ```
+	 *
+	 * https://svelte-5-preview.vercel.app/docs/runes#$effect-root
+	 */
+	export function root(fn: () => void | (() => void)): () => void;
 }
 
 /**
@@ -102,3 +130,25 @@ declare namespace $effect {
  * https://svelte-5-preview.vercel.app/docs/runes#$props
  */
 declare function $props<T>(): T;
+
+/**
+ * Inspects a value whenever it, or the properties it contains, change. Example:
+ *
+ * ```ts
+ * $inspect({ someValue, someOtherValue })
+ * ```
+ *
+ * If a second argument is provided, it will be called with the value and the event type
+ * (`'init'` or `'update'`), otherwise the value will be logged to the console.
+ *
+ * ```ts
+ * $inspect(x, console.trace);
+ * $inspect(y, (y) => { debugger; });
+ * ```
+ *
+ * https://svelte-5-preview.vercel.app/docs/runes#$inspect
+ */
+declare function $inspect<T>(
+	value: T,
+	callback?: (value: T, type: 'init' | 'update') => void
+): void;

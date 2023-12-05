@@ -7,7 +7,8 @@ import {
 	extract_paths,
 	is_event_attribute,
 	is_text_attribute,
-	object
+	object,
+	unwrap_ts_expression
 } from '../../utils/ast.js';
 import * as b from '../../utils/builders.js';
 import { ReservedKeywords, Runes, SVGElements } from '../constants.js';
@@ -218,7 +219,7 @@ export function analyze_module(ast, options) {
 	for (const [, scope] of scopes) {
 		for (const [name, binding] of scope.declarations) {
 			if (binding.kind === 'state' && !binding.mutated) {
-				warn(warnings, binding.node, [], 'state-rune-not-mutated', name);
+				warn(warnings, binding.node, [], 'state-not-mutated', name);
 			}
 		}
 	}
@@ -264,7 +265,7 @@ export function analyze_component(root, options) {
 		// is referencing a rune and not a global store.
 		if (
 			options.runes === false ||
-			!Runes.includes(name) ||
+			!Runes.includes(/** @type {any} */ (name)) ||
 			(declaration !== null &&
 				// const state = $state(0) is valid
 				get_rune(declaration.initial, instance.scope) === null &&
@@ -278,7 +279,7 @@ export function analyze_component(root, options) {
 			if (options.runes !== false) {
 				if (declaration === null && /[a-z]/.test(store_name[0])) {
 					error(references[0].node, 'illegal-global', name);
-				} else if (declaration !== null && Runes.includes(name)) {
+				} else if (declaration !== null && Runes.includes(/** @type {any} */ (name))) {
 					for (const { node, path } of references) {
 						if (path.at(-1)?.type === 'CallExpression') {
 							warn(warnings, node, [], 'store-with-rune-name', store_name);
@@ -325,7 +326,10 @@ export function analyze_component(root, options) {
 			get_css_hash: options.cssHash
 		}),
 		runes:
-			options.runes ?? Array.from(module.scope.references).some(([name]) => Runes.includes(name)),
+			options.runes ??
+			Array.from(module.scope.references).some(([name]) =>
+				Runes.includes(/** @type {any} */ (name))
+			),
 		exports: [],
 		uses_props: false,
 		uses_rest_props: false,
@@ -377,7 +381,7 @@ export function analyze_component(root, options) {
 		for (const [, scope] of instance.scopes) {
 			for (const [name, binding] of scope.declarations) {
 				if (binding.kind === 'state' && !binding.mutated) {
-					warn(warnings, binding.node, [], 'state-rune-not-mutated', name);
+					warn(warnings, binding.node, [], 'state-not-mutated', name);
 				}
 			}
 		}
@@ -412,6 +416,30 @@ export function analyze_component(root, options) {
 		}
 
 		analysis.reactive_statements = order_reactive_statements(analysis.reactive_statements);
+	}
+
+	// warn on any nonstate declarations that are a) mutated and b) referenced in the template
+	for (const scope of [module.scope, instance.scope]) {
+		outer: for (const [name, binding] of scope.declarations) {
+			if (binding.kind === 'normal' && binding.mutated) {
+				for (const { path } of binding.references) {
+					if (path[0].type !== 'Fragment') continue;
+					for (let i = 1; i < path.length; i += 1) {
+						const type = path[i].type;
+						if (
+							type === 'FunctionDeclaration' ||
+							type === 'FunctionExpression' ||
+							type === 'ArrowFunctionExpression'
+						) {
+							continue;
+						}
+					}
+
+					warn(warnings, binding.node, [], 'non-state-reference', name);
+					continue outer;
+				}
+			}
+		}
 	}
 
 	analysis.stylesheet.validate(analysis);
@@ -635,11 +663,20 @@ const runes_scope_js_tweaker = {
 
 /** @type {import('./types').Visitors} */
 const runes_scope_tweaker = {
-	VariableDeclarator(node, { state }) {
-		if (node.init?.type !== 'CallExpression') return;
-		if (get_rune(node.init, state.scope) === null) return;
+	CallExpression(node, { state, next }) {
+		const rune = get_rune(node, state.scope);
 
-		const callee = node.init.callee;
+		// `$inspect(foo)` should not trigger the `static-state-reference` warning
+		if (rune === '$inspect') {
+			next({ ...state, function_depth: state.function_depth + 1 });
+		}
+	},
+	VariableDeclarator(node, { state }) {
+		const init = unwrap_ts_expression(node.init);
+		if (!init || init.type !== 'CallExpression') return;
+		if (get_rune(init, state.scope) === null) return;
+
+		const callee = init.callee;
 		if (callee.type !== 'Identifier') return;
 
 		const name = callee.name;
@@ -854,6 +891,12 @@ const common_visitors = {
 	Identifier(node, context) {
 		const parent = /** @type {import('estree').Node} */ (context.path.at(-1));
 		if (!is_reference(node, parent)) return;
+
+		if (node.name === '$$slots') {
+			context.state.analysis.uses_slots = true;
+			return;
+		}
+
 		const binding = context.state.scope.get(node.name);
 
 		// if no binding, means some global variable
@@ -1068,7 +1111,8 @@ function determine_element_spread_and_delegatable(node) {
 			has_spread = true;
 		} else if (
 			!has_action_or_bind &&
-			(attribute.type === 'BindDirective' || attribute.type === 'UseDirective')
+			((attribute.type === 'BindDirective' && attribute.name !== 'this') ||
+				attribute.type === 'UseDirective')
 		) {
 			has_action_or_bind = true;
 		}

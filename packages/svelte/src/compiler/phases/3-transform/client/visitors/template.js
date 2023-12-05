@@ -347,6 +347,15 @@ function serialize_element_spread_attributes(attributes, context, element, eleme
  * @returns {boolean}
  */
 function serialize_dynamic_element_spread_attributes(attributes, context, element_id) {
+	if (attributes.length === 0) {
+		if (context.state.analysis.stylesheet.id) {
+			context.state.init.push(
+				b.stmt(b.call('$.class_name', element_id, b.literal(context.state.analysis.stylesheet.id)))
+			);
+		}
+		return false;
+	}
+
 	let is_reactive = false;
 
 	/** @type {import('estree').Expression[]} */
@@ -1373,13 +1382,17 @@ function process_children(nodes, parent, { visit, state }) {
 
 	/**
 	 * @param {Sequence} sequence
+	 * @param {boolean} in_fragment
 	 */
-	function flush_sequence(sequence) {
+	function flush_sequence(sequence, in_fragment) {
 		if (sequence.length === 1) {
 			const node = sequence[0];
 
-			if (node.type === 'Text') {
+			if ((in_fragment && node.type === 'ExpressionTag') || node.type === 'Text') {
 				expression = b.call('$.sibling', expression);
+			}
+
+			if (node.type === 'Text') {
 				state.template.push(node.raw);
 				return;
 			}
@@ -1466,7 +1479,7 @@ function process_children(nodes, parent, { visit, state }) {
 			sequence.push(node);
 		} else {
 			if (sequence.length > 0) {
-				flush_sequence(sequence);
+				flush_sequence(sequence, true);
 				sequence = [];
 			}
 
@@ -1510,7 +1523,7 @@ function process_children(nodes, parent, { visit, state }) {
 	}
 
 	if (sequence.length > 0) {
-		flush_sequence(sequence);
+		flush_sequence(sequence, false);
 	}
 }
 
@@ -1589,37 +1602,8 @@ function serialize_template_literal(values, visit, state) {
 			if (node.type === 'ExpressionTag' && node.metadata.contains_call_expression) {
 				contains_call_expression = true;
 			}
-			let expression = visit(node.expression);
-			if (node.expression.type === 'Identifier') {
-				const name = node.expression.name;
-				const binding = scope.get(name);
-				// When we combine expressions as part of a single template element, we might
-				// be referencing variables that can be mutated, but are not actually state.
-				// In order to prevent this undesired behavior, we need ensure we cache the
-				// latest value we have of that variable before we process the template, enforcing
-				// the value remains static through the lifetime of the template.
-				if (binding !== null && binding.kind === 'normal' && binding.mutated) {
-					let has_already_cached = false;
-					// Check if we already create a const of this expression
-					for (let node of state.init) {
-						if (
-							node.type === 'VariableDeclaration' &&
-							node.declarations[0].id.type === 'Identifier' &&
-							node.declarations[0].id.name === name + '_const'
-						) {
-							has_already_cached = true;
-							expression = b.id(name + '_const');
-							break;
-						}
-					}
-					if (!has_already_cached) {
-						const tmp_id = scope.generate(name + '_const');
-						state.init.push(b.const(tmp_id, expression));
-						expression = b.id(tmp_id);
-					}
-				}
-			}
-			expressions.push(b.call('$.stringify', expression));
+
+			expressions.push(b.call('$.stringify', visit(node.expression)));
 			quasis.push(b.quasi('', i + 1 === values.length));
 		}
 	}
@@ -1653,19 +1637,20 @@ export const template_visitors = {
 		);
 	},
 	ConstTag(node, { state, visit }) {
+		const declaration = node.declaration.declarations[0];
 		// TODO we can almost certainly share some code with $derived(...)
-		if (node.expression.left.type === 'Identifier') {
+		if (declaration.id.type === 'Identifier') {
 			state.init.push(
 				b.const(
-					node.expression.left,
+					declaration.id,
 					b.call(
 						'$.derived',
-						b.thunk(/** @type {import('estree').Expression} */ (visit(node.expression.right)))
+						b.thunk(/** @type {import('estree').Expression} */ (visit(declaration.init)))
 					)
 				)
 			);
 		} else {
-			const identifiers = extract_identifiers(node.expression.left);
+			const identifiers = extract_identifiers(declaration.id);
 			const tmp = b.id(state.scope.generate('computed_const'));
 
 			// Make all identifiers that are declared within the following computed regular
@@ -1681,8 +1666,8 @@ export const template_visitors = {
 				[],
 				b.block([
 					b.const(
-						/** @type {import('estree').Pattern} */ (visit(node.expression.left)),
-						/** @type {import('estree').Expression} */ (visit(node.expression.right))
+						/** @type {import('estree').Pattern} */ (visit(declaration.id)),
+						/** @type {import('estree').Expression} */ (visit(declaration.init))
 					),
 					b.return(b.object(identifiers.map((node) => b.prop('init', node, node))))
 				])
@@ -1734,18 +1719,20 @@ export const template_visitors = {
 		if (node.argument) {
 			args.push(b.thunk(/** @type {import('estree').Expression} */ (context.visit(node.argument))));
 		}
-		const snippet_function = /** @type {import('estree').Expression} */ (
+
+		let snippet_function = /** @type {import('estree').Expression} */ (
 			context.visit(node.expression)
 		);
-		const init = b.call(
-			context.state.options.dev ? b.call('$.validate_snippet', snippet_function) : snippet_function,
-			...args
-		);
+		if (context.state.options.dev) {
+			snippet_function = b.call('$.validate_snippet', snippet_function);
+		}
 
 		if (is_reactive) {
-			context.state.init.push(b.stmt(b.call('$.snippet_effect', b.thunk(init))));
+			context.state.init.push(
+				b.stmt(b.call('$.snippet_effect', b.thunk(snippet_function), ...args))
+			);
 		} else {
-			context.state.init.push(b.stmt(init));
+			context.state.init.push(b.stmt(b.call(snippet_function, ...args)));
 		}
 	},
 	AnimateDirective(node, { state, visit }) {
@@ -2101,7 +2088,9 @@ export const template_visitors = {
 					'$.element',
 					context.state.node,
 					get_tag,
-					b.arrow([element_id, b.id('$$anchor')], b.block(inner)),
+					inner.length === 0
+						? /** @type {any} */ (undefined)
+						: b.arrow([element_id, b.id('$$anchor')], b.block(inner)),
 					namespace === 'http://www.w3.org/2000/svg'
 						? b.literal(true)
 						: /** @type {any} */ (undefined)

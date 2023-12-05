@@ -1,5 +1,10 @@
 import { error } from '../../errors.js';
-import { extract_identifiers, is_text_attribute } from '../../utils/ast.js';
+import {
+	extract_identifiers,
+	get_parent,
+	is_text_attribute,
+	unwrap_ts_expression
+} from '../../utils/ast.js';
 import { warn } from '../../warnings.js';
 import fuzzymatch from '../1-parse/utils/fuzzymatch.js';
 import { binding_properties } from '../bindings.js';
@@ -318,7 +323,7 @@ export const validation = {
 					);
 				}
 
-				if (parent.name === 'input') {
+				if (parent.name === 'input' && node.name !== 'this') {
 					const type = /** @type {import('#compiler').Attribute | undefined} */ (
 						parent.attributes.find((a) => a.type === 'Attribute' && a.name === 'type')
 					);
@@ -491,7 +496,7 @@ function validate_call_expression(node, scope, path) {
 	const rune = get_rune(node, scope);
 	if (rune === null) return;
 
-	const parent = /** @type {import('#compiler').SvelteNode} */ (path.at(-1));
+	const parent = /** @type {import('#compiler').SvelteNode} */ (get_parent(path, -1));
 
 	if (rune === '$props') {
 		if (parent.type === 'VariableDeclarator') return;
@@ -516,7 +521,19 @@ function validate_call_expression(node, scope, path) {
 
 	if (rune === '$effect.active') {
 		if (node.arguments.length !== 0) {
-			error(node, 'invalid-rune-args-length', '$effect.active', [0]);
+			error(node, 'invalid-rune-args-length', rune, [0]);
+		}
+	}
+
+	if (rune === '$effect.root') {
+		if (node.arguments.length !== 1) {
+			error(node, 'invalid-rune-args-length', rune, [1]);
+		}
+	}
+
+	if (rune === '$inspect') {
+		if (node.arguments.length < 1 || node.arguments.length > 2) {
+			error(node, 'invalid-rune-args-length', rune, [1, 2]);
 		}
 	}
 }
@@ -697,7 +714,7 @@ export const validation_runes = merge(validation, a11y_validators, {
 		next({ ...state });
 	},
 	VariableDeclarator(node, { state }) {
-		const init = node.init;
+		const init = unwrap_ts_expression(node.init);
 		const rune = get_rune(init, state.scope);
 
 		if (rune === null) return;

@@ -3,6 +3,7 @@ import { is_hoistable_function } from '../../utils.js';
 import * as b from '../../../../utils/builders.js';
 import * as assert from '../../../../utils/assert.js';
 import { create_state_declarators, get_props_method } from '../utils.js';
+import { unwrap_ts_expression } from '../../../../utils/ast.js';
 
 /** @type {import('../types.js').ComponentVisitors} */
 export const javascript_visitors_runes = {
@@ -133,9 +134,9 @@ export const javascript_visitors_runes = {
 		const declarations = [];
 
 		for (const declarator of node.declarations) {
-			const init = declarator.init;
+			const init = unwrap_ts_expression(declarator.init);
 			const rune = get_rune(init, state.scope);
-			if (!rune || rune === '$effect.active') {
+			if (!rune || rune === '$effect.active' || rune === '$effect.root' || rune === '$inspect') {
 				if (init != null && is_hoistable_function(init)) {
 					const hoistable_function = visit(init);
 					state.hoisted.push(
@@ -209,7 +210,7 @@ export const javascript_visitors_runes = {
 				continue;
 			}
 
-			const args = /** @type {import('estree').CallExpression} */ (declarator.init).arguments;
+			const args = /** @type {import('estree').CallExpression} */ (init).arguments;
 			const value =
 				args.length === 0
 					? b.id('undefined')
@@ -292,11 +293,31 @@ export const javascript_visitors_runes = {
 
 		context.next();
 	},
-	CallExpression(node, { state, next }) {
+	CallExpression(node, { state, next, visit }) {
 		const rune = get_rune(node, state.scope);
 
 		if (rune === '$effect.active') {
 			return b.call('$.effect_active');
+		}
+
+		if (rune === '$effect.root') {
+			const args = /** @type {import('estree').Expression[]} */ (
+				node.arguments.map((arg) => visit(arg))
+			);
+			return b.call('$.user_root_effect', ...args);
+		}
+
+		if (rune === '$inspect') {
+			if (state.options.dev) {
+				const arg = /** @type {import('estree').Expression} */ (visit(node.arguments[0]));
+				const fn =
+					node.arguments[1] &&
+					/** @type {import('estree').Expression} */ (visit(node.arguments[1]));
+
+				return b.call('$.inspect', b.thunk(arg), fn);
+			}
+
+			return b.unary('void', b.literal(0));
 		}
 
 		next();
