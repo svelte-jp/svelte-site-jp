@@ -3,6 +3,7 @@ title: Fine-grained reactivity
 ---
 
 In Svelte 4, reactivity centres on the _component_ and the top-level state declared therein. What this means is that in a situation like this...
+Svelte 4 では、リアクティビティは _コンポーネント_ とそのトップレベルに宣言された state が中心でした。つまり、以下のような状況では…
 
 ```svelte
 <script>
@@ -40,11 +41,12 @@ In Svelte 4, reactivity centres on the _component_ and the top-level state decla
 <p>{remaining(todos)} remaining</p>
 ```
 
-...editing any individual `todo` will invalidate the entire list. You can see this for yourself by [opening the playground](/#H4sIAAAAAAAAE2VSy27jMAz8FVV7cAIE8t21DfSwf7C3OgdVohOhCmXIdLaF4H9fPewE6N7I0ZAzpBj4aCzMvHkPHOUNeMPfpomfOH1PKZnvYAliPrvFq4S0s_Jmon7AgSwQI6fdzDr2fn6NUATHBRUZh8zDTRo0eDlkzpGF9DyQcjg7C8K6y6HyoKRVi5UUidXxtVA80OKx9BbRIYHPTVjXs5cUCO0QjsICXuiai9Yf6lLrP5F4gDsgPbTNyAoiPuGbvXQdq35j7F4dWdHchhjoMVdJBxJCZOy0A2EPBkpuGjZKO8PpiRJ8UcOKHEl_ARJ3aRfYGWsJzg_N_6nRQFXt87X1c_fYGpwWYg6bOIl2f7EL28grqzMj_AKprtsHyTkHWbLV5t4Xxa3Lh0HdZMEu5PUm61ufJyvdRDdwdQX1-eG-Bl7qcg56q0yr2CvbuiiFOjnJP9ROffh5GOvzVNp66uO13Zw2owHNG_ILrOf1H3DaaQeoAgAA), adding some todos, and watching the console in the bottom right. `remaining(todos)` is recalculated every time we edit the `text` of a todo, even though it can't possibly affect the result.
+…個別の `todo` を編集するとリスト全体が無効化/最新化(invalidate)されます。この挙動を確認するには、[playground を開き](/#H4sIAAAAAAAAE2VSy27jMAz8FVV7cAIE8t21DfSwf7C3OgdVohOhCmXIdLaF4H9fPewE6N7I0ZAzpBj4aCzMvHkPHOUNeMPfpomfOH1PKZnvYAliPrvFq4S0s_Jmon7AgSwQI6fdzDr2fn6NUATHBRUZh8zDTRo0eDlkzpGF9DyQcjg7C8K6y6HyoKRVi5UUidXxtVA80OKx9BbRIYHPTVjXs5cUCO0QjsICXuiai9Yf6lLrP5F4gDsgPbTNyAoiPuGbvXQdq35j7F4dWdHchhjoMVdJBxJCZOy0A2EPBkpuGjZKO8PpiRJ8UcOKHEl_ARJ3aRfYGWsJzg_N_6nRQFXt87X1c_fYGpwWYg6bOIl2f7EL28grqzMj_AKprtsHyTkHWbLV5t4Xxa3Lh0HdZMEu5PUm61ufJyvdRDdwdQX1-eG-Bl7qcg56q0yr2CvbuiiFOjnJP9ROffh5GOvzVNp66uO13Zw2owHNG_ILrOf1H3DaaQeoAgAA)、todo を追加し、右下のコンソールを見てみてください。`remaining(todos)` は todo の `text` を編集するたびに再計算されます (結果には影響しないにも関わらず)。
 
-Worse, everything inside the `each` block needs to be checked for updates. When a list gets large enough, this behaviour has the potential to cause performance headaches.
+さらに良くないことに、`each` ブロックの内側では全て更新をチェックする必要があります。リストがかなり大きくなると、この動作がパフォーマンスの頭痛の種になる可能性があります。
 
 With runes, it's easy to make reactivity _fine-grained_, meaning that things will only update when they need to. Mark `todos` as `$state`, create a `Todo` class with `done` and `text` state fields, then instantiate the class inside `addTodo`:
+rune を使用すると、リアクティビティを _きめ細やか(fine-grained)_ にすることができます。つまり、必要なときに必要なものだけ更新されるようになります。`todos` を `$state` としてマークし、`done` と `text` という state のフィールドを持つ `Todo` class を作成し、`addTodo` の中でインスタンス化します:
 
 ```diff
 <script>
@@ -82,7 +84,7 @@ With runes, it's easy to make reactivity _fine-grained_, meaning that things wil
 </script>
 ```
 
-In [this version of the app](/#H4sIAAAAAAAAE21SwW6DMAz9lSybBEhTuDNA2mF_sFvpIUtMGzVNUGK6TYh_XxKgSNtOsWO_Z_vZE-2VBk-rw0QNvwKt6Osw0GeK30N0_A00QvC9HZ2IP7UXTg3YdqZDDUjQSutJQ548coT8cCxeQigEhebek_cQJlP0O5TWwJ7Zc-0hJYcQwhfuoY0ikFjj0Y0CrctjTrFxBchZebbi4rMyzfGZF3w_GoHKGuLgypVR5pSndu8skd5qYNqe8syB4FqMmmNIzLbOHODozDImC2IhuERCmpY8RIPFsQqmwZzw_PJfdS5llCGHG5h9AtWT5Ydd4Js8NA3J3kxgzwqy1LyLsEl8YIwl-5kY-CQ7J0PuToDsxvUIxfEO_BsMLFm2NVmX-y5NrcwwIrGmCu1I-2maae17JmXKmB6Bi_O6cO6TkdSupbq1S8WV5UMZWaWCzZQ0igtaefaseGNNR8UZxOXDfnV0wSUf5IqM6m7IulwqTWXsJMlcD-30e7vzvu-6HNpwvVcrVa9A0iocE8zH-QeS_FSn-AIAAA==), editing the `text` of a todo won't cause unrelated things to be updated.
+[アプリのこのバージョン](/#H4sIAAAAAAAAE21SwW6DMAz9lSybBEhTuDNA2mF_sFvpIUtMGzVNUGK6TYh_XxKgSNtOsWO_Z_vZE-2VBk-rw0QNvwKt6Osw0GeK30N0_A00QvC9HZ2IP7UXTg3YdqZDDUjQSutJQ548coT8cCxeQigEhebek_cQJlP0O5TWwJ7Zc-0hJYcQwhfuoY0ikFjj0Y0CrctjTrFxBchZebbi4rMyzfGZF3w_GoHKGuLgypVR5pSndu8skd5qYNqe8syB4FqMmmNIzLbOHODozDImC2IhuERCmpY8RIPFsQqmwZzw_PJfdS5llCGHG5h9AtWT5Ydd4Js8NA3J3kxgzwqy1LyLsEl8YIwl-5kY-CQ7J0PuToDsxvUIxfEO_BsMLFm2NVmX-y5NrcwwIrGmCu1I-2maae17JmXKmB6Bi_O6cO6TkdSupbq1S8WV5UMZWaWCzZQ0igtaefaseGNNR8UZxOXDfnV0wSUf5IqM6m7IulwqTWXsJMlcD-30e7vzvu-6HNpwvVcrVa9A0iocE8zH-QeS_FSn-AIAAA==)では、todo の `text` を編集しても関係ない部分の更新は行われません。
 
 ## Gotchas
 

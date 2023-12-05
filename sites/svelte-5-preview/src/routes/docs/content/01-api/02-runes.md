@@ -170,7 +170,7 @@ class Todo {
 
 ## `$effect.active`
 
-The `$effect.active` rune is an advanced feature that tells you whether or not the code is running inside an effect or inside your template ([demo](/#H4sIAAAAAAAAE3XP0QrCMAwF0F-JRXAD595rLfgdzodRUyl0bVgzQcb-3VYFQfExl5tDMgvrPCYhT7MI_YBCiiOR2Aq-UxnSDT1jnlOcRlMSlczoiHUXOjYxpOhx5-O12rgAJg4UAwaGhDyR3Gxhjdai4V1v2N2wqus9tC3Y3ifMQjbehaqq4aBhLtEv_Or893icCsdLve-Caj8nBkU67zMO5HtGCfM3sKiWNKhV0zwVaBqd3x3ixVmHFyFLuJyXB-moOe8pAQAA)):
+`$effect.active` rune は、コードが effect の内側で実行されているのか、テンプレート内で実行されているのかを教えてくれる高度な機能です ([デモ](/#H4sIAAAAAAAAE3XP0QrCMAwF0F-JRXAD595rLfgdzodRUyl0bVgzQcb-3VYFQfExl5tDMgvrPCYhT7MI_YBCiiOR2Aq-UxnSDT1jnlOcRlMSlczoiHUXOjYxpOhx5-O12rgAJg4UAwaGhDyR3Gxhjdai4V1v2N2wqus9tC3Y3ifMQjbehaqq4aBhLtEv_Or893icCsdLve-Caj8nBkU67zMO5HtGCfM3sKiWNKhV0zwVaBqd3x3ixVmHFyFLuJyXB-moOe8pAQAA)):
 
 ```svelte
 <script>
@@ -184,12 +184,12 @@ The `$effect.active` rune is an advanced feature that tells you whether or not t
 <p>in template: {$effect.active()}</p> <!-- true -->
 ```
 
-This allows you to (for example) add things like subscriptions without causing memory leaks, by putting them in child effects.
+(例えば) これを子の effect に置くことによって、サブスクリプションなどをメモリリークなしで追加することができます。
 
 ## `$effect.root`
 
-The `$effect.root` rune is an advanced feature that creates a non-tracked scope that doesn't auto-cleanup. This is useful for
-nested effects that you want to manually control. This rune also allows for creation of effects outside of the component initialisation phase.
+`$effect.root` rune は、自動クリーンアップされない非追跡のスコープを作成することができる高度な機能です。
+これは手動でコントロールしたいネストした effect を扱うのに有用です。また、この rune によって、コンポーネントの初期化フェーズ以外で effect を作成することができます。
 
 ```svelte
 <script>
@@ -243,9 +243,9 @@ let { a, b, c, ...everythingElse } = $props<MyProps>();
 
 ## `$inspect`
 
-The `$inspect` rune is roughly equivalent to `console.log`, with the exception that it will re-run whenever its
-argument changes. `$inspect` tracks reactive state deeply, meaning that updating something inside an object
-or array using [fine-grained reactivity](/docs/fine-grained-reactivity) will cause it to re-fire. ([Demo:](/#H4sIAAAAAAAAE0WQ0W6DMAxFf8WKKhXUquyZAtIe9w1lEjS4ENU4EXFaTRH_Plq69fH6nutrOaqLIfQqP0XF7YgqV5_Oqb2SH_cQ_oYkuGhvw6Qfk8LryTipaq6FUEDbwAIlbLy0gslHevxzRvS-7fHtbQckstsnsTAbw96hliSuS_b_iTk9QpbB3RAtFntLeCDbw31AhuYJN2AnaF6BBvTQco81F9n7PC7OQcQyWNZk9LWMSQpltZbtdnP1xXrCEVmKbCWXVGHYBYGz4S6_tRSwjK-SGbJqecRoO3Mx2KlcpoDz9_wLBx9LikMBAAA=))
+`$inspect` rune は大まかには `console.log` と一緒ですが、与えられた引数が変わるたびに再実行されるという点が異なります。
+`$inspect` はリアクティブな state を深く(deeply)追跡します。つまり、[fine-grained reactivity](/docs/fine-grained-reactivity) により、
+オブジェクトや配列の内側で何かしらが更新されると、再実行されます。([デモ:](/#H4sIAAAAAAAAE0WQ0W6DMAxFf8WKKhXUquyZAtIe9w1lEjS4ENU4EXFaTRH_Plq69fH6nutrOaqLIfQqP0XF7YgqV5_Oqb2SH_cQ_oYkuGhvw6Qfk8LryTipaq6FUEDbwAIlbLy0gslHevxzRvS-7fHtbQckstsnsTAbw96hliSuS_b_iTk9QpbB3RAtFntLeCDbw31AhuYJN2AnaF6BBvTQco81F9n7PC7OQcQyWNZk9LWMSQpltZbtdnP1xXrCEVmKbCWXVGHYBYGz4S6_tRSwjK-SGbJqecRoO3Mx2KlcpoDz9_wLBx9LikMBAAA=))
 
 ```svelte
 <script>
@@ -259,8 +259,8 @@ or array using [fine-grained reactivity](/docs/fine-grained-reactivity) will cau
 <input bind:value={message} />
 ```
 
-If a callback is also provided, it will be invoked instead of `console.log`. The first argument to the callback
-is the current value. The second is either `"init"` or `"update"`. [Demo:](/#H4sIAAAAAAAAE0VP24qDMBD9lSEUqlTqPlsj7ON-w1qojWM3rE5CMmkpkn_fxFL26XBuw5lVTHpGL5rvVdCwoGjEp7WiEvy0mfg7zoyJexOcykrrldOWu556npFBmUAMEnaeB8biozwlJ3k7Td6i4mILVPDGfLgE2cGaUz3rCYqsgZQS9sGO6cq-fLs9j3gNtxu6E9Q1GAcXZcibGY_sBoWXKmuPn1S6o4OnCfAYiF_lmCHmQW39v5raa2A2BIbUrNWvXIttz7bvcIjdFymHCxK39SvZpf8XM-pJ4ygadgHjOf4B8TXIiDoBAAA=)
+また、コールバックが提供される場合は、`console.log` の代わりにそのコールバックが実行されます。コールバックの第一引数は現在の値です。
+第二引数は `"init"` か `"update"` です。[デモ:](/#H4sIAAAAAAAAE0VP24qDMBD9lSEUqlTqPlsj7ON-w1qojWM3rE5CMmkpkn_fxFL26XBuw5lVTHpGL5rvVdCwoGjEp7WiEvy0mfg7zoyJexOcykrrldOWu556npFBmUAMEnaeB8biozwlJ3k7Td6i4mILVPDGfLgE2cGaUz3rCYqsgZQS9sGO6cq-fLs9j3gNtxu6E9Q1GAcXZcibGY_sBoWXKmuPn1S6o4OnCfAYiF_lmCHmQW39v5raa2A2BIbUrNWvXIttz7bvcIjdFymHCxK39SvZpf8XM-pJ4ygadgHjOf4B8TXIiDoBAAA=)
 
 ```svelte
 <script>
@@ -276,14 +276,14 @@ is the current value. The second is either `"init"` or `"update"`. [Demo:](/#H4s
 <button onclick={() => count++}>Increment</button>
 ```
 
-A convenient way to find the origin of some change is to pass `console.trace` as the second argument:
+第二引数に `console.trace` を渡すと、ある変更がどこで行われたかを簡単に確認することができます:
 
 ```js
 // @errors: 2304
 $inspect(stuff, console.trace);
 ```
 
-> `$inspect` only works during development.
+> `$inspect` は開発時にのみ動作します。
 
 ## How to opt in
 
