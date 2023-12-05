@@ -1,5 +1,147 @@
 # svelte
 
+## 5.0.0-next.18
+
+### Patch Changes
+
+- feat: proxied staet ([#9739](https://github.com/sveltejs/svelte/pull/9739))
+
+- chore: more validation errors ([#9723](https://github.com/sveltejs/svelte/pull/9723))
+
+- fix: allow duplicate snippet declaration names ([#9759](https://github.com/sveltejs/svelte/pull/9759))
+
+- fix: ensure computed props are cached with derived ([#9757](https://github.com/sveltejs/svelte/pull/9757))
+
+- fix: ensure event handlers containing arguments are not hoisted ([#9758](https://github.com/sveltejs/svelte/pull/9758))
+
+## 5.0.0-next.17
+
+### Patch Changes
+
+- fix: improve `$inspect` type definition ([#9731](https://github.com/sveltejs/svelte/pull/9731))
+
+- fix: correctly inspect derived values ([#9731](https://github.com/sveltejs/svelte/pull/9731))
+
+## 5.0.0-next.16
+
+### Patch Changes
+
+- fix: delegate events on elements with bind-this ([#9696](https://github.com/sveltejs/svelte/pull/9696))
+
+- fix: ensure implicit children snippet renders correctly ([#9706](https://github.com/sveltejs/svelte/pull/9706))
+
+- fix: ensure `$slots` exists in runes mode ([#9718](https://github.com/sveltejs/svelte/pull/9718))
+
+- fix: allow `bind:this` with dynamic type on inputs ([#9713](https://github.com/sveltejs/svelte/pull/9713))
+
+- fix: port over props that were set prior to initialization ([#9704](https://github.com/sveltejs/svelte/pull/9704))
+
+- feat: $inspect rune ([#9705](https://github.com/sveltejs/svelte/pull/9705))
+
+- fix: keep fallback value after spread update not setting that prop ([#9717](https://github.com/sveltejs/svelte/pull/9717))
+
+- fix: tweak const tag parsing ([#9715](https://github.com/sveltejs/svelte/pull/9715))
+
+- chore: remove redundant hydration code ([#9698](https://github.com/sveltejs/svelte/pull/9698))
+
+- fix: improve template text node serialization ([#9722](https://github.com/sveltejs/svelte/pull/9722))
+
+- fix: improve infinite loop capturing ([#9721](https://github.com/sveltejs/svelte/pull/9721))
+
+## 5.0.0-next.15
+
+### Patch Changes
+
+- fix: add children to element typings ([#9679](https://github.com/sveltejs/svelte/pull/9679))
+
+- fix: handle ts expressions when dealing with runes ([#9681](https://github.com/sveltejs/svelte/pull/9681))
+
+## 5.0.0-next.14
+
+### Patch Changes
+
+- feat: warn on references to mutated non-state in template ([#9669](https://github.com/sveltejs/svelte/pull/9669))
+
+- fix: prevent reactive snippet from reinitializing unnecessarily ([#9665](https://github.com/sveltejs/svelte/pull/9665))
+
+- fix: take event attributes into account when checking a11y ([#9664](https://github.com/sveltejs/svelte/pull/9664))
+
+- feat: add $effect.root rune ([#9638](https://github.com/sveltejs/svelte/pull/9638))
+
+- feat: support type definition in {@const} ([#9609](https://github.com/sveltejs/svelte/pull/9609))
+
+- feat: ignore `src`, `srcset`, and `href` attributes when hydrating ([#9662](https://github.com/sveltejs/svelte/pull/9662))
+
+- chore: bump esrap ([#9649](https://github.com/sveltejs/svelte/pull/9649))
+
+- chore: improve `<svelte:element>` generated code ([#9648](https://github.com/sveltejs/svelte/pull/9648))
+
+- chore: prevent some unused variable creation ([#9571](https://github.com/sveltejs/svelte/pull/9571))
+
+## 5.0.0-next.13
+
+### Patch Changes
+
+- fix: apply keyed validation only for keyed each ([#9641](https://github.com/sveltejs/svelte/pull/9641))
+
+- fix: omit this bind this arg if we know it's not a signal ([#9635](https://github.com/sveltejs/svelte/pull/9635))
+
+- fix: improve each block index handling ([#9644](https://github.com/sveltejs/svelte/pull/9644))
+
+## 5.0.0-next.12
+
+### Patch Changes
+
+- fix: adjust mount and createRoot types ([`63e583184`](https://github.com/sveltejs/svelte/commit/63e58318460dbb3485df93d15beb2779a86d2c9a))
+
+- fix: remove constructor overload ([`cb4b1f0a1`](https://github.com/sveltejs/svelte/commit/cb4b1f0a189803bed04adcb90fbd4334782e8469))
+
+- fix: type-level back-compat for default slot and children prop ([`a3bc7d569`](https://github.com/sveltejs/svelte/commit/a3bc7d5698425ec9dde86eb302f2fd56d9da8f96))
+
+## 5.0.0-next.11
+
+### Patch Changes
+
+- feat: add type of `$effect.active` ([#9624](https://github.com/sveltejs/svelte/pull/9624))
+
+- fix: correct bind this multiple bindings ([#9617](https://github.com/sveltejs/svelte/pull/9617))
+
+- chore: reuse common templates ([#9601](https://github.com/sveltejs/svelte/pull/9601))
+
+- fix: handle undefined bubble events ([#9614](https://github.com/sveltejs/svelte/pull/9614))
+
+- fix: dont error on stores looking like runes when runes explicitly turned off ([#9615](https://github.com/sveltejs/svelte/pull/9615))
+
+- fix: improve member expression mutation logic ([#9625](https://github.com/sveltejs/svelte/pull/9625))
+
+- chore: untrack keyed validation logic ([#9618](https://github.com/sveltejs/svelte/pull/9618))
+
+- fix: ensure snippets have correct scope ([#9623](https://github.com/sveltejs/svelte/pull/9623))
+
+- fix: better attribute casing logic ([#9626](https://github.com/sveltejs/svelte/pull/9626))
+
+## 5.0.0-next.10
+
+### Patch Changes
+
+- chore: add inline new class warning ([#9583](https://github.com/sveltejs/svelte/pull/9583))
+
+- fix: prevent false positives when detecting runes mode ([#9599](https://github.com/sveltejs/svelte/pull/9599))
+
+- fix: deconflict generated names against globals ([#9570](https://github.com/sveltejs/svelte/pull/9570))
+
+- chore: bump esrap ([#9590](https://github.com/sveltejs/svelte/pull/9590))
+
+- feat: add $effect.active rune ([#9591](https://github.com/sveltejs/svelte/pull/9591))
+
+- feat: add Snippet type ([#9584](https://github.com/sveltejs/svelte/pull/9584))
+
+- fix: adjust event delegation heuristics ([#9581](https://github.com/sveltejs/svelte/pull/9581))
+
+- chore: remove unused code ([#9593](https://github.com/sveltejs/svelte/pull/9593))
+
+- fix: adjust regex ([#9572](https://github.com/sveltejs/svelte/pull/9572))
+
 ## 5.0.0-next.9
 
 ### Patch Changes

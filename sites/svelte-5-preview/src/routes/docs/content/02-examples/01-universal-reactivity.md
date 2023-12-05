@@ -2,9 +2,9 @@
 title: Universal reactivity
 ---
 
-In Svelte 5, you can create reactive state anywhere in your app — not just at the top level of your components.
+Svelte 5 ではリアクティブな state を、コンポーネントのトップレベルだけでなくアプリのどこにでも作成することができます。
 
-Suppose we have a component like this:
+以下のようなコンポーネントがあるとします:
 
 ```svelte
 <script>
@@ -20,7 +20,7 @@ Suppose we have a component like this:
 </button>
 ```
 
-We can encapsulate this logic in a function, so that it can be used in multiple places:
+このロジックを関数にカプセル化することで、複数の場所で使用できるようになります:
 
 ```diff
 <script>
@@ -47,9 +47,9 @@ We can encapsulate this logic in a function, so that it can be used in multiple 
 </button>
 ```
 
-> Note that we're using a [`get` property](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) in the returned object, so that `counter.count` always refers to the current value rather than the value at the time the `createCounter` function was called.
+> 戻り値のオブジェクトで [`get` プロパティ](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) を使用していることに注目してください。これによって `counter.count` は、`createCounter` 関数が呼ばれたときの値ではなく、常に現在の値を参照します。
 
-We can also extract that function out into a separate `.svelte.js` or `.svelte.ts` module...
+また、この関数を別の `.svelte.js` (または `.svelte.ts`) モジュールに抽出することもできます…
 
 ```js
 export function createCounter() {
@@ -68,7 +68,7 @@ export function createCounter() {
 }
 ```
 
-...and import it into our component:
+…そしてコンポーネントでインポートすると:
 
 ```diff
 <script>
@@ -83,11 +83,11 @@ export function createCounter() {
 </button>
 ```
 
-[See this example in the playground.](/#H4sIAAAAAAAACmVQ0U7DMAz8FStC2iaqDl67dhLiMxgPI3NRRutUiYNAVf6dJG1TBk-W7bvznUfRqg6tqF5GQeceRSWehkEUgr-H2NhP7BhDb7UzMk5qK40a-HiiE6t-0IZhBGnwzPisHTEa8NAa3cOm3MtpUk4y5dVuDoEXmFKTZZjX0NwKbHcBVe_XQ1S_OWZNoKmSnZIfzbgoKwrUHol9cpS2toK8T9VHuUniGLL0-qJahRdRsXHoixz91u76hav9_QH8SqlbR5JVMPXHO4zRSIdzvBDuznIAbB92c_jMzOYXVnxM5Nw38BjB0XksBtkZWjDvi_ZKy5A0P0xDX0w1n0mKYen_P-HV_wBwv1jcCwIAAA==)
+[この例を playground でご覧ください。](/#H4sIAAAAAAAACmVQ0U7DMAz8FStC2iaqDl67dhLiMxgPI3NRRutUiYNAVf6dJG1TBk-W7bvznUfRqg6tqF5GQeceRSWehkEUgr-H2NhP7BhDb7UzMk5qK40a-HiiE6t-0IZhBGnwzPisHTEa8NAa3cOm3MtpUk4y5dVuDoEXmFKTZZjX0NwKbHcBVe_XQ1S_OWZNoKmSnZIfzbgoKwrUHol9cpS2toK8T9VHuUniGLL0-qJahRdRsXHoixz91u76hav9_QH8SqlbR5JVMPXHO4zRSIdzvBDuznIAbB92c_jMzOYXVnxM5Nw38BjB0XksBtkZWjDvi_ZKy5A0P0xDX0w1n0mKYen_P-HV_wBwv1jcCwIAAA==)
 
 ## Stores equivalent
 
-In Svelte 4, the way you'd do this is by creating a [custom store](https://learn.svelte.dev/tutorial/custom-stores), perhaps like this:
+Svelte 4 でこれを行うには、[カスタムの store](https://learn.svelte.jp/tutorial/custom-stores) を作成します。以下のようになるでしょう:
 
 ```js
 import { writable } from 'svelte/store';
@@ -106,7 +106,7 @@ export function createCounter() {
 }
 ```
 
-Back in the component, we retrieve the store value by prefixing its name with `$`:
+コンポーネントに戻り、store に `$` プリフィクスをつけて store の値を取得します:
 
 ```diff
 <script>
@@ -121,13 +121,13 @@ Back in the component, we retrieve the store value by prefixing its name with `$
 </button>
 ```
 
-The store approach has some significant drawbacks. A counter is just about the simplest custom store we could create, and yet we have to completely change how the code is written — importing `writable`, understanding its API, grabbing references to `subscribe` and `update`, changing the implementation of `increment` from `count += 1` to something far more cryptic, and prefixing the store name with a `$` to retrieve its value. That's a lot of stuff you need to understand.
+store のアプローチには重大な欠点がありました。counter は最もシンプルなカスタム store ですが、それでもコードの書き方を完全に変更する必要があります — `writable` をインポートし、その API を理解し、`subscribe` と `update` の参照を取得し、`increment` の実装を `count += 1` からよりわかりにくいものに変更し、store の名前に `$` プリフィクスを付けて値を取得します。理解しなければいけないことがとても多いです。
 
-With runes, we just copy the existing code into a new function.
+rune では、既存のコードをコピーして新しい関数にするだけです。
 
 ## Gotchas
 
-Reactivity doesn't magically cross function boundaries. In other words, replacing the `get` property with a regular property wouldn't work...
+リアクティビティは魔法のように関数の境界を越えることはありません。言い換えると、`get` プロパティから通常のプロパティに置き換えると動作しなくなるということです…
 
 ```diff
 export function createCounter() {
@@ -145,4 +145,4 @@ export function createCounter() {
 }
 ```
 
-...because the value of `count` in the returned object would always be `0`. Using the `$state` rune doesn't change that fact — it simply means that when you _do_ read `count` (whether via a `get` property or a normal function) inside your template or inside an effect, Svelte knows what to update when `count` changes.
+…なぜなら戻り値のオブジェクトの `count` の値は常に `0` だからです。`$state` rune を使用してもその事実は代わりません — 単純に、テンプレートや effect の内側で `count` を読み取るときに (`get` プロパティ経由であれ、通常の関数経由であれ)、Svelte は `count` が変更されたときに何を更新すべきかを把握している、というだけです。

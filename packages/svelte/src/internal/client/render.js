@@ -11,8 +11,6 @@ import {
 } from './operations.js';
 import {
 	create_root_block,
-	create_each_item_block,
-	create_each_block,
 	create_if_block,
 	create_key_block,
 	create_await_block,
@@ -21,22 +19,8 @@ import {
 	create_dynamic_component_block,
 	create_snippet_block
 } from './block.js';
-import {
-	EACH_KEYED,
-	EACH_IS_CONTROLLED,
-	EACH_INDEX_REACTIVE,
-	EACH_ITEM_REACTIVE,
-	PassiveDelegatedEvents,
-	DelegatedEvents
-} from '../../constants.js';
-import {
-	create_fragment_from_html,
-	insert,
-	reconcile_tracked_array,
-	reconcile_html,
-	remove,
-	reconcile_indexed_array
-} from './reconciler.js';
+import { PassiveDelegatedEvents, DelegatedEvents, AttributeAliases } from '../../constants.js';
+import { create_fragment_from_html, insert, reconcile_html, remove } from './reconciler.js';
 import {
 	render_effect,
 	destroy_signal,
@@ -53,14 +37,13 @@ import {
 	expose,
 	safe_not_equal,
 	current_block,
-	set_signal_value,
 	source,
 	managed_effect,
-	safe_equal,
 	push,
 	current_component_context,
 	pop,
-	schedule_task
+	unwrap,
+	mutable_source
 } from './runtime.js';
 import {
 	current_hydration_fragment,
@@ -133,7 +116,7 @@ export function svg_replace(node) {
  * @param {boolean} is_fragment
  * @param {boolean} use_clone_node
  * @param {null | Text | Comment | Element} anchor
- * @param {() => Element} [template_element_fn]
+ * @param {() => Node} [template_element_fn]
  * @returns {Element | DocumentFragment | Node[]}
  */
 function open_template(is_fragment, use_clone_node, anchor, template_element_fn) {
@@ -156,7 +139,7 @@ function open_template(is_fragment, use_clone_node, anchor, template_element_fn)
 /**
  * @param {null | Text | Comment | Element} anchor
  * @param {boolean} use_clone_node
- * @param {() => Element} [template_element_fn]
+ * @param {() => Node} [template_element_fn]
  * @returns {Element | DocumentFragment | Node[]}
  */
 /*#__NO_SIDE_EFFECTS__*/
@@ -167,12 +150,31 @@ export function open(anchor, use_clone_node, template_element_fn) {
 /**
  * @param {null | Text | Comment | Element} anchor
  * @param {boolean} use_clone_node
- * @param {() => Element} [template_element_fn]
+ * @param {() => Node} [template_element_fn]
  * @returns {Element | DocumentFragment | Node[]}
  */
 /*#__NO_SIDE_EFFECTS__*/
 export function open_frag(anchor, use_clone_node, template_element_fn) {
 	return open_template(true, use_clone_node, anchor, template_element_fn);
+}
+
+const space_template = template(' ', false);
+const comment_template = template('<!>', true);
+
+/**
+ * @param {null | Text | Comment | Element} anchor
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export function space(anchor) {
+	return open(anchor, true, space_template);
+}
+
+/**
+ * @param {null | Text | Comment | Element} anchor
+ */
+/*#__NO_SIDE_EFFECTS__*/
+export function comment(anchor) {
+	return open_frag(anchor, true, comment_template);
 }
 
 /**
@@ -190,8 +192,10 @@ function close_template(dom, is_fragment, anchor) {
 			? dom
 			: /** @type {import('./types.js').TemplateNode[]} */ (Array.from(dom.childNodes))
 		: dom;
-	if (anchor !== null && current_hydration_fragment === null) {
-		insert(current, null, anchor);
+	if (anchor !== null) {
+		if (current_hydration_fragment === null) {
+			insert(current, null, anchor);
+		}
 	}
 	block.d = current;
 }
@@ -1205,14 +1209,21 @@ export function bind_prop(props, prop, value) {
 /**
  * @param {Element} element_or_component
  * @param {(value: unknown) => void} update
+ * @param {import('./types.js').MaybeSignal} binding
  * @returns {void}
  */
-export function bind_this(element_or_component, update) {
+export function bind_this(element_or_component, update, binding) {
 	untrack(() => {
 		update(element_or_component);
 		render_effect(() => () => {
-			untrack(() => {
-				update(null);
+			// Defer to the next tick so that all updates can be reconciled first.
+			// This solves the case where one variable is shared across multiple this-bindings.
+			render_effect(() => {
+				untrack(() => {
+					if (!is_signal(binding) || binding.v === element_or_component) {
+						update(null);
+					}
+				});
 			});
 		});
 	});
@@ -1368,9 +1379,7 @@ function if_block(anchor_node, condition_fn, consequent_fn, alternate_fn) {
 				} else if (current_hydration_fragment !== null) {
 					const comment_text = /** @type {Comment} */ (current_hydration_fragment?.[0])?.data;
 					if (
-						(!comment_text &&
-							// Can happen when a svelte:element that is turned into a void element has an if block inside
-							current_hydration_fragment[0] !== null) ||
+						!comment_text ||
 						(comment_text === 'ssr:if:true' && !result) ||
 						(comment_text === 'ssr:if:false' && result)
 					) {
@@ -1514,7 +1523,7 @@ function swap_block_dom(block, from, to) {
 /**
  * @param {Comment} anchor_node
  * @param {() => string} tag_fn
- * @param {null | ((element: Element, anchor: Node) => void)} render_fn
+ * @param {undefined | ((element: Element, anchor: Node) => void)} render_fn
  * @param {any} is_svg
  * @returns {void}
  */
@@ -1554,7 +1563,7 @@ export function element(anchor_node, tag_fn, render_fn, is_svg = false) {
 				block.d = null;
 			}
 			element = next_element;
-			if (element !== null && render_fn !== null) {
+			if (element !== null && render_fn !== undefined) {
 				let anchor;
 				if (current_hydration_fragment !== null) {
 					// Use the existing ssr comment as the anchor so that the inner open and close
@@ -1993,288 +2002,6 @@ export function key(anchor_node, key, render_fn) {
 }
 
 /**
- * @param {import('./types.js').Block} block
- * @returns {Text | Element | Comment}
- */
-function get_first_element(block) {
-	const current = block.d;
-	if (is_array(current)) {
-		for (let i = 0; i < current.length; i++) {
-			const node = current[i];
-			if (node.nodeType !== 8) {
-				return node;
-			}
-		}
-	}
-	return /** @type {Text | Element | Comment} */ (current);
-}
-
-/**
- * @param {import('./types.js').EachItemBlock} block
- * @param {any} item
- * @param {number} index
- * @param {number} type
- * @returns {void}
- */
-export function update_each_item_block(block, item, index, type) {
-	if ((type & EACH_ITEM_REACTIVE) !== 0) {
-		set_signal_value(block.v, item);
-	}
-	const transitions = block.s;
-	const index_is_reactive = (type & EACH_INDEX_REACTIVE) !== 0;
-	// Handle each item animations
-	if (transitions !== null && (type & EACH_KEYED) !== 0) {
-		let prev_index = block.i;
-		if (index_is_reactive) {
-			prev_index = /** @type {import('./types.js').Signal<number>} */ (prev_index).v;
-		}
-		const items = block.p.v;
-		if (prev_index !== index && /** @type {number} */ (index) < items.length) {
-			const from_dom = /** @type {Element} */ (get_first_element(block));
-			const from = from_dom.getBoundingClientRect();
-			schedule_task(() => {
-				trigger_transitions(transitions, 'key', from);
-			});
-		}
-	}
-	if (index_is_reactive) {
-		set_signal_value(/** @type {import('./types.js').Signal<number>} */ (block.i), index);
-	} else {
-		block.i = index;
-	}
-}
-
-/**
- * @param {import('./types.js').EachItemBlock} block
- * @param {null | Array<import('./types.js').Block>} transition_block
- * @param {boolean} apply_transitions
- * @param {any} controlled
- * @returns {void}
- */
-export function destroy_each_item_block(
-	block,
-	transition_block,
-	apply_transitions,
-	controlled = false
-) {
-	const transitions = block.s;
-	if (apply_transitions && transitions !== null) {
-		trigger_transitions(transitions, 'out');
-		if (transition_block !== null) {
-			transition_block.push(block);
-		}
-	} else {
-		const dom = block.d;
-		if (!controlled && dom !== null) {
-			remove(dom);
-		}
-		destroy_signal(/** @type {import('./types.js').EffectSignal} */ (block.e));
-	}
-}
-
-/**
- * @template V
- * @param {V} item
- * @param {unknown} key
- * @param {number} index
- * @param {(anchor: null, item: V, index: number | import('./types.js').Signal<number>) => void} render_fn
- * @param {number} flags
- * @returns {import('./types.js').EachItemBlock}
- */
-export function each_item_block(item, key, index, render_fn, flags) {
-	const item_value = (flags & EACH_ITEM_REACTIVE) === 0 ? item : source(item);
-	const index_value = (flags & EACH_INDEX_REACTIVE) === 0 ? index : source(index);
-	const block = create_each_item_block(item_value, index_value, key);
-	const effect = render_effect(
-		/** @param {import('./types.js').EachItemBlock} block */
-		(block) => {
-			render_fn(null, block.v, block.i);
-		},
-		block,
-		true
-	);
-	block.e = effect;
-	return block;
-}
-
-/**
- * @template V
- * @param {Element | Comment} anchor_node
- * @param {() => V[]} collection
- * @param {number} flags
- * @param {null | ((item: V) => string)} key_fn
- * @param {(anchor: null, item: V, index: import('./types.js').MaybeSignal<number>) => void} render_fn
- * @param {null | ((anchor: Node) => void)} fallback_fn
- * @param {typeof reconcile_indexed_array | reconcile_tracked_array} reconcile_fn
- * @returns {void}
- */
-function each(anchor_node, collection, flags, key_fn, render_fn, fallback_fn, reconcile_fn) {
-	const is_controlled = (flags & EACH_IS_CONTROLLED) !== 0;
-	const block = create_each_block(flags, anchor_node);
-
-	/** @type {null | import('./types.js').Render} */
-	let current_fallback = null;
-	hydrate_block_anchor(anchor_node, is_controlled);
-
-	/** @type {V[]} */
-	let array;
-
-	/** @type {Array<string> | null} */
-	let keys = null;
-
-	/** @type {null | import('./types.js').EffectSignal} */
-	let render = null;
-	block.r =
-		/** @param {import('./types.js').Transition} transition */
-		(transition) => {
-			const fallback = /** @type {import('./types.js').Render} */ (current_fallback);
-			const transitions = fallback.s;
-			transitions.add(transition);
-			transition.f(() => {
-				transitions.delete(transition);
-				if (transitions.size === 0) {
-					if (fallback.e !== null) {
-						if (fallback.d !== null) {
-							remove(fallback.d);
-							fallback.d = null;
-						}
-						destroy_signal(fallback.e);
-						fallback.e = null;
-					}
-				}
-			});
-		};
-	const create_fallback_effect = () => {
-		/** @type {import('./types.js').Render} */
-		const fallback = {
-			d: null,
-			e: null,
-			s: new Set(),
-			p: current_fallback
-		};
-		// Managed effect
-		const effect = render_effect(
-			() => {
-				const dom = block.d;
-				if (dom !== null) {
-					remove(dom);
-					block.d = null;
-				}
-				let anchor = block.a;
-				const is_controlled = (block.f & EACH_IS_CONTROLLED) !== 0;
-				if (is_controlled) {
-					anchor = empty();
-					block.a.appendChild(anchor);
-				}
-				/** @type {(anchor: Node) => void} */ (fallback_fn)(anchor);
-				fallback.d = block.d;
-				block.d = null;
-			},
-			block,
-			true
-		);
-		fallback.e = effect;
-		current_fallback = fallback;
-	};
-	const each = render_effect(
-		() => {
-			/** @type {V[]} */
-			const maybe_array = collection();
-			array = is_array(maybe_array)
-				? maybe_array
-				: maybe_array == null
-				? []
-				: Array.from(maybe_array);
-			if (key_fn !== null) {
-				keys = array.map(key_fn);
-			}
-			if (fallback_fn !== null) {
-				if (array.length === 0) {
-					if (block.v.length !== 0 || render === null) {
-						create_fallback_effect();
-					}
-				} else if (block.v.length === 0 && current_fallback !== null) {
-					const fallback = current_fallback;
-					const transitions = fallback.s;
-					if (transitions.size === 0) {
-						if (fallback.d !== null) {
-							remove(fallback.d);
-							fallback.d = null;
-						}
-					} else {
-						trigger_transitions(transitions, 'out');
-					}
-				}
-			}
-			if (render !== null) {
-				execute_effect(render);
-			}
-		},
-		block,
-		false
-	);
-	render = render_effect(
-		/** @param {import('./types.js').EachBlock} block */
-		(block) => {
-			const flags = block.f;
-			const is_controlled = (flags & EACH_IS_CONTROLLED) !== 0;
-			const anchor_node = block.a;
-			reconcile_fn(array, block, anchor_node, is_controlled, render_fn, flags, true, keys);
-		},
-		block,
-		true
-	);
-	push_destroy_fn(each, () => {
-		const flags = block.f;
-		const anchor_node = block.a;
-		const is_controlled = (flags & EACH_IS_CONTROLLED) !== 0;
-		let fallback = current_fallback;
-		while (fallback !== null) {
-			const dom = fallback.d;
-			if (dom !== null) {
-				remove(dom);
-			}
-			const effect = fallback.e;
-			if (effect !== null) {
-				destroy_signal(effect);
-			}
-			fallback = fallback.p;
-		}
-		// Clear the array
-		reconcile_fn([], block, anchor_node, is_controlled, render_fn, flags, false, keys);
-		destroy_signal(/** @type {import('./types.js').EffectSignal} */ (render));
-	});
-	block.e = each;
-}
-
-/**
- * @template V
- * @param {Element | Comment} anchor_node
- * @param {() => V[]} collection
- * @param {number} flags
- * @param {null | ((item: V) => string)} key_fn
- * @param {(anchor: null, item: V, index: import('./types.js').MaybeSignal<number>) => void} render_fn
- * @param {null | ((anchor: Node) => void)} fallback_fn
- * @returns {void}
- */
-export function each_keyed(anchor_node, collection, flags, key_fn, render_fn, fallback_fn) {
-	each(anchor_node, collection, flags, key_fn, render_fn, fallback_fn, reconcile_tracked_array);
-}
-
-/**
- * @template V
- * @param {Element | Comment} anchor_node
- * @param {() => V[]} collection
- * @param {number} flags
- * @param {(anchor: null, item: V, index: import('./types.js').MaybeSignal<number>) => void} render_fn
- * @param {null | ((anchor: Node) => void)} fallback_fn
- * @returns {void}
- */
-export function each_indexed(anchor_node, collection, flags, render_fn, fallback_fn) {
-	each(anchor_node, collection, flags, null, render_fn, fallback_fn, reconcile_indexed_array);
-}
-
-/**
  * @param {Element | Text | Comment} anchor
  * @param {boolean} is_html
  * @param {() => Record<string, string>} props
@@ -2504,6 +2231,7 @@ export function attr(dom, attribute, value) {
 			// (we can't just compare the strings as they can be different between client and server but result in the
 			// same url, so we would need to create hidden anchor elements to compare them)
 			attribute !== 'src' &&
+			attribute !== 'href' &&
 			attribute !== 'srcset')
 	) {
 		if (value === null) {
@@ -2522,7 +2250,7 @@ let src_url_equal_anchor;
  * @param {string} url
  * @returns {boolean}
  */
-export function src_url_equal(element_src, url) {
+function src_url_equal(element_src, url) {
 	if (element_src === url) return true;
 	if (!src_url_equal_anchor) {
 		src_url_equal_anchor = document.createElement('a');
@@ -2538,13 +2266,13 @@ function split_srcset(srcset) {
 }
 
 /**
- * @param {HTMLSourceElement | HTMLImageElement} element_srcset
+ * @param {HTMLSourceElement | HTMLImageElement} element
  * @param {string | undefined | null} srcset
  * @returns {boolean}
  */
-export function srcset_url_equal(element_srcset, srcset) {
-	const element_urls = split_srcset(element_srcset.srcset);
-	const urls = split_srcset(srcset || '');
+export function srcset_url_equal(element, srcset) {
+	const element_urls = split_srcset(element.srcset);
+	const urls = split_srcset(srcset ?? '');
 
 	return (
 		urls.length === element_urls.length &&
@@ -2567,22 +2295,20 @@ export function srcset_url_equal(element_srcset, srcset) {
  * @param {string | null} value
  */
 function check_src_in_dev_hydration(dom, attribute, value) {
-	if (current_hydration_fragment !== null && (attribute === 'src' || attribute === 'srcset')) {
-		if (
-			(attribute === 'src' && !src_url_equal(dom.getAttribute('src') || '', value || '')) ||
-			(attribute === 'srcset' &&
-				!srcset_url_equal(/** @type {HTMLImageElement | HTMLSourceElement} */ (dom), value || ''))
-		) {
-			// eslint-disable-next-line no-console
-			console.error(
-				'Detected a src/srcset attribute value change during hydration. This will not be repaired during hydration, ' +
-					'the src/srcset value that came from the server will be used. Related element:',
-				dom,
-				' Differing value:',
-				value
-			);
-		}
-	}
+	if (!current_hydration_fragment) return;
+	if (attribute !== 'src' && attribute !== 'href' && attribute !== 'srcset') return;
+
+	if (attribute === 'srcset' && srcset_url_equal(dom, value)) return;
+	if (src_url_equal(dom.getAttribute(attribute) ?? '', value ?? '')) return;
+
+	// eslint-disable-next-line no-console
+	console.error(
+		`Detected a ${attribute} attribute value change during hydration. This will not be repaired during hydration, ` +
+			`the ${attribute} value that came from the server will be used. Related element:`,
+		dom,
+		' Differing value:',
+		value
+	);
 }
 
 /**
@@ -2675,10 +2401,11 @@ function get_setters(element) {
  * @param {Element & ElementCSSInlineStyle} dom
  * @param {Record<string, unknown> | null} prev
  * @param {Record<string, unknown>[]} attrs
+ * @param {boolean} lowercase_attributes
  * @param {string} css_hash
  * @returns {Record<string, unknown>}
  */
-export function spread_attributes(dom, prev, attrs, css_hash) {
+export function spread_attributes(dom, prev, attrs, lowercase_attributes, css_hash) {
 	const next = Object.assign({}, ...attrs);
 	const has_hash = css_hash.length !== 0;
 	for (const key in prev) {
@@ -2697,13 +2424,13 @@ export function spread_attributes(dom, prev, attrs, css_hash) {
 		let value = next[key];
 		if (value === prev?.[key]) continue;
 
-		const prefix = key.slice(0, 2);
+		const prefix = key[0] + key[1]; // this is faster than key.slice(0, 2)
 		if (prefix === '$$') continue;
 
 		if (prefix === 'on') {
 			/** @type {{ capture?: true }} */
 			const opts = {};
-			let event_name = key.slice(2).toLowerCase();
+			let event_name = key.slice(2);
 			const delegated = DelegatedEvents.includes(event_name);
 
 			if (
@@ -2735,25 +2462,33 @@ export function spread_attributes(dom, prev, attrs, css_hash) {
 		} else if (key === '__value' || key === 'value') {
 			// @ts-ignore
 			dom.value = dom[key] = dom.__value = value;
-		} else if (setters.includes(key)) {
-			if (DEV) {
-				check_src_in_dev_hydration(dom, key, value);
-			}
-			if (
-				current_hydration_fragment === null ||
-				//  @ts-ignore see attr method for an explanation of src/srcset
-				(dom[key] !== value && key !== 'src' && key !== 'srcset')
-			) {
-				// @ts-ignore
-				dom[key] = value;
-			}
-		} else if (typeof value !== 'function') {
-			if (has_hash && key === 'class') {
-				if (value) value += ' ';
-				value += css_hash;
+		} else {
+			let name = key;
+			if (lowercase_attributes) {
+				name = name.toLowerCase();
+				name = AttributeAliases[name] || name;
 			}
 
-			attr(dom, key, value);
+			if (setters.includes(name)) {
+				if (DEV) {
+					check_src_in_dev_hydration(dom, name, value);
+				}
+				if (
+					current_hydration_fragment === null ||
+					//  @ts-ignore see attr method for an explanation of src/srcset
+					(dom[name] !== value && name !== 'src' && name !== 'href' && name !== 'srcset')
+				) {
+					// @ts-ignore
+					dom[name] = value;
+				}
+			} else if (typeof value !== 'function') {
+				if (has_hash && name === 'class') {
+					if (value) value += ' ';
+					value += css_hash;
+				}
+
+				attr(dom, name, value);
+			}
 		}
 	}
 	return next;
@@ -2784,6 +2519,7 @@ export function spread_dynamic_element_attributes(node, prev, attrs, css_hash) {
 			/** @type {Element & ElementCSSInlineStyle} */ (node),
 			prev,
 			attrs,
+			node.namespaceURI !== 'http://www.w3.org/2000/svg',
 			css_hash
 		);
 	}
@@ -2855,20 +2591,6 @@ export function spread_props(props) {
 }
 
 /**
- * @template V
- * @param {V} value
- * @returns {import('./types.js').UnwrappedSignal<V>}
- */
-export function unwrap(value) {
-	if (is_signal(value)) {
-		// @ts-ignore
-		return get(value);
-	}
-	// @ts-ignore
-	return value;
-}
-
-/**
  * Mounts the given component to the given target and returns a handle to the component's public accessors
  * as well as a `$set` and `$destroy` method to update the props of the component or destroy it.
  *
@@ -2877,13 +2599,13 @@ export function unwrap(value) {
  * @template {Record<string, any>} Props
  * @template {Record<string, any> | undefined} Exports
  * @template {Record<string, any>} Events
- * @param {import('../../main/public.js').SvelteComponent<Props, Events>} component
+ * @param {typeof import('../../main/public.js').SvelteComponent<Props, Events>} component
  * @param {{
  * 		target: Node;
  * 		props?: Props;
+ * 		events?: Events;
  *  	context?: Map<any, any>;
  * 		intro?: boolean;
- * 		immutable?: boolean;
  * 		recover?: false;
  * 	}} options
  * @returns {Exports & { $destroy: () => void; $set: (props: Partial<Props>) => void; }}
@@ -2901,15 +2623,7 @@ export function createRoot(component, options) {
 	 * @param {any} value
 	 */
 	function add_prop(name, value) {
-		const prop = source(
-			value,
-			options.immutable
-				? /**
-				   * @param {any} a
-				   * @param {any} b
-				   */ (a, b) => a === b
-				: safe_equal
-		);
+		const prop = source(value);
 		_sources[name] = prop;
 		define_property(_props, name, {
 			get() {
@@ -2943,11 +2657,9 @@ export function createRoot(component, options) {
 			return _props[property];
 		}
 	});
-	const props_source = source(
-		props_proxy,
-		// We're resetting the same proxy instance for updates, therefore bypass equality checks
-		() => false
-	);
+
+	// We're resetting the same proxy instance for updates, therefore bypass equality checks
+	const props_source = mutable_source(props_proxy);
 
 	let [accessors, $destroy] = mount(component, {
 		...options,
@@ -2991,19 +2703,18 @@ export function createRoot(component, options) {
 /**
  * Mounts the given component to the given target and returns the accessors of the component and a function to destroy it.
  *
- * If you need to interact with the component after mounting, use `create` instead.
+ * If you need to interact with the component after mounting, use `createRoot` instead.
  *
  * @template {Record<string, any>} Props
  * @template {Record<string, any> | undefined} Exports
  * @template {Record<string, any>} Events
- * @param {import('../../main/public.js').SvelteComponent<Props, Events>} component
+ * @param {typeof import('../../main/public.js').SvelteComponent<Props, Events>} component
  * @param {{
  * 		target: Node;
  * 		props?: Props;
  * 		events?: Events;
  *  	context?: Map<any, any>;
  * 		intro?: boolean;
- * 		immutable?: boolean;
  * 		recover?: false;
  * 	}} options
  * @returns {[Exports, () => void]}
@@ -3132,13 +2843,18 @@ export function sanitize_slots(props) {
 }
 
 /**
- * @param {() => void} create_snippet
+ * @param {() => Function} get_snippet
+ * @param {Node} node
+ * @param {() => any} args
  * @returns {void}
  */
-export function snippet_effect(create_snippet) {
+export function snippet_effect(get_snippet, node, args) {
 	const block = create_snippet_block();
 	render_effect(() => {
-		create_snippet();
+		// Only rerender when the snippet function itself changes,
+		// not when an eagerly-read prop inside the snippet function changes
+		const snippet = get_snippet();
+		untrack(() => snippet(node, args));
 		return () => {
 			if (block.d !== null) {
 				remove(block.d);

@@ -40,6 +40,26 @@ class Todo {
 
 > この例では、コンパイラは `done` と `text` を、private field を参照する class prototype の `get`/`set` メソッドに変換します
 
+オブジェクトと配列は [リアクティブになります](/#H4sIAAAAAAAAE42QwWrDMBBEf2URhUhUNEl7c21DviPOwZY3jVpZEtIqUBz9e-UUt9BTj7M784bdmZ21wciq48xsPyGr2MF7Jhl9-kXEKxrCoqNLQS2TOqqgPbWd7cgggU3TgCFCAw-RekJ-3Et4lvByEq-drbe_dlsPichZcFYZrT6amQto2pXw5FO88FUYtG90gUfYi3zvWrYL75vxL57zfA07_zfr23k1vjtt-aZ0bQTcbrDL5ZifZcAxKeS8lzDc8X0xDhJ2ItdbX1jlOZMb9VnjyCoKCfMpfwG975NFVwEAAA==):
+
+```svelte
+<script>
+	let numbers = $state([1, 2, 3]);
+</script>
+
+<button onclick={() => numbers.push(numbers.length + 1)}>
+	push
+</button>
+
+<button onclick={() => numbers.pop()}> pop </button>
+
+<p>
+	{numbers.join(' + ') || 0}
+	=
+	{numbers.reduce((a, b) => a + b, 0)}
+</p>
+```
+
 ### What this replaces
 
 非 rune モードでは、`let` 宣言がありそれがどこかで更新されている場合にリアクティブなステートとして扱われます。`$state(...)` はアプリのどこでも動作しますが、`let` の場合はコンポーネントのトップレベルにある場合にのみリアクティブなステートとして振る舞います。
@@ -51,11 +71,11 @@ class Todo {
 ```diff
 <script>
 	let count = $state(0);
-+	let double = $derived(count * 2);
++	let doubled = $derived(count * 2);
 </script>
 
 <button on:click={() => count++}>
-	{double}
+	{doubled}
 </button>
 
 +<p>{count} doubled is {doubled}</p>
@@ -92,13 +112,13 @@ class Todo {
 ```diff
 <script>
 	let count = $state(0);
-	let double = $derived(count * 2);
+	let doubled = $derived(count * 2);
 
 +	$effect(() => {
 +		// runs when the component is mounted, and again
-+		// whenever `count` or `double` change,
++		// whenever `count` or `doubled` change,
 +		// after the DOM has been updated
-+		console.log({ count, double });
++		console.log({ count, doubled });
 +
 +		return () => {
 +			// if a callback is provided, it will run
@@ -110,7 +130,7 @@ class Todo {
 </script>
 
 <button on:click={() => count++}>
-	{double}
+	{doubled}
 </button>
 
 <p>{count} doubled is {doubled}</p>
@@ -158,7 +178,7 @@ class Todo {
 </script>
 
 <div bind:this={div}>
-	{#each message as message}
+	{#each messages as message}
 		<p>{message}</p>
 	{/each}
 </div>
@@ -167,6 +187,45 @@ class Todo {
 ### What this replaces
 
 これまで `beforeUpdate` を使用してきた場所で使うことができます。`afterUpdate` と同様に、Svelte 5 では `beforeUpdate` は非推奨となります。
+
+## `$effect.active`
+
+`$effect.active` rune は、コードが effect の内側で実行されているのか、テンプレート内で実行されているのかを教えてくれる高度な機能です ([デモ](/#H4sIAAAAAAAAE3XP0QrCMAwF0F-JRXAD595rLfgdzodRUyl0bVgzQcb-3VYFQfExl5tDMgvrPCYhT7MI_YBCiiOR2Aq-UxnSDT1jnlOcRlMSlczoiHUXOjYxpOhx5-O12rgAJg4UAwaGhDyR3Gxhjdai4V1v2N2wqus9tC3Y3ifMQjbehaqq4aBhLtEv_Or893icCsdLve-Caj8nBkU67zMO5HtGCfM3sKiWNKhV0zwVaBqd3x3ixVmHFyFLuJyXB-moOe8pAQAA)):
+
+```svelte
+<script>
+	console.log('in component setup:', $effect.active()); // false
+
+	$effect(() => {
+		console.log('in effect:', $effect.active()); // true
+	});
+</script>
+
+<p>in template: {$effect.active()}</p> <!-- true -->
+```
+
+(例えば) これを子の effect に置くことによって、サブスクリプションなどをメモリリークなしで追加することができます。
+
+## `$effect.root`
+
+`$effect.root` rune は、自動クリーンアップされない非追跡のスコープを作成することができる高度な機能です。
+これは手動でコントロールしたいネストした effect を扱うのに有用です。また、この rune によって、コンポーネントの初期化フェーズ以外で effect を作成することができます。
+
+```svelte
+<script>
+	let count = $state(0);
+
+	const cleanup = $effect.root(() => {
+		$effect(() => {
+			console.log(count);
+		});
+
+		return () => {
+			console.log('effect root cleanup');
+		};
+	});
+</script>
+```
 
 ## `$props`
 
@@ -196,11 +255,57 @@ type MyProps = any;
 let { a, b, c, ...everythingElse } = $props<MyProps>();
 ```
 
+親コンポーネントが `bind:` を使用していない限り、props を変更することはできません。開発時には、props を変更使用とするとエラーとなります。
+
 ### What this replaces
 
 `$props` は、props を宣言する `export let` と `export { x as y }` 構文を置き換えます。また、`$$props` と `$$restProps`、そして知る人ぞ知る `interface $$Props {...}` construct も置き換えます。
 
 なお、`export const` と `export function` を使用してコンポーネントのユーザーに諸々を公開することは可能です (例えば、`bind:this` を使用する場合など)。
+
+## `$inspect`
+
+`$inspect` rune は大まかには `console.log` と一緒ですが、与えられた引数が変わるたびに再実行されるという点が異なります。
+`$inspect` はリアクティブな state を深く(deeply)追跡します。つまり、[fine-grained reactivity](/docs/fine-grained-reactivity) により、
+オブジェクトや配列の内側で何かしらが更新されると、再実行されます。([デモ:](/#H4sIAAAAAAAAE0WQ0W6DMAxFf8WKKhXUquyZAtIe9w1lEjS4ENU4EXFaTRH_Plq69fH6nutrOaqLIfQqP0XF7YgqV5_Oqb2SH_cQ_oYkuGhvw6Qfk8LryTipaq6FUEDbwAIlbLy0gslHevxzRvS-7fHtbQckstsnsTAbw96hliSuS_b_iTk9QpbB3RAtFntLeCDbw31AhuYJN2AnaF6BBvTQco81F9n7PC7OQcQyWNZk9LWMSQpltZbtdnP1xXrCEVmKbCWXVGHYBYGz4S6_tRSwjK-SGbJqecRoO3Mx2KlcpoDz9_wLBx9LikMBAAA=))
+
+```svelte
+<script>
+	let count = $state(0);
+	let message = $state('hello');
+
+	$inspect({ count, message }); // will console.log when `count` or `message` change
+</script>
+
+<button onclick={() => count++}>Increment</button>
+<input bind:value={message} />
+```
+
+また、コールバックが提供される場合は、`console.log` の代わりにそのコールバックが実行されます。コールバックの第一引数は現在の値です。
+第二引数は `"init"` か `"update"` です。[デモ:](/#H4sIAAAAAAAAE0VP24qDMBD9lSEUqlTqPlsj7ON-w1qojWM3rE5CMmkpkn_fxFL26XBuw5lVTHpGL5rvVdCwoGjEp7WiEvy0mfg7zoyJexOcykrrldOWu556npFBmUAMEnaeB8biozwlJ3k7Td6i4mILVPDGfLgE2cGaUz3rCYqsgZQS9sGO6cq-fLs9j3gNtxu6E9Q1GAcXZcibGY_sBoWXKmuPn1S6o4OnCfAYiF_lmCHmQW39v5raa2A2BIbUrNWvXIttz7bvcIjdFymHCxK39SvZpf8XM-pJ4ygadgHjOf4B8TXIiDoBAAA=)
+
+```svelte
+<script>
+	let count = $state(0);
+
+	$inspect(count, (count, type) => {
+		if (type === 'update') {
+			debugger; // or `console.trace`, or whatever you want
+		}
+	});
+</script>
+
+<button onclick={() => count++}>Increment</button>
+```
+
+第二引数に `console.trace` を渡すと、ある変更がどこで行われたかを簡単に確認することができます:
+
+```js
+// @errors: 2304
+$inspect(stuff, console.trace);
+```
+
+> `$inspect` は開発時にのみ動作します。
 
 ## How to opt in
 

@@ -2,7 +2,7 @@
 title: Event handlers
 ---
 
-Event handlers have been given a facelift in Svelte 5. Whereas in Svelte 4 we use the `on:` directive to attach an event listener to an element, in Svelte 5 they are properties like any other:
+Svelte 5 ではイベントハンドラが刷新されました。Svelte 4 では要素にイベントリスナーをアタッチするのに `on:` ディレクティブを使用していましたが、Svelte 5 では他のプロパティと同じように扱うことができます:
 
 ```diff
 <script>
@@ -15,7 +15,7 @@ Event handlers have been given a facelift in Svelte 5. Whereas in Svelte 4 we us
 </button>
 ```
 
-Since they're just properties, you can use the normal shorthand syntax...
+ただのプロパティとして扱えるため、おなじみの短縮構文(shorthand syntax)を使うことができます…
 
 ```svelte
 <script>
@@ -31,15 +31,15 @@ Since they're just properties, you can use the normal shorthand syntax...
 </button>
 ```
 
-...though when using a named event handler function it's usually better to use a more descriptive name.
+…ただし、名前付きのイベントハンドラ関数を使用する場合は、より明確な名前を使用したほうがよいでしょう。
 
-Traditional `on:` event handlers will continue to work, but are deprecated in Svelte 5.
+従来の `on:` イベントハンドラも使用することができますが、Svelte 5 では非推奨となります。
 
 ## Component events
 
-In Svelte 4, components could emit events by creating a dispatcher with [`createEventDispatcher`](https://svelte.dev/docs/svelte#createeventdispatcher).
+Svelte 4 では、[`createEventDispatcher`](https://svelte.jp/docs/svelte#createeventdispatcher) を使用して dispatcher を作成すること、コンポーネントはイベントを発行していました。
 
-This function is deprecated in Svelte 5. Instead, components should accept _callback props_ ([demo](/#H4sIAAAAAAAAE41TS27bMBC9ykBtELu1ZTmAG0C2hPYG3dddyPIwJkKRAjmy4wrad9VFL5BV75cjlKQof5osutCHb968-XCmjRgXaKL0WxvJosIojb7UdTSJ6Fi7g9mjILRnoxpdOmRlSs1rytdyTbyqlSb42lQ1MK0quI1n7hD3brdLR3KPQALDfyBk8N5QQTiaL8bLwbJptKGziRXCoLdaO2tkSVxJ0GiQRmNovSYFtfmij0GDhnf2WLeWq9k5WblymfmsJRM2TtZatSy_EvyYwSDIGYw8lsP9YnzKkXQT5Dv33uJbWhe-ybgvfDooO7-ZT6h9Z3le10utNg2RLVTJUvDyMWt9xV0u8QCbQgilbD09xzd_ZepCQikKY7J1tFGqWkf5y_PvP7Zqa7GcNkXbjO4Nci-3jsDQUaBFTFkITKFN4mQOH3zKnZXry3l5_vXTi5yEZ5x1vqfe39N8gFB_rQx3l5YC40-4DR0VyCiFJJxI1efDgW9pl8I8SW4CskP-sKMriClJU5eZR_eHQQifaFoI_mDDlSgJ9RCPS5yedJZDatxRpri3VJOCVPI0Lu4Th94MpZAu5FCMbxIk8Z259rCtH-iF5FXRsz2cxAsDTOlDobdXXp8f8ci03TgDl_7JDbQQLiOJP0HXw3eLK_x-MRhcey4sPdxPfrgZu7uV2nLGcRulbnq7yWnV3Ub87667RW0h7M4EwuBD5_a21qo2I7ey1xv370QH7y4PPxfz_IobAnR5-DlxXxf0vfsLb_4Z08cEAAA=)):
+Svelte 5 では `createEventDispatcher` は非推奨となります。代わりに、コンポーネントで _コールバック props_ を受け取ります ([デモ](/#H4sIAAAAAAAAE41TS27bMBC9ykBtELu1ZTmAG0C2hPYG3dddyPIwJkKRAjmy4wrad9VFL5BV75cjlKQof5osutCHb968-XCmjRgXaKL0WxvJosIojb7UdTSJ6Fi7g9mjILRnoxpdOmRlSs1rytdyTbyqlSb42lQ1MK0quI1n7hD3brdLR3KPQALDfyBk8N5QQTiaL8bLwbJptKGziRXCoLdaO2tkSVxJ0GiQRmNovSYFtfmij0GDhnf2WLeWq9k5WblymfmsJRM2TtZatSy_EvyYwSDIGYw8lsP9YnzKkXQT5Dv33uJbWhe-ybgvfDooO7-ZT6h9Z3le10utNg2RLVTJUvDyMWt9xV0u8QCbQgilbD09xzd_ZepCQikKY7J1tFGqWkf5y_PvP7Zqa7GcNkXbjO4Nci-3jsDQUaBFTFkITKFN4mQOH3zKnZXry3l5_vXTi5yEZ5x1vqfe39N8gFB_rQx3l5YC40-4DR0VyCiFJJxI1efDgW9pl8I8SW4CskP-sKMriClJU5eZR_eHQQifaFoI_mDDlSgJ9RCPS5yedJZDatxRpri3VJOCVPI0Lu4Th94MpZAu5FCMbxIk8Z259rCtH-iF5FXRsz2cxAsDTOlDobdXXp8f8ci03TgDl_7JDbQQLiOJP0HXw3eLK_x-MRhcey4sPdxPfrgZu7uV2nLGcRulbnq7yWnV3Ub87667RW0h7M4EwuBD5_a21qo2I7ey1xv370QH7y4PPxfz_IobAnR5-DlxXxf0vfsLb_4Z08cEAAA=)):
 
 ```svelte
 <script>
@@ -85,7 +85,7 @@ This function is deprecated in Svelte 5. Instead, components should accept _call
 
 ## Bubbling events
 
-Instead of doing `<button on:click>` to 'forward' the event from the element to the component, the component should accept an `onclick` callback prop:
+要素からイベントを 'forward' するのに `<button on:click>` を使用する代わりに、コンポーネントで `onclick` コールバック prop を受け取りましょう:
 
 ```svelte
 <script>
@@ -97,7 +97,7 @@ Instead of doing `<button on:click>` to 'forward' the event from the element to 
 </button>
 ```
 
-Note that this also means you can 'spread' event handlers onto the element along with other props:
+これはつまり、要素に対してイベントハンドラを他の props と一緒に 'spread' することができるということです:
 
 ```svelte
 <script>
@@ -111,15 +111,15 @@ Note that this also means you can 'spread' event handlers onto the element along
 
 ## Event modifiers
 
-In Svelte 4, you can add event modifiers to handlers:
+Svelte 4 では、イベントの修飾子 (modifier) をハンドラに付けることができます:
 
 ```svelte
 <button on:click|once|preventDefault={handler}>...</button>
 ```
 
-Modifiers are specific to `on:` and as such do not work with modern event handlers. Adding things like `event.preventDefault()` inside the handler itself is preferable, since all the logic lives in one place rather than being split between handler and modifiers.
+修飾子は `on:` に固有のもので、このモダンなイベントハンドラでは動作しません。`event.preventDefault()` などはハンドラ自体の内側に追加することが望ましいです。なぜなら全てのロジックがハンドラと修飾子の間で分割されるのではなく、1つの場所に存在するからです。
 
-Since event handlers are just functions, you can create your own wrappers as necessary:
+イベントハンドラはただの関数なので、必要に応じてラッパーを作成することができます:
 
 ```svelte
 <script>
@@ -141,27 +141,27 @@ Since event handlers are just functions, you can create your own wrappers as nec
 <button onclick={once(preventDefault(handler))}>...</button>
 ```
 
-There are three modifiers — `capture`, `passive` and `nonpassive` — that can't be expressed as wrapper functions, since they need to be applied when the event handler is bound rather than when it runs.
+3つの修飾子 — `capture`、`passive`、`nonpassive` — は、イベントハンドラが実行されるときではなく、イベントハンドラがバインドされるときに適用する必要があるため、ラッパー関数で表現することができません。
 
-For `capture`, we add the modifier to the event name:
+`capture` の場合は、イベント名に修飾子を追加します:
 
 ```svelte
 <button onclickcapture={...}>...</button>
 ```
 
-Changing the [`passive`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#using_passive_listeners) option of an event handler, meanwhile, is not something to be done lightly. If you have a use case for it — and you probably don't! - then you will need to use an action to apply the event handler yourself.
+一方、イベントハンドラの [`passive`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#using_passive_listeners) オプションを変更することは、安易に行ってよいことではありません。もしそのようなユースケースがあれば (おそらくないとは思いますが)、ご自身でイベントハンドラに適用する action を使用する必要があります。
 
 ## Multiple event handlers
 
-In Svelte 4, this is possible:
+Svelte 4 では、以下のようにすることができました:
 
 ```svelte
 <button on:click={one} on:click={two}>...</button>
 ```
 
-This is something of an anti-pattern, since it impedes readability (if there are many attributes, it becomes harder to spot that there are two handlers unless they are right next to each other) and implies that the two handlers are independent, when in fact something like `event.stopImmediatePropagation()` inside `one` would prevent `two` from being called.
+これはアンチパターンの一種で、可読性が悪くなり (もし属性が多い場合、隣同士に配置しないと2つのハンドラがあることに気が付くことが難しくなる)、また、実際には `one` の中に `event.stopImmediatePropagation()` などがあれば `two` が呼び出されるのを止めることができるのに、2つのハンドラが独立しているように見えてしまいます。
 
-Duplicate attributes/properties on elements — which now includes event handlers — are not allowed. Instead, do this:
+イベントハンドラも含め、要素の属性/プロパティが重複することは許されません。代わりに、以下のようにしてください:
 
 ```svelte
 <button
@@ -176,12 +176,12 @@ Duplicate attributes/properties on elements — which now includes event handler
 
 ## Why the change?
 
-By deprecating `createEventDispatcher` and the `on:` directive in favour of callback props and normal element properties, we:
+`createEventDispatcher` と `on:` ディレクティブを非推奨にしてコールバック props と通常の要素プロパティを使用することによって:
 
-- reduce Svelte's learning curve
-- remove boilerplate, particularly around `createEventDispatcher`
-- remove the overhead of creating `CustomEvent` objects for events that may not even have listeners
-- add the ability to spread event handlers
-- add the ability to know which event handlers were provided to a component
-- add the ability to express whether a given event handler is required or optional
-- increase type safety (previously, it was effectively impossible for Svelte to guarantee that a component didn't emit a particular event)
+- Svelte の学習曲線を短くします
+- ボイラープレートを削除します (特に `createEventDispatcher` 周り)
+- リスナーが存在しない可能性があるイベントのための `CustomEvent` オブジェクトを作成することによるオーバーヘッドを削除します
+- イベントハンドラを spread できるようにします
+- どのイベントハンドラがコンポーネントに提供されたかわかるようにします
+- 提供されたイベントハンドラが必須かオプションか表現できるようにします
+- 型安全性を強化します (以前は、あるコンポーネントが特定のイベントを発行しないことを Svelte が保証することは事実上不可能でした)

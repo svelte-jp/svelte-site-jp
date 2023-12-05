@@ -1,11 +1,15 @@
 import { walk } from 'zimmerframe';
 import { set_scope, get_rune } from '../../scope.js';
-import { extract_identifiers, extract_paths, is_event_attribute } from '../../../utils/ast.js';
+import {
+	extract_identifiers,
+	extract_paths,
+	is_event_attribute,
+	unwrap_ts_expression
+} from '../../../utils/ast.js';
 import * as b from '../../../utils/builders.js';
 import is_reference from 'is-reference';
 import {
 	ContentEditableBindings,
-	DOMBooleanAttributes,
 	VoidElements,
 	WhitespaceInsensitiveAttributes
 } from '../../constants.js';
@@ -15,11 +19,12 @@ import {
 	escape_html,
 	infer_namespace
 } from '../utils.js';
-import { create_attribute, is_element_node } from '../../nodes.js';
+import { create_attribute, is_custom_element_node, is_element_node } from '../../nodes.js';
 import { error } from '../../../errors.js';
 import { binding_properties } from '../../bindings.js';
 import { regex_starts_with_newline, regex_whitespaces_strict } from '../../patterns.js';
 import { remove_types } from '../typescript.js';
+import { DOMBooleanAttributes } from '../../../../constants.js';
 
 /**
  * @param {string} value
@@ -168,7 +173,7 @@ function process_children(nodes, parent, { visit, state }) {
 			}
 
 			const expression = b.call(
-				'$.escape',
+				'$.escape_text',
 				/** @type {import('estree').Expression} */ (visit(node.expression))
 			);
 			state.template.push(t_expression(expression));
@@ -471,6 +476,25 @@ function serialize_set_binding(node, context, fallback) {
 	return fallback();
 }
 
+/**
+ * @param {import('#compiler').RegularElement | import('#compiler').SvelteElement} element
+ * @param {import('#compiler').Attribute} attribute
+ * @param {{ state: { metadata: { namespace: import('#compiler').Namespace }}}} context
+ */
+function get_attribute_name(element, attribute, context) {
+	let name = attribute.name;
+	if (
+		element.type === 'RegularElement' &&
+		!element.metadata.svg &&
+		context.state.metadata.namespace !== 'foreign'
+	) {
+		name = name.toLowerCase();
+		// don't lookup boolean aliases here, the server runtime function does only
+		// check for the lowercase variants of boolean attributes
+	}
+	return name;
+}
+
 /** @type {import('./types').Visitors} */
 const global_visitors = {
 	Identifier(node, { path, state }) {
@@ -549,8 +573,9 @@ const javascript_visitors_runes = {
 		const declarations = [];
 
 		for (const declarator of node.declarations) {
-			const rune = get_rune(declarator.init, state.scope);
-			if (!rune) {
+			const init = unwrap_ts_expression(declarator.init);
+			const rune = get_rune(init, state.scope);
+			if (!rune || rune === '$effect.active' || rune === '$inspect') {
 				declarations.push(/** @type {import('estree').VariableDeclarator} */ (visit(declarator)));
 				continue;
 			}
@@ -560,7 +585,7 @@ const javascript_visitors_runes = {
 				continue;
 			}
 
-			const args = /** @type {import('estree').CallExpression} */ (declarator.init).arguments;
+			const args = /** @type {import('estree').CallExpression} */ (init).arguments;
 			const value =
 				args.length === 0
 					? b.id('undefined')
@@ -604,6 +629,27 @@ const javascript_visitors_runes = {
 			}
 		}
 		context.next();
+	},
+	CallExpression(node, { state, next, visit }) {
+		const rune = get_rune(node, state.scope);
+
+		if (rune === '$effect.active') {
+			return b.literal(false);
+		}
+
+		if (rune === '$inspect') {
+			if (state.options.dev) {
+				const args = /** @type {import('estree').Expression[]} */ (
+					node.arguments.map((arg) => visit(arg))
+				);
+
+				return b.call('console.log', ...args);
+			}
+
+			return b.unary('void', b.literal(0));
+		}
+
+		next();
 	}
 };
 
@@ -681,12 +727,14 @@ function serialize_attribute_value(
 
 /**
  *
+ * @param {import('#compiler').RegularElement | import('#compiler').SvelteElement} element
  * @param {Array<import('#compiler').Attribute | import('#compiler').SpreadAttribute>} attributes
  * @param {import('#compiler').StyleDirective[]} style_directives
  * @param {import('#compiler').ClassDirective[]} class_directives
  * @param {import('./types').ComponentContext} context
  */
 function serialize_element_spread_attributes(
+	element,
 	attributes,
 	style_directives,
 	class_directives,
@@ -697,7 +745,7 @@ function serialize_element_spread_attributes(
 
 	for (const attribute of attributes) {
 		if (attribute.type === 'Attribute') {
-			const name = attribute.name.toLowerCase();
+			const name = get_attribute_name(element, attribute, context);
 			const value = serialize_attribute_value(
 				attribute.value,
 				context,
@@ -709,8 +757,18 @@ function serialize_element_spread_attributes(
 		}
 	}
 
+	const lowercase_attributes =
+		element.type !== 'RegularElement' || element.metadata.svg || is_custom_element_node(element)
+			? b.false
+			: b.true;
+	const is_svg = element.type === 'RegularElement' && element.metadata.svg ? b.true : b.false;
 	/** @type {import('estree').Expression[]} */
-	const args = [b.array(values), b.literal(context.state.analysis.stylesheet.id)];
+	const args = [
+		b.array(values),
+		lowercase_attributes,
+		is_svg,
+		b.literal(context.state.analysis.stylesheet.id)
+	];
 
 	if (style_directives.length > 0 || class_directives.length > 0) {
 		const styles = style_directives.map((directive) =>
@@ -1040,8 +1098,9 @@ const template_visitors = {
 		state.template.push(t_expression(id));
 	},
 	ConstTag(node, { state, visit }) {
-		const pattern = /** @type {import('estree').Pattern} */ (visit(node.expression.left));
-		const init = /** @type {import('estree').Expression} */ (visit(node.expression.right));
+		const declaration = node.declaration.declarations[0];
+		const pattern = /** @type {import('estree').Pattern} */ (visit(declaration.id));
+		const init = /** @type {import('estree').Expression} */ (visit(declaration.init));
 		state.init.push(b.declaration('const', pattern, init));
 	},
 	DebugTag(node, { state, visit }) {
@@ -1066,11 +1125,17 @@ const template_visitors = {
 		);
 	},
 	RenderTag(node, context) {
-		const snippet_function = context.state.options.dev
+		const state = context.state;
+		const [anchor, anchor_id] = serialize_anchor(state);
+
+		state.init.push(anchor);
+		state.template.push(t_expression(anchor_id));
+
+		const snippet_function = state.options.dev
 			? b.call('$.validate_snippet', node.expression)
 			: node.expression;
 		if (node.argument) {
-			context.state.template.push(
+			state.template.push(
 				t_statement(
 					b.stmt(
 						b.call(
@@ -1082,8 +1147,10 @@ const template_visitors = {
 				)
 			);
 		} else {
-			context.state.template.push(t_statement(b.stmt(b.call(snippet_function, b.id('$$payload')))));
+			state.template.push(t_statement(b.stmt(b.call(snippet_function, b.id('$$payload')))));
 		}
+
+		state.template.push(t_expression(anchor_id));
 	},
 	ClassDirective(node) {
 		error(node, 'INTERNAL', 'Node should have been handled elsewhere');
@@ -1376,8 +1443,6 @@ const template_visitors = {
 		state.template.push(t_expression(id));
 	},
 	SnippetBlock(node, context) {
-		const [dec, id] = serialize_anchor(context.state);
-
 		// TODO hoist where possible
 		/** @type {import('estree').Pattern[]} */
 		const args = [b.id('$$payload')];
@@ -1385,18 +1450,11 @@ const template_visitors = {
 			args.push(node.context);
 		}
 
-		const out = b.member_id('$$payload.out');
-
 		context.state.init.push(
 			b.function_declaration(
 				node.expression,
 				args,
-				b.block([
-					dec,
-					b.stmt(b.assignment('+=', out, id)),
-					.../** @type {import('estree').BlockStatement} */ (context.visit(node.body)).body,
-					b.stmt(b.assignment('+=', out, id))
-				])
+				/** @type {import('estree').BlockStatement} */ (context.visit(node.body))
 			)
 		);
 		if (context.state.options.dev) {
@@ -1437,17 +1495,7 @@ const template_visitors = {
 		state.template.push(t_statement(call));
 		state.template.push(t_expression(id));
 	},
-	LetDirective(node, { state, path }) {
-		const parent = path.at(-1);
-		if (
-			parent === undefined ||
-			(parent.type !== 'Component' &&
-				parent.type !== 'RegularElement' &&
-				parent.type !== 'SvelteFragment')
-		) {
-			error(node, 'INTERNAL', 'let directive at invalid position');
-		}
-
+	LetDirective(node, { state }) {
 		if (node.expression && node.expression.type !== 'Identifier') {
 			const name = state.scope.generate(node.name);
 			const bindings = state.scope.get_bindings(node);
@@ -1579,7 +1627,9 @@ const template_visitors = {
 				b.stmt(b.call('$.head', b.id('$$payload'), b.arrow([b.id('$$payload')], b.block(body))))
 			)
 		);
-	}
+	},
+	// @ts-ignore: need to extract this out somehow
+	CallExpression: javascript_visitors_runes.CallExpression
 };
 
 /**
@@ -1749,11 +1799,17 @@ function serialize_element_attributes(node, context) {
 	context.state.init.push(...lets);
 
 	if (has_spread) {
-		serialize_element_spread_attributes(attributes, style_directives, class_directives, context);
+		serialize_element_spread_attributes(
+			node,
+			attributes,
+			style_directives,
+			class_directives,
+			context
+		);
 	} else {
 		for (const attribute of /** @type {import('#compiler').Attribute[]} */ (attributes)) {
 			if (attribute.value === true || is_text_attribute(attribute)) {
-				const name = attribute.name.toLowerCase();
+				const name = get_attribute_name(node, attribute, context);
 				const literal_value = /** @type {import('estree').Literal} */ (
 					serialize_attribute_value(
 						attribute.value,
@@ -1775,7 +1831,7 @@ function serialize_element_attributes(node, context) {
 				continue;
 			}
 
-			const name = attribute.name.toLowerCase();
+			const name = get_attribute_name(node, attribute, context);
 			const is_boolean = DOMBooleanAttributes.includes(name);
 			const value = serialize_attribute_value(
 				attribute.value,
@@ -2038,7 +2094,7 @@ export function server_component(analysis, options) {
 	}
 
 	const component_block = b.block([
-		b.stmt(b.call('$.push', b.literal(analysis.runes), ...(options.immutable ? [b.true] : []))),
+		b.stmt(b.call('$.push', b.literal(analysis.runes))),
 		.../** @type {import('estree').Statement[]} */ (instance.body),
 		.../** @type {import('estree').Statement[]} */ (template.body),
 		b.stmt(b.call('$.pop'))

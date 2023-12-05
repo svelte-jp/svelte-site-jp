@@ -1,51 +1,11 @@
-export const DOMBooleanAttributes = [
-	'allowfullscreen',
-	'async',
-	'autofocus',
-	'autoplay',
-	'checked',
-	'controls',
-	'default',
-	'disabled',
-	'formnovalidate',
-	'hidden',
-	'indeterminate',
-	'ismap',
-	'loop',
-	'multiple',
-	'muted',
-	'nomodule',
-	'novalidate',
-	'open',
-	'playsinline',
-	'readonly',
-	'required',
-	'reversed',
-	'seamless',
-	'selected'
-];
+import { AttributeAliases, DOMBooleanAttributes } from '../../constants.js';
 
 export const DOMProperties = [
-	'className',
+	...Object.values(AttributeAliases),
 	'value',
-	'readOnly',
-	'formNoValidate',
-	'isMap',
-	'noModule',
-	'playsInline',
 	'inert',
 	...DOMBooleanAttributes
 ];
-
-/** @type {Record<string, string>} */
-export const AttributeAliases = {
-	class: 'className',
-	formnovalidate: 'formNoValidate',
-	ismap: 'isMap',
-	nomodule: 'noModule',
-	playsinline: 'playsInline',
-	readonly: 'readOnly'
-};
 
 export const VoidElements = [
 	'area',
@@ -110,7 +70,16 @@ export const ElementBindings = [
 	'indeterminate'
 ];
 
-export const Runes = ['$state', '$props', '$derived', '$effect'];
+export const Runes = /** @type {const} */ ([
+	'$state',
+	'$props',
+	'$derived',
+	'$effect',
+	'$effect.pre',
+	'$effect.active',
+	'$effect.root',
+	'$inspect'
+]);
 
 /**
  * Whitespace inside one of these elements will not result in
@@ -214,4 +183,16 @@ export const SVGElements = [
 	'use',
 	'view',
 	'vkern'
+];
+
+export const EventModifiers = [
+	'preventDefault',
+	'stopPropagation',
+	'stopImmediatePropagation',
+	'capture',
+	'once',
+	'passive',
+	'nonpassive',
+	'self',
+	'trusted'
 ];

@@ -1,11 +1,20 @@
 import { error } from '../../errors.js';
-import { extract_identifiers, is_text_attribute } from '../../utils/ast.js';
+import {
+	extract_identifiers,
+	get_parent,
+	is_text_attribute,
+	unwrap_ts_expression
+} from '../../utils/ast.js';
 import { warn } from '../../warnings.js';
 import fuzzymatch from '../1-parse/utils/fuzzymatch.js';
 import { binding_properties } from '../bindings.js';
-import { SVGElements } from '../constants.js';
+import { ContentEditableBindings, EventModifiers, SVGElements } from '../constants.js';
 import { is_custom_element_node } from '../nodes.js';
-import { regex_not_whitespace, regex_only_whitespaces } from '../patterns.js';
+import {
+	regex_illegal_attribute_character,
+	regex_not_whitespace,
+	regex_only_whitespaces
+} from '../patterns.js';
 import { Scope, get_rune } from '../scope.js';
 import { merge } from '../visitors.js';
 import { a11y_validators } from './a11y.js';
@@ -25,6 +34,13 @@ function validate_component(node, context) {
 		) {
 			error(attribute, 'invalid-component-directive');
 		}
+
+		if (
+			attribute.type === 'OnDirective' &&
+			(attribute.modifiers.length > 1 || attribute.modifiers.some((m) => m !== 'once'))
+		) {
+			error(attribute, 'invalid-event-modifier');
+		}
 	}
 
 	context.next({
@@ -39,17 +55,91 @@ function validate_component(node, context) {
  * @param {import('zimmerframe').Context<import('#compiler').SvelteNode, import('./types.js').AnalysisState>} context
  */
 function validate_element(node, context) {
+	let has_animate_directive = false;
+	let has_in_transition = false;
+	let has_out_transition = false;
+
 	for (const attribute of node.attributes) {
-		if (
-			attribute.type === 'Attribute' &&
-			attribute.name === 'is' &&
-			context.state.options.namespace !== 'foreign'
-		) {
-			warn(context.state.analysis.warnings, attribute, context.path, 'avoid-is');
-		}
-		if (attribute.type === 'Attribute' && attribute.name === 'slot') {
-			/** @type {import('#compiler').RegularElement | import('#compiler').SvelteElement | import('#compiler').Component | import('#compiler').SvelteComponent | import('#compiler').SvelteSelf | undefined} */
-			validate_slot_attribute(context, attribute);
+		if (attribute.type === 'Attribute') {
+			if (regex_illegal_attribute_character.test(attribute.name)) {
+				error(attribute, 'invalid-attribute-name', attribute.name);
+			}
+
+			if (attribute.name.startsWith('on') && attribute.name.length > 2) {
+				if (
+					attribute.value === true ||
+					is_text_attribute(attribute) ||
+					attribute.value.length > 1
+				) {
+					error(attribute, 'invalid-event-attribute-value');
+				}
+			}
+
+			if (attribute.name === 'slot') {
+				/** @type {import('#compiler').RegularElement | import('#compiler').SvelteElement | import('#compiler').Component | import('#compiler').SvelteComponent | import('#compiler').SvelteSelf | undefined} */
+				validate_slot_attribute(context, attribute);
+			}
+
+			if (attribute.name === 'is' && context.state.options.namespace !== 'foreign') {
+				warn(context.state.analysis.warnings, attribute, context.path, 'avoid-is');
+			}
+		} else if (attribute.type === 'AnimateDirective') {
+			const parent = context.path.at(-2);
+			if (parent?.type !== 'EachBlock') {
+				error(attribute, 'invalid-animation', 'no-each');
+			} else if (!parent.key) {
+				error(attribute, 'invalid-animation', 'each-key');
+			} else if (
+				parent.body.nodes.filter(
+					(n) =>
+						n.type !== 'Comment' &&
+						n.type !== 'ConstTag' &&
+						(n.type !== 'Text' || n.data.trim() !== '')
+				).length > 1
+			) {
+				error(attribute, 'invalid-animation', 'child');
+			}
+
+			if (has_animate_directive) {
+				error(attribute, 'duplicate-animation');
+			} else {
+				has_animate_directive = true;
+			}
+		} else if (attribute.type === 'TransitionDirective') {
+			if ((attribute.outro && has_out_transition) || (attribute.intro && has_in_transition)) {
+				/** @param {boolean} _in @param {boolean} _out */
+				const type = (_in, _out) => (_in && _out ? 'transition' : _in ? 'in' : 'out');
+				error(
+					attribute,
+					'duplicate-transition',
+					type(has_in_transition, has_out_transition),
+					type(attribute.intro, attribute.outro)
+				);
+			}
+
+			has_in_transition = has_in_transition || attribute.intro;
+			has_out_transition = has_out_transition || attribute.outro;
+		} else if (attribute.type === 'OnDirective') {
+			let has_passive_modifier = false;
+			let conflicting_passive_modifier = '';
+			for (const modifier of attribute.modifiers) {
+				if (!EventModifiers.includes(modifier)) {
+					error(attribute, 'invalid-event-modifier', EventModifiers);
+				}
+				if (modifier === 'passive') {
+					has_passive_modifier = true;
+				} else if (modifier === 'nonpassive' || modifier === 'preventDefault') {
+					conflicting_passive_modifier = modifier;
+				}
+				if (has_passive_modifier && conflicting_passive_modifier) {
+					error(
+						attribute,
+						'invalid-event-modifier-combination',
+						'passive',
+						conflicting_passive_modifier
+					);
+				}
+			}
 		}
 	}
 }
@@ -238,13 +328,6 @@ function is_tag_valid_with_parent(tag, parent_tag) {
  * @type {import('zimmerframe').Visitors<import('#compiler').SvelteNode, import('./types.js').AnalysisState>}
  */
 export const validation = {
-	Attribute(node) {
-		if (node.name.startsWith('on') && node.name.length > 2) {
-			if (node.value === true || is_text_attribute(node) || node.value.length > 1) {
-				error(node, 'invalid-event-attribute-value');
-			}
-		}
-	},
 	BindDirective(node, context) {
 		validate_no_const_assignment(node, node.expression, context.state.scope, true);
 
@@ -318,7 +401,7 @@ export const validation = {
 					);
 				}
 
-				if (parent.name === 'input') {
+				if (parent.name === 'input' && node.name !== 'this') {
 					const type = /** @type {import('#compiler').Attribute | undefined} */ (
 						parent.attributes.find((a) => a.type === 'Attribute' && a.name === 'type')
 					);
@@ -356,6 +439,17 @@ export const validation = {
 						`non-<svg> elements. Use 'clientWidth' for <svg> instead`
 					);
 				}
+
+				if (ContentEditableBindings.includes(node.name)) {
+					const contenteditable = /** @type {import('#compiler').Attribute} */ (
+						parent.attributes.find((a) => a.type === 'Attribute' && a.name === 'contenteditable')
+					);
+					if (!contenteditable) {
+						error(node, 'missing-contenteditable-attribute');
+					} else if (!is_text_attribute(contenteditable)) {
+						error(contenteditable, 'dynamic-contenteditable-attribute');
+					}
+				}
 			} else {
 				const match = fuzzymatch(node.name, Object.keys(binding_properties));
 				if (match) {
@@ -368,6 +462,40 @@ export const validation = {
 			}
 		}
 	},
+	ExportDefaultDeclaration(node) {
+		error(node, 'default-export');
+	},
+	ConstTag(node, context) {
+		const parent = context.path.at(-1);
+		const grand_parent = context.path.at(-2);
+		if (
+			parent?.type !== 'Fragment' ||
+			(grand_parent?.type !== 'IfBlock' &&
+				grand_parent?.type !== 'SvelteFragment' &&
+				grand_parent?.type !== 'Component' &&
+				grand_parent?.type !== 'SvelteComponent' &&
+				grand_parent?.type !== 'EachBlock' &&
+				grand_parent?.type !== 'AwaitBlock' &&
+				((grand_parent?.type !== 'RegularElement' && grand_parent?.type !== 'SvelteElement') ||
+					!grand_parent.attributes.some((a) => a.type === 'Attribute' && a.name === 'slot')))
+		) {
+			error(node, 'invalid-const-placement');
+		}
+	},
+	LetDirective(node, context) {
+		const parent = context.path.at(-1);
+		if (
+			parent === undefined ||
+			(parent.type !== 'Component' &&
+				parent.type !== 'RegularElement' &&
+				parent.type !== 'SvelteElement' &&
+				parent.type !== 'SvelteComponent' &&
+				parent.type !== 'SvelteSelf' &&
+				parent.type !== 'SvelteFragment')
+		) {
+			error(node, 'invalid-let-directive-placement');
+		}
+	},
 	RegularElement(node, context) {
 		if (node.name === 'textarea' && node.fragment.nodes.length > 0) {
 			for (const attribute of node.attributes) {
@@ -375,6 +503,21 @@ export const validation = {
 					error(node, 'invalid-textarea-content');
 				}
 			}
+		}
+
+		const binding = context.state.scope.get(node.name);
+		if (
+			binding !== null &&
+			binding.declaration_kind === 'import' &&
+			binding.references.length === 0
+		) {
+			warn(
+				context.state.analysis.warnings,
+				node,
+				context.path,
+				'component-name-lowercase',
+				node.name
+			);
 		}
 
 		validate_element(node, context);
@@ -390,6 +533,12 @@ export const validation = {
 			parent_element: node.name
 		});
 	},
+	SvelteHead(node) {
+		const attribute = node.attributes[0];
+		if (attribute) {
+			error(attribute, 'illegal-svelte-head-attribute');
+		}
+	},
 	SvelteElement(node, context) {
 		validate_element(node, context);
 		context.next({
@@ -398,6 +547,11 @@ export const validation = {
 		});
 	},
 	SvelteFragment(node, context) {
+		const parent = context.path.at(-2);
+		if (parent?.type !== 'Component' && parent?.type !== 'SvelteComponent') {
+			error(node, 'invalid-svelte-fragment-placement');
+		}
+
 		for (const attribute of node.attributes) {
 			if (attribute.type === 'Attribute') {
 				if (attribute.name === 'slot') {
@@ -413,7 +567,11 @@ export const validation = {
 			if (attribute.type === 'Attribute') {
 				if (attribute.name === 'name') {
 					if (!is_text_attribute(attribute)) {
-						error(attribute, 'invalid-slot-name');
+						error(attribute, 'invalid-slot-name', false);
+					}
+					const slot_name = attribute.value[0].data;
+					if (slot_name === 'default') {
+						error(attribute, 'invalid-slot-name', true);
 					}
 				}
 			} else if (attribute.type !== 'SpreadAttribute') {
@@ -432,6 +590,17 @@ export const validation = {
 			}
 		}
 	},
+	TitleElement(node) {
+		const attribute = node.attributes[0];
+		if (attribute) {
+			error(attribute, 'illegal-title-attribute');
+		}
+
+		const child = node.fragment.nodes.find((n) => n.type !== 'Text' && n.type !== 'ExpressionTag');
+		if (child) {
+			error(child, 'invalid-title-content');
+		}
+	},
 	ExpressionTag(node, context) {
 		if (!node.parent) return;
 		if (context.state.parent_element) {
@@ -443,7 +612,7 @@ export const validation = {
 };
 
 export const validation_legacy = merge(validation, a11y_validators, {
-	VariableDeclarator(node) {
+	VariableDeclarator(node, { state }) {
 		if (node.init?.type !== 'CallExpression') return;
 
 		const callee = node.init.callee;
@@ -454,13 +623,23 @@ export const validation_legacy = merge(validation, a11y_validators, {
 			return;
 		}
 
-		// TODO check if it's a store subscription that's called? How likely is it that someone uses a store that contains a function?
-		error(node.init, 'invalid-rune-usage', callee.name);
+		if (state.scope.get(callee.name)?.kind !== 'store_sub') {
+			error(node.init, 'invalid-rune-usage', callee.name);
+		}
 	},
 	AssignmentExpression(node, { state, path }) {
 		const parent = path.at(-1);
 		if (parent && parent.type === 'ConstTag') return;
 		validate_assignment(node, node.left, state);
+	},
+	LabeledStatement(node, { path, state }) {
+		if (
+			node.label.name === '$' &&
+			(state.ast_type !== 'instance' ||
+				/** @type {import('#compiler').SvelteNode} */ (path.at(-1)).type !== 'Program')
+		) {
+			warn(state.analysis.warnings, node, path, 'no-reactive-declaration');
+		}
 	},
 	UpdateExpression(node, { state }) {
 		validate_assignment(node, node.argument, state);
@@ -475,8 +654,14 @@ export const validation_legacy = merge(validation, a11y_validators, {
  */
 function validate_export(node, scope, name) {
 	const binding = scope.get(name);
-	if (binding && (binding.kind === 'derived' || binding.kind === 'state')) {
-		error(node, 'invalid-rune-export', `$${binding.kind}`);
+	if (!binding) return;
+
+	if (binding.kind === 'derived') {
+		error(node, 'invalid-derived-export');
+	}
+
+	if (binding.kind === 'state' && binding.reassigned) {
+		error(node, 'invalid-state-export');
 	}
 }
 
@@ -490,7 +675,7 @@ function validate_call_expression(node, scope, path) {
 	const rune = get_rune(node, scope);
 	if (rune === null) return;
 
-	const parent = /** @type {import('#compiler').SvelteNode} */ (path.at(-1));
+	const parent = /** @type {import('#compiler').SvelteNode} */ (get_parent(path, -1));
 
 	if (rune === '$props') {
 		if (parent.type === 'VariableDeclarator') return;
@@ -503,13 +688,31 @@ function validate_call_expression(node, scope, path) {
 		error(node, rune === '$derived' ? 'invalid-derived-location' : 'invalid-state-location');
 	}
 
-	if (rune === '$effect') {
+	if (rune === '$effect' || rune === '$effect.pre') {
 		if (parent.type !== 'ExpressionStatement') {
 			error(node, 'invalid-effect-location');
 		}
 
 		if (node.arguments.length !== 1) {
-			error(node, 'invalid-rune-args-length', '$effect', [1]);
+			error(node, 'invalid-rune-args-length', rune, [1]);
+		}
+	}
+
+	if (rune === '$effect.active') {
+		if (node.arguments.length !== 0) {
+			error(node, 'invalid-rune-args-length', rune, [0]);
+		}
+	}
+
+	if (rune === '$effect.root') {
+		if (node.arguments.length !== 1) {
+			error(node, 'invalid-rune-args-length', rune, [1]);
+		}
+	}
+
+	if (rune === '$inspect') {
+		if (node.arguments.length < 1 || node.arguments.length > 2) {
+			error(node, 'invalid-rune-args-length', rune, [1, 2]);
 		}
 	}
 }
@@ -579,6 +782,21 @@ export const validation_runes_js = {
 			...context.state,
 			private_derived_state
 		});
+	},
+	ClassDeclaration(node, context) {
+		// In modules, we allow top-level module scope only, in components, we allow the component scope,
+		// which is function_depth of 1. With the exception of `new class` which is also not allowed at
+		// component scope level either.
+		const allowed_depth = context.state.ast_type === 'module' ? 0 : 1;
+
+		if (context.state.scope.function_depth > allowed_depth) {
+			warn(context.state.analysis.warnings, node, context.path, 'avoid-nested-class');
+		}
+	},
+	NewExpression(node, context) {
+		if (node.callee.type === 'ClassExpression' && context.state.scope.function_depth > 0) {
+			warn(context.state.analysis.warnings, node, context.path, 'avoid-inline-class');
+		}
 	}
 };
 
@@ -589,7 +807,19 @@ export const validation_runes_js = {
  * @param {boolean} is_binding
  */
 function validate_no_const_assignment(node, argument, scope, is_binding) {
-	if (argument.type === 'Identifier') {
+	if (argument.type === 'ArrayPattern') {
+		for (const element of argument.elements) {
+			if (element) {
+				validate_no_const_assignment(node, element, scope, is_binding);
+			}
+		}
+	} else if (argument.type === 'ObjectPattern') {
+		for (const element of argument.properties) {
+			if (element.type === 'Property') {
+				validate_no_const_assignment(node, element.value, scope, is_binding);
+			}
+		}
+	} else if (argument.type === 'Identifier') {
 		const binding = scope.get(argument.name);
 		if (binding?.declaration_kind === 'const' && binding.kind !== 'each') {
 			error(
@@ -675,7 +905,7 @@ export const validation_runes = merge(validation, a11y_validators, {
 		next({ ...state });
 	},
 	VariableDeclarator(node, { state }) {
-		const init = node.init;
+		const init = unwrap_ts_expression(node.init);
 		const rune = get_rune(init, state.scope);
 
 		if (rune === null) return;
@@ -721,5 +951,8 @@ export const validation_runes = merge(validation, a11y_validators, {
 			}
 		}
 	},
-	ClassBody: validation_runes_js.ClassBody
+	// TODO this is a code smell. need to refactor this stuff
+	ClassBody: validation_runes_js.ClassBody,
+	ClassDeclaration: validation_runes_js.ClassDeclaration,
+	NewExpression: validation_runes_js.NewExpression
 });
