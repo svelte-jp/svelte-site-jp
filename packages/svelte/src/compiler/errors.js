@@ -24,9 +24,11 @@ const internal = {
 const parse = {
 	/** @param {string} name */
 	'unclosed-element': (name) => `<${name}> was left open`,
-	'unclosed-block': () => `block was left open`,
+	'unclosed-block': () => `Block was left open`,
 	'unexpected-block-close': () => `Unexpected block closing tag`,
-	'unexpected-eof': () => `Unexpected end of input`,
+	/** @param {string} [expected]  */
+	'unexpected-eof': (expected) =>
+		`Unexpected end of input` + (expected ? ` (expected ${expected})` : ''),
 	/** @param {string} message */
 	'js-parse-error': (message) => message,
 	/** @param {string} token */
@@ -39,17 +41,15 @@ const parse = {
 	'invalid-script-context': () =>
 		`If the context attribute is supplied, its value must be "module"`,
 	'invalid-elseif': () => `'elseif' should be 'else if'`,
-	/**
-	 * @param {string} child
-	 * @param {string} parent
-	 */
-	'invalid-block-parent': (child, parent) =>
-		`Expected to close ${parent} before seeing ${child} block`,
+	'invalid-continuing-block-placement': () =>
+		`{:...} block is invalid at this position (did you forget to close the preceeding element or block?)`,
 	/**
 	 * @param {string} child
 	 * @param {string} parent
 	 */
 	'invalid-block-missing-parent': (child, parent) => `${child} block must be a child of ${parent}`,
+	/** @param {string} name */
+	'duplicate-block-part': (name) => `${name} cannot appear more than once within a block`,
 	'expected-block-type': () => `Expected 'if', 'each', 'await', 'key' or 'snippet'`,
 	'expected-identifier': () => `Expected an identifier`,
 	'invalid-debug': () => `{@debug ...} arguments must be identifiers, not arbitrary expressions`,
@@ -98,12 +98,9 @@ const css = {
 	'invalid-css-empty-declaration': () => `Declaration cannot be empty`,
 	'invalid-css-global-placement': () =>
 		`:global(...) can be at the start or end of a selector sequence, but not in the middle`,
-
 	'invalid-css-global-selector': () => `:global(...) must contain exactly one selector`,
-
 	'invalid-css-global-selector-list': () =>
 		`:global(...) cannot be used to modify a selector, or be modified by another selector`,
-
 	'invalid-css-selector': () => `Invalid selector`,
 	'invalid-css-identifier': () => 'Expected a valid CSS identifier'
 };
@@ -132,9 +129,12 @@ const special_elements = {
 	'invalid-customElement-shadow-attribute': () => '"shadow" must be either "open" or "none"',
 	'unknown-svelte-option-attribute': /** @param {string} name */ (name) =>
 		`<svelte:options> unknown attribute '${name}'`,
+	'illegal-svelte-head-attribute': () => '<svelte:head> cannot have attributes nor directives',
 	'invalid-svelte-fragment-attribute': () =>
 		`<svelte:fragment> can only have a slot attribute and (optionally) a let: directive`,
 	'invalid-svelte-fragment-slot': () => `<svelte:fragment> slot attribute must have a static value`,
+	'invalid-svelte-fragment-placement': () =>
+		`<svelte:fragment> must be the direct child of a component`,
 	/** @param {string} name */
 	'invalid-svelte-element-placement': (name) =>
 		`<${name}> tags cannot be inside elements or blocks`,
@@ -164,8 +164,8 @@ const runes = {
 	'invalid-legacy-export': () => `Cannot use \`export let\` in runes mode — use $props instead`,
 	/** @param {string} rune */
 	'invalid-rune-usage': (rune) => `Cannot use ${rune} rune in non-runes mode`,
-	/** @param {string} rune */
-	'invalid-rune-export': (rune) => `Cannot export value created with ${rune}`,
+	'invalid-state-export': () => `Cannot export state if it is reassigned`,
+	'invalid-derived-export': () => `Cannot export derived state`,
 	'invalid-props-id': () => `$props() can only be used with an object destructuring pattern`,
 	'invalid-props-pattern': () =>
 		`$props() assignment must not contain nested properties or computed keys`,
@@ -211,12 +211,14 @@ const elements = {
 	 * @param {string} node
 	 * @param {string} parent
 	 */
-	'invalid-node-placement': (node, parent) => `${node} is invalid inside <${parent}>`
+	'invalid-node-placement': (node, parent) => `${node} is invalid inside <${parent}>`,
+	'illegal-title-attribute': () => '<title> cannot have attributes nor directives',
+	'invalid-title-content': () => '<title> can only contain text and {tags}'
 };
 
 /** @satisfies {Errors} */
 const components = {
-	'invalid-component-directive': () => `Directive is not valid on components`
+	'invalid-component-directive': () => `This type of directive is not valid on components`
 };
 
 /** @satisfies {Errors} */
@@ -224,18 +226,60 @@ const attributes = {
 	'empty-attribute-shorthand': () => `Attribute shorthand cannot be empty`,
 	'duplicate-attribute': () => `Attributes need to be unique`,
 	'invalid-event-attribute-value': () =>
-		`Event attribute must be a JavaScript expression, not a string`
+		`Event attribute must be a JavaScript expression, not a string`,
+	/** @param {string} name */
+	'invalid-attribute-name': (name) => `'${name}' is not a valid attribute name`,
+	/** @param {'no-each' | 'each-key' | 'child'} type */
+	'invalid-animation': (type) =>
+		type === 'no-each'
+			? `An element that uses the animate directive must be the immediate child of a keyed each block`
+			: type === 'each-key'
+			? `An element that uses the animate directive must be used inside a keyed each block. Did you forget to add a key to your each block?`
+			: `An element that uses the animate directive must be the sole child of a keyed each block`,
+	'duplicate-animation': () => `An element can only have one 'animate' directive`,
+	/** @param {string[] | undefined} [modifiers] */
+	'invalid-event-modifier': (modifiers) =>
+		modifiers
+			? `Valid event modifiers are ${modifiers.slice(0, -1).join(', ')} or ${modifiers.slice(-1)}`
+			: `Event modifiers other than 'once' can only be used on DOM elements`,
+	/**
+	 * @param {string} modifier1
+	 * @param {string} modifier2
+	 */
+	'invalid-event-modifier-combination': (modifier1, modifier2) =>
+		`The '${modifier1}' and '${modifier2}' modifiers cannot be used together`,
+	/**
+	 * @param {string} directive1
+	 * @param {string} directive2
+	 */
+	'duplicate-transition': (directive1, directive2) => {
+		/** @param {string} _directive */
+		function describe(_directive) {
+			return _directive === 'transition' ? "a 'transition'" : `an '${_directive}'`;
+		}
+
+		return directive1 === directive2
+			? `An element can only have one '${directive1}' directive`
+			: `An element cannot have both ${describe(directive1)} directive and ${describe(
+					directive2
+			  )} directive`;
+	},
+	'invalid-let-directive-placement': () => 'let directive at invalid position'
 };
 
 /** @satisfies {Errors} */
 const slots = {
 	'invalid-slot-element-attribute': () => `<slot> can only receive attributes, not directives`,
 	'invalid-slot-attribute': () => `slot attribute must be a static value`,
-	'invalid-slot-name': () => `slot attribute must be a static value`,
+	/** @param {boolean} is_default */
+	'invalid-slot-name': (is_default) =>
+		is_default
+			? `default is a reserved word — it cannot be used as a slot name`
+			: `slot attribute must be a static value`,
 	'invalid-slot-placement': () =>
 		`Element with a slot='...' attribute must be a child of a component or a descendant of a custom element`,
-	'duplicate-slot-name': /** @param {string} name @param {string} component */ (name, component) =>
-		`Duplicate slot name '${name}' in <${component}>`,
+	/** @param {string} name @param {string} component */
+	'duplicate-slot-name': (name, component) => `Duplicate slot name '${name}' in <${component}>`,
 	'invalid-default-slot-content': () =>
 		`Found default slot content alongside an explicit slot="default"`
 };
@@ -256,13 +300,20 @@ const bindings = {
 	'invalid-type-attribute': () =>
 		`'type' attribute must be a static text value if input uses two-way binding`,
 	'invalid-multiple-attribute': () =>
-		`'multiple' attribute must be static if select uses two-way binding`
+		`'multiple' attribute must be static if select uses two-way binding`,
+	'missing-contenteditable-attribute': () =>
+		`'contenteditable' attribute is required for textContent, innerHTML and innerText two-way bindings`,
+	'dynamic-contenteditable-attribute': () =>
+		`'contenteditable' attribute cannot be dynamic if element uses two-way binding`
 };
 
 /** @satisfies {Errors} */
 const variables = {
 	'illegal-global': /** @param {string} name */ (name) =>
-		`${name} is an illegal variable name. To reference a global variable called ${name}, use globalThis.${name}`
+		`${name} is an illegal variable name. To reference a global variable called ${name}, use globalThis.${name}`,
+	/** @param {string} name */
+	'duplicate-declaration': (name) => `'${name}' has already been declared`,
+	'default-export': () => `A component cannot have a default export`
 };
 
 /** @satisfies {Errors} */
@@ -280,6 +331,12 @@ const compiler_options = {
 };
 
 /** @satisfies {Errors} */
+const const_tag = {
+	'invalid-const-placement': () =>
+		`{@const} must be the immediate child of {#if}, {:else if}, {:else}, {#each}, {:then}, {:catch}, <svelte:fragment> or <Component>`
+};
+
+/** @satisfies {Errors} */
 const errors = {
 	...internal,
 	...parse,
@@ -293,7 +350,8 @@ const errors = {
 	...bindings,
 	...variables,
 	...compiler_options,
-	...legacy_reactivity
+	...legacy_reactivity,
+	...const_tag
 
 	// missing_contenteditable_attribute: {
 	// 	code: 'missing-contenteditable-attribute',
@@ -304,34 +362,11 @@ const errors = {
 	// 	code: 'dynamic-contenteditable-attribute',
 	// 	message: "'contenteditable' attribute cannot be dynamic if element uses two-way binding"
 	// },
-	// invalid_event_modifier_combination: /**
-	//  * @param {string} modifier1
-	//  * @param {string} modifier2
-	//  */ (modifier1, modifier2) => ({
-	// 	code: 'invalid-event-modifier',
-	// 	message: `The '${modifier1}' and '${modifier2}' modifiers cannot be used together`
-	// }),
-	// invalid_event_modifier_legacy: /** @param {string} modifier */ (modifier) => ({
-	// 	code: 'invalid-event-modifier',
-	// 	message: `The '${modifier}' modifier cannot be used in legacy mode`
-	// }),
-	// invalid_event_modifier: /** @param {string} valid */ (valid) => ({
-	// 	code: 'invalid-event-modifier',
-	// 	message: `Valid event modifiers are ${valid}`
-	// }),
-	// invalid_event_modifier_component: {
-	// 	code: 'invalid-event-modifier',
-	// 	message: "Event modifiers other than 'once' can only be used on DOM elements"
-	// },
 	// textarea_duplicate_value: {
 	// 	code: 'textarea-duplicate-value',
 	// 	message:
 	// 		'A <textarea> can have either a value attribute or (equivalently) child content, but not both'
 	// },
-	// illegal_attribute: /** @param {string} name */ (name) => ({
-	// 	code: 'illegal-attribute',
-	// 	message: `'${name}' is not a valid attribute name`
-	// }),
 	// invalid_attribute_head: {
 	// 	code: 'invalid-attribute',
 	// 	message: '<svelte:head> should not have any attributes or directives'
@@ -339,10 +374,6 @@ const errors = {
 	// invalid_action: {
 	// 	code: 'invalid-action',
 	// 	message: 'Actions can only be applied to DOM elements, not components'
-	// },
-	// invalid_animation: {
-	// 	code: 'invalid-animation',
-	// 	message: 'Animations can only be applied to DOM elements, not components'
 	// },
 	// invalid_class: {
 	// 	code: 'invalid-class',
@@ -364,21 +395,9 @@ const errors = {
 	// 	code: 'dynamic-slot-name',
 	// 	message: '<slot> name cannot be dynamic'
 	// },
-	// invalid_slot_name: {
-	// 	code: 'invalid-slot-name',
-	// 	message: 'default is a reserved word — it cannot be used as a slot name'
-	// },
 	// invalid_slot_attribute_value_missing: {
 	// 	code: 'invalid-slot-attribute',
 	// 	message: 'slot attribute value is missing'
-	// },
-	// invalid_slotted_content_fragment: {
-	// 	code: 'invalid-slotted-content',
-	// 	message: '<svelte:fragment> must be a child of a component'
-	// },
-	// illegal_attribute_title: {
-	// 	code: 'illegal-attribute',
-	// 	message: '<title> cannot have attributes'
 	// },
 	// illegal_structure_title: {
 	// 	code: 'illegal-structure',
@@ -428,10 +447,6 @@ const errors = {
 	// 	code: 'illegal-variable-declaration',
 	// 	message: 'Cannot declare same variable name which is imported inside <script context="module">'
 	// },
-	// css_invalid_global: {
-	// 	code: 'css-invalid-global',
-	// 	message: ':global(...) can be at the start or end of a selector sequence, but not in the middle'
-	// },
 	// css_invalid_global_selector: {
 	// 	code: 'css-invalid-global-selector',
 	// 	message: ':global(...) must contain a single selector'
@@ -445,55 +460,15 @@ const errors = {
 	// 	code: 'css-invalid-selector',
 	// 	message: `Invalid selector "${selector}"`
 	// }),
-	// duplicate_animation: {
-	// 	code: 'duplicate-animation',
-	// 	message: "An element can only have one 'animate' directive"
-	// },
-	// invalid_animation_immediate: {
-	// 	code: 'invalid-animation',
-	// 	message:
-	// 		'An element that uses the animate directive must be the immediate child of a keyed each block'
-	// },
-	// invalid_animation_key: {
-	// 	code: 'invalid-animation',
-	// 	message:
-	// 		'An element that uses the animate directive must be used inside a keyed each block. Did you forget to add a key to your each block?'
-	// },
-	// invalid_animation_sole: {
-	// 	code: 'invalid-animation',
-	// 	message:
-	// 		'An element that uses the animate directive must be the sole child of a keyed each block'
-	// },
-	// invalid_animation_dynamic_element: {
-	// 	code: 'invalid-animation',
-	// 	message: '<svelte:element> cannot have a animate directive'
-	// },
 	// invalid_directive_value: {
 	// 	code: 'invalid-directive-value',
 	// 	message:
 	// 		'Can only bind to an identifier (e.g. `foo`) or a member expression (e.g. `foo.bar` or `foo[baz]`)'
 	// },
-	// invalid_const_placement: {
-	// 	code: 'invalid-const-placement',
-	// 	message:
-	// 		'{@const} must be the immediate child of {#if}, {:else if}, {:else}, {#each}, {:then}, {:catch}, <svelte:fragment> or <Component>'
-	// },
-	// invalid_const_declaration: /** @param {string} name */ (name) => ({
-	// 	code: 'invalid-const-declaration',
-	// 	message: `'${name}' has already been declared`
-	// }),
-	// invalid_const_update: /** @param {string} name */ (name) => ({
-	// 	code: 'invalid-const-update',
-	// 	message: `'${name}' is declared using {@const ...} and is read-only`
-	// }),
 	// cyclical_const_tags: /** @param {string[]} cycle */ (cycle) => ({
 	// 	code: 'cyclical-const-tags',
 	// 	message: `Cyclical dependency detected: ${cycle.join(' → ')}`
 	// }),
-	// invalid_component_style_directive: {
-	// 	code: 'invalid-component-style-directive',
-	// 	message: 'Style directives cannot be used on components'
-	// },
 	// invalid_var_declaration: {
 	// 	code: 'invalid_var_declaration',
 	// 	message: '"var" scope should not extend outside the reactive block'

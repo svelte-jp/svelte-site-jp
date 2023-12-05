@@ -1495,17 +1495,7 @@ const template_visitors = {
 		state.template.push(t_statement(call));
 		state.template.push(t_expression(id));
 	},
-	LetDirective(node, { state, path }) {
-		const parent = path.at(-1);
-		if (
-			parent === undefined ||
-			(parent.type !== 'Component' &&
-				parent.type !== 'RegularElement' &&
-				parent.type !== 'SvelteFragment')
-		) {
-			error(node, 'INTERNAL', 'let directive at invalid position');
-		}
-
+	LetDirective(node, { state }) {
 		if (node.expression && node.expression.type !== 'Identifier') {
 			const name = state.scope.generate(node.name);
 			const bindings = state.scope.get_bindings(node);
@@ -2104,7 +2094,7 @@ export function server_component(analysis, options) {
 	}
 
 	const component_block = b.block([
-		b.stmt(b.call('$.push', b.literal(analysis.runes), ...(options.immutable ? [b.true] : []))),
+		b.stmt(b.call('$.push', b.literal(analysis.runes))),
 		.../** @type {import('estree').Statement[]} */ (instance.body),
 		.../** @type {import('estree').Statement[]} */ (template.body),
 		b.stmt(b.call('$.pop'))

@@ -40,6 +40,26 @@ class Todo {
 
 > この例では、コンパイラは `done` と `text` を、private field を参照する class prototype の `get`/`set` メソッドに変換します
 
+オブジェクトと配列は [リアクティブになります](/#H4sIAAAAAAAAE42QwWrDMBBEf2URhUhUNEl7c21DviPOwZY3jVpZEtIqUBz9e-UUt9BTj7M784bdmZ21wciq48xsPyGr2MF7Jhl9-kXEKxrCoqNLQS2TOqqgPbWd7cgggU3TgCFCAw-RekJ-3Et4lvByEq-drbe_dlsPichZcFYZrT6amQto2pXw5FO88FUYtG90gUfYi3zvWrYL75vxL57zfA07_zfr23k1vjtt-aZ0bQTcbrDL5ZifZcAxKeS8lzDc8X0xDhJ2ItdbX1jlOZMb9VnjyCoKCfMpfwG975NFVwEAAA==):
+
+```svelte
+<script>
+	let numbers = $state([1, 2, 3]);
+</script>
+
+<button onclick={() => numbers.push(numbers.length + 1)}>
+	push
+</button>
+
+<button onclick={() => numbers.pop()}> pop </button>
+
+<p>
+	{numbers.join(' + ') || 0}
+	=
+	{numbers.reduce((a, b) => a + b, 0)}
+</p>
+```
+
 ### What this replaces
 
 非 rune モードでは、`let` 宣言がありそれがどこかで更新されている場合にリアクティブなステートとして扱われます。`$state(...)` はアプリのどこでも動作しますが、`let` の場合はコンポーネントのトップレベルにある場合にのみリアクティブなステートとして振る舞います。
@@ -234,6 +254,8 @@ type MyProps = any;
 // ---cut---
 let { a, b, c, ...everythingElse } = $props<MyProps>();
 ```
+
+親コンポーネントが `bind:` を使用していない限り、props を変更することはできません。開発時には、props を変更使用とするとエラーとなります。
 
 ### What this replaces
 
