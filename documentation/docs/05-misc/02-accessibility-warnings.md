@@ -259,7 +259,7 @@ HTML の要素には、デフォルトで ARIA role を持つものがありま�
 
 ### `a11y-no-noninteractive-element-interactions`
 
-A non-interactive element does not support event handlers (mouse and key handlers). Non-interactive elements include `<main>`, `<area>`, `<h1>` (,`<h2>`, etc), `<p>`, `<img>`, `<li>`, `<ul>` and `<ol>`. Non-interactive [WAI-ARIA roles](https://www.w3.org/TR/wai-aria-1.1/#usage_intro) include `article`, `banner`, `complementary`, `img`, `listitem`, `main`, `region` and `tooltip`.
+非インタラクティブ要素は、イベントハンドラー（マウスやキーハンドラー）をサポートしません。非インタラクティブ要素には、`<main>`、`<area>`、`<h1>`（`<h2>`なども含む）、`<p>`、`<img>`、`<li>`、`<ul>`、`<ol>` が含まれます。非インタラクティブな[WAI-ARIA roles](https://www.w3.org/TR/wai-aria-1.1/#usage_intro)には、`article`、`banner`、`complementary`、`img`、`listitem`、`main`、`region`、`tooltip` があります。
 
 ```sv
 <!-- `A11y: Non-interactive element <li> should not be assigned mouse or keyboard event listeners.` -->
@@ -290,7 +290,7 @@ A non-interactive element does not support event handlers (mouse and key handler
 
 ## a11y-no-static-element-interactions
 
-Elements like `<div>` with interactive handlers like `click` must have an ARIA role.
+`click` のようなインタラクティブなハンドラーを持つ `<div>` のような要素は、ARIA role を持たなければなりません。
 
 <!-- prettier-ignore -->
 ```svelte
