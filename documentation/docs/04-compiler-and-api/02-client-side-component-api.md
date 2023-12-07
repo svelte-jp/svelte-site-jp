@@ -152,6 +152,7 @@ component.$on(ev, callback);
 
 ```ts
 /// file: index.js
+// @errors: 7006
 // @filename: ambient.d.ts
 import { SvelteComponent, ComponentConstructorOptions } from 'svelte';
 

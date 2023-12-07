@@ -72,7 +72,7 @@ action がカスタムイベントを発行し、適用する要素にカスタ�
 	}
 </script>
 
-<div use:foo={{ prop: 'someValue' }} on:emit={handleEmit} />
+<div on:emit={handleEmit} use:foo={{ prop: 'someValue' }} />
 ```
 
 ## Types

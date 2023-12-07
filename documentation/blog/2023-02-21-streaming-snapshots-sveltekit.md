@@ -1,8 +1,8 @@
 ---
 title: Streaming、snapshots、その他 SvelteKit 1.0 以降の新機能
 description: SvelteKit 最新バージョンのエキサイティングな改善
-author: Geoff Rich
-authorURL: https://geoffrich.net
+author: Geoff Rich, Rich Harris
+authorURL: https://geoffrich.net, https://twitter.com/Rich_Harris
 ---
 > 翻訳 : Svelte 日本コミュニティ  
 > 原文 : https://svelte.dev/blog/streaming-snapshots-sveltekit

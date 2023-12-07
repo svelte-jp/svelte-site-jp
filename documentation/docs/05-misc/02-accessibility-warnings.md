@@ -52,16 +52,18 @@ DOM 要素の中には、ARIA role やステート、プロパティをサポー
 
 ## `a11y-click-events-have-key-events`
 
-`on:click` が `on:keyup`、`on:keydown`、`on:keypress` のうち少なくともいずれか1つを伴って使用されることを強制します。キーボード操作用のコーディングは、マウスを使用することができないユーザーや、支援技術(AT)の互換性、スクリーンリーダーを使用するユーザーのためにとても重要です。
+`on:click` イベントを持つ visible で非インタラクティブな要素に、キーボードイベントハンドラを付けることを強制します。
 
-これはインタラクティブな要素や隠し要素(hidden elements)には適用されません。
+ユーザーはまず、アクション向けの `<button type="button">` 要素、ナビゲーション向けの `<a>` 要素のようなインタラクティブな要素が適切かどうか検討すべきです。これらの要素はセマンティクス的により意味があり、ビルトインのキーハンドリングが付くことになります。例えば、`Space` と `Enter` は `<button>` を実行しますし、`Enter` は `<a>` 要素を実行します.
+
+非インタラクティブな要素が必要な場合は、`on:click` に `on:keyup` や `on:keydown` ハンドラを追加して、ユーザーがキーボードから同等のアクションを実行できるようにする必要があります。ユーザーがキー入力を実行できるようにするためには、[`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) を追加して要素をフォーカスできるようにする必要があります。`on:keypress` ハンドラを追加することでもこの警告を無効にできますが、`keypress` イベントは非推奨であることにご注意ください。
 
 ```svelte
-<!-- A11y: visible, non-interactive elements with an on:click event must be accompanied by an on:keydown, on:keyup, or on:keypress event. -->
+<!-- A11y: visible, non-interactive elements with an on:click event must be accompanied by a keyboard event handler. -->
 <div on:click={() => {}} />
 ```
 
-`keypress` イベントは現在非推奨であるため、代わりに `keyup` か `keydown` イベントを使用することが公式に推奨されていることにご注意ください。
+キーボード操作用のコーディングは、マウスを使用することができないユーザーや、支援技術(AT)の互換性、スクリーンリーダーを使用するユーザーのためにとても重要です。
 
 ## `a11y-distracting-elements`
 
