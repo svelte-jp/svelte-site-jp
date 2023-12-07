@@ -184,11 +184,11 @@ importers:
         specifier: ^1.27.6
         version: 1.27.6(svelte@packages+svelte)(vite@4.5.0)
       '@sveltejs/site-kit':
-        specifier: 6.0.0-next.54
-        version: 6.0.0-next.54(@sveltejs/kit@1.27.6)(svelte@packages+svelte)
+        specifier: 6.0.0-next.59
+        version: 6.0.0-next.59(@sveltejs/kit@1.27.6)(svelte@packages+svelte)
       '@tomoam/site-kit':
-        specifier: 6.0.0-next.50
-        version: 6.0.0-next.50(@sveltejs/kit@1.27.6)(svelte@packages+svelte)
+        specifier: 6.0.0-next.59
+        version: 6.0.0-next.59(@sveltejs/kit@1.27.6)(svelte@packages+svelte)
       '@types/cookie':
         specifier: ^0.6.0
         version: 0.6.0
@@ -2023,8 +2023,8 @@ packages:
       svelte-local-storage-store: 0.4.0(svelte@packages+svelte)
     dev: false
 
-  /@sveltejs/site-kit@6.0.0-next.54(@sveltejs/kit@1.27.6)(svelte@packages+svelte):
-    resolution: {integrity: sha512-QMLQlPOMgyMrupvSzAL9iIAs5WxZyyFsEFg3pzr/HmaDOjwjvZEjL4Y+20PrGcbNYpawBEReaPTKcPnHzElchg==}
+  /@sveltejs/site-kit@6.0.0-next.59(@sveltejs/kit@1.27.6)(svelte@packages+svelte):
+    resolution: {integrity: sha512-nAUCuunhN0DmurQBxbsauqvdvv4mL0F/Aluxq0hFf6gB3iSn9WdaUZdPMXoujy+8cy+m6UvKuyhkgApZhmOLvw==}
     peerDependencies:
       '@sveltejs/kit': ^1.20.0
       svelte: ^4.0.0
@@ -2083,8 +2083,8 @@ packages:
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
     dev: true
 
-  /@tomoam/site-kit@6.0.0-next.50(@sveltejs/kit@1.27.6)(svelte@packages+svelte):
-    resolution: {integrity: sha512-0d+YVELv/W1czaOkSO9OulwDsjrN3YtpnzRJKJjdJKd9WhHYiGSTvn2B7dW8MBO5vmHu8vw1AGKeB+YnssvNFg==}
+  /@tomoam/site-kit@6.0.0-next.59(@sveltejs/kit@1.27.6)(svelte@packages+svelte):
+    resolution: {integrity: sha512-/WlhJF2NJZhj5CV+ryVGB2XN6S//EPNEALTze/CJmwO5U9IxJCVzE1Dr72XBKfSSXIdIq90KXmkGh34P+/CRQQ==}
     peerDependencies:
       '@sveltejs/kit': ^1.20.0
       svelte: ^4.0.0
