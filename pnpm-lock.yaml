@@ -252,6 +252,9 @@ importers:
       '@sveltejs/site-kit':
         specifier: 6.0.0-next.51
         version: 6.0.0-next.51(@sveltejs/kit@1.27.4)(svelte@4.2.3)
+      '@tomoam/site-kit':
+        specifier: 6.0.0-next.56
+        version: 6.0.0-next.56(@sveltejs/kit@1.27.4)(svelte@4.2.3)
       '@types/marked':
         specifier: ^5.0.1
         version: 5.0.2
@@ -2395,6 +2398,18 @@ packages:
 
   /@tomoam/site-kit@6.0.0-next.50(@sveltejs/kit@1.27.4)(svelte@4.2.3):
     resolution: {integrity: sha512-0d+YVELv/W1czaOkSO9OulwDsjrN3YtpnzRJKJjdJKd9WhHYiGSTvn2B7dW8MBO5vmHu8vw1AGKeB+YnssvNFg==}
+    peerDependencies:
+      '@sveltejs/kit': ^1.20.0
+      svelte: ^4.0.0
+    dependencies:
+      '@sveltejs/kit': 1.27.4(svelte@4.2.3)(vite@4.5.1)
+      esm-env: 1.0.0
+      svelte: 4.2.3
+      svelte-local-storage-store: 0.6.4(svelte@4.2.3)
+    dev: true
+
+  /@tomoam/site-kit@6.0.0-next.56(@sveltejs/kit@1.27.4)(svelte@4.2.3):
+    resolution: {integrity: sha512-F2LLsROnKmGLhzOlMe62WS9DGKjfsm6Zh0wzTnZEkte6ghyZaw6ASkk42Ab/8bE/jaXJeo5ujKWhGofH0cVo2Q==}
     peerDependencies:
       '@sveltejs/kit': ^1.20.0
       svelte: ^4.0.0

@@ -2,37 +2,37 @@
 title: Frequently asked questions
 ---
 
-## Background and motivations
+## 背景とモチベーション <!--background-and-motivations-->
 
-### What is this?
+### これは何ですか? <!--what-is-this-->
 
-You're on the Svelte 5 preview site! If you don't know what Svelte is but somehow ended up here
-anyway, we suggest visiting [svelte.dev](https://svelte.dev) first to get familiar.
+ここは Svelte 5 のプレビューサイトです！もし Svelte がなにか知らず、たまたまここに来られた方は、
+まず [svelte.dev](https://svelte.dev) (日本語版: [svelte.jp](https://svelte.jp)) に行き、学んでいただくことをおすすめします。
 
-### What's special about Svelte 5?
+### Svelte 5 の特徴は? <!--what-s-special-about-svelte-5-->
 
-Svelte 5 is a ground-up rewrite of the framework, designed to make your apps faster, smaller, and more robust.
+Svelte 5 は、Svelte を全面的に書き直したものです。あなたのアプリをより速く、より小さく、より堅牢にするために設計されています。
 
-It introduces <em>runes</em>, a powerful set of primitives for controlling reactivity inside your Svelte components and — for the first time — inside `.svelte.js` and `.svelte.ts` modules. You can learn about runes by reading the [Introducing runes](https://svelte.dev/blog/runes) blog post and watching the accompanying video, and by reading the preliminary [docs](/docs) on this site.
+<em>rune</em> は、リアクティビティをコントロールするためのパワフルなプリミティブセットで、Svelte コンポーネントはもちろん、今回ついに `.svelte.js` と `.svelte.ts` モジュールでも使えるようになりました。rune については、ブログ記事の [Rune 導入](https://svelte.jp/blog/runes) を読んだり、そこにあるビデオを見たり、このサイトにある暫定的な [ドキュメント](/docs) を読んだりすることで学習できます。
 
-### Doesn't this make Svelte harder to learn?
+### Svelte を学習するのが難しくなりませんか? <!--doesn-t-this-make-svelte-harder-to-learn-->
 
-Au contraire! Svelte today involves certain mental gymnastics:
+逆です(Au contraire)! 現時点の Svelte は、ある種のメンタルの体操が伴います:
 
-- `let x` declares reactive state, but only at the top level of a component
-- `export let x` declares a prop, but only inside a component. `export const y = ...`, meanwhile, means something totally different
-- In addition to `export let`, you have to learn `$$props` and `$$restProps`
-- `$:` might be declaring a reactive binding, or running side-effects; like `let x`, it only works at the top level of a component. When these statements re-run is dependent on rules that are hard to understand
-- In general, code behaves differently inside and outside components, making refactoring difficult and requiring frequent context-switching
+- `let x` でリアクティブな state を宣言しますが、コンポーネントのトップレベルに限定されます
+- `export let x` で prop を宣言しますが、これはコンポーネントの内側でだけです。一方で、`export const y = ...` は全く異なることを意味します。
+- `export let` に加え、`$$props` と `$$restProps` を学習する必要があります。
+- `$:` はリアクティブバインディングを宣言したり、副作用(side-effects)を実行したりしますが、`let x` と同じように、コンポーネントのトップレベルでしか動作しません。これらのステートメントの再実行は、理解しにくいルールに基づいています
+- 一般的に、コンポーネントの内側と外側でコードの挙動が異なるため、リファクタリングが難しく、頻繁にコンテキストをスイッチする必要があります。
 
-Runes, by contrast, are explicit, predictable and refactorable.
+対照的に、rune は明示的で、予測しやすく、リファクタリングがしやすくなっています。
 
-### Why can't we keep the old syntax?
+### なぜ古い構文のままではいけないのですか? <!--why-can-t-we-keep-the-old-syntax-->
 
-Beyond the complexities listed above, the current design imposes some unfortunate limitations:
+上記に挙げた複雑さに加えて、現在の設計には残念な制限があります:
 
-- There's no way to indicate which variables should _not_ be considered reactive. This becomes problematic when applying Svelte rules outside the top level of a component (for example in `.js` files)
-- The `$:` syntax doesn't play well with TypeScript. For example, you can't declare the type of `theme` in a statement like this — it's a syntax error:
+- どの変数をリアクティブと見なすべきでないのかを示す方法がありません。これは Svelte のルールをコンポーネントのトップレベル以外 (例えば `.js` の中など) で適用するときに問題となります
+- `$:` 構文は TypeScript と上手く連携しません。例えば、以下のようなステートメントで `theme` の型を宣言できません — 構文エラーになります:
   ```ts
   // @errors: 2362 2363 2304 1005
   // @filename: ambient.d.ts
@@ -44,7 +44,7 @@ Beyond the complexities listed above, the current design imposes some unfortunat
   // ---cut---
   $: theme: 'light' | 'dark' = dark ? 'dark' : 'light';
   ```
-  But with runes, it works just fine:
+  でも rune なら、正しく動作します:
   ```ts
   // @filename: ambient.d.ts
   declare global {
@@ -58,9 +58,10 @@ Beyond the complexities listed above, the current design imposes some unfortunat
   );
   ```
 - Updating values inside `$:` statements can cause [confusing behaviour](https://github.com/sveltejs/svelte/issues/6732) and [impossible to resolve bugs](https://github.com/sveltejs/svelte/issues/4933) and the statements may run in an [unexpected order](https://github.com/sveltejs/svelte/issues/4516)
-- `$: {...}` doesn't let you return a cleanup function the way that [`$effect`](runes#$effect) does
-- Typing props is unduly cumbersome when you want to share interfaces between multiple components
-- Prefixing store names with `$` to access their values works in a `.svelte` file, but cannot work in `.js` and `.ts` without causing linting and typechecking errors. Having a unified approach to reactive state solves this problem
+- `$:` ステートメントの中で値を更新すると、[混乱する動作](https://github.com/sveltejs/svelte/issues/6732)や[解決するのが不可能なバグ](https://github.com/sveltejs/svelte/issues/4933)が発生し、ステートメントが[予期せぬ順序](https://github.com/sveltejs/svelte/issues/4516)で実行されることもあります。
+- `$: {...}` はクリーンアップ関数を返しません。[`$effect`](runes#$effect) は返します。
+- 複数のコンポーネント間で interface を共有したいとき、props に型付けするのが非常に面倒です
+- `.svelte` ファイルの中では store の名前に `$` プリフィクスを付けて値にアクセスできますが、`.js` や `.ts` ではそれができませんし、lint エラーや型チェックエラーが発生します。リアクティブな state に対する統一的なアプローチによってこの問題を解決します
 
 ## Breaking changes and migration
 

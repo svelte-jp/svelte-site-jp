@@ -25,7 +25,7 @@ rune だけでなく、Svelte 5 では `getContext`、`setContext`、`tick` な�
 
 ## `unstate`
 
-To remove reactivity from objects and arrays created with `$state`, use `unstate`:
+`$state` で作成されたオブジェクトや配列からリアクティビティを取り除くには、`unstate` を使用します:
 
 ```svelte
 <script>
@@ -40,6 +40,6 @@ To remove reactivity from objects and arrays created with `$state`, use `unstate
 </script>
 ```
 
-This is handy when you want to pass some state to an external library or API that doesn't expect a reactive object – such as `structuredClone`.
+これは、リアクティブなオブジェクトが渡されることを想定していない外部ライブラリや API (例えば `structuredClone` など) に state を渡したいときに便利です。
 
-> Note that `unstate` will return a new object from the input when removing reactivity. If the object passed isn't reactive, it will be returned as is.
+> `unstate` はリアクティビティを取り除くのに引数から新しいオブジェクトを返すことにご注意ください。もしリアクティブでないオブジェクトが渡された場合は、そのまま返します。
