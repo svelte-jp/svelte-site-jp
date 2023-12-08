@@ -22,3 +22,24 @@ rune だけでなく、Svelte 5 では `getContext`、`setContext`、`tick` な�
 	});
 </script>
 ```
+
+## `unstate`
+
+`$state` で作成されたオブジェクトや配列からリアクティビティを取り除くには、`unstate` を使用します:
+
+```svelte
+<script>
+	import { unstate } from 'svelte';
+
+	let counter = $state({ count: 0 });
+
+	$effect(() => {
+		// Will log { count: 0 }
+		console.log(unstate(counter));
+	});
+</script>
+```
+
+これは、リアクティブなオブジェクトが渡されることを想定していない外部ライブラリや API (例えば `structuredClone` など) に state を渡したいときに便利です。
+
+> `unstate` はリアクティビティを取り除くのに引数から新しいオブジェクトを返すことにご注意ください。もしリアクティブでないオブジェクトが渡された場合は、そのまま返します。

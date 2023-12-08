@@ -15,7 +15,7 @@ Svelte 5 ではリアクティブな state を、コンポーネントのトッ�
 	}
 </script>
 
-<button on:click={increment}>
+<button onclick={increment}>
 	clicks: {count}
 </button>
 ```
@@ -40,9 +40,9 @@ Svelte 5 ではリアクティブな state を、コンポーネントのトッ�
 +	const counter = createCounter();
 </script>
 
--<button on:click={increment}>
+-<button onclick={increment}>
 -	clicks: {count}
-+<button on:click={counter.increment}>
++<button onclick={counter.increment}>
 +	clicks: {counter.count}
 </button>
 ```
@@ -78,12 +78,12 @@ export function createCounter() {
 	const counter = createCounter();
 </script>
 
-<button on:click={counter.increment}>
+<button onclick={counter.increment}>
 	clicks: {counter.count}
 </button>
 ```
 
-[この例を playground でご覧ください。](/#H4sIAAAAAAAACmVQ0U7DMAz8FStC2iaqDl67dhLiMxgPI3NRRutUiYNAVf6dJG1TBk-W7bvznUfRqg6tqF5GQeceRSWehkEUgr-H2NhP7BhDb7UzMk5qK40a-HiiE6t-0IZhBGnwzPisHTEa8NAa3cOm3MtpUk4y5dVuDoEXmFKTZZjX0NwKbHcBVe_XQ1S_OWZNoKmSnZIfzbgoKwrUHol9cpS2toK8T9VHuUniGLL0-qJahRdRsXHoixz91u76hav9_QH8SqlbR5JVMPXHO4zRSIdzvBDuznIAbB92c_jMzOYXVnxM5Nw38BjB0XksBtkZWjDvi_ZKy5A0P0xDX0w1n0mKYen_P-HV_wBwv1jcCwIAAA==)
+[この例を playground でご覧ください。](/#H4sIAAAAAAAAE2VQ0U7DMAz8FStC2iaqDl67dhLiMxgPI3NRRutUiYNAVf6dJG1TBk-W7bvznUfRqg6tqF5GQeceRSWehkEUgr-H2NhP7BhDb7UzMk5qK40a-HiiE6t-0IZhBGnwzPisHTEa8NAa3cOm3MtpUk4y5dVuDoEXmFKTZZjX0NwKbHcBVe_XQ1S_OWZNoEl2Sn404yKsKDB7JPbJUNraCvI-VR_VJoVjiNLri2oVXkTFxqEvcvJbt-sTrvb3A_ArhW4dSVbB0x_rMEYjHc7pQrY7ywGwfdjN2TMzm19Y8S-Rc9_AYwRH57EYZGdowbwv2istQ9L8MA19MdV8JimGpf__hFf_Ay1mGDQKAgAA)
 
 ## Stores equivalent
 
@@ -115,7 +115,7 @@ export function createCounter() {
 	const counter = createCounter();
 </script>
 
-<button on:click={counter.increment}>
+<button onclick={counter.increment}>
 -	clicks: {counter.count}
 +	clicks: {$counter}
 </button>

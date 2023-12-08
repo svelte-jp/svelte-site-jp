@@ -5,8 +5,9 @@ import {
 	markedTransform,
 	normalizeSlugify,
 	removeMarkdown,
-	renderContentMarkdown
+// 	renderContentMarkdown
 } from '@sveltejs/site-kit/markdown';
+import { renderContentMarkdown } from '@tomoam/site-kit/markdown';
 
 /**
  * @param {import('./types').DocsData} docs_data
@@ -123,11 +124,11 @@ export async function get_sections(markdown) {
 	let currentNodes = [root];
 
 	for (const line of lines) {
-		const match = line.match(/^(#{2,4})\s(.*)/);
+		const match = line.match(/^(#{2,4})\s(.*?)(?:\s(<!--(.*?)-->))?$/);
 		if (match) {
 			const level = match[1].length - 2;
 			const text = await titled(match[2]);
-			const slug = normalizeSlugify(text);
+			const slug = match[4] || normalizeSlugify(text);
 
 			// Prepare new node
 			/** @type {import('./types').Section} */

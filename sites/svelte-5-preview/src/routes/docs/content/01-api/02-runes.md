@@ -266,29 +266,28 @@ let { a, b, c, ...everythingElse } = $props<MyProps>();
 ## `$inspect`
 
 `$inspect` rune は大まかには `console.log` と一緒ですが、与えられた引数が変わるたびに再実行されるという点が異なります。
-`$inspect` はリアクティブな state を深く(deeply)追跡します。つまり、[fine-grained reactivity](/docs/fine-grained-reactivity) により、
-オブジェクトや配列の内側で何かしらが更新されると、再実行されます。([デモ:](/#H4sIAAAAAAAAE0WQ0W6DMAxFf8WKKhXUquyZAtIe9w1lEjS4ENU4EXFaTRH_Plq69fH6nutrOaqLIfQqP0XF7YgqV5_Oqb2SH_cQ_oYkuGhvw6Qfk8LryTipaq6FUEDbwAIlbLy0gslHevxzRvS-7fHtbQckstsnsTAbw96hliSuS_b_iTk9QpbB3RAtFntLeCDbw31AhuYJN2AnaF6BBvTQco81F9n7PC7OQcQyWNZk9LWMSQpltZbtdnP1xXrCEVmKbCWXVGHYBYGz4S6_tRSwjK-SGbJqecRoO3Mx2KlcpoDz9_wLBx9LikMBAAA=))
+`$inspect` はリアクティブな state を深く(deeply)追跡します。つまり、[fine-grained reactivity](/docs/fine-grained-reactivity) によって
+オブジェクトや配列の内側で何かしらが更新されると再実行されます。([デモ:](/#H4sIAAAAAAAACkWQ0YqDQAxFfyUMhSotdZ-tCvu431AXtGOqQ2NmmMm0LOK_r7Utfby5JzeXTOpiCIPKT5PidkSVq2_n1F7Jn3uIcEMSXHSw0evHpAjaGydVzbUQCmgbWaCETZBWMPlKj29nxBDaHj_edkAiu12JhdkYDg61JGvE_s2nR8gyuBuiJZuDJTyQ7eE-IEOzog1YD80Lb0APLfdYc5F9qnFxjiKWwbImo6_llKRQVs-2u91c_bD2OCJLkT3JZasw7KLA2XCX31qKWE6vIzNk1fKE0XbmYrBTufiI8-_8D2cUWBA_AQAA))
 
 ```svelte
 <script>
 	let count = $state(0);
 	let message = $state('hello');
 
-	$inspect({ count, message }); // will console.log when `count` or `message` change
+	$inspect(count, message); // will console.log when `count` or `message` change
 </script>
 
 <button onclick={() => count++}>Increment</button>
 <input bind:value={message} />
 ```
 
-また、コールバックが提供される場合は、`console.log` の代わりにそのコールバックが実行されます。コールバックの第一引数は現在の値です。
-第二引数は `"init"` か `"update"` です。[デモ:](/#H4sIAAAAAAAAE0VP24qDMBD9lSEUqlTqPlsj7ON-w1qojWM3rE5CMmkpkn_fxFL26XBuw5lVTHpGL5rvVdCwoGjEp7WiEvy0mfg7zoyJexOcykrrldOWu556npFBmUAMEnaeB8biozwlJ3k7Td6i4mILVPDGfLgE2cGaUz3rCYqsgZQS9sGO6cq-fLs9j3gNtxu6E9Q1GAcXZcibGY_sBoWXKmuPn1S6o4OnCfAYiF_lmCHmQW39v5raa2A2BIbUrNWvXIttz7bvcIjdFymHCxK39SvZpf8XM-pJ4ygadgHjOf4B8TXIiDoBAAA=)
+`$inspect` は `with` を返します。これにコールバックを渡すことで、`console.log` の代わりにコールバックを呼び出すことができます。コールバックの第一引数は `"init"` か `"update"` で、それに続く引数は `$inspect` に渡された値です。[デモ:](/#H4sIAAAAAAAACkVQ24qDMBD9lSEUqlTqPlsj7ON-w7pQG8c2VCchmVSK-O-bKMs-DefKYRYx6BG9qL4XQd2EohKf1opC8Nsm4F84MkbsTXAqMbVXTltuWmp5RAZlAjFIOHjuGLOP_BKVqB00eYuKs82Qn2fNjyxLtcWeyUE2sCRry3qATQIpJRyD7WPVMf9TW-7xFu53dBcoSzAOrsqQNyOe2XUKr0Xi5kcMvdDB2wSYO-I9vKazplV1-T-d6ltgNgSG1KjVUy7ZtmdbdjqtzRcphxMS1-XubOITJtPrQWMvKnYB15_1F7KKadA_AQAA)
 
 ```svelte
 <script>
 	let count = $state(0);
 
-	$inspect(count, (count, type) => {
+	$inspect(count).with((type, count) => {
 		if (type === 'update') {
 			debugger; // or `console.trace`, or whatever you want
 		}
@@ -298,11 +297,11 @@ let { a, b, c, ...everythingElse } = $props<MyProps>();
 <button onclick={() => count++}>Increment</button>
 ```
 
-第二引数に `console.trace` を渡すと、ある変更がどこで行われたかを簡単に確認することができます:
+`with` に `console.trace` を渡すと、値の変更がどこで行われたかを簡単に確認することができます:
 
 ```js
 // @errors: 2304
-$inspect(stuff, console.trace);
+$inspect(stuff).with(console.trace);
 ```
 
 > `$inspect` は開発時にのみ動作します。

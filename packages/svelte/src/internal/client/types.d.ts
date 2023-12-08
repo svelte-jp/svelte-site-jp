@@ -36,7 +36,7 @@ export type Store<V> = {
 
 export type ComponentContext = {
 	/** props */
-	s: MaybeSignal<Record<string, unknown>>;
+	s: Record<string, unknown>;
 	/** accessors */
 	a: Record<string, any> | null;
 	/** effectgs */
@@ -285,6 +285,15 @@ export type EachBlock = {
 };
 
 export type EachItemBlock = {
+	/** transition */
+	a:
+		| null
+		| ((
+				block: EachItemBlock,
+				transitions: Set<Transition>,
+				index: number,
+				index_is_reactive: boolean
+		  ) => void);
 	/** dom */
 	d: null | TemplateNode | Array<TemplateNode>;
 	/** effect */

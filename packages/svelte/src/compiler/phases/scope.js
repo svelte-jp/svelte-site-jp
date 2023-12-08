@@ -4,7 +4,7 @@ import { is_element_node } from './nodes.js';
 import * as b from '../utils/builders.js';
 import { error } from '../errors.js';
 import { extract_identifiers, extract_identifiers_from_expression } from '../utils/ast.js';
-import { Runes } from './constants.js';
+import { JsKeywords, Runes } from './constants.js';
 
 export class Scope {
 	/** @type {ScopeRoot} */
@@ -73,7 +73,13 @@ export class Scope {
 			error(node, 'invalid-dollar-binding');
 		}
 
-		if (node.name.startsWith('$') && declaration_kind !== 'synthetic' && this.function_depth <= 1) {
+		if (
+			node.name.startsWith('$') &&
+			declaration_kind !== 'synthetic' &&
+			declaration_kind !== 'param' &&
+			declaration_kind !== 'rest_param' &&
+			this.function_depth <= 1
+		) {
 			error(node, 'invalid-dollar-prefix');
 		}
 
@@ -133,7 +139,8 @@ export class Scope {
 		while (
 			this.references.has(name) ||
 			this.declarations.has(name) ||
-			this.root.conflicts.has(name)
+			this.root.conflicts.has(name) ||
+			JsKeywords.includes(name)
 		) {
 			name = `${preferred_name}_${n++}`;
 		}
@@ -363,7 +370,6 @@ export function create_scopes(ast, root, allow_reactive_declarations, parent) {
 			}
 
 			const scope = analyze_let_directives(node, state.scope);
-			scopes.set(node, scope);
 
 			for (const child of node.fragment.nodes) {
 				if (
@@ -375,9 +381,15 @@ export function create_scopes(ast, root, allow_reactive_declarations, parent) {
 					// <div slot="..."> inherits the scope above the component, because slots are hella weird
 					scopes.set(child, state.scope);
 					visit(child);
-				} else if (child.type === 'SnippetBlock') {
-					visit(child, { scope });
 				} else {
+					if (child.type === 'ExpressionTag') {
+						// expression tag is a special case — we don't visit it directly, but via process_children,
+						// so we need to set the scope on the expression rather than the tag itself
+						scopes.set(child.expression, scope);
+					} else {
+						scopes.set(child, scope);
+					}
+
 					visit(child, { scope });
 				}
 			}
@@ -685,6 +697,11 @@ export function get_rune(node, scope) {
 		if (n.property.type !== 'Identifier') return null;
 		joined = '.' + n.property.name + joined;
 		n = n.object;
+	}
+
+	if (n.type === 'CallExpression' && n.callee.type === 'Identifier') {
+		joined = '()' + joined;
+		n = n.callee;
 	}
 
 	if (n.type !== 'Identifier') return null;
