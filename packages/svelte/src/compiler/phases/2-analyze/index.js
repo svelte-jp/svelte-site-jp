@@ -409,10 +409,10 @@ export function analyze_component(root, options) {
 		analysis.reactive_statements = order_reactive_statements(analysis.reactive_statements);
 	}
 
-	// warn on any nonstate declarations that are a) mutated and b) referenced in the template
+	// warn on any nonstate declarations that are a) reassigned and b) referenced in the template
 	for (const scope of [module.scope, instance.scope]) {
 		outer: for (const [name, binding] of scope.declarations) {
-			if (binding.kind === 'normal' && binding.mutated) {
+			if (binding.kind === 'normal' && binding.reassigned) {
 				for (const { path } of binding.references) {
 					if (path[0].type !== 'Fragment') continue;
 					for (let i = 1; i < path.length; i += 1) {
@@ -906,7 +906,10 @@ const common_visitors = {
 		}
 	},
 	CallExpression(node, context) {
-		if (context.state.expression?.type === 'ExpressionTag' && !is_known_safe_call(node, context)) {
+		if (
+			context.state.expression?.type === 'ExpressionTag' ||
+			(context.state.expression?.type === 'SpreadAttribute' && !is_known_safe_call(node, context))
+		) {
 			context.state.expression.metadata.contains_call_expression = true;
 		}
 

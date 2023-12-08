@@ -27,23 +27,17 @@ import {
 	get,
 	is_signal,
 	push_destroy_fn,
-	set,
 	execute_effect,
 	UNINITIALIZED,
-	derived,
 	untrack,
 	effect,
 	flushSync,
-	expose,
 	safe_not_equal,
 	current_block,
-	source,
 	managed_effect,
 	push,
 	current_component_context,
-	pop,
-	unwrap,
-	mutable_source
+	pop
 } from './runtime.js';
 import {
 	current_hydration_fragment,
@@ -51,9 +45,19 @@ import {
 	hydrate_block_anchor,
 	set_current_hydration_fragment
 } from './hydration.js';
-import { array_from, define_property, get_descriptor, get_descriptors, is_array } from './utils.js';
+import {
+	array_from,
+	define_property,
+	get_descriptor,
+	get_descriptors,
+	is_array,
+	is_function,
+	object_assign,
+	object_keys
+} from './utils.js';
 import { is_promise } from '../common.js';
 import { bind_transition, trigger_transitions } from './transitions.js';
+import { proxy } from './proxy/proxy.js';
 
 /** @type {Set<string>} */
 const all_registerd_events = new Set();
@@ -219,7 +223,7 @@ export function close_frag(anchor, dom) {
 }
 
 /**
- * @param {import('./types.js').MaybeSignal<(event: Event, ...args: Array<unknown>) => void>} fn
+ * @param {(event: Event, ...args: Array<unknown>) => void} fn
  * @returns {(event: Event, ...args: unknown[]) => void}
  */
 export function trusted(fn) {
@@ -227,13 +231,13 @@ export function trusted(fn) {
 		const event = /** @type {Event} */ (args[0]);
 		if (event.isTrusted) {
 			// @ts-ignore
-			unwrap(fn).apply(this, args);
+			fn.apply(this, args);
 		}
 	};
 }
 
 /**
- * @param {import('./types.js').MaybeSignal<(event: Event, ...args: Array<unknown>) => void>} fn
+ * @param {(event: Event, ...args: Array<unknown>) => void} fn
  * @returns {(event: Event, ...args: unknown[]) => void}
  */
 export function self(fn) {
@@ -242,13 +246,13 @@ export function self(fn) {
 		// @ts-ignore
 		if (event.target === this) {
 			// @ts-ignore
-			unwrap(fn).apply(this, args);
+			fn.apply(this, args);
 		}
 	};
 }
 
 /**
- * @param {import('./types.js').MaybeSignal<(event: Event, ...args: Array<unknown>) => void>} fn
+ * @param {(event: Event, ...args: Array<unknown>) => void} fn
  * @returns {(event: Event, ...args: unknown[]) => void}
  */
 export function stopPropagation(fn) {
@@ -256,12 +260,12 @@ export function stopPropagation(fn) {
 		const event = /** @type {Event} */ (args[0]);
 		event.stopPropagation();
 		// @ts-ignore
-		return unwrap(fn).apply(this, args);
+		return fn.apply(this, args);
 	};
 }
 
 /**
- * @param {import('./types.js').MaybeSignal<(event: Event, ...args: Array<unknown>) => void>} fn
+ * @param {(event: Event, ...args: Array<unknown>) => void} fn
  * @returns {(event: Event, ...args: unknown[]) => void}
  */
 export function once(fn) {
@@ -272,12 +276,12 @@ export function once(fn) {
 		}
 		ran = true;
 		// @ts-ignore
-		return unwrap(fn).apply(this, args);
+		return fn.apply(this, args);
 	};
 }
 
 /**
- * @param {import('./types.js').MaybeSignal<(event: Event, ...args: Array<unknown>) => void>} fn
+ * @param {(event: Event, ...args: Array<unknown>) => void} fn
  * @returns {(event: Event, ...args: unknown[]) => void}
  */
 export function stopImmediatePropagation(fn) {
@@ -285,12 +289,12 @@ export function stopImmediatePropagation(fn) {
 		const event = /** @type {Event} */ (args[0]);
 		event.stopImmediatePropagation();
 		// @ts-ignore
-		return unwrap(fn).apply(this, args);
+		return fn.apply(this, args);
 	};
 }
 
 /**
- * @param {import('./types.js').MaybeSignal<(event: Event, ...args: Array<unknown>) => void>} fn
+ * @param {(event: Event, ...args: Array<unknown>) => void} fn
  * @returns {(event: Event, ...args: unknown[]) => void}
  */
 export function preventDefault(fn) {
@@ -298,7 +302,7 @@ export function preventDefault(fn) {
 		const event = /** @type {Event} */ (args[0]);
 		event.preventDefault();
 		// @ts-ignore
-		return unwrap(fn).apply(this, args);
+		return fn.apply(this, args);
 	};
 }
 
@@ -373,10 +377,7 @@ export function class_name(dom, value) {
  * @returns {void}
  */
 export function text_effect(dom, value) {
-	render_effect(() => {
-		const string = value();
-		text(dom, string);
-	});
+	render_effect(() => text(dom, value()));
 }
 
 /**
@@ -1180,30 +1181,25 @@ export function bind_property(property, event_name, type, dom, get_value, update
 		}
 	});
 }
+
 /**
  * Makes an `export`ed (non-prop) variable available on the `$$props` object
  * so that consumers can do `bind:x` on the component.
  * @template V
- * @param {import('./types.js').MaybeSignal<Record<string, unknown>>} props
+ * @param {Record<string, unknown>} props
  * @param {string} prop
  * @param {V} value
  * @returns {void}
  */
 export function bind_prop(props, prop, value) {
-	/** @param {V | null} value */
-	const update = (value) => {
-		const current_props = unwrap(props);
-		const signal = expose(() => current_props[prop]);
-		if (is_signal(signal)) {
-			set(signal, value);
-		} else if (Object.getOwnPropertyDescriptor(current_props, prop)?.set !== undefined) {
-			current_props[prop] = value;
-		}
-	};
-	update(value);
-	render_effect(() => () => {
-		update(null);
-	});
+	const desc = get_descriptor(props, prop);
+
+	if (desc && desc.set) {
+		props[prop] = value;
+		render_effect(() => () => {
+			props[prop] = null;
+		});
+	}
 }
 
 /**
@@ -1721,7 +1717,7 @@ export function component(anchor_node, component_fn, render_fn) {
 /**
  * @template V
  * @param {Comment} anchor_node
- * @param {import('./types.js').Signal<Promise<V>> | Promise<V> | (() => Promise<V>)} input
+ * @param {(() => Promise<V>)} input
  * @param {null | ((anchor: Node) => void)} pending_fn
  * @param {null | ((anchor: Node, value: V) => void)} then_fn
  * @param {null | ((anchor: Node, error: unknown) => void)} catch_fn
@@ -1829,7 +1825,7 @@ function await_block(anchor_node, input, pending_fn, then_fn, catch_fn) {
 		() => {
 			const token = {};
 			latest_token = token;
-			const promise = is_signal(input) ? get(input) : typeof input === 'function' ? input() : input;
+			const promise = input();
 			if (is_promise(promise)) {
 				promise.then(
 					/** @param {V} v */
@@ -2090,49 +2086,49 @@ export function html(dom, get_value, svg) {
 /**
  * @template P
  * @param {HTMLElement} dom
- * @param {import('./types.js').TransitionFn<P | undefined>} transition_fn
+ * @param {() => import('./types.js').TransitionFn<P | undefined>} get_transition_fn
  * @param {(() => P) | null} props
  * @param {any} global
  * @returns {void}
  */
-export function transition(dom, transition_fn, props, global = false) {
-	bind_transition(dom, transition_fn, props, 'both', global);
+export function transition(dom, get_transition_fn, props, global = false) {
+	bind_transition(dom, get_transition_fn, props, 'both', global);
 }
 
 /**
  * @template P
  * @param {HTMLElement} dom
- * @param {import('./types.js').TransitionFn<P | undefined>} transition_fn
+ * @param {() => import('./types.js').TransitionFn<P | undefined>} get_transition_fn
  * @param {(() => P) | null} props
  * @returns {void}
  */
-export function animate(dom, transition_fn, props) {
-	bind_transition(dom, transition_fn, props, 'key', false);
+export function animate(dom, get_transition_fn, props) {
+	bind_transition(dom, get_transition_fn, props, 'key', false);
 }
 
 /**
  * @template P
  * @param {HTMLElement} dom
- * @param {import('./types.js').TransitionFn<P | undefined>} transition_fn
+ * @param {() => import('./types.js').TransitionFn<P | undefined>} get_transition_fn
  * @param {(() => P) | null} props
  * @param {any} global
  * @returns {void}
  */
-function in_fn(dom, transition_fn, props, global = false) {
-	bind_transition(dom, transition_fn, props, 'in', global);
+function in_fn(dom, get_transition_fn, props, global = false) {
+	bind_transition(dom, get_transition_fn, props, 'in', global);
 }
 export { in_fn as in };
 
 /**
  * @template P
  * @param {HTMLElement} dom
- * @param {import('./types.js').TransitionFn<P | undefined>} transition_fn
+ * @param {() => import('./types.js').TransitionFn<P | undefined>} get_transition_fn
  * @param {(() => P) | null} props
  * @param {any} global
  * @returns {void}
  */
-export function out(dom, transition_fn, props, global = false) {
-	bind_transition(dom, transition_fn, props, 'out', global);
+export function out(dom, get_transition_fn, props, global = false) {
+	bind_transition(dom, get_transition_fn, props, 'out', global);
 }
 
 /**
@@ -2152,7 +2148,7 @@ export function action(dom, action, value_fn) {
 			const value = value_fn();
 			untrack(() => {
 				if (payload === undefined) {
-					payload = action(dom, value);
+					payload = action(dom, value) || {};
 				} else {
 					const update = payload.update;
 					if (typeof update === 'function') {
@@ -2406,7 +2402,7 @@ function get_setters(element) {
  * @returns {Record<string, unknown>}
  */
 export function spread_attributes(dom, prev, attrs, lowercase_attributes, css_hash) {
-	const next = Object.assign({}, ...attrs);
+	const next = object_assign({}, ...attrs);
 	const has_hash = css_hash.length !== 0;
 	for (const key in prev) {
 		if (!(key in next)) {
@@ -2502,7 +2498,7 @@ export function spread_attributes(dom, prev, attrs, lowercase_attributes, css_ha
  */
 export function spread_dynamic_element_attributes(node, prev, attrs, css_hash) {
 	if (node.tagName.includes('-')) {
-		const next = Object.assign({}, ...attrs);
+		const next = object_assign({}, ...attrs);
 		if (prev !== null) {
 			for (const key in prev) {
 				if (!(key in next)) {
@@ -2526,68 +2522,98 @@ export function spread_dynamic_element_attributes(node, prev, attrs, css_hash) {
 }
 
 /**
- * @param {import('./types.js').Signal<Record<string, unknown>> | Record<string, unknown>} props_signal
+ * The proxy handler for rest props (i.e. `const { x, ...rest } = $props()`).
+ * Is passed the full `$$props` object and excludes the named props.
+ * @type {ProxyHandler<{ props: Record<string | symbol, unknown>, exclude: Array<string | symbol> }>}}
+ */
+const rest_props_handler = {
+	get(target, key) {
+		if (target.exclude.includes(key)) return;
+		return target.props[key];
+	},
+	getOwnPropertyDescriptor(target, key) {
+		if (target.exclude.includes(key)) return;
+		if (key in target.props) {
+			return {
+				enumerable: true,
+				configurable: true,
+				value: target.props[key]
+			};
+		}
+	},
+	has(target, key) {
+		if (target.exclude.includes(key)) return false;
+		return key in target.props;
+	},
+	ownKeys(target) {
+		/** @type {Array<string | symbol>} */
+		const keys = [];
+
+		for (let key in target.props) {
+			if (!target.exclude.includes(key)) keys.push(key);
+		}
+
+		return keys;
+	}
+};
+
+/**
+ * @param {import('./types.js').Signal<Record<string, unknown>> | Record<string, unknown>} props
  * @param {string[]} rest
  * @returns {Record<string, unknown>}
  */
-export function rest_props(props_signal, rest) {
-	return derived(() => {
-		var props = unwrap(props_signal);
-
-		/** @type {Record<string, unknown>} */
-		var rest_props = {};
-
-		for (var key in props) {
-			if (rest.includes(key)) continue;
-
-			const { get, value, enumerable } = /** @type {PropertyDescriptor} */ (
-				get_descriptor(props, key)
-			);
-
-			define_property(rest_props, key, get ? { get, enumerable } : { value, enumerable });
-		}
-
-		return rest_props;
-	});
+export function rest_props(props, rest) {
+	return new Proxy({ props, exclude: rest }, rest_props_handler);
 }
 
 /**
- * @param {Record<string, unknown>[] | (() => Record<string, unknown>[])} props
- * @returns {any}
+ * The proxy handler for spread props. Handles the incoming array of props
+ * that looks like `() => { dynamic: props }, { static: prop }, ..` and wraps
+ * them so that the whole thing is passed to the component as the `$$props` argument.
+ * @template {Record<string | symbol, unknown>} T
+ * @type {ProxyHandler<{ props: Array<T | (() => T)> }>}}
  */
-export function spread_props(props) {
-	if (typeof props === 'function') {
-		return derived(() => {
-			return spread_props(props());
-		});
-	}
+const spread_props_handler = {
+	get(target, key) {
+		let i = target.props.length;
+		while (i--) {
+			let p = target.props[i];
+			if (is_function(p)) p = p();
+			if (typeof p === 'object' && p !== null && key in p) return p[key];
+		}
+	},
+	getOwnPropertyDescriptor() {
+		return { enumerable: true, configurable: true };
+	},
+	has(target, key) {
+		for (let p of target.props) {
+			if (is_function(p)) p = p();
+			if (key in p) return true;
+		}
 
-	/** @type {Record<string, unknown>} */
-	const merged_props = {};
-	let key;
-	for (let i = 0; i < props.length; i++) {
-		const obj = props[i];
-		for (key in obj) {
-			const desc = /** @type {PropertyDescriptor} */ (get_descriptor(obj, key));
-			const getter = desc.get;
-			if (getter !== undefined) {
-				define_property(merged_props, key, {
-					enumerable: true,
-					configurable: true,
-					get: getter
-				});
-			} else if (desc.get !== undefined) {
-				merged_props[key] = obj[key];
-			} else {
-				define_property(merged_props, key, {
-					enumerable: true,
-					configurable: true,
-					value: obj[key]
-				});
+		return false;
+	},
+	ownKeys(target) {
+		/** @type {Array<string | symbol>} */
+		const keys = [];
+
+		for (let p of target.props) {
+			if (is_function(p)) p = p();
+			for (const key in p) {
+				if (!keys.includes(key)) keys.push(key);
 			}
 		}
+
+		return keys;
 	}
-	return merged_props;
+};
+
+/**
+ * @param {Array<Record<string, unknown> | (() => Record<string, unknown>)>} props
+ * @returns {any}
+ */
+export function spread_props(...props) {
+	return new Proxy({ props }, spread_props_handler);
 }
 
 /**
@@ -2611,78 +2637,19 @@ export function spread_props(props) {
  * @returns {Exports & { $destroy: () => void; $set: (props: Partial<Props>) => void; }}
  */
 export function createRoot(component, options) {
-	// The following definitions aren't duplicative. We need _sources to update single props and
-	// _props in case the component uses $$props / $$restProps / const { x, ...rest } = $props().
-	/** @type {any} */
-	const _props = {};
-	/** @type {any} */
-	const _sources = {};
+	const props = proxy(/** @type {any} */ (options.props) || {}, false);
 
-	/**
-	 * @param {string} name
-	 * @param {any} value
-	 */
-	function add_prop(name, value) {
-		const prop = source(value);
-		_sources[name] = prop;
-		define_property(_props, name, {
-			get() {
-				return get(prop);
-			},
-			enumerable: true
-		});
-	}
-
-	for (const prop in options.props || {}) {
-		add_prop(
-			prop,
-			// @ts-expect-error TS doesn't understand this properly
-			options.props[prop]
-		);
-	}
-
-	// The proxy ensures that we can add new signals on the fly when a prop signal is accessed from within the component
-	// but no corresponding prop value was set from the outside. The whole things becomes a _propsSignal
-	// so that adding new props is reflected in the component if it uses $$props or $$restProps.
-	const props_proxy = new Proxy(_props, {
-		/**
-		 * @param {any} target
-		 * @param {any} property
-		 */
-		get: (target, property) => {
-			if (typeof property !== 'string') return target[property];
-			if (!(property in _sources)) {
-				add_prop(property, undefined);
-			}
-			return _props[property];
-		}
-	});
-
-	// We're resetting the same proxy instance for updates, therefore bypass equality checks
-	const props_source = mutable_source(props_proxy);
-
-	let [accessors, $destroy] = mount(component, {
-		...options,
-		// @ts-expect-error We hide the "the props object could be a signal" fact from the public typings
-		props: props_source
-	});
+	let [accessors, $destroy] = mount(component, { ...options, props });
 
 	const result =
 		/** @type {Exports & { $destroy: () => void; $set: (props: Partial<Props>) => void; }} */ ({
-			$set: (props) => {
-				for (const [prop, value] of Object.entries(props)) {
-					if (prop in _sources) {
-						set(_sources[prop], value);
-					} else {
-						add_prop(prop, value);
-						set(props_source, props_proxy);
-					}
-				}
+			$set: (next) => {
+				object_assign(props, next);
 			},
 			$destroy
 		});
 
-	for (const key of Object.keys(accessors || {})) {
+	for (const key of object_keys(accessors || {})) {
 		define_property(result, key, {
 			get() {
 				// @ts-expect-error TS doesn't know key exists on accessor
@@ -2691,7 +2658,7 @@ export function createRoot(component, options) {
 			/** @param {any} value */
 			set(value) {
 				// @ts-expect-error TS doesn't know key exists on accessor
-				accessors[key] = value;
+				flushSync(() => (accessors[key] = value));
 			},
 			enumerable: true
 		});
@@ -2832,11 +2799,10 @@ export function access_props(props) {
 }
 
 /**
- * @param {import('./types.js').MaybeSignal<Record<string, any>>} props
+ * @param {Record<string, any>} props
  * @returns {Record<string, any>}
  */
 export function sanitize_slots(props) {
-	props = unwrap(props);
 	const sanitized = { ...props.$$slots };
 	if (props.children) sanitized.default = props.children;
 	return sanitized;
