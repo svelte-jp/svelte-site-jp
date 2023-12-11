@@ -2,11 +2,11 @@
 title: Breaking changes
 ---
 
-While Svelte 5 is a complete rewrite, we have done our best to ensure that most codebases can upgrade with a minimum of hassle. That said, there are a few small breaking changes which may require action on your part. They are listed here.
+Svelte 5 自体は完全な書き直しですが、ほとんどのコードベースが最小限の作業でアップグレードできるように最善を尽くしています。そうは言っても、アクションが必要となるかもしれない小さな破壊的変更(breaking changes)がいくつかあります。それらをこちらにリストアップします。
 
-## Components are no longer classes
+## コンポーネントはもう class ではありません <!--components-are-no-longer-classes-->
 
-In Svelte 3 and 4, components are classes. In Svelte 5 they are functions and should be instantiated differently. If you need to manually instantiate components, you should use `mount` or `createRoot` (imported from `svelte`) instead. If you see this error using SvelteKit, try updating to the latest version of SvelteKit first, which adds support for Svelte 5. If you're using Svelte without SvelteKit, you'll likely have a `main.js` file (or similar) which you need to adjust:
+Svelte 3 と 4 では、コンポーネントは class です。Svelte 5 では、コンポーネントは関数であり、インスタンス化される方法が異なります。手動でコンポーネントをインスタンス化する必要がある場合は、(`svelte` からインポートして) `mount` か `createRoot` を使用してください。SvelteKit を使用していてこれに関するエラーが出た場合は、まず SvelteKit を最新バージョンにアップデートしてください。Svelte 5 のサポートが追加されています。もし SvelteKit 以外で Svelte を使用している場合は、`main.js` ファイル (やこれに該当するもの) を調整する必要があります:
 
 ```diff
 + import { createRoot } from 'svelte';

@@ -57,75 +57,74 @@ Svelte 5 は、Svelte を全面的に書き直したものです。あなたの�
   	dark ? 'dark' : 'light'
   );
   ```
-- Updating values inside `$:` statements can cause [confusing behaviour](https://github.com/sveltejs/svelte/issues/6732) and [impossible to resolve bugs](https://github.com/sveltejs/svelte/issues/4933) and the statements may run in an [unexpected order](https://github.com/sveltejs/svelte/issues/4516)
 - `$:` ステートメントの中で値を更新すると、[混乱する動作](https://github.com/sveltejs/svelte/issues/6732)や[解決するのが不可能なバグ](https://github.com/sveltejs/svelte/issues/4933)が発生し、ステートメントが[予期せぬ順序](https://github.com/sveltejs/svelte/issues/4516)で実行されることもあります。
 - `$: {...}` はクリーンアップ関数を返しません。[`$effect`](runes#$effect) は返します。
 - 複数のコンポーネント間で interface を共有したいとき、props に型付けするのが非常に面倒です
 - `.svelte` ファイルの中では store の名前に `$` プリフィクスを付けて値にアクセスできますが、`.js` や `.ts` ではそれができませんし、lint エラーや型チェックエラーが発生します。リアクティブな state に対する統一的なアプローチによってこの問題を解決します
 
-## Breaking changes and migration
+## 破壊的変更(Breaking changes) と移行(migration) <!--breaking-changes-and-migration-->
 
-### Is it a breaking change?
+### これは破壊的変更ですか? <!--is-it-a-breaking-change-->
 
-We're striving to make Svelte 5 a drop-in replacement for Svelte 4, and to that end we've ported over the entire test suite. The new features are opt-in, and you can mix-and-match the new stuff with the old stuff within an app (though not within a component — in 'runes mode', certain features are deliberately disabled).
+私たちは Svelte 4 から Svelte 5 への移行が簡単に行えるよう努めており、そのためにテストスイート全体をポートしました。新機能はオプトインで、アプリの中で新機能と既存昨日を組み合わせて使用することができます (コンポーネント内では組み合わせて使用することができません。'rune モード' では、特定の機能が意図的に無効化されます).
 
-Having said that, the underlying mechanisms are totally different. It's inevitable that some of you will hit edge cases, which is why this is a major version (5.0) rather than a minor (4.x).
+とは言うものの、根本的なメカニズムは全く異なります。エッジケースにぶつかる可能性は避けられません。そのため、マイナーバージョン (4.x) ではなく、メジャーバージョン (5.0) なのです。
 
-### No but really, am I going to have to rewrite everything?
+### とはいえ実際、自分のコードを全て書き直さなければいけないのでしょうか? <!--no-but-really-am-i-going-to-have-to-rewrite-everything-->
 
-Eventually, you'll have to make some changes — most of which we hope to automate. We don't want to end up in a situation where people feel like they have to juggle knowledge of a bunch of different ways of doing things.
+最終的には書き直さなければいけない部分も出てくるとは思いますが、なるべくそのほとんどを自動的に行われるようにしたいと考えています。これを行うために様々な方法の知識をやりくりしなければならない、と皆さんが感じるような状況にはしたくないのです。
 
-Our current plan is that some or all of the features that runes make unnecessary like `let`-style reactivity, `$:`, `$$props` and `$$restProps` will be deprecated in Svelte 6 and removed in Svelte 7. But don't worry — that won't happen for some time, and we'll provide automatic migration tooling to do as much of the change as possible. There are no plans to deprecate `onMount` or stores at the current time.
+現時点の計画では、`let` スタイルのリアクティビティ、`$:`、`$$props`、`$$restProps` のような rune によって不必要となる機能の一部または全ては、Svelte 6 で非推奨となり、Svelte 7 で削除される予定です。しかしご心配なく、しばらくはこうなりませんし、可能な限り多くの変更を移行するための自動マイグレーションツールを提供する予定です。現時点では `onMount` や store を非推奨にする予定はありません。
 
-### Which things are disabled in runes mode?
+### rune モードでは何が無効化されますか? <!--which-things-are-disabled-in-runes-mode-->
 
-When you opt into runes mode, you can no longer use the features that runes replace:
+rune モードを選択すると、rune が大体する機能が使えなくなります:
 
-- `$state` replaces top-level `let` declarations implicitly creating reactive state
-- `$derived` replaces `$: x = ...`
-- `$effect` replaces `$: {'{ ... }'}`
-- `$props` replaces `export let`, `$$props` and `$$restProps`
+- `$state` は、暗黙的にリアクティブな state を作成するトップレベルの `let` 宣言を置き換えます
+- `$derived` は `$: x = ...` を置き換えます
+- `$effect` は `$: {'{ ... }'}` を置き換えます
+- `$props` は `export let`、`$$props`、`$$restProps` を置き換えます
 
-All other features, including stores, are still fully supported in runes mode.
+その他 store を含む全ての機能は、rune モードでも完全にサポートされています。
 
-### Which things will be deprecated in Svelte 5?
+### Which things will be deprecated in Svelte 5? <!--which-things-will-be-deprecated-in-svelte-5-->
 
-`beforeUpdate` and `afterUpdate` are deprecated — use `$effect.pre` and `$effect` instead, as these are more conservative about when they run code. Everything else will remain.
+`beforeUpdate` と `afterUpdate` は非推奨ですので、代わりに `$effect.pre` と `$effect` を使用してください。そのほうが、コードが実行されるタイミングについてより保守的だからです。その他についてはそのままです。
 
-## Schedule and future plans
+## スケジュールと将来の計画 <!--schedule-and-future-plans-->
 
-### When is it coming out?
+### いつリリースされますか? <!--when-is-it-coming-out-->
 
-When it's done. The goal is 'sometime later this year'.
+完成次第です。目標は2024年の初頭です。
 
-### Should I prepare my code for Svelte 5?
+### Svelte 5 に向けてコードを準備すべきですか? <!--should-i-prepare-my-code-for-svelte-5-->
 
-No. You can do the migration towards runes incrementally when Svelte 5 comes out.
+いいえ、Svelte 5 が出たあとに少しずつ rune に移行することができます。
 
-### When can I `npm install` the Svelte 5 preview?
+### Svelte 5 のプレビュー版はいつから `npm install` ができるようになりますか? <!--when-can-i-npm-install-the-svelte-5-preview-->
 
-We plan to publish a pre-release version with enough time for brave souls to try it out in their apps and give us feedback on what breaks. Watch this space.
+勇敢な方々が自分たちのアプリで試し、どのように壊れたか私たちにフィードバックできるよう、プレリリースバージョンの公開には十分な時間をかける予定です。お見逃しなく!
 
-### What's left to do?
+### あとは何が残っているのですか? <!--what-s-left-to-do-->
 
-A great many things. Transitions, for example, are not fully implemented. We also haven't fully solved all aspects of things like server-side rendering. We're getting there!
+まだまだたくさんあります。例えば、Transition はまだ完全に実装されていません。サーバーサイドレンダリングなどは全面的に解決しているわけではありません。ですがもう少しで辿り着きます！
 
-### Will feature X be part of 5.0?
+### 機能 X は 5.0 に含まれますか? <!--will-feature-x-be-part-of-5-0-->
 
-If you have to ask, then probably not. Aside from runes, 5.0 is mostly about taking everything we've learned over the last few years (including from other frameworks — thanks friends!) and making Svelte the leanest and most powerful framework out there.
+そう聞く必要があるということは、おそらく含まれていないです。rune は別として、5.0 には私たちがここ数年で学んだことほぼ全てを取り入れ (他のフレームワークから学んだことも含めて — 友人たちに感謝!)、Svelte をもっともリーンでパワフルなフレームワークにします。
 
-We know that some of you are very keen on certain feature ideas, and we are too. We have some big ideas for 5.1 and beyond.
+皆さんの中には、ある機能のアイデアにとても熱心な方もいらっしゃることはわかっていますし、私たちもそうです。5.1 に向けて、いくつか大きなアイデアがあります。
 
-## Discussion, contributing, and help
+## ディスカッション、コントリビュート、ヘルプ <!--discussion-contributing-and-help-->
 
-### I want to help. How do I contribute?
+### 支援したいです。どうすればコントリビュートできますか?
 
-We appreciate your enthusiasm! Right now it's not possible to accept contributions, but once we enter public beta, everything will be available on the Svelte GitHub repository.
+皆様の熱意に感謝いたします! 今現在はまだコントリビュートを受け付けることはできませんが、パブリック・ベータになったら、Svelte の GitHub リポジトリですべてを利用できるようになります。
 
-### How can I share feedback or cool examples of what this enables?
+### どうすればフィードバックやこれによって可能となるクールな事例を共有できますか? <!--how-can-i-share-feedback-or-cool-examples-of-what-this-enables-->
 
-You can use the `#svelte-5-runes` channel on the [Discord server](https://svelte.dev/chat) or the tag `#svelte-5-runes` on social media.
+[Discord server](https://svelte.dev/chat) の `#svelte-5-runes` チャンネルか、ソーシャルメディアで `#svelte-5-runes` タグを使用してください。
 
-### My question wasn't answered. What gives?
+### 私の質問に対する回答がありませんでした。どうすればよいですか? <!--my-question-wasn-t-answered-what-gives-->
 
-It must not have been asked frequently enough. To fix that, stop by the `#svelte-5-runes` channel of the [Discord server](https://svelte.dev/chat).
+その質問はあまり頻繁にされているものではないようです。解決するには、[Discord server](https://svelte.dev/chat) の `#svelte-5-runes` チャンネルに立ち寄ってみてください。
