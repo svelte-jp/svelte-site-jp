@@ -2,7 +2,6 @@
 title: Fine-grained reactivity
 ---
 
-In Svelte 4, reactivity centres on the _component_ and the top-level state declared therein. What this means is that in a situation like this...
 Svelte 4 では、リアクティビティは _コンポーネント_ とそのトップレベルに宣言された state が中心でした。つまり、以下のような状況では…
 
 ```svelte
