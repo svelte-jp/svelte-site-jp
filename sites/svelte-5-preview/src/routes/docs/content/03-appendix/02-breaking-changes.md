@@ -18,15 +18,15 @@ import App from './App.svelte'
 export default app;
 ```
 
-`createRoot` returns an object with a `$set` and `$destroy` method on it. It does not come with an `$on` method you may know from the class component API. Instead, pass them via the `events` property on the options argument. If you don't need to interact with the component instance after creating it, you can use `mount` instead, which saves some bytes.
+`createRoot` は、`$set` メソッドと `$destroy` メソッドを持つオブジェクトを返します。class コンポーネント API にはあった `$on` メソッドはありません。代わりに、オプションの引数の `events` プロパティを介して渡します。コンポーネントのインスタンスを作成した後にそのインスタンスとやり取りする必要がない場合は、代わりに `mount` を使用することで、バイト数を節約することができます。
 
-> Note that using `events` is discouraged — instead, [use callbacks](https://svelte-5-preview.vercel.app/docs/event-handlers)
+> `events` の使用は推奨されません — 代わりに、[コールバックを使用してください](https://svelte-5-preview-ja.vercel.app/docs/event-handlers)
 
-As a stop-gap-solution, you can also use `createClassComponent` or `asClassComponent` (imported from `svelte/legacy`) instead to keep the same API after instantiating. If this component is not under your control, you can use the `legacy.componentApi` compiler option for auto-applied backwards compatibility (note that this adds a bit of overhead to each component).
+暫定的なソリューションとしては、インスタンス化に同じ API を使えるようにする方法として (`svelte/legacy` からインポートして) `createClassComponent` や `asClassComponent` を使用することもできます。もしコンポーネントがあなたのコントロール下にない場合は、`legacy.componentApi` コンパイラオプションを使用することで後方互換性を自動的に適用することができます (各コンポーネントに若干のオーバーヘッドが追加されることにご注意ください)。
 
-### Server API changes
+### Server API の変更 <!--server-api-changes-->
 
-Similarly, components no longer have a `render` method when compiled for server side rendering. Instead, pass the function to `render` from `svelte/server`:
+同様に、コンポーネントがサーバーサイドレンダリングようにコンパイルされた場合は `render` メソッドがありません。代わりに、`svelte/server` から `render` をインポートし、コンポーネント関数を渡します:
 
 ```diff
 + import { render } from 'svelte/server';
@@ -36,74 +36,74 @@ import App from './App.svelte';
 + const { html, head } = render(App, { props: { message: 'hello' } });
 ```
 
-`render` also no longer returns CSS; it should be served separately from a CSS file.
+`render` は CSS を返さなくなりました; そのため、CSS ファイルとは別でサーブする必要があります。
 
-### bind:this changes
+### bind:this の変更 <!--bind-this-changes-->
 
-Because components are no longer classes, using `bind:this` no longer returns a class instance with `$set`, `$on` and `$destroy` methods on it. It only returns the instance exports (`export function/const`) and, if you're using the `accessors` option, a getter/setter-pair for each property.
+コンポーネントが class ではなくなったため、`bind:this` はもう `$set`、`$on`、`$destroy` メソッドを持つ class インスタンスを返しません。インスタンスのエクスポート (`export function/const`) だけを返します。`accessors` オプションを使用している場合は、各プロパティごとの getter/setter のペアも返します。
 
-## Whitespace handling changed
+## ホワイトスペースの取り扱いの変更 <!--whitespace-handling-changed-->
 
-Previously, Svelte employed a very complicated algorithm to determine if whitespace should be kept or not. Svelte 5 simplifies this which makes it easier to reason about as a developer. The rules are:
+以前までの Svelte では、ホワイトスペースを残すかどうか判断するのにとても複雑なアルゴリズムを採用していました。Svelte 5 では、開発者にとってより推測しやすいようにシンプルにしました。ルールは以下の通りです:
 
-- Whitespace between nodes is collapsed to one whitespace
-- Whitespace at the start and end of a tag is removed completely
-- Certain exceptions apply such as keeping whitespace inside `pre` tags
+- ノード間のホワイトスペースは単一のホワイトスペースに折りたたまれます
+- タグの最初と最後にあるホワイトスペースは完全に削除されます
+- `pre` タグの中のホワイトスペースはそのまま保持される、などの例外があります
 
-As before, you can disable whitespace trimming by setting the `preserveWhitespace` option in your compiler settings or on a per-component basis in `<svelte:options>`.
+以前と同様に、コンパイラの設定で `preserveWhitespace` オプションを設定するか、コンポーネントごとに `<svelte:options>` を設定することで、ホワイトスペースのトリムを無効化することができます。
 
-## More recent browser required
+## より新しいブラウザが必要 <!--more-recent-browser-required-->
 
-Svelte now use Mutation Observers instead of IFrames to measure dimensions for `bind:clientWidth/clientHeight/offsetWidth/offsetHeight`. It also no longer listens to the `change` event on range inputs. Lastly, the `legacy` option was removed (or rather, replaced with a different set of settings).
+Svelte では、`bind:clientWidth/clientHeight/offsetWidth/offsetHeight` で要素の寸法を計測するのに、IFrame ではなく Mutation Observer を使用するようになりました。また、range input で `change` イベントをリスンしなくなりました。最後に、`legacy` オプションは削除されました (というより、別の設定をするものになりました)。
 
-## Changes to compiler options
+## コンパイラオプションの変更 <!--changes-to-compiler-options-->
 
-- The `false`/`true` (already deprecated previously) and the `"none"` values were removed as valid values from the `css` option
-- The `legacy` option was repurposed
-- The `hydratable` option has been removed. Svelte components are always hydratable now
-- The `tag` option was removed. Use `<svelte:options customElement="tag-name" />` inside the component instead
-- The `loopGuardTimeout`, `format`, `sveltePath`, `errorMode` and `varsReport` options were removed
+- `css` オプションから、`false`/`true` (以前から非推奨) と、`"none"` が削除されました
+- `legacy` オプションは別の目的に使用されるようになりました
+- `hydratable` オプションが削除されました。Svelte コンポーネントは常にハイドレーション可能(hydratable)です
+- `tag` オプションが削除されました。代わりにコンポーネント内で `<svelte:options customElement="tag-name" />` をお使いください。
+- `loopGuardTimeout`、`format`、`sveltePath`、`errorMode`、`varsReport` オプションが削除されました
 
-## The `children` prop is reserved
+## `children` prop が予約語に <!--children-prop-is-reserved-->
 
-Content inside component tags becomes a [snippet prop](/docs/snippets) called `children`. You cannot have a separate prop by that name.
+コンポーネントタグ内のコンテンツは `children` という [snippet prop](/docs/snippets) になります。`children` という名前で別の prop を持つことはできません。
 
-## Other breaking changes
+## その他の破壊的変更 <!--other-breaking-changes-->
 
-### Stricter `@const` assignment validation
+### `@const` 代入に対するより厳格なバリデーション <!--stricter-const-assignment-validation-->
 
-Assignments to destructured parts of a `@const` declaration are no longer allowed. It was an oversight that this was ever allowed.
+`@const` 宣言の分割された部分への代入は許可されなくなります。今まで可能だったのは誤りでした。
 
-### Stricter CSS `:global` selector validation
+### CSS の `:global` セレクタ に対するより厳格なバリデーション <!--stricter-css-global-selector-validation-->
 
-Previously, a selector like `.foo :global(bar).baz` was valid. In Svelte 5, this is a validation error instead. The reason is that in this selector the resulting CSS would be equivalent to one without `:global` - in other words, `:global` is ignored in this case.
+以前までは、`.foo :global(bar).baz` のようなセレクタは有効でした。Svelte 5 では、バリデーションエラーとなります。なぜなら、このセレクタによって出力される CSS は、`:global` がないものと同等になるからです。言い換えると、この場合の `:global` は無視されます。
 
-### CSS hash position no longer deterministic
+### CSS hash の位置は保証されません <!--css-hash-position-no-longer-deterministic-->
 
-Previously Svelte would always insert the CSS hash last. This is no longer guaranteed in Svelte 5. This is only breaking if you [have very weird css selectors](https://stackoverflow.com/questions/15670631/does-the-order-of-classes-listed-on-an-item-affect-the-css).
+以前までの Svelte では、CSS hash は常に最後に挿入されていました。Svelte 5 ではこれは保証されません。これにより、[非常に奇妙な css セレクタ](https://stackoverflow.com/questions/15670631/does-the-order-of-classes-listed-on-an-item-affect-the-css)を持っている場合にのみ壊れます。
 
-### Renames of various error/warning codes
+### 各エラー/警告のコードのリネーム <!--renames-of-various-error-warning-codes-->
 
-Various error and warning codes have been renamed slightly.
+各エラーや警告のコードの名称が少し変更されました。
 
-### Reduced number of namespaces
+### 名前空間(namespaces)の数が削減 <!--reduced-number-of-namespaces-->
 
-The number of valid namespaces you can pass to the compiler option `namespace` has been reduced to `html` (the default), `svg` and `foreign`.
+コンパイラオプション `namespace` に渡せる有効な名前空間(namespaces)の数が、`html` (デフォルト)、`svg`、`foreign` に削減されました。
 
-### beforeUpdate change
+### beforeUpdate の変更 <!--beforeupdate-change-->
 
-`beforeUpdate` no longer runs twice on initial render if it modifies a variable referenced in the template.
+`beforeUpdate` は、テンプレートで差参照されている変数を変更する場合において、最初のレンダリングの際に2回実行されることがなくなりました。
 
-### `contenteditable` behavior change
+### `contenteditable` の動作の変更 <!--contenteditable-behavior-change-->
 
-If you have a `contenteditable` node with a corresponding binding _and_ a reactive value inside it (example: `<div contenteditable=true bind:textContent>count is {count}</div>`), then the value inside the contenteditable will not be updated by updates to `count` because the binding takes full control over the content immediately and it should only be updated through it.
+`contenteditable` ノードとそれに対応するバインディングがあり、その中にリアクティブな値がある場合 (例: `<div contenteditable=true bind:textContent>count is {count}</div>`)、`count` が更新されても contenteditable の中にある値は更新されません。なぜなら、バインディングは即座にそのコンテンツを完全にコントロールし、それを通してのみ更新されるべきだからです。
 
-### `oneventname` attributes no longer accept string values
+### `oneventname` 属性は文字列の値を受け取れなくなりました <!--oneventname-attributes-no-longer-accept-string-values-->
 
-In Svelte 4, it was possible to specify event attributes on HTML elements as a string:
+Svelte 4 では、HTML の要素のイベント属性を文字列で指定することができました:
 
 ```svelte
 <button onclick="alert('hello')">...</button>
 ```
 
-This is not recommended, and is no longer possible in Svelte 5, where properties like `onclick` replace `on:click` as the mechanism for adding [event handlers](/docs/event-handlers).
+これは推奨されませんし、Svelte 5 では行えなくなりました。Svelte 5 では、[イベントハンドラ](/docs/event-handlers) を追加するメカニズムとして、`onclick` が `on:click` に取って代わります。
