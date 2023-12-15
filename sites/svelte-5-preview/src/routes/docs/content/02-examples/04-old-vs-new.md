@@ -68,7 +68,6 @@ rune モードでは、依存関係(dependencies)は _実行時(run time)_ に�
 
 逆に、なにかしらの理由で、`a` が変更されたときに `sum` を再計算したいが、`b` が変更されたときには再計算したくないとします。
 
-In non-runes mode, we 'hide' the dependency from the compiler by excluding it from the `$:` statement. In runes mode, we have a better and more explicit solution: [`untrack`](/docs/functions#untrack).
 非 rune モードでは、`$:` ステートメントから外すことでコンパイラから依存を '隠し' ます。rune モードでは、より良い、より明示的なソリューションがあります: [`untrack`](/docs/functions#untrack) です。
 
 - [Before](/#H4sIAAAAAAAAE3WPwYrDIBCGX2WQHhJSyJ6tEfocmz2oMSBNjOi4sIjvvpO0u6WHHhz4_vmGGQub3WIT45-FebVaxtk1BHZm-BN2SN92QUucthzNnohkogsoRz_iYhEUDPBx-SP9TycOKa-Eapoa1R7Z_ubsDbrNP3IoRwOjxRwphA704dbRi_65ywudEWls89wsztyG0rQwSFBdVyUV0d8F-V7Vu6pf1SCLqrS06Eq3Fjq5ij5I-vG6TW52dmIcY7b1q_4CeJwNvCwBAAA=)

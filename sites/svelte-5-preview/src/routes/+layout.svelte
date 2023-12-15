@@ -34,7 +34,7 @@
 		</svelte:fragment>
 
 		<svelte:fragment slot="external-links">
-			<a href="https://svelte.dev">Svelte</a>
+			<a href="https://svelte.jp">Svelte</a>
 
 			<Separator />
 

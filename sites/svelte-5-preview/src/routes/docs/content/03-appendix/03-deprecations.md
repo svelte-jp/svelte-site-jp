@@ -2,13 +2,13 @@
 title: Deprecations
 ---
 
-Aside from the [breaking changes](/docs/breaking-changes) listed on the previous page, Svelte 5 should be a drop-in replacement for Svelte 4. That said, there are some features that we will remove in a future major version of Svelte, and we encourage you to update your apps now to avoid breaking changes in future.
+前のページにリストアップした[破壊的変更(breaking changes)](/docs/breaking-changes)を除いて、Svelte 5 は Svelte 4 をそのまま置き換えることができます。とは言うものの、Svelte の将来のバージョンで削除されることになる機能もありますので、将来の破壊的変更による影響を避けてもらうため、あなたのアプリをアップデートすることを推奨します。
 
-## beforeUpdate and afterUpdate
+## beforeUpdate と afterUpdate <!--beforeupdate-and-afterupdate-->
 
-`beforeUpdate(fn)` schedules the `fn` callback to run immediately before any changes happen inside the current component. `afterUpdate(fn)` schedules it to run after any changes have taken effect.
+`beforeUpdate(fn)` は、現在のコンポーネントの内部で変更が起こる直前に `fn` コールバックが実行されるようスケジュールします。`afterUpdate(fn)` は、変更が適用された後に実行されるようスケジュールします。
 
-These functions run indiscriminately when _anything_ changes. By using `$effect.pre` and `$effect` instead, we can ensure that work only happens when the things we care about have changed. The difference is visible in this example — [with `afterUpdate`](/#H4sIAAAAAAAAE21STW-DMAz9K140CSpVtJddUmDaj5i0aezAwKBI-VJi6CqU_74AY-WwiyPbz37PdibWCYme8Y-J6Voh4-zFWnZkdLOz40eUhNH3ZnDNHMl944SlstIVCWWNI5ig7gjdq21rQgjQOaMgWUuTSwRGqESCxhjXeijg0VNEphN8czgf4RYthMNlwxEqi66mweEd_HTeARzq9p5KsixL1uyGsA7HCNh1-tWxU5qmByhKmJY6aoz2RmImTZ8mbtBa6H4_10ZAqxUdpHudD0WxkB62fhVtKvewclX2DEmPRDPFtXYKXQL8Hop7kjG08dH_w8REmJ9lcfnpfhadr6vnV6FbcwWjuTKDR2VGLKYUl6n_brEcAbNGCtT0thxj897jLQOc1p5C2yFuPn6LomKu1j1WDL4iAx9rOcTGO3kBYk1uy2lZQchPtoxfSJlWdAJbxskNGD7DD-pLlz59AgAA), the callback runs on every `mousemove` event, whereas [with `$effect`](/#H4sIAAAAAAAAE21SwW6EIBD9lSnZRDfZuHvphapN_6JN7cHqaEgQCIxuG8O_F7VUDw0JZOY93gxvmFknJDrG32em6gEZZy_GsAujb7MEbkJJGGKnR9ssmdw1VhgqK1WRRIJGa9s6KODkqCZMZ_jicLvAd9jBn58ij3AwaGsaLe7kx9uBYFG1O5RkWZZsaGQYi1MgHJQWOIAn7DpsKE3PUJQwr3eo0cppiZnUfZrYUSmhevhlRmHadtFBeuzvoSjWYueoVVHs7kgrt46eIemRaJG_13ZAmwDfU8EfGVKxHv3_iAD45VgNy6-7xyrfRsDvQrX6DlrxQY8OBz1hMae4vvhvBqv5mDVSoKLXdQgxegMf1nXTFMqMwfEw46JitlY9Vgw-QwU-1XIMwof2PIQ7uSnn1QKfX00Z_sOgW9EJbBknO6L_8D9aLfICSgIAAA==), the function only runs when `temperature` changes:
+これらの関数は何かが変更されると無差別に実行されます。代わりに `$effect.pre` と `$effect` を使用することで、特定のものが変更されたときにのみ、実されるようにすることができます。その違いについては、こちらの例をご覧ください — [`afterUpdate` を使用する場合](/#H4sIAAAAAAAAE21STW-DMAz9K140CSpVtJddUmDaj5i0aezAwKBI-VJi6CqU_74AY-WwiyPbz37PdibWCYme8Y-J6Voh4-zFWnZkdLOz40eUhNH3ZnDNHMl944SlstIVCWWNI5ig7gjdq21rQgjQOaMgWUuTSwRGqESCxhjXeijg0VNEphN8czgf4RYthMNlwxEqi66mweEd_HTeARzq9p5KsixL1uyGsA7HCNh1-tWxU5qmByhKmJY6aoz2RmImTZ8mbtBa6H4_10ZAqxUdpHudD0WxkB62fhVtKvewclX2DEmPRDPFtXYKXQL8Hop7kjG08dH_w8REmJ9lcfnpfhadr6vnV6FbcwWjuTKDR2VGLKYUl6n_brEcAbNGCtT0thxj897jLQOc1p5C2yFuPn6LomKu1j1WDL4iAx9rOcTGO3kBYk1uy2lZQchPtoxfSJlWdAJbxskNGD7DD-pLlz59AgAA)、コールバックは `mousemove` イベントごとに実行されますが、[`$effect` を使用する場合](/#H4sIAAAAAAAAE21SwW6EIBD9lSnZRDfZuHvphapN_6JN7cHqaEgQCIxuG8O_F7VUDw0JZOY93gxvmFknJDrG32em6gEZZy_GsAujb7MEbkJJGGKnR9ssmdw1VhgqK1WRRIJGa9s6KODkqCZMZ_jicLvAd9jBn58ij3AwaGsaLe7kx9uBYFG1O5RkWZZsaGQYi1MgHJQWOIAn7DpsKE3PUJQwr3eo0cppiZnUfZrYUSmhevhlRmHadtFBeuzvoSjWYueoVVHs7kgrt46eIemRaJG_13ZAmwDfU8EfGVKxHv3_iAD45VgNy6-7xyrfRsDvQrX6DlrxQY8OBz1hMae4vvhvBqv5mDVSoKLXdQgxegMf1nXTFMqMwfEw46JitlY9Vgw-QwU-1XIMwof2PIQ7uSnn1QKfX00Z_sOgW9EJbBknO6L_8D9aLfICSgIAAA==)、関数は `temperature` が変更されたときにのみ実行されます:
 
 ```diff
 <script>
@@ -38,8 +38,8 @@ These functions run indiscriminately when _anything_ changes. By using `$effect.
 <p>{trend}</p>
 ```
 
-Note that using `$effect` and `$effect.pre` will put you in [runes mode](/docs/runes) — be sure to update your props and state accordingly.
+`$effect` と `$effect.pre` を使用すると [rune モード](/docs/runes)になることにご注意ください — あわせて props と state を更新するのをお忘れなく。
 
 ## `immutable`
 
-The `immutable` compiler option is deprecated. Use runes mode instead, where all state is immutable (which means that assigning to `object.property` won't cause updates for anything that is observing `object` itself, or a different property of it).
+`immutable` コンパイラオプションは非推奨となります。代わりに rune モードを使用して、全ての状態を immutable にします (つまり、`object.property` に代入しても `object` 自身や別のプロパティを監視しているものは更新されません)。
