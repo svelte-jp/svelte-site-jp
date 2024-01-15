@@ -4,11 +4,11 @@ title: TypeScript
 
 Svelte コンポーネント内では TypeScript が使用できます。[Svelte VSCode extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) などの IDE の拡張機能を使用すると、エディター上でエラーをすぐに見つけやすくなります。また、[`svelte-check`](https://www.npmjs.com/package/svelte-check) は同じことをコマンドライン上で実行できるため、CI と統合できます。
 
-## セットアップ
+## セットアップ <!--setup-->
 
 Svelte コンポーネント内で TypeScript を使用するには、TypeScript を JavaScript に変換するプリプロセッサーを追加する必要があります。
 
-### SvelteKit または Vite を使用する
+### SvelteKit または Vite を使用する <!--using-sveltekit-or-vite-->
 
 TypeScript を使い始めるのに最も簡単な方法は、`npm create svelte@latest` とタイプして、新しい SvelteKit プロジェクトを scaffold し、プロンプトに従って TypeScript オプションを選択することです。
 
@@ -39,7 +39,7 @@ export default config;
 
 いずれの場合でも、`vitePreprocess` を使用した `svelte.config.js` が追加されます。Vite/SvelteKit はこの設定ファイルを読み込みます。
 
-### その他のビルドツール
+### その他のビルドツール <!--other-build-tools-->
 
 代わりに Rollup や Webpack のようなツールを使用している場合、ツール向けの Svelte プラグインをインストールしてください。Rollup の場合は [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte)、Webpack の場合は[svelte-loader](https://github.com/sveltejs/svelte-loader) です。どちらの場合も、`typescript` と `svelte-preprocess` をインストールして、プリプロセッサーをプラグインの設定に追加する必要があります（より詳しい情報については、それぞれのREADMEを確認してください）。新しいプロジェクトを開始する場合には、[rollup](https://github.com/sveltejs/template) や [webpack](https://github.com/sveltejs/template-webpack) のテンプレートを使ってスクリプトからセットアップを scaffold することもできます。
 
@@ -115,7 +115,7 @@ Event は `createEventDispatcher` を使って型付けできます。
 <button on:click={handleClick} on:keydown={handleType}>Click</button>
 ```
 
-## ビルトインのDOM型を拡張する
+## ビルトインのDOM型を拡張する <!--enhancing-built-in-dom-types-->
 
 Svelte はベストエフォートで存在する全ての HTML DOM の型を提供します。ときには実験的な属性やアクションから来るカスタムイベントを使いたい場合があるかもしれません。そのような場合には、TypeScript が型エラーを発生し、未知の型であると報告します。もし実験的ではない標準の属性やイベントであるなら、Svelte の [HTML 型](https://github.com/sveltejs/svelte/blob/master/packages/svelte/elements.d.ts) から来た型付けの誤りによる可能性があります。その場合、issue や修正の PR を歓迎します。
 
@@ -160,15 +160,15 @@ declare module 'svelte/elements' {
 export {}; // これが ambient module ではなく、他の型が拡張される代わりに上書きされることを保証する
 ```
 
-## 実験的な高度な型付け
+## 実験的な高度な型付け <!--experimental-advanced-typings-->
 
 特定のインターフェイスを実装するコンポーネントの型付け、明示的に型付けされた slot、ジェネリクスの使用など、より高度なユースケースで TypeScript を最大限に活用するには、いくつかの機能が欠けています。これらの機能は、実験的な高度な型機能を利用することで実現可能です。使用方法に関するより詳しい情報は、[この RFC](https://github.com/dummdidumm/rfcs/blob/ts-typedefs-within-svelte-components/text/ts-typing-props-slots-events.md) を参照してください。
 
 > API は実験的であるため、いつでも変更される可能性があります
 
-## 制限事項
+## 制限事項 <!--limitations-->
 
-### マークアップ内ではTSは使えない
+### マークアップ内ではTSは使えない <!--no-ts-in-markup-->
 
 TypeScript はテンプレートのマークアップ内では使えません。たとえば、次のコードは機能しません。
 
@@ -184,7 +184,7 @@ TypeScript はテンプレートのマークアップ内では使えません。
 {/if}
 ```
 
-### リアクティブな宣言
+### リアクティブな宣言 <!--reactive-declarations-->
 
 TypeScript を使用したリアクティブな宣言に対しては、変数と同じように型付けすることはできません。たとえば、次のコードは動作しません。
 
