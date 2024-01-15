@@ -1,259 +1,210 @@
 {
-  "projectName": "svelte-site-jp",
-  "projectOwner": "svelte-jp",
-  "repoType": "github",
-  "repoHost": "https://github.com",
-  "files": [
-    "README.md"
-  ],
-  "imageSize": 100,
-  "commit": false,
-  "commitConvention": "angular",
-  "contributors": [
-    {
-      "login": "tomoam",
-      "name": "tomoam",
-      "avatar_url": "https://avatars.githubusercontent.com/u/29677552?v=4",
-      "profile": "https://github.com/tomoam",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "myLifeAsaDog",
-      "name": "myLifeAsaDog",
-      "avatar_url": "https://avatars.githubusercontent.com/u/18300178?v=4",
-      "profile": "https://github.com/myLifeAsaDog",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "Makohan",
-      "name": "mkin",
-      "avatar_url": "https://avatars.githubusercontent.com/u/32333141?v=4",
-      "profile": "https://github.com/Makohan",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "jay-es",
-      "name": "Jun Shindo",
-      "avatar_url": "https://avatars.githubusercontent.com/u/46585162?v=4",
-      "profile": "https://qiita.com/jay-es",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "kkeeth",
-      "name": "Keeth Kuwahara",
-      "avatar_url": "https://avatars.githubusercontent.com/u/4125257?v=4",
-      "profile": "https://speakerdeck.com/clown0082",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "oekazuma",
-      "name": "Kazuma Oe",
-      "avatar_url": "https://avatars.githubusercontent.com/u/29580221?v=4",
-      "profile": "https://github.com/oekazuma",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "Shunpoco",
-      "name": "Shunpoco",
-      "avatar_url": "https://avatars.githubusercontent.com/u/25903627?v=4",
-      "profile": "https://github.com/Shunpoco",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "ampcpmgp",
-      "name": "ampcpmgp",
-      "avatar_url": "https://avatars.githubusercontent.com/u/13173632?v=4",
-      "profile": "https://github.com/ampcpmgp",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "takoyaro",
-      "name": "Jimmy",
-      "avatar_url": "https://avatars.githubusercontent.com/u/54836677?v=4",
-      "profile": "https://github.com/takoyaro",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "jdkfx",
-      "name": "Haruki Tazoe",
-      "avatar_url": "https://avatars.githubusercontent.com/u/40142697?v=4",
-      "profile": "https://github.com/jdkfx",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "shin1127",
-      "name": "shin1127",
-      "avatar_url": "https://avatars.githubusercontent.com/u/56531152?v=4",
-      "profile": "https://shin1127.github.io/myPortfolio/",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "manak1",
-      "name": "manaki",
-      "avatar_url": "https://avatars.githubusercontent.com/u/32151765?v=4",
-      "profile": "https://twilink.click/mikeanakida",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "knj4484",
-      "name": "knj4484",
-      "avatar_url": "https://avatars.githubusercontent.com/u/11140280?v=4",
-      "profile": "https://github.com/knj4484",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "miily8310s",
-      "name": "miruoo",
-      "avatar_url": "https://avatars.githubusercontent.com/u/42486288?v=4",
-      "profile": "https://katanugramer.hatenablog.com/",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "mouse484",
-      "name": "mouse_484",
-      "avatar_url": "https://avatars.githubusercontent.com/u/38714187?v=4",
-      "profile": "https://portfolio.mouse484.tk/",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "dynamis",
-      "name": "dynamis",
-      "avatar_url": "https://avatars.githubusercontent.com/u/188166?v=4",
-      "profile": "http://dynamis.jp/",
-      "contributions": [
-        "financial",
-        "infra"
-      ]
-    },
-    {
-      "login": "Murayu0225",
-      "name": "Yu Muramatsu",
-      "avatar_url": "https://avatars.githubusercontent.com/u/37988559?v=4",
-      "profile": "https://github.com/Murayu0225",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "lunain84",
-      "name": "HirosuguTakeshita",
-      "avatar_url": "https://avatars.githubusercontent.com/u/52437973?v=4",
-      "profile": "https://qiita.com/fuwasegu",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "yamanoku",
-      "name": "Okuto Oyama",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1996642?v=4",
-      "profile": "https://yamanoku.net/",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "baseballyama",
-      "name": "Yuichiro Yamashita",
-      "avatar_url": "https://avatars.githubusercontent.com/u/19153718?v=4",
-      "profile": "https://github.com/baseballyama",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "nullnyat",
-      "name": "Nullcat chan!",
-      "avatar_url": "https://avatars.githubusercontent.com/u/89781396?v=4",
-      "profile": "https://keybase.io/nullnyat",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "komura-c",
-      "name": "Yuki Ishii",
-      "avatar_url": "https://avatars.githubusercontent.com/u/37304826?v=4",
-      "profile": "https://github.com/komura-c",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "torish14",
-      "name": "torish14",
-      "avatar_url": "https://avatars.githubusercontent.com/u/49876561?v=4",
-      "profile": "https://sukimakakumei.co.jp/",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "kokko-san",
-      "name": "kokko-san",
-      "avatar_url": "https://avatars.githubusercontent.com/u/36446753?v=4",
-      "profile": "https://github.com/kokko-san",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "ota-meshi",
-      "name": "Yosuke Ota",
-      "avatar_url": "https://avatars.githubusercontent.com/u/16508807?v=4",
-      "profile": "https://ota-meshi.github.io/",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "mitsu-ksgr",
-      "name": "mitsu-ksgr",
-      "avatar_url": "https://avatars.githubusercontent.com/u/3091232?v=4",
-      "profile": "http://mitsu-ksgr.github.io/",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "tatsuyafw",
-      "name": "Tatsuya Hoshino",
-      "avatar_url": "https://avatars.githubusercontent.com/u/1162665?v=4",
-      "profile": "http://tatsuyafw.hatenablog.jp/",
-      "contributions": [
-        "doc"
-      ]
-    }
-  ],
-  "contributorsPerLine": 7
+	"projectName": "svelte-site-jp",
+	"projectOwner": "svelte-jp",
+	"repoType": "github",
+	"repoHost": "https://github.com",
+	"files": ["README.md"],
+	"imageSize": 100,
+	"commit": false,
+	"commitConvention": "angular",
+	"contributors": [
+		{
+			"login": "tomoam",
+			"name": "tomoam",
+			"avatar_url": "https://avatars.githubusercontent.com/u/29677552?v=4",
+			"profile": "https://github.com/tomoam",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "myLifeAsaDog",
+			"name": "myLifeAsaDog",
+			"avatar_url": "https://avatars.githubusercontent.com/u/18300178?v=4",
+			"profile": "https://github.com/myLifeAsaDog",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "Makohan",
+			"name": "mkin",
+			"avatar_url": "https://avatars.githubusercontent.com/u/32333141?v=4",
+			"profile": "https://github.com/Makohan",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "jay-es",
+			"name": "Jun Shindo",
+			"avatar_url": "https://avatars.githubusercontent.com/u/46585162?v=4",
+			"profile": "https://qiita.com/jay-es",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "kkeeth",
+			"name": "Keeth Kuwahara",
+			"avatar_url": "https://avatars.githubusercontent.com/u/4125257?v=4",
+			"profile": "https://speakerdeck.com/clown0082",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "oekazuma",
+			"name": "Kazuma Oe",
+			"avatar_url": "https://avatars.githubusercontent.com/u/29580221?v=4",
+			"profile": "https://github.com/oekazuma",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "Shunpoco",
+			"name": "Shunpoco",
+			"avatar_url": "https://avatars.githubusercontent.com/u/25903627?v=4",
+			"profile": "https://github.com/Shunpoco",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "ampcpmgp",
+			"name": "ampcpmgp",
+			"avatar_url": "https://avatars.githubusercontent.com/u/13173632?v=4",
+			"profile": "https://github.com/ampcpmgp",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "takoyaro",
+			"name": "Jimmy",
+			"avatar_url": "https://avatars.githubusercontent.com/u/54836677?v=4",
+			"profile": "https://github.com/takoyaro",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "jdkfx",
+			"name": "Haruki Tazoe",
+			"avatar_url": "https://avatars.githubusercontent.com/u/40142697?v=4",
+			"profile": "https://github.com/jdkfx",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "shin1127",
+			"name": "shin1127",
+			"avatar_url": "https://avatars.githubusercontent.com/u/56531152?v=4",
+			"profile": "https://shin1127.github.io/myPortfolio/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "manak1",
+			"name": "manaki",
+			"avatar_url": "https://avatars.githubusercontent.com/u/32151765?v=4",
+			"profile": "https://twilink.click/mikeanakida",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "knj4484",
+			"name": "knj4484",
+			"avatar_url": "https://avatars.githubusercontent.com/u/11140280?v=4",
+			"profile": "https://github.com/knj4484",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "miily8310s",
+			"name": "miruoo",
+			"avatar_url": "https://avatars.githubusercontent.com/u/42486288?v=4",
+			"profile": "https://katanugramer.hatenablog.com/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "mouse484",
+			"name": "mouse_484",
+			"avatar_url": "https://avatars.githubusercontent.com/u/38714187?v=4",
+			"profile": "https://portfolio.mouse484.tk/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "dynamis",
+			"name": "dynamis",
+			"avatar_url": "https://avatars.githubusercontent.com/u/188166?v=4",
+			"profile": "http://dynamis.jp/",
+			"contributions": ["financial", "infra"]
+		},
+		{
+			"login": "Murayu0225",
+			"name": "Yu Muramatsu",
+			"avatar_url": "https://avatars.githubusercontent.com/u/37988559?v=4",
+			"profile": "https://github.com/Murayu0225",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "lunain84",
+			"name": "HirosuguTakeshita",
+			"avatar_url": "https://avatars.githubusercontent.com/u/52437973?v=4",
+			"profile": "https://qiita.com/fuwasegu",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "yamanoku",
+			"name": "Okuto Oyama",
+			"avatar_url": "https://avatars.githubusercontent.com/u/1996642?v=4",
+			"profile": "https://yamanoku.net/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "baseballyama",
+			"name": "Yuichiro Yamashita",
+			"avatar_url": "https://avatars.githubusercontent.com/u/19153718?v=4",
+			"profile": "https://github.com/baseballyama",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "nullnyat",
+			"name": "Nullcat chan!",
+			"avatar_url": "https://avatars.githubusercontent.com/u/89781396?v=4",
+			"profile": "https://keybase.io/nullnyat",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "komura-c",
+			"name": "Yuki Ishii",
+			"avatar_url": "https://avatars.githubusercontent.com/u/37304826?v=4",
+			"profile": "https://github.com/komura-c",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "torish14",
+			"name": "torish14",
+			"avatar_url": "https://avatars.githubusercontent.com/u/49876561?v=4",
+			"profile": "https://sukimakakumei.co.jp/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "kokko-san",
+			"name": "kokko-san",
+			"avatar_url": "https://avatars.githubusercontent.com/u/36446753?v=4",
+			"profile": "https://github.com/kokko-san",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "ota-meshi",
+			"name": "Yosuke Ota",
+			"avatar_url": "https://avatars.githubusercontent.com/u/16508807?v=4",
+			"profile": "https://ota-meshi.github.io/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "mitsu-ksgr",
+			"name": "mitsu-ksgr",
+			"avatar_url": "https://avatars.githubusercontent.com/u/3091232?v=4",
+			"profile": "http://mitsu-ksgr.github.io/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "tatsuyafw",
+			"name": "Tatsuya Hoshino",
+			"avatar_url": "https://avatars.githubusercontent.com/u/1162665?v=4",
+			"profile": "http://tatsuyafw.hatenablog.jp/",
+			"contributions": ["doc"]
+		},
+		{
+			"login": "shuuji3",
+			"name": "TAKAHASHI Shuuji",
+			"avatar_url": "https://avatars.githubusercontent.com/u/1425259?v=4",
+			"profile": "https://shuuji3.xyz/",
+			"contributions": ["doc"]
+		}
+	],
+	"contributorsPerLine": 7
 }
+
