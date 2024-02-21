@@ -10,11 +10,11 @@ title: Making an app
 npm create svelte@latest myapp
 ```
 
-また、[コミュニティによってメンテナンスされているインテグレーション](https://sveltesociety.dev/tools) も多数ございます。
+また、[コミュニティによってメンテナンスされているインテグレーション](https://sveltesociety.dev/packages?category=bundler-plugins) も多数ございます。
 
 もしWeb開発にあまり慣れておらずこういったツールを使ったことがなくてもご安心ください。順を追って段階的に進められるシンプルなガイド[Svelte for new developers](/blog/svelte-for-new-developers)をご用意しています。
 
-また、テキストエディタの設定もしておくと良いでしょう。公式の[VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)はもちろん、他のエディタ向けにも[プラグイン](https://sveltesociety.dev/tools#editor-support) があります。
+また、テキストエディタの設定もしておくと良いでしょう。公式の[VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)はもちろん、他のエディタ向けにも[プラグイン](https://sveltesociety.dev/resources#editor-support) があります。
 
 <!--
 NOTE: Removed until we have better place for setting-up-your-editor guide. See https://github.com/sveltejs/svelte/pull/7310#issuecomment-1049923609

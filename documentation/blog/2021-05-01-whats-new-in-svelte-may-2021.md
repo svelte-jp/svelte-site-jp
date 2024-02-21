@@ -54,7 +54,7 @@ authorURL: https://dreamindani.com
 - [Sveltekit-JUI](https://github.com/Wolfr/sveltekit-jui) は Svelte および SvelteKit と組み合わせて使用するUIコンポーネントキットです
 - [EZGesture](https://github.com/mhmd-22/ezgesture#integrating-with-other-frameworks) は、シンプルなネイティブDOMイベントでジェスチャー機能を簡単に追加することができます
 
-**自分のコンポーネントを投稿してみたいですか？** [このファイルに対するPR](https://github.com/svelte-society/sveltesociety.dev/blob/master/src/pages/components/components.json) を作成し、[コンポーネント](https://sveltesociety.dev/components) を Svelte Society site に提出してください。
+**あなたが作成したコンポーネントをコントリビュートしたいですか?** [あなたが作成したコンポーネントを Svelte Society のサイトから提出](https://sveltesociety.dev/help/submitting?type=package)して頂ければ、[パッケージ](https://sveltesociety.dev/packages)のリストに追加することができます。
 
 **Starters**
 - [How to use Vercel Analytics with SvelteKit](https://ivoberger.com/posts/using-vercel-analytics-with-svelte-kit) では、ユーザーのデバイス間で Web Vitals をトラッキングする方法を説明しています

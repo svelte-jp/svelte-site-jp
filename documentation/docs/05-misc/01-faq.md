@@ -65,7 +65,7 @@ Note: コンポーネントについて記述する HTML コメントには `@co
 
 ## UI コンポーネントライブラリはありますか？ <!--is-there-a-ui-component-library-->
 
-単独のコンポーネントだけではなく、いくつかの UI コンポーネントライブラリがあります。Svelte Society Web サイトの [components ページの design systems section](https://sveltesociety.dev/components#design-systems) で探してみてください。
+単独のコンポーネントだけではなく、いくつかの UI コンポーネントライブラリがあります。Svelte Society Web サイトの [components ページの design systems section](https://sveltesociety.dev/packages?category=design-system) で探してみてください。
 
 ## Svelte アプリをテストするにはどうすればよいですか？ <!--how-do-i-test-svelte-apps-->
 
@@ -100,7 +100,7 @@ _End-to-End Tests_: ユーザーがアプリケーションを操作できるこ
 
 [Routify](https://routify.dev) は SvelteKit のルーターによく似たファイルシステムベースのルーターです。Version 3 は Svelte のネイティブな SSR をサポートしています。
 
-[コミュニティがメンテナンスしているルーターのリストが sveltesociety.dev にあります](https://sveltesociety.dev/components#routers)ので、ご覧ください。
+[コミュニティがメンテナンスしているルーターのリストが sveltesociety.dev にあります](https://sveltesociety.dev/packages?category=routers)ので、ご覧ください。
 
 ## 未使用のスタイルを削除しないようにすることはできますか？ <!--can-i-tell-svelte-not-to-remove-my-unused-styles-->
 

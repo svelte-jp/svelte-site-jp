@@ -1,5 +1,29 @@
 # svelte
 
+## 4.2.10
+
+### Patch Changes
+
+- fix: add `scrollend` event type ([#10336](https://github.com/sveltejs/svelte/pull/10336))
+
+- fix: add `fetchpriority` attribute type ([#10390](https://github.com/sveltejs/svelte/pull/10390))
+
+- fix: Add `miter-clip` and `arcs` to `stroke-linejoin` attribute ([#10377](https://github.com/sveltejs/svelte/pull/10377))
+
+- fix: make inline doc links valid ([#10366](https://github.com/sveltejs/svelte/pull/10366))
+
+## 4.2.9
+
+### Patch Changes
+
+- fix: add types for popover attributes and events ([#10042](https://github.com/sveltejs/svelte/pull/10042))
+
+- fix: add `gamepadconnected` and `gamepaddisconnected` events ([#9864](https://github.com/sveltejs/svelte/pull/9864))
+
+- fix: make `@types/estree` a dependency ([#10149](https://github.com/sveltejs/svelte/pull/10149))
+
+- fix: bump `axobject-query` ([#10167](https://github.com/sveltejs/svelte/pull/10167))
+
 ## 4.2.8
 
 ### Patch Changes

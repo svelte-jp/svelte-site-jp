@@ -23,11 +23,11 @@ SvelteKit は [Svelte コンパイラ](https://www.npmjs.com/package/svelte) を
 
 もし何らかの理由で SvelteKit を使いたくない場合は、`npm create vite@latest` を実行して `svelte` オプションを選択することで、Vite を (SvelteKit なしで) Svelte と使用することもできます。この場合、`npm run build` を実行すると `dist` ディレクトリの中に HTML、JS、CSS ファイルが生成されます。この場合はほとんどのケースで[ルーティングライブラリの選択](/faq#is-there-a-router)も必要になるでしょう。
 
-他には、Svelte のコンパイルを扱うことができる[全ての主要な web バンドラ向けのプラグイン](https://sveltesociety.dev/tools#bundling)があり、HTML に挿入することができる `.js` と `.css` を出力することができますが、そのほとんどは SSR を処理しません。
+他には、Svelte のコンパイルを扱うことができる[全ての主要な web バンドラ向けのプラグイン](https://sveltesociety.dev/packages?category=bundler-plugins)があり、HTML に挿入することができる `.js` と `.css` を出力することができますが、そのほとんどは SSR を処理しません。
 
 ## エディタツール <!--editor-tooling-->
 
-Svelte チームは [VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) をメンテナンスしておりますが、その他様々な[エディタ](https://sveltesociety.dev/tools#editor-support)やツールとのインテグレーションがあります。
+Svelte チームは [VS Code extension](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) をメンテナンスしておりますが、その他様々な[エディタ](https://sveltesociety.dev/resources#editor-support)やツールとのインテグレーションがあります。
 
 ## ヘルプを求めるには <!--getting-help-->
 

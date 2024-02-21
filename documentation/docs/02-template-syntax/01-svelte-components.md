@@ -18,7 +18,7 @@ title: Svelte components
 </style>
 ```
 
-## &lt;script&gt;
+## `<script>`
 
 `<script>` ブロックは、コンポーネントのインスタンスが生成されるときに実行される JavaScript を含みます。トップレベルで宣言（またはインポート）された変数は、そのコンポーネントのマークアップから '見る' ことができます。 `<script>` には、4つのルールがあります。
 
@@ -250,7 +250,7 @@ _ストアコントラクト(store contract)_ を実装すれば、[`svelte/stor
 
 RxJS の Observables との相互運用性のため、`.subscribe` メソッドはサブスクリプションを解除する関数を直接返すのではなく、`.unsubscribe` メソッドを持つオブジェクトを返すこともできます。ただし、`.subscribe` が同期的にサブスクリプションを呼び出さない限り(これはObservableの仕様で要求されていませんが)、サブスクリプションを呼び出すまでは、Svelte がストアの値を `undefined` とみなすことに注意してください。
 
-## &lt;script context="module"&gt;
+## `<script context="module">`
 
 `context="module"` 属性をもつ `<script>` タグは、コンポーネントインスタンスごとではなく、モジュールが最初に評価するときに1回実行されます。このブロックで宣言された値は、通常の `<script>`（およびコンポーネントのマークアップ）からアクセスできますが、その逆はできません。
 
@@ -277,7 +277,7 @@ RxJS の Observables との相互運用性のため、`.subscribe` メソッド�
 </script>
 ```
 
-## &lt;style&gt;
+## `<style>`
 
 `<style>` ブロック内の CSS は、そのコンポーネントにスコープされます。
 

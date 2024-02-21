@@ -2,7 +2,7 @@
 title: 'svelte/compiler'
 ---
 
-通常、Svelte コンパイラと直接やり取りすることはありません。その代わり、バンドラープラグイン(bundler plugin)を使ってビルドシステムにインテグレートします。Svelte チームが最も推奨している、また注力もしているバンドラープラグインは [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) です。[SvelteKit](https://kit.svelte.jp/) フレームワークは `vite-plugin-svelte` を活用し、アプリケーションをビルドするためのセットアップと、[Svelte コンポーネントライブラリをパッケージングするツール](https://kit.svelte.jp/docs/packaging)を提供しています。Svelte Society には、Rollup や Webpack などのツール向けの [その他のバンドラープラグイン](https://sveltesociety.dev/tools/#bundling) のリストがあります。
+通常、Svelte コンパイラと直接やり取りすることはありません。その代わり、バンドラープラグイン(bundler plugin)を使ってビルドシステムにインテグレートします。Svelte チームが最も推奨している、また注力もしているバンドラープラグインは [vite-plugin-svelte](https://github.com/sveltejs/vite-plugin-svelte) です。[SvelteKit](https://kit.svelte.jp/) フレームワークは `vite-plugin-svelte` を活用し、アプリケーションをビルドするためのセットアップと、[Svelte コンポーネントライブラリをパッケージングするツール](https://kit.svelte.jp/docs/packaging)を提供しています。Svelte Society には、Rollup や Webpack などのツール向けの [その他のバンドラープラグイン](https://sveltesociety.dev/packages?category=bundler-plugins) のリストがあります。
 
 とはいえ、バンドラープラグインは一般的にコンパイラのオプションを公開しているので、コンパイラの使い方を理解しておくと便利です。
 
@@ -74,7 +74,7 @@ const ast = parse(source, { filename: 'App.svelte' });
 
 > EXPORT_SNIPPET: svelte/compiler#preprocess
 
-Svelte で TypeScript、PostCSS、SCSS、Less などのツールを利用できるようにするための [コミュニティでメンテナンスされているプリプロセッサプラグイン](https://sveltesociety.dev/tools#preprocessors) が多数用意されています。
+Svelte で TypeScript、PostCSS、SCSS、Less などのツールを利用できるようにするための [コミュニティでメンテナンスされているプリプロセッサプラグイン](https://sveltesociety.dev/packages?category=preprocessors) が多数用意されています。
 
 `svelte.preprocess` API を使って独自のプリプロセッサを書くことができます。
 
