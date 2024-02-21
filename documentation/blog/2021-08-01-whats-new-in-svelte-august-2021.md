@@ -76,7 +76,7 @@ SvelteKit のすべてのアップデートを確認するには、[SvelteKit �
 - [Kahi UI](https://github.com/novacbn/kahi-ui) はダークモードが組み込まれた Svelte 初の UI Kit です。
 - [typesafe-i18n](https://github.com/ivanhofer/typesafe-i18n) は、 TypeScript や JavaScript プロジェクトのための、独断的で、完全に型安全な軽量ローカリゼーションライブラリで、外部依存はありません。
 
-コミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates/) では、Svelte エコシステム全体からの templates、adders、adapters をご覧いただけます。
+コミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates) では、Svelte エコシステム全体からの templates、adders、adapters をご覧いただけます。
 
 ## See you next month!
 

@@ -98,7 +98,7 @@ SvelteKitのすべての更新を確認するには、[SvelteKitのChangelog](ht
 - [focus-svelte](https://github.com/chanced/focus-svelte)は、依存関係をもたないSvelte用のフォーカストラップです
 - [filedrop-svelte](https://github.com/chanced/filedrop-svelte)は、Svelte用のファイルドロップゾーンのアクションとコンポーネントです
 
-コミュニティサイト[sveltesociety.dev](https://sveltesociety.dev/templates/)には、Svelteエコシステムのテンプレート、アダー、アダプタが多数掲載されていますので、ぜひご覧ください。
+コミュニティサイト[sveltesociety.dev](https://sveltesociety.dev/templates)には、Svelteエコシステムのテンプレート、アダー、アダプタが多数掲載されていますので、ぜひご覧ください。
 
 ## Before you go, answer the call for speakers!
 

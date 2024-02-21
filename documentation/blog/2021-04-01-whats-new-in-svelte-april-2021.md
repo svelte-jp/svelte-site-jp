@@ -52,7 +52,7 @@ authorURL: https://dreamindani.com
 - [svelte-formly](https://github.com/arabdevelop/svelte-formly) はSvelteとSapper向けに動的なフォームを生成します。
 - [7ty](https://www.npmjs.com/package/@jamcart/7ty) はSvelteを使用した静的サイトジェネレーターで、コンポーネントの部分的なハイドレーションをサポートし、Sapperや11tyに似たファイルベースルーティングを使用します。
 
-**自分のコンポーネントを投稿してみたいですか？** [このファイルに対するPR](https://github.com/svelte-society/sveltesociety.dev/blob/master/src/pages/components/components.json) を作成し、[コンポーネント](https://sveltesociety.dev/components) を Svelte Society site に提出してください。
+**あなたが作成したコンポーネントをコントリビュートしたいですか?** [あなたが作成したコンポーネントを Svelte Society のサイトから提出](https://sveltesociety.dev/help/submitting?type=package)して頂ければ、[パッケージ](https://sveltesociety.dev/packages)のリストに追加することができます。
 
 **スターター(Starters)**
 
@@ -60,7 +60,7 @@ authorURL: https://dreamindani.com
 - [sveltekit-tailwindcss-external-api](https://github.com/acidlake/sveltekit-tailwindcss-external-api) はTailwindCSSと外部のAPIを使用するSvelteプロジェクトを構築するために必要なことが全て揃っており、create-svelteで作られました。
 - [Sapper Netlify](https://www.npmjs.com/package/sapper-netlify) は Netlify functions 上で動作するSapper Projectです。
 
-**特定のスターターをお探しですか？** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、その他多数のテンプレート例をコミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates/) からチェックしてみてください。
+**特定のスターターをお探しですか？** [svelte-adders](https://github.com/svelte-add/svelte-adders) や、その他多数のテンプレート例をコミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates) からチェックしてみてください。
 
 **学習リソース**
 - [How to Build a Website with Svelte and SvelteKit](https://prismic.io/blog/svelte-sveltekit-tutorial) は新しいSvelteKitのセットアップを順を追って説明するチュートリアルです。

@@ -84,7 +84,7 @@ SvelteKitのすべてのアップデートを確認するには、[SvelteKit cha
 - [svelte-ionic-starter](https://github.com/Zettexe/svelte-ionic-starter) は、ライブリロードとiOS/Androidビルドターゲットを備えたSvelte + Ionic + CapacitorJSアプリ用のプロジェクトテンプレートです。
 - [demo-sveltekit-sanity](https://github.com/stephane-vanraes/demo-sveltekit-sanity/) は、オープンソースのReactCMSであるSvelteKitおよびSanityのスターターキットです。
 
-コミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates/) では、Svelte エコシステム全体からの templates、adders、adapters をご覧いただけます。
+コミュニティサイト [sveltesociety.dev](https://sveltesociety.dev/templates) では、Svelte エコシステム全体からの templates、adders、adapters をご覧いただけます。
 
 ## See you next month!
 

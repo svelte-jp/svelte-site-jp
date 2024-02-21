@@ -61,7 +61,7 @@ authorURL: https://dreamindani.com
 - [svelte-entity-store](https://www.npmjs.com/package/svelte-entity-store) は、エンティティオブジェクトのコレクションを保存するためのシンプルで汎用的なソリューションを提供します。
 - [svelte-animation-store](https://github.com/joshnuss/svelte-animation-store) は、Svelteのトゥイーンストアをベースにしたストアで、トゥイーンの一時停止、継続、リセット、リプレイ、リバース、スピード調整などを行うことができます。
 
-**自分のコンポーネントを投稿してみたいですか？** [このファイルに対するPR](https://github.com/svelte-society/sveltesociety.dev/blob/master/src/pages/components/components.json) を作成し、[コンポーネント](https://sveltesociety.dev/components) を Svelte Society site に提出してください。
+**あなたが作成したコンポーネントをコントリビュートしたいですか?** [あなたが作成したコンポーネントを Svelte Society のサイトから提出](https://sveltesociety.dev/help/submitting?type=package)して頂ければ、[パッケージ](https://sveltesociety.dev/packages)のリストに追加することができます。
 
 ## See you next month!
 
