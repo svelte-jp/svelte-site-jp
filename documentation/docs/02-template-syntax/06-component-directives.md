@@ -109,7 +109,7 @@ bind:property={variable}
 <Keypad bind:value={pin} />
 ```
 
-While Svelte props are reactive without binding, that reactivity only flows downward into the component by default. Using `bind:property` allows changes to the property from within the component to flow back up out of the component.
+Svelteのpropsはバインドをしなくてもリアクティブですが、そのリアクティビティはデフォルトでコンポーネントの下向きにしか流れません。`bind:property`を使用することで、コンポーネント内からプロパティへの変更をコンポーネントの外に戻すことができます。
 
 ## bind:this
 
