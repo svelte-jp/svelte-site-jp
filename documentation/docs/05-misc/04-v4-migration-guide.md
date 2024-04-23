@@ -18,9 +18,10 @@ title: Svelte 4 migration guide
 
 ## バンドラーのブラウザ条件
 
-ブラウザ用のフロントエンドバンドルをビルドする際、バンドラーは`browser`条件を指定する必要があります。SvelteKi とViteは自動的にこれを処理します。他のものを使っている場合、`onMount` のようなライフサイクルのコールバックが呼ばれないことがあります。
-- Rollupの場合は、`@rollup/plugin-node-resolve`プラグインのオプションで`browser: true`を設定することで行います。詳しくは[`rollup-plugin-svelte`](https://github.com/sveltejs/rollup-plugin-svelte/#usage) ドキュメントを参照してください。
-- wepbackでは、`"browser"`を`conditionNames`配列に追加します。また、`alias`を設定している場合は、それを更新する必要がある場合もあります。詳しくは [`svelte-loader`](https://github.com/sveltejs/svelte-loader#usage) のドキュメントを参照してください。
+ブラウザ用のフロントエンドバンドルをビルドするとき、バンドラーは`browser`条件を指定しなければならなくなりました。SvelteKitとViteは自動的にこれを処理します。他のものを使っている場合は、`onMount` のようなライフサイクルのコールバックが呼ばれないことがあるので、モジュールの解決設定を更新する必要があります。
+
+- Rollup の場合は、`@rollup/plugin-node-resolve`プラグインのオプションで`browser: true`を設定することで行います。詳しくは [`rollup-plugin-svelte`](https://github.com/sveltejs/rollup-plugin-svelte/#usage) ドキュメントを参照してください。
+- wepback では、`"browser"`を`conditionNames`配列に追加します。また、`alias`を設定している場合は、それを更新する必要があるかもしれない。詳しくは [`svelte-loader`](https://github.com/sveltejs/svelte-loader#usage) のドキュメントを参照してください。
 
 ([#8516](https://github.com/sveltejs/svelte/issues/8516))
 
