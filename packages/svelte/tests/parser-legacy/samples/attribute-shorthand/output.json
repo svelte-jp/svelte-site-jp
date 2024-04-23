@@ -1,0 +1,37 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 11,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 11,
+				"name": "div",
+				"attributes": [
+					{
+						"type": "Attribute",
+						"start": 5,
+						"end": 9,
+						"name": "id",
+						"value": [
+							{
+								"type": "AttributeShorthand",
+								"start": 6,
+								"end": 8,
+								"expression": {
+									"start": 6,
+									"end": 8,
+									"type": "Identifier",
+									"name": "id"
+								}
+							}
+						]
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

@@ -1,0 +1,33 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 42,
+		"children": [
+			{
+				"type": "Head",
+				"name": "svelte:head",
+				"start": 0,
+				"end": 42,
+				"attributes": [],
+				"children": [
+					{
+						"type": "Element",
+						"start": 13,
+						"end": 28,
+						"name": "style",
+						"attributes": [],
+						"children": [
+							{
+								"type": "Text",
+								"start": 20,
+								"end": 20,
+								"data": ""
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

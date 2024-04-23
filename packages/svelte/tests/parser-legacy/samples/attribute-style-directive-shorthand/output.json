@@ -1,0 +1,26 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 23,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 23,
+				"name": "div",
+				"attributes": [
+					{
+						"start": 5,
+						"end": 16,
+						"type": "StyleDirective",
+						"name": "color",
+						"modifiers": [],
+						"value": true
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

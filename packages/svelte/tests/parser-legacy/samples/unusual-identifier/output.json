@@ -1,0 +1,68 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 41,
+		"children": [
+			{
+				"type": "EachBlock",
+				"start": 0,
+				"end": 41,
+				"children": [
+					{
+						"type": "Element",
+						"start": 22,
+						"end": 33,
+						"name": "p",
+						"attributes": [],
+						"children": [
+							{
+								"type": "MustacheTag",
+								"start": 25,
+								"end": 29,
+								"expression": {
+									"type": "Identifier",
+									"start": 26,
+									"end": 28,
+									"loc": {
+										"start": {
+											"line": 2,
+											"column": 5
+										},
+										"end": {
+											"line": 2,
+											"column": 7
+										}
+									},
+									"name": "𐊧"
+								}
+							}
+						]
+					}
+				],
+				"context": {
+					"type": "Identifier",
+					"name": "𐊧",
+					"start": 17,
+					"end": 19
+				},
+				"expression": {
+					"type": "Identifier",
+					"start": 7,
+					"end": 13,
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 7
+						},
+						"end": {
+							"line": 1,
+							"column": 13
+						}
+					},
+					"name": "things"
+				}
+			}
+		]
+	}
+}

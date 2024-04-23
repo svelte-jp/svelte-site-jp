@@ -1,0 +1,42 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 37,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 37,
+				"name": "input",
+				"attributes": [
+					{
+						"start": 7,
+						"end": 36,
+						"type": "Action",
+						"name": "tooltip",
+						"modifiers": [],
+						"expression": {
+							"type": "Literal",
+							"start": 21,
+							"end": 34,
+							"loc": {
+								"start": {
+									"line": 1,
+									"column": 21
+								},
+								"end": {
+									"line": 1,
+									"column": 34
+								}
+							},
+							"value": "tooltip msg",
+							"raw": "'tooltip msg'"
+						}
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

@@ -1,0 +1,42 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 45,
+		"children": [
+			{
+				"type": "InlineComponent",
+				"start": 0,
+				"end": 45,
+				"name": "Component",
+				"attributes": [],
+				"children": [
+					{
+						"type": "Element",
+						"start": 11,
+						"end": 33,
+						"name": "div",
+						"attributes": [
+							{
+								"type": "Attribute",
+								"start": 16,
+								"end": 26,
+								"name": "slot",
+								"value": [
+									{
+										"start": 22,
+										"end": 25,
+										"type": "Text",
+										"raw": "foo",
+										"data": "foo"
+									}
+								]
+							}
+						],
+						"children": []
+					}
+				]
+			}
+		]
+	}
+}

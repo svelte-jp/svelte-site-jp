@@ -1,0 +1,71 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 51,
+		"children": [
+			{
+				"type": "IfBlock",
+				"start": 0,
+				"end": 51,
+				"expression": {
+					"type": "Identifier",
+					"start": 5,
+					"end": 8,
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 5
+						},
+						"end": {
+							"line": 1,
+							"column": 8
+						}
+					},
+					"name": "foo"
+				},
+				"children": [
+					{
+						"type": "Element",
+						"start": 11,
+						"end": 21,
+						"name": "p",
+						"attributes": [],
+						"children": [
+							{
+								"type": "Text",
+								"start": 14,
+								"end": 17,
+								"raw": "foo",
+								"data": "foo"
+							}
+						]
+					}
+				],
+				"else": {
+					"type": "ElseBlock",
+					"start": 29,
+					"end": 46,
+					"children": [
+						{
+							"type": "Element",
+							"start": 31,
+							"end": 45,
+							"name": "p",
+							"attributes": [],
+							"children": [
+								{
+									"type": "Text",
+									"start": 34,
+									"end": 41,
+									"raw": "not foo",
+									"data": "not foo"
+								}
+							]
+						}
+					]
+				}
+			}
+		]
+	}
+}

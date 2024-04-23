@@ -1,0 +1,68 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 50,
+		"children": [
+			{
+				"type": "EachBlock",
+				"start": 0,
+				"end": 50,
+				"children": [
+					{
+						"type": "Element",
+						"start": 27,
+						"end": 42,
+						"name": "p",
+						"attributes": [],
+						"children": [
+							{
+								"type": "MustacheTag",
+								"start": 30,
+								"end": 38,
+								"expression": {
+									"type": "Identifier",
+									"start": 31,
+									"end": 37,
+									"loc": {
+										"start": {
+											"line": 2,
+											"column": 5
+										},
+										"end": {
+											"line": 2,
+											"column": 11
+										}
+									},
+									"name": "animal"
+								}
+							}
+						]
+					}
+				],
+				"context": {
+					"type": "Identifier",
+					"name": "animal",
+					"start": 18,
+					"end": 24
+				},
+				"expression": {
+					"type": "Identifier",
+					"start": 7,
+					"end": 14,
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 7
+						},
+						"end": {
+							"line": 1,
+							"column": 14
+						}
+					},
+					"name": "animals"
+				}
+			}
+		]
+	}
+}

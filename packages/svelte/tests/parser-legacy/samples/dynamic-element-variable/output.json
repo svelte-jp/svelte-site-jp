@@ -1,0 +1,80 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 101,
+		"children": [
+			{
+				"type": "Element",
+				"name": "svelte:element",
+				"start": 0,
+				"end": 44,
+				"tag": {
+					"type": "Identifier",
+					"start": 22,
+					"end": 25,
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 22
+						},
+						"end": {
+							"line": 1,
+							"column": 25
+						}
+					},
+					"name": "tag"
+				},
+				"attributes": [],
+				"children": []
+			},
+			{
+				"type": "Text",
+				"start": 44,
+				"end": 45,
+				"raw": "\n",
+				"data": "\n"
+			},
+			{
+				"type": "Element",
+				"name": "svelte:element",
+				"start": 45,
+				"end": 101,
+				"tag": {
+					"type": "Identifier",
+					"start": 67,
+					"end": 70,
+					"loc": {
+						"start": {
+							"line": 2,
+							"column": 22
+						},
+						"end": {
+							"line": 2,
+							"column": 25
+						}
+					},
+					"name": "tag"
+				},
+				"attributes": [
+					{
+						"type": "Attribute",
+						"start": 72,
+						"end": 83,
+						"name": "class",
+						"value": [
+							{
+								"start": 79,
+								"end": 82,
+								"type": "Text",
+								"raw": "foo",
+								"data": "foo"
+							}
+						]
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

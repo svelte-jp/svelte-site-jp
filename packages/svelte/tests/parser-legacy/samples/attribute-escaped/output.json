@@ -1,0 +1,33 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 83,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 83,
+				"name": "div",
+				"attributes": [
+					{
+						"type": "Attribute",
+						"start": 5,
+						"end": 76,
+						"name": "data-foo",
+						"value": [
+							{
+								"start": 15,
+								"end": 75,
+								"type": "Text",
+								"raw": "semi:&quot;space:&quot letter:&quote number:&quot1 end:&quot",
+								"data": "semi:\"space:\" letter:&quote number:&quot1 end:\""
+							}
+						]
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

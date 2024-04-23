@@ -1,0 +1,79 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 70,
+		"children": [
+			{
+				"type": "EachBlock",
+				"start": 0,
+				"end": 70,
+				"children": [
+					{
+						"type": "Element",
+						"start": 33,
+						"end": 62,
+						"name": "div",
+						"attributes": [
+							{
+								"start": 38,
+								"end": 50,
+								"type": "Animation",
+								"name": "flip",
+								"modifiers": [],
+								"expression": null
+							}
+						],
+						"children": [
+							{
+								"type": "Text",
+								"start": 51,
+								"end": 56,
+								"raw": "flips",
+								"data": "flips"
+							}
+						]
+					}
+				],
+				"context": {
+					"type": "Identifier",
+					"name": "thing",
+					"start": 17,
+					"end": 22
+				},
+				"expression": {
+					"type": "Identifier",
+					"start": 7,
+					"end": 13,
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 7
+						},
+						"end": {
+							"line": 1,
+							"column": 13
+						}
+					},
+					"name": "things"
+				},
+				"key": {
+					"type": "Identifier",
+					"start": 24,
+					"end": 29,
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 24
+						},
+						"end": {
+							"line": 1,
+							"column": 29
+						}
+					},
+					"name": "thing"
+				}
+			}
+		]
+	}
+}

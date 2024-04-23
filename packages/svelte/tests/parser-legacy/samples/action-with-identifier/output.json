@@ -1,0 +1,41 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 29,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 29,
+				"name": "input",
+				"attributes": [
+					{
+						"start": 7,
+						"end": 28,
+						"type": "Action",
+						"name": "tooltip",
+						"modifiers": [],
+						"expression": {
+							"type": "Identifier",
+							"start": 20,
+							"end": 27,
+							"loc": {
+								"start": {
+									"line": 1,
+									"column": 20
+								},
+								"end": {
+									"line": 1,
+									"column": 27
+								}
+							},
+							"name": "message"
+						}
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

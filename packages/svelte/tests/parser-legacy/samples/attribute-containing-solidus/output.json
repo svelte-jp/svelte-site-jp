@@ -1,0 +1,41 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 41,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 41,
+				"name": "a",
+				"attributes": [
+					{
+						"type": "Attribute",
+						"start": 3,
+						"end": 30,
+						"name": "href",
+						"value": [
+							{
+								"start": 8,
+								"end": 30,
+								"type": "Text",
+								"raw": "https://www.google.com",
+								"data": "https://www.google.com"
+							}
+						]
+					}
+				],
+				"children": [
+					{
+						"type": "Text",
+						"start": 31,
+						"end": 37,
+						"raw": "Google",
+						"data": "Google"
+					}
+				]
+			}
+		]
+	}
+}

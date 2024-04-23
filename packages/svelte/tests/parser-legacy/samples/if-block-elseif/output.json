@@ -1,0 +1,161 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 89,
+		"children": [
+			{
+				"type": "IfBlock",
+				"start": 0,
+				"end": 89,
+				"expression": {
+					"type": "BinaryExpression",
+					"start": 5,
+					"end": 11,
+					"loc": {
+						"start": {
+							"line": 1,
+							"column": 5
+						},
+						"end": {
+							"line": 1,
+							"column": 11
+						}
+					},
+					"left": {
+						"type": "Identifier",
+						"start": 5,
+						"end": 6,
+						"loc": {
+							"start": {
+								"line": 1,
+								"column": 5
+							},
+							"end": {
+								"line": 1,
+								"column": 6
+							}
+						},
+						"name": "x"
+					},
+					"operator": ">",
+					"right": {
+						"type": "Literal",
+						"start": 9,
+						"end": 11,
+						"loc": {
+							"start": {
+								"line": 1,
+								"column": 9
+							},
+							"end": {
+								"line": 1,
+								"column": 11
+							}
+						},
+						"value": 10,
+						"raw": "10"
+					}
+				},
+				"children": [
+					{
+						"type": "Element",
+						"start": 14,
+						"end": 41,
+						"name": "p",
+						"attributes": [],
+						"children": [
+							{
+								"type": "Text",
+								"start": 17,
+								"end": 37,
+								"raw": "x is greater than 10",
+								"data": "x is greater than 10"
+							}
+						]
+					}
+				],
+				"else": {
+					"type": "ElseBlock",
+					"start": 58,
+					"end": 84,
+					"children": [
+						{
+							"type": "IfBlock",
+							"start": 58,
+							"end": 89,
+							"expression": {
+								"type": "BinaryExpression",
+								"start": 52,
+								"end": 57,
+								"loc": {
+									"start": {
+										"line": 3,
+										"column": 10
+									},
+									"end": {
+										"line": 3,
+										"column": 15
+									}
+								},
+								"left": {
+									"type": "Identifier",
+									"start": 52,
+									"end": 53,
+									"loc": {
+										"start": {
+											"line": 3,
+											"column": 10
+										},
+										"end": {
+											"line": 3,
+											"column": 11
+										}
+									},
+									"name": "x"
+								},
+								"operator": "<",
+								"right": {
+									"type": "Literal",
+									"start": 56,
+									"end": 57,
+									"loc": {
+										"start": {
+											"line": 3,
+											"column": 14
+										},
+										"end": {
+											"line": 3,
+											"column": 15
+										}
+									},
+									"value": 5,
+									"raw": "5"
+								}
+							},
+							"children": [
+								{
+									"type": "Element",
+									"start": 60,
+									"end": 83,
+									"name": "p",
+									"attributes": [],
+									"children": [
+										{
+											"type": "Text",
+											"start": 63,
+											"end": 79,
+											"raw": "x is less than 5",
+											"data": "x is less than 5"
+										}
+									]
+								}
+							],
+							"elseif": true
+						}
+					]
+				}
+			}
+		]
+	}
+}

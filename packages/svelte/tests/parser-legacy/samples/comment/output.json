@@ -1,0 +1,16 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 18,
+		"children": [
+			{
+				"type": "Comment",
+				"start": 0,
+				"end": 18,
+				"data": " a comment ",
+				"ignores": []
+			}
+		]
+	}
+}

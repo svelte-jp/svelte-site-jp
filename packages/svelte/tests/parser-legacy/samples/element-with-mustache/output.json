@@ -1,0 +1,53 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 22,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 22,
+				"name": "h1",
+				"attributes": [],
+				"children": [
+					{
+						"type": "Text",
+						"start": 4,
+						"end": 10,
+						"raw": "hello ",
+						"data": "hello "
+					},
+					{
+						"type": "MustacheTag",
+						"start": 10,
+						"end": 16,
+						"expression": {
+							"type": "Identifier",
+							"start": 11,
+							"end": 15,
+							"loc": {
+								"start": {
+									"line": 1,
+									"column": 11
+								},
+								"end": {
+									"line": 1,
+									"column": 15
+								}
+							},
+							"name": "name"
+						}
+					},
+					{
+						"type": "Text",
+						"start": 16,
+						"end": 17,
+						"raw": "!",
+						"data": "!"
+					}
+				]
+			}
+		]
+	}
+}

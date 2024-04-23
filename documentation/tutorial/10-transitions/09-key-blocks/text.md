@@ -6,9 +6,9 @@ Key ブロックは、式の値が変更されたときにその中身を破棄�
 
 ```svelte
 {#key number}
-  <span style="display: inline-block" in:fly={{ y: -20 }}>
-    {number}
-  </span>
+	<span style="display: inline-block" in:fly={{ y: -20 }}>
+		{number}
+	</span>
 {/key}
 ```
 

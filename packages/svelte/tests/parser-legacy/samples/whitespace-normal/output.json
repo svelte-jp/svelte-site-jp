@@ -1,0 +1,78 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 65,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 65,
+				"name": "h1",
+				"attributes": [],
+				"children": [
+					{
+						"type": "Text",
+						"start": 4,
+						"end": 10,
+						"raw": "Hello ",
+						"data": "Hello "
+					},
+					{
+						"type": "Element",
+						"start": 10,
+						"end": 35,
+						"name": "strong",
+						"attributes": [],
+						"children": [
+							{
+								"type": "MustacheTag",
+								"start": 18,
+								"end": 24,
+								"expression": {
+									"type": "Identifier",
+									"start": 19,
+									"end": 23,
+									"loc": {
+										"start": {
+											"line": 1,
+											"column": 19
+										},
+										"end": {
+											"line": 1,
+											"column": 23
+										}
+									},
+									"name": "name"
+								}
+							},
+							{
+								"type": "Text",
+								"start": 24,
+								"end": 26,
+								"raw": "! ",
+								"data": "! "
+							}
+						]
+					},
+					{
+						"type": "Element",
+						"start": 35,
+						"end": 60,
+						"name": "span",
+						"attributes": [],
+						"children": [
+							{
+								"type": "Text",
+								"start": 41,
+								"end": 53,
+								"raw": "How are you?",
+								"data": "How are you?"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

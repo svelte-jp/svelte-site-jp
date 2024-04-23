@@ -1,0 +1,39 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 22,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 22,
+				"name": "div",
+				"attributes": [
+					{
+						"type": "Spread",
+						"start": 5,
+						"end": 15,
+						"expression": {
+							"type": "Identifier",
+							"start": 9,
+							"end": 14,
+							"loc": {
+								"start": {
+									"line": 1,
+									"column": 9
+								},
+								"end": {
+									"line": 1,
+									"column": 14
+								}
+							},
+							"name": "props"
+						}
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

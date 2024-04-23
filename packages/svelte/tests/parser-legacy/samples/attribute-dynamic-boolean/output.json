@@ -1,0 +1,47 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 41,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 41,
+				"name": "textarea",
+				"attributes": [
+					{
+						"type": "Attribute",
+						"start": 10,
+						"end": 29,
+						"name": "readonly",
+						"value": [
+							{
+								"type": "MustacheTag",
+								"start": 19,
+								"end": 29,
+								"expression": {
+									"type": "Identifier",
+									"start": 20,
+									"end": 28,
+									"loc": {
+										"start": {
+											"line": 1,
+											"column": 20
+										},
+										"end": {
+											"line": 1,
+											"column": 28
+										}
+									},
+									"name": "readonly"
+								}
+							}
+						]
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

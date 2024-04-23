@@ -1,0 +1,33 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 23,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 23,
+				"name": "div",
+				"attributes": [
+					{
+						"type": "Attribute",
+						"start": 5,
+						"end": 16,
+						"name": "class",
+						"value": [
+							{
+								"start": 12,
+								"end": 15,
+								"type": "Text",
+								"raw": "foo",
+								"data": "foo"
+							}
+						]
+					}
+				],
+				"children": []
+			}
+		]
+	}
+}

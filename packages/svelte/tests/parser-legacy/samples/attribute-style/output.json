@@ -1,0 +1,41 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 34,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 34,
+				"name": "div",
+				"attributes": [
+					{
+						"type": "Attribute",
+						"start": 5,
+						"end": 24,
+						"name": "style",
+						"value": [
+							{
+								"start": 12,
+								"end": 23,
+								"type": "Text",
+								"raw": "color: red;",
+								"data": "color: red;"
+							}
+						]
+					}
+				],
+				"children": [
+					{
+						"type": "Text",
+						"start": 25,
+						"end": 28,
+						"raw": "red",
+						"data": "red"
+					}
+				]
+			}
+		]
+	}
+}

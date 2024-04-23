@@ -1,0 +1,25 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 24,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 24,
+				"name": "p",
+				"attributes": [],
+				"children": [
+					{
+						"type": "Text",
+						"start": 3,
+						"end": 20,
+						"raw": "Hello &amp; World",
+						"data": "Hello & World"
+					}
+				]
+			}
+		]
+	}
+}

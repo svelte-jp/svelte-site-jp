@@ -1,0 +1,84 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 14,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 14,
+				"name": "div",
+				"attributes": [],
+				"children": [
+					{
+						"type": "Text",
+						"start": 5,
+						"end": 8,
+						"raw": "foo",
+						"data": "foo"
+					}
+				]
+			},
+			{
+				"type": "Text",
+				"start": 14,
+				"end": 16,
+				"raw": "\n\n",
+				"data": "\n\n"
+			}
+		]
+	},
+	"css": {
+		"type": "Style",
+		"start": 16,
+		"end": 56,
+		"attributes": [],
+		"children": [
+			{
+				"type": "Rule",
+				"prelude": {
+					"type": "SelectorList",
+					"start": 25,
+					"end": 28,
+					"children": [
+						{
+							"type": "Selector",
+							"start": 25,
+							"end": 28,
+							"children": [
+								{
+									"type": "TypeSelector",
+									"name": "div",
+									"start": 25,
+									"end": 28
+								}
+							]
+						}
+					]
+				},
+				"block": {
+					"type": "Block",
+					"start": 29,
+					"end": 47,
+					"children": [
+						{
+							"type": "Declaration",
+							"start": 33,
+							"end": 43,
+							"property": "color",
+							"value": "red"
+						}
+					]
+				},
+				"start": 25,
+				"end": 47
+			}
+		],
+		"content": {
+			"start": 23,
+			"end": 48,
+			"styles": "\n\tdiv {\n\t\tcolor: red;\n\t}\n"
+		}
+	}
+}

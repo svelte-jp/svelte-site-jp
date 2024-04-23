@@ -1,0 +1,73 @@
+{
+	"html": {
+		"type": "Fragment",
+		"start": 0,
+		"end": 31,
+		"children": [
+			{
+				"type": "Element",
+				"start": 0,
+				"end": 31,
+				"name": "ul",
+				"attributes": [],
+				"children": [
+					{
+						"type": "Text",
+						"start": 4,
+						"end": 6,
+						"raw": "\n\t",
+						"data": "\n\t"
+					},
+					{
+						"type": "Element",
+						"start": 6,
+						"end": 13,
+						"name": "li",
+						"attributes": [],
+						"children": [
+							{
+								"type": "Text",
+								"start": 10,
+								"end": 13,
+								"raw": "a\n\t",
+								"data": "a\n\t"
+							}
+						]
+					},
+					{
+						"type": "Element",
+						"start": 13,
+						"end": 20,
+						"name": "li",
+						"attributes": [],
+						"children": [
+							{
+								"type": "Text",
+								"start": 17,
+								"end": 20,
+								"raw": "b\n\t",
+								"data": "b\n\t"
+							}
+						]
+					},
+					{
+						"type": "Element",
+						"start": 20,
+						"end": 26,
+						"name": "li",
+						"attributes": [],
+						"children": [
+							{
+								"type": "Text",
+								"start": 24,
+								"end": 26,
+								"raw": "c\n",
+								"data": "c\n"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}
