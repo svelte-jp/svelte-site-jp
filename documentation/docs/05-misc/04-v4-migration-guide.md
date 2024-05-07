@@ -6,7 +6,7 @@ title: Svelte 4 migration guide
 
 あなたがライブラリ作成者の場合は、Svelte4のみをサポートするか、Svelte3もサポートできるかどうかを検討してください。 重大な変更のほとんどは多くの人に影響を与えないので、これは簡単に実現できるかもしれません。また、`peerDependencies`のバージョン範囲も忘れずに更新してください。
 
-## 最低限必要なバージョン
+## 最低限必要なバージョン <!--minimum-version-requirements-->
 
 - Node16以上にアップグレードしてください。それ以下のバージョンはもうサポートされていません。([#8566](https://github.com/sveltejs/svelte/issues/8566))
 - SvelteKitを使用している場合、1.20.4以上にアップグレードしてください ([sveltejs/kit#10172](https://github.com/sveltejs/kit/pull/10172))
@@ -15,7 +15,7 @@ title: Svelte 4 migration guide
 - Rollupを使用している場合は、`rollup-plugin-svelte`7.1.5以上にアップグレードしてください ([198dbcf](https://github.com/sveltejs/svelte/commit/198dbcf))
 - TypeScriptを使用している場合は、TypeScript5以上にアップグレードしてください。それ以下のバージョンでも動作する可能性はありますが、保証はできません。([#8488](https://github.com/sveltejs/svelte/issues/8488))
 
-## バンドラーのブラウザ条件
+## バンドラーのブラウザ条件 <!--browser-conditions-for-bundlers-->
 
 ブラウザ用のフロントエンドバンドルをビルドするとき、バンドラーは`browser`条件を指定しなければならなくなりました。SvelteKitとViteは自動的にこれを処理します。他のものを使っている場合は、`onMount` のようなライフサイクルのコールバックが呼ばれないことがあるので、モジュールの解決設定を更新する必要があります。
 
@@ -24,11 +24,11 @@ title: Svelte 4 migration guide
 
 ([#8516](https://github.com/sveltejs/svelte/issues/8516))
 
-## CJS関連の出力の削除
+## CJS関連の出力の削除 <!--removal-of-cjs-related-output-->
 
 Svelteはコンパイラ出力としてCommonJS (CJS)フォーマットをサポートしなくなり、`svelte/register`フックとCJSランタイムバージョンも削除されました。CJS出力フォーマットをまだ使用する必要がある場合は、ビルド後のステップでSvelteのESM出力をCJSに変換するバンドラーの使用を検討してください。([#8613](https://github.com/sveltejs/svelte/issues/8613))
 
-## Svelteの関数のより厳密な型
+## Svelteの関数のより厳密な型 <!--stricter-types-for-svelte-functions-->
 
 `createEventDispatcher`、`Action`、`ActionReturn`、および`onMount`には、より厳密な型が追加されました。
 
@@ -79,7 +79,7 @@ onMount(
 );
 ```
 
-## Svelteを使用したカスタム要素
+## Svelteを使用したカスタム要素 <!--custom-elements-with-svelte-->
 
 Svelteでのカスタム要素の作成が大幅に改善されました。`tag`オプションは廃止され、新しい`customElement`オプションが採用されました：
 
@@ -90,7 +90,7 @@ Svelteでのカスタム要素の作成が大幅に改善されました。`tag`
 
 この変更は、高度なユースケースのための[より詳細な設定](custom-elements-api#component-options)を可能にするために行われました。移行スクリプトは、コードを自動的に調整します。プロパティの更新タイミングも若干変更されました。([#8457](https://github.com/sveltejs/svelte/issues/8457))
 
-## SvelteComponentTypedは非推奨です
+## SvelteComponentTypedは非推奨です <!--sveltecomponenttyped-is-deprecated-->
 
 `SvelteComponent`がすべての型付け機能を持つようになったため、`SvelteComponentTyped`は非推奨です。すべての`SvelteComponentTyped`インスタンスを`SvelteComponent`に置き換えてください。
 
@@ -124,7 +124,7 @@ Svelteでのカスタム要素の作成が大幅に改善されました。`tag`
 
 移行スクリプトは両方を自動的に実行します。 ([#8512](https://github.com/sveltejs/svelte/issues/8512))
 
-## トランジションはデフォルトでlocalになりました
+## トランジションはデフォルトでlocalになりました <!--transitions-are-local-by-default-->
 
 ページナビゲーションの混乱を防ぐため、トランジションはデフォルトでlocalになりました。"local"とは、ネストされたコントロールフローブロック（`each/if/await/key`）内にあり、直接の親ブロックではなく、その上のブロックが生成/破棄された場合にはトランジションが再生されないことを意味します。次の例では、`slide`のイントロアニメーションは、`success`が`false`から`true`になったときだけ再生されますが、`show`が`false`から`true`になったときは再生されません：
 
@@ -139,7 +139,7 @@ Svelteでのカスタム要素の作成が大幅に改善されました。`tag`
 
 トランジションをグローバルにするには、`|global`モディファイアを追加してください。そうすると、上記のいずれのコントロールフローブロックが作成/破棄されたときにもトランジションが再生されます。移行スクリプトは自動的にこれを行います。([#6686](https://github.com/sveltejs/svelte/issues/6686))
 
-## デフォルトのスロットバインディング
+## デフォルトのスロットバインディング <!--default-slot-bindings-->
 
 デフォルトのスロットバインディングが名前付きスロットに公開されることはなくなりました：
 
@@ -160,7 +160,7 @@ Svelteでのカスタム要素の作成が大幅に改善されました。`tag`
 
 例えば、デフォルトのスロットがリストにあって、指定されたスロットがそうでない場合、動作は未定義なので、これはスロットバインディングをより一貫性のあるものにします。([#6049](https://github.com/sveltejs/svelte/issues/6049))
 
-## プリプロセッサ
+## プリプロセッサ <!--preprocessors-->
 
 プリプロセッサの適用順序が変更されました。現在、プリプロセッサはマークアップ、スクリプト、スタイルの順に実行されます。
 
@@ -229,11 +229,11 @@ preprocess: [
 
 各プリプロセッサにも`name`が必要です。([#8618](https://github.com/sveltejs/svelte/issues/8618))
 
-## 新しいeslintパッケージ
+## 新しいeslintパッケージ <!--new-eslint-package-->
 
 `eslint-plugin-svelte3`は非推奨です。Svelte4ではまだ動くかもしれませんが、保証はしません。新しいパッケージ[eslint-plugin-svelte](https://github.com/sveltejs/eslint-plugin-svelte)に切り替えることをお勧めします。移行方法は[このGithubの投稿](https://github.com/sveltejs/kit/issues/10242#issuecomment-1610798405)を参照してください。あるいは、`npm create svelte@latest`を使って新しいプロジェクトを作成し、eslint (場合によってはTypeScriptも) オプションを選択して、関連ファイルを既存のプロジェクトにコピーすることもできます。
 
-## その他の変更点
+## その他の変更点 <!--other-breaking-changes-->
 
 - outroing要素に`inert`属性が適用されるようになり、支援技術から見えなくなり、インタラクションを防ぐことができるようになりました。([#8628](https://github.com/sveltejs/svelte/pull/8628))
 - ランタイムが`classList.toggle(name, boolean)`を使うようになりました。これらのブラウザをサポートする必要がある場合は、[polyfill](https://github.com/eligrey/classList.js) を使うことを検討してください。([#8629](https://github.com/sveltejs/svelte/issues/8629))
