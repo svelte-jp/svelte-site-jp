@@ -28,7 +28,7 @@ title: Svelte 4 migration guide
 
 Svelteはコンパイラ出力のCommonJS (CJS)フォーマットをサポートしなくなり、`svelte/register`フックとCJSランタイムバージョンも削除されました。CJS出力フォーマットを維持する必要がある場合は、ビルド後のステップでSvelteのESM出力をCJSに変換するバンドラーの使用を検討してください。([#8613](https://github.com/sveltejs/svelte/issues/8613))
 
-## Svelt関数のより厳密な型
+## Svelte関数のより厳密な型
 
 `createEventDispatcher`、`Action`、`ActionReturn`、および`onMount`には、より厳密なタイプが追加されました。
 
