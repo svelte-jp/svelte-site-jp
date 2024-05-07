@@ -153,6 +153,7 @@ slot は0回以上レンダリングすることができ、props を使って�
 マークアップのトップレベルに置くことはできません。また、無限ループを防ぐために、 `if` や `each` ブロックの内側に入れるか、コンポーネントの slot に渡す必要があります。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	/** @type {number} */
 	export let count;
@@ -219,6 +220,7 @@ Svelte がビルド時に処理する、要素タイプ固有のバインディ�
 `<svelte:self>` とは逆に、この要素はコンポーネントのトップレベルにのみ置くことができ、ブロックや要素の中に置くことはできません。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	/** @param {KeyboardEvent} event */
 	function handleKeydown(event) {

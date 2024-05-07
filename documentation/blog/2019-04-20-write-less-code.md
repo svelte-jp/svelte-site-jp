@@ -48,7 +48,7 @@ for (let i = 0; i <= 100; i += 1) if (i % 2 === 0) console.log(`${i} is even`);
 <div class="max">
 	<iframe
 		title="Simple component example"
-		src="/repl/embed?example=blog-write-less-code"
+		src="/repl/blog-write-less-code/embed?version=3"
 		scrolling="no"
 	></iframe>
 </div>

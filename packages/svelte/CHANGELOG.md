@@ -1,5 +1,41 @@
 # svelte
 
+## 4.2.16
+
+### Patch Changes
+
+- fix: check if svelte component exists on custom element destroy ([#11489](https://github.com/sveltejs/svelte/pull/11489))
+
+## 4.2.15
+
+### Patch Changes
+
+- support attribute selector inside :global() ([#11135](https://github.com/sveltejs/svelte/pull/11135))
+
+## 4.2.14
+
+### Patch Changes
+
+- fix parsing camelcase container query name ([#11131](https://github.com/sveltejs/svelte/pull/11131))
+
+## 4.2.13
+
+### Patch Changes
+
+- fix: applying :global for +,~ sibling combinator when slots are present ([#9282](https://github.com/sveltejs/svelte/pull/9282))
+
+## 4.2.12
+
+### Patch Changes
+
+- fix: properly update `svelte:component` props when there are spread props ([#10604](https://github.com/sveltejs/svelte/pull/10604))
+
+## 4.2.11
+
+### Patch Changes
+
+- fix: check that component wasn't instantiated in `connectedCallback` ([#10466](https://github.com/sveltejs/svelte/pull/10466))
+
 ## 4.2.10
 
 ### Patch Changes
