@@ -74,6 +74,7 @@ DOM イベントをリッスンするには `on:` ディレクティブを使用
 同じイベントに対して複数のイベントリスナを持つことができます。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	let counter = 0;
 	function increment() {
@@ -116,7 +117,7 @@ bind:property={variable}
 -->
 ```
 
-数値の入力値は強制されます。つまり、DOM に関する限り `input.value` は文字列ですが、Svelte はそれを数値として扱います。入力が empty や 無効な値の場合 (`type="number"` であれば) 値は `undefined` になります。
+数値の入力値は強制されます。つまり、DOM に関する限り `input.value` は文字列ですが、Svelte はそれを数値として扱います。入力が empty や 無効な値の場合 (`type="number"` であれば) 値は `null` になります。
 
 ```svelte
 <input type="number" bind:value={num} />
@@ -284,6 +285,7 @@ bind:group={variable}
 グループ化させる input には `bind:group` を使用できます。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	let tortilla = 'Plain';
 
@@ -315,6 +317,7 @@ bind:this={dom_node}
 DOM ノードを参照するには `bind:this` を使用します。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	import { onMount } from 'svelte';
 
@@ -420,6 +423,7 @@ action = (node: HTMLElement, parameters: any) => {
 action は、要素が作成されるときに呼び出される関数です。要素がアンマウントされるときに呼び出される `destroy` メソッドをもつオブジェクトを返すことができます。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	/** @type {import('svelte/action').Action}  */
 	function foo(node) {
@@ -441,6 +445,7 @@ action はパラメータを取ることができます。戻り値に `update` 
 > すべてのコンポーネントインスタンスに対して `foo` 関数を再宣言していることについて心配する必要はありません。Svelte は、ローカル状態に依存しない関数をコンポーネント定義から巻き上げます。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	export let bar;
 
@@ -558,6 +563,7 @@ action と同様に、トランジションはパラメータを持つことが�
 この関数はトランジションが始まる前に、`t` と `u` の引数を変えて繰り返し呼び出されます。
 
 ```svelte
+<!--- file: App.svelte --->
 <script>
 	import { elasticOut } from 'svelte/easing';
 
