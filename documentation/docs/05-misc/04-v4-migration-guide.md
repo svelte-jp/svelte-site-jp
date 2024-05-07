@@ -4,33 +4,33 @@ title: Svelte 4 migration guide
 
 この移行ガイドでは、Svelteバージョン3から4に移行する方法の概要を説明します。各変更の詳細については、リンクされたPRを参照してください。 移行スクリプトを使用して、これらの一部を自動的に移行します: `npx svelte-migrate@latest svelte-4`
 
-あなたがライブラリ作成者の場合は、Svelte4のみをサポートするか、Svelte3もサポートできるかどうかを検討してください。 重大な変更のほとんどは多くの人に影響を与えないので、これは簡単に可能かもしれません。また、`peerDependencies`のバージョン範囲も忘れずに更新してください。
+あなたがライブラリ作成者の場合は、Svelte4のみをサポートするか、Svelte3もサポートできるかどうかを検討してください。 重大な変更のほとんどは多くの人に影響を与えないので、これは簡単に実現できるかもしれません。また、`peerDependencies`のバージョン範囲も忘れずに更新してください。
 
 ## 最低限必要なバージョン
 
-- Node16以上にアップグレードしてください。それ以前のバージョンはもうサポートされていません。([#8566](https://github.com/sveltejs/svelte/issues/8566))
-- SvelteKitを使用している場合、1.20.4以降にアップグレードしてください ([sveltejs/kit#10172](https://github.com/sveltejs/kit/pull/10172))
-- SvelteKit を使わずに Vite を使っている場合は、`vite-plugin-svelte`2.4.1以降にアップグレードしてください ([#8516](https://github.com/sveltejs/svelte/issues/8516))
-- webpackを使用している場合は、webpack5以降と `svelte-loader`3.1.8以降にアップグレードしてください。それ以前のバージョンはサポートされなくなりました。([#8515](https://github.com/sveltejs/svelte/issues/8515), [198dbcf](https://github.com/sveltejs/svelte/commit/198dbcf))
-- Rollupを使用している場合は、`rollup-plugin-svelte`7.1.5以降にアップグレードしてください ([198dbcf](https://github.com/sveltejs/svelte/commit/198dbcf))
-- TypeScriptを使用している場合は、TypeScript5以降にアップグレードしてください。それ以下のバージョンでも動作する可能性はありますが、保証はできません。([#8488](https://github.com/sveltejs/svelte/issues/8488))
+- Node16以上にアップグレードしてください。それ以下のバージョンはもうサポートされていません。([#8566](https://github.com/sveltejs/svelte/issues/8566))
+- SvelteKitを使用している場合、1.20.4以上にアップグレードしてください ([sveltejs/kit#10172](https://github.com/sveltejs/kit/pull/10172))
+- SvelteKit を使わずに Vite を使っている場合は、`vite-plugin-svelte`2.4.1以上にアップグレードしてください ([#8516](https://github.com/sveltejs/svelte/issues/8516))
+- webpackを使用している場合は、webpack5以上に、`svelte-loader`は3.1.8以上にアップグレードしてください。それ以下のバージョンはサポートされなくなりました。([#8515](https://github.com/sveltejs/svelte/issues/8515), [198dbcf](https://github.com/sveltejs/svelte/commit/198dbcf))
+- Rollupを使用している場合は、`rollup-plugin-svelte`7.1.5以上にアップグレードしてください ([198dbcf](https://github.com/sveltejs/svelte/commit/198dbcf))
+- TypeScriptを使用している場合は、TypeScript5以上にアップグレードしてください。それ以下のバージョンでも動作する可能性はありますが、保証はできません。([#8488](https://github.com/sveltejs/svelte/issues/8488))
 
 ## バンドラーのブラウザ条件
 
 ブラウザ用のフロントエンドバンドルをビルドするとき、バンドラーは`browser`条件を指定しなければならなくなりました。SvelteKitとViteは自動的にこれを処理します。他のものを使っている場合は、`onMount` のようなライフサイクルのコールバックが呼ばれないことがあるので、モジュールの解決設定を更新する必要があります。
 
-- Rollup の場合は、`@rollup/plugin-node-resolve`プラグインのオプションで`browser: true`を設定することで行います。詳しくは [`rollup-plugin-svelte`](https://github.com/sveltejs/rollup-plugin-svelte/#usage) ドキュメントを参照してください。
-- wepback では、`"browser"`を`conditionNames`配列に追加します。また、`alias`を設定している場合は、それを更新する必要があるかもしれない。詳しくは [`svelte-loader`](https://github.com/sveltejs/svelte-loader#usage) のドキュメントを参照してください。
+- Rollup の場合は、`@rollup/plugin-node-resolve`プラグインのオプションで`browser: true`を設定することでこれを行います。詳しくは [`rollup-plugin-svelte`](https://github.com/sveltejs/rollup-plugin-svelte/#usage) ドキュメントを参照してください。
+- wepback では、`"browser"`を`conditionNames`配列に追加します。また、`alias`を設定している場合は、それを更新する必要があるかもしれません。詳しくは [`svelte-loader`](https://github.com/sveltejs/svelte-loader#usage) のドキュメントを参照してください。
 
 ([#8516](https://github.com/sveltejs/svelte/issues/8516))
 
 ## CJS関連の出力の削除
 
-Svelteはコンパイラ出力のCommonJS (CJS)フォーマットをサポートしなくなり、`svelte/register`フックとCJSランタイムバージョンも削除されました。CJS出力フォーマットを維持する必要がある場合は、ビルド後のステップでSvelteのESM出力をCJSに変換するバンドラーの使用を検討してください。([#8613](https://github.com/sveltejs/svelte/issues/8613))
+Svelteはコンパイラ出力としてCommonJS (CJS)フォーマットをサポートしなくなり、`svelte/register`フックとCJSランタイムバージョンも削除されました。CJS出力フォーマットをまだ使用する必要がある場合は、ビルド後のステップでSvelteのESM出力をCJSに変換するバンドラーの使用を検討してください。([#8613](https://github.com/sveltejs/svelte/issues/8613))
 
-## Svelte関数のより厳密な型
+## Svelteの関数のより厳密な型
 
-`createEventDispatcher`、`Action`、`ActionReturn`、および`onMount`には、より厳密なタイプが追加されました。
+`createEventDispatcher`、`Action`、`ActionReturn`、および`onMount`には、より厳密な型が追加されました。
 
 - `createEventDispatcher`はペイロードがオプション、必須、または存在しないことを指定できるようになり、それに応じてコールサイトがチェックされます ([#7224](https://github.com/sveltejs/svelte/issues/7224))
 
@@ -49,20 +49,20 @@ dispatch('optional');
 dispatch('required'); // 詳細引数は省略できます
 dispatch('noArgument', 'surprise'); // 詳細な引数を追加することもできます
 
-// TypeScript厳密モードを使用した Svelte バージョン 4:
+// TypeScript strict モードを使用した Svelte バージョン 4:
 dispatch('optional');
 dispatch('required'); // エラー、引数がありません
 dispatch('noArgument', 'surprise'); // エラー、引数を渡すことができません
 ```
 
-- `Action`と`ActionReturn`のデフォルトのパラメータタイプは `undefined` になりました。移行スクリプトはこれを自動的に移行します ([#7442](https://github.com/sveltejs/svelte/pull/7442))
+- `Action`と`ActionReturn`のデフォルトのパラメータタイプは `undefined` になりました。つまり、この action がパラメータを受け取るように指定したい場合は、このように generic を型付けする必要があります。移行スクリプトはこれを自動的に移行します ([#7442](https://github.com/sveltejs/svelte/pull/7442))
 
 ```diff
 -const action: Action = (node, params) => { .. } // 何らかの方法でparamsを使用すると、エラーになります
 +const action: Action<HTMLElement, string> = (node, params) => { .. } // paramsはstring型です
 ```
 
-- 非同期に関数を返した場合、`onMount`は型エラーを表示するようになりました。これは、コールバックが破棄時に呼び出されることを期待しているコードのバグである可能性が高いからです。
+- `onMount` に非同期な関数を返した場合、型エラーを表示するようになりました。これはおそらくバグだからです。コンポーネントの破棄時にコールバックが呼び出されることを期待しているのだと思いますが、それは同期的に関数を返した場合にのみ動作します。
 
 ```diff
 // この変更によって実際のバグが明らかになった例
@@ -137,7 +137,7 @@ Svelteでのカスタム要素の作成が大幅に改善されました。`tag`
 {/if}
 ```
 
-トランジションをグローバルにするには、`|global`モディファイアを追加してください。移行スクリプトは自動的にこれを行います。([#6686](https://github.com/sveltejs/svelte/issues/6686))
+トランジションをグローバルにするには、`|global`モディファイアを追加してください。そうすると、上記のいずれのコントロールフローブロックが作成/破棄されたときにもトランジションが再生されます。移行スクリプトは自動的にこれを行います。([#6686](https://github.com/sveltejs/svelte/issues/6686))
 
 ## デフォルトのスロットバインディング
 
@@ -216,7 +216,7 @@ const { code } = await preprocess(
 // style-2
 ```
 
-これは、例えば`MDsveX`を使用している場合に影響する可能性があります。
+これは、例えば`MDsveX`を使用している場合に影響する可能性があります。もし使用している場合は、他のスクリプトやスタイルプリプロセッサよりも前に実行するように変更してください。
 
 ```diff
 preprocess: [
@@ -240,6 +240,6 @@ preprocess: [
 - ランタイムが`CustomEvent`コンストラクタを使用するようになりました。これらのブラウザをサポートする必要がある場合は、[polyfill](https://github.com/theftprevention/event-constructor-polyfill/tree/master) の使用を検討してください。([#8775](https://github.com/sveltejs/svelte/pull/8775))
 - `svelte/store`から`StartStopNotifier`インターフェース（`writable`などのcreate関数に渡される）を使ってスクラッチから独自のストアを実装する場合、set関数に加えてupdate関数を渡す必要があります。これはストアを使用している人や、既存のSvelteストアを使用してストアを作成している人には影響しません。([#6750](https://github.com/sveltejs/svelte/issues/6750))
 - `derived`に渡されるストアの代わりに、不正な値に対してエラーを投げるようになりました。([#7947](https://github.com/sveltejs/svelte/issues/7947))
-- `svelte/internal`の型定義が削除され、パブリックAPIではない内部メソッドの使用を抑制した。これらのほとんどはSvelte5で変更されると思われます。
+- `svelte/internal`の型定義が削除され、パブリックAPIではない内部メソッドの使用を推奨しないようにしました。これらのほとんどはSvelte5で変更されると思われます。
 - DOMノードの削除がバッチ処理されるようになり、順序が若干変更されました。このため、これらの要素で`MutationObserver`を使用している場合、イベントの発生順序に影響を与える可能性があります。 ([#8763](https://github.com/sveltejs/svelte/pull/8763))
 - `svelte.JSX`名前空間を使用してグローバルタイピングを拡張していた場合は`svelteHTML`名前空間を使用するように移行する必要があります。同様に`svelte.JSX`名前空間から型定義を使用していた場合は、代わりに`svelte/elements`から型定義を使用するように移行する必要があります。何をすべきかについての詳細は[こちら](https://github.com/sveltejs/language-tools/blob/master/docs/preprocessors/typescript.md#im-getting-deprecation-warnings-for-sveltejsx--i-want-to-migrate-to-the-new-typings)を参照してください。
