@@ -1,4 +1,4 @@
-import type { Binding } from '#compiler';
+import type { Binding, Css } from '#compiler';
 import type {
 	ArrayExpression,
 	ArrowFunctionExpression,
@@ -12,7 +12,9 @@ import type {
 	Node,
 	ObjectExpression,
 	Pattern,
-	Program
+	Program,
+	ChainExpression,
+	SimpleCallExpression
 } from 'estree';
 
 export interface BaseNode {
@@ -37,11 +39,12 @@ export interface Fragment {
 /**
  * - `html`    — the default, for e.g. `<div>` or `<span>`
  * - `svg`     — for e.g. `<svg>` or `<g>`
+ * - `mathml`  — for e.g. `<math>` or `<mrow>`
  * - `foreign` — for other compilation targets than the web, e.g. Svelte Native.
  *               Disallows bindings other than bind:this, disables a11y checks, disables any special attribute handling
  *               (also see https://github.com/sveltejs/svelte/pull/5652)
  */
-export type Namespace = 'html' | 'svg' | 'foreign';
+export type Namespace = 'html' | 'svg' | 'mathml' | 'foreign';
 
 export interface Root extends BaseNode {
 	type: 'Root';
@@ -51,15 +54,19 @@ export interface Root extends BaseNode {
 	options: SvelteOptions | null;
 	fragment: Fragment;
 	/** The parsed `<style>` element, if exists */
-	css: Style | null;
+	css: Css.StyleSheet | null;
 	/** The parsed `<script>` element, if exists */
 	instance: Script | null;
 	/** The parsed `<script context="module">` element, if exists */
 	module: Script | null;
+	metadata: {
+		/** Whether the component was parsed with typescript */
+		ts: boolean;
+	};
 }
 
 export interface SvelteOptions {
-	// start/end info (needed for Prettier, when someone wants to keep the options where they are)
+	// start/end info (needed for warnings and for our Prettier plugin)
 	start: number;
 	end: number;
 	// options
@@ -87,6 +94,7 @@ export interface SvelteOptions {
 		 */
 		extend?: ArrowFunctionExpression | Identifier;
 	};
+	attributes: Attribute[];
 }
 
 /** Static text */
@@ -124,8 +132,6 @@ export interface Comment extends BaseNode {
 	type: 'Comment';
 	/** the contents of the comment */
 	data: string;
-	/** any svelte-ignore directives — <!-- svelte-ignore a b c --> would result in ['a', 'b', 'c'] */
-	ignores: string[];
 }
 
 /** A `{@const ...}` tag */
@@ -145,8 +151,7 @@ export interface DebugTag extends BaseNode {
 /** A `{@render foo(...)} tag */
 export interface RenderTag extends BaseNode {
 	type: 'RenderTag';
-	expression: Identifier;
-	argument: null | Expression;
+	expression: SimpleCallExpression | (ChainExpression & { expression: SimpleCallExpression });
 }
 
 type Tag = ExpressionTag | HtmlTag | ConstTag | DebugTag | RenderTag;
@@ -202,9 +207,6 @@ export interface OnDirective extends BaseNode {
 	/** The 'y' in `on:x={y}` */
 	expression: null | Expression;
 	modifiers: string[]; // TODO specify
-	metadata: {
-		delegated: null | DelegatedEvent;
-	};
 }
 
 export type DelegatedEvent =
@@ -286,14 +288,11 @@ export interface RegularElement extends BaseElement {
 	metadata: {
 		/** `true` if this is an svg element */
 		svg: boolean;
+		/** `true` if this is a mathml element */
+		mathml: boolean;
 		/** `true` if contains a SpreadAttribute */
 		has_spread: boolean;
-		/**
-		 * `true` if events on this element can theoretically be delegated. This doesn't necessarily mean that
-		 * a specific event will be delegated, as there are other factors which affect the final outcome.
-		 * `null` only until it was determined whether this element can be delegated or not.
-		 */
-		can_delegate_events: boolean | null;
+		scoped: boolean;
 	};
 }
 
@@ -317,6 +316,19 @@ export interface SvelteElement extends BaseElement {
 	type: 'SvelteElement';
 	name: 'svelte:element';
 	tag: Expression;
+	metadata: {
+		/**
+		 * `true` if this is an svg element. The boolean may not be accurate because
+		 * the tag is dynamic, but we do our best to infer it from the template.
+		 */
+		svg: boolean;
+		/**
+		 * `true` if this is a mathml element. The boolean may not be accurate because
+		 * the tag is dynamic, but we do our best to infer it from the template.
+		 */
+		mathml: boolean;
+		scoped: boolean;
+	};
 }
 
 export interface SvelteFragment extends BaseElement {
@@ -374,9 +386,15 @@ export interface EachBlock extends BaseNode {
 		/** Set if something in the array expression is shadowed within the each block */
 		array_name: Identifier | null;
 		index: Identifier;
-		item_name: string;
+		item: Identifier;
+		declarations: Map<string, Binding>;
 		/** List of bindings that are referenced within the expression */
 		references: Binding[];
+		/**
+		 * Optimization path for each blocks: If the parent isn't a fragment and
+		 * it only has a single child, then we can classify the block as being "controlled".
+		 * This saves us from creating an extra comment and insertion being faster.
+		 */
 		is_controlled: boolean;
 	};
 }
@@ -413,7 +431,7 @@ export interface KeyBlock extends BaseNode {
 export interface SnippetBlock extends BaseNode {
 	type: 'SnippetBlock';
 	expression: Identifier;
-	context: null | Pattern;
+	parameters: Pattern[];
 	body: Fragment;
 }
 
@@ -450,23 +468,13 @@ export type TemplateNode =
 	| Comment
 	| Block;
 
-export type SvelteNode = Node | TemplateNode | Fragment;
+export type SvelteNode = Node | TemplateNode | Fragment | Css.Node;
 
 export interface Script extends BaseNode {
 	type: 'Script';
 	context: string;
 	content: Program;
-}
-
-export interface Style extends BaseNode {
-	type: 'Style';
-	attributes: any[]; // TODO
-	children: any[]; // TODO add CSS node types
-	content: {
-		start: number;
-		end: number;
-		styles: string;
-	};
+	attributes: Attribute[];
 }
 
 declare module 'estree' {
@@ -475,5 +483,7 @@ declare module 'estree' {
 		start?: number;
 		/** Added by the Svelte parser */
 		end?: number;
+		/** Added by acorn-typescript */
+		typeAnnotation?: any;
 	}
 }

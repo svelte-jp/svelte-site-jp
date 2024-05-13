@@ -10,8 +10,8 @@ import type { Location } from 'locate-character';
 import type { SourceMap } from 'magic-string';
 import type { Context } from 'zimmerframe';
 import type { Scope } from '../phases/scope.js';
-import * as Css from './css.js';
-import type { Namespace, SvelteNode } from './template.js';
+import type { Css } from './css.js';
+import type { EachBlock, Namespace, SvelteNode, SvelteOptions } from './template.js';
 
 /** The return value of `compile` from `svelte/compiler` */
 export interface CompileResult {
@@ -46,6 +46,8 @@ export interface CompileResult {
 		 */
 		runes: boolean;
 	};
+	/** The AST */
+	ast: any;
 }
 
 export interface Warning {
@@ -92,6 +94,7 @@ export interface CompileOptions extends ModuleCompileOptions {
 	 * If `true`, getters and setters will be created for the component's props. If `false`, they will only be created for readonly exported values (i.e. those declared with `const`, `class` and `function`). If compiling with `customElement: true` this option defaults to `true`.
 	 *
 	 * @default false
+	 * @deprecated This will have no effect in runes mode
 	 */
 	accessors?: boolean;
 	/**
@@ -105,6 +108,7 @@ export interface CompileOptions extends ModuleCompileOptions {
 	 * This allows it to be less conservative about checking whether values have changed.
 	 *
 	 * @default false
+	 * @deprecated This will have no effect in runes mode
 	 */
 	immutable?: boolean;
 	/**
@@ -142,7 +146,7 @@ export interface CompileOptions extends ModuleCompileOptions {
 	 */
 	runes?: boolean | undefined;
 	/**
-	 *  If `true`, exposes the Svelte major version on the global `window` object in the browser.
+	 *  If `true`, exposes the Svelte major version in the browser by adding it to a `Set` stored in the global `window.__svelte.v`.
 	 *
 	 * @default true
 	 */
@@ -178,10 +182,19 @@ export interface CompileOptions extends ModuleCompileOptions {
 	 * @default null
 	 */
 	cssOutputFilename?: string;
-
-	// Other Svelte 4 compiler options:
-	// enableSourcemap?: EnableSourcemap; // TODO bring back? https://github.com/sveltejs/svelte/pull/6835
-	// legacy?: boolean; // TODO compiler error noting the new purpose?
+	/**
+	 * If `true`, compiles components with hot reloading support.
+	 *
+	 * @default false
+	 */
+	hmr?: boolean;
+	/**
+	 * If `true`, returns the modern version of the AST.
+	 * Will become `true` by default in Svelte 6, and the option will be removed in Svelte 7.
+	 *
+	 * @default false
+	 */
+	modernAst?: boolean;
 }
 
 export interface ModuleCompileOptions {
@@ -228,6 +241,8 @@ export type ValidatedCompileOptions = ValidatedModuleCompileOptions &
 		sourcemap: CompileOptions['sourcemap'];
 		legacy: Required<Required<CompileOptions>['legacy']>;
 		runes: CompileOptions['runes'];
+		customElementOptions: SvelteOptions['customElement'];
+		hmr: CompileOptions['hmr'];
 	};
 
 export type DeclarationKind =
@@ -244,11 +259,13 @@ export interface Binding {
 	node: Identifier;
 	/**
 	 * - `normal`: A variable that is not in any way special
-	 * - `prop`: A normal prop (possibly mutated)
+	 * - `prop`: A normal prop (possibly reassigned or mutated)
+	 * - `bindable_prop`: A prop one can `bind:` to (possibly reassigned or mutated)
 	 * - `rest_prop`: A rest prop
 	 * - `state`: A state variable
 	 * - `derived`: A derived variable
-	 * - `each`: An each block context variable
+	 * - `each`: An each block parameter
+	 * - `snippet`: A snippet parameter
 	 * - `store_sub`: A $store value
 	 * - `legacy_reactive`: A `$:` declaration
 	 * - `legacy_reactive_import`: An imported binding that is mutated inside the component
@@ -256,10 +273,13 @@ export interface Binding {
 	kind:
 		| 'normal'
 		| 'prop'
+		| 'bindable_prop'
 		| 'rest_prop'
 		| 'state'
+		| 'frozen_state'
 		| 'derived'
 		| 'each'
+		| 'snippet'
 		| 'store_sub'
 		| 'legacy_reactive'
 		| 'legacy_reactive_import';
@@ -268,7 +288,13 @@ export interface Binding {
 	 * What the value was initialized with.
 	 * For destructured props such as `let { foo = 'bar' } = $props()` this is `'bar'` and not `$props()`
 	 */
-	initial: null | Expression | FunctionDeclaration | ClassDeclaration | ImportDeclaration;
+	initial:
+		| null
+		| Expression
+		| FunctionDeclaration
+		| ClassDeclaration
+		| ImportDeclaration
+		| EachBlock;
 	is_called: boolean;
 	references: { node: Identifier; path: SvelteNode[] }[];
 	mutated: boolean;
@@ -276,12 +302,20 @@ export interface Binding {
 	scope: Scope;
 	/** For `legacy_reactive`: its reactive dependencies */
 	legacy_dependencies: Binding[];
-	/** Legacy props: the `class` in `{ export klass as class}` */
+	/** Legacy props: the `class` in `{ export klass as class}`. $props(): The `class` in { class: klass } = $props() */
 	prop_alias: string | null;
-	/** If this is set, all references should use this expression instead of the identifier name */
-	expression: Expression | null;
+	/**
+	 * If this is set, all references should use this expression instead of the identifier name.
+	 * If a function is given, it will be called with the identifier at that location and should return the new expression.
+	 */
+	expression: Expression | ((id: Identifier) => Expression) | null;
 	/** If this is set, all mutations should use this expression */
 	mutation: ((assignment: AssignmentExpression, context: Context<any, any>) => Expression) | null;
+	/** Additional metadata, varies per binding type */
+	metadata: {
+		/** `true` if is (inside) a rest parameter */
+		inside_rest?: boolean;
+	} | null;
 }
 
 export * from './template.js';

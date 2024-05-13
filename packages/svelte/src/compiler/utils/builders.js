@@ -1,4 +1,5 @@
 import { regex_is_valid_identifier } from '../phases/patterns.js';
+import { sanitize_template_string } from './sanitize_template_string.js';
 
 /**
  * @param {Array<import('estree').Expression | import('estree').SpreadElement | null>} elements
@@ -14,6 +15,15 @@ export function array(elements = []) {
  */
 export function array_pattern(elements) {
 	return { type: 'ArrayPattern', elements };
+}
+
+/**
+ * @param {import('estree').Pattern} left
+ * @param {import('estree').Expression} right
+ * @returns {import('estree').AssignmentPattern}
+ */
+export function assignment_pattern(left, right) {
+	return { type: 'AssignmentPattern', left, right };
 }
 
 /**
@@ -41,6 +51,23 @@ export function arrow(params, body) {
  */
 export function assignment(operator, left, right) {
 	return { type: 'AssignmentExpression', operator, left, right };
+}
+
+/**
+ * @template T
+ * @param {T & import('estree').BaseFunction} func
+ * @returns {T & import('estree').BaseFunction}
+ */
+export function async(func) {
+	return { ...func, async: true };
+}
+
+/**
+ * @param {import('estree').Expression} argument
+ * @returns {import('estree').AwaitExpression}
+ */
+function await_builder(argument) {
+	return { type: 'AwaitExpression', argument };
 }
 
 /**
@@ -192,7 +219,7 @@ export function function_declaration(id, params, body) {
 /**
  * @param {string} name
  * @param {import('estree').Statement[]} body
- * @returns {import('estree').Property}
+ * @returns {import('estree').Property & { value: import('estree').FunctionExpression}}}
  */
 export function get(name, body) {
 	return prop('get', key(name), function_builder(null, [], block(body)));
@@ -218,7 +245,7 @@ export function private_id(name) {
  * @param {string} local
  * @returns {import('estree').ImportNamespaceSpecifier}
  */
-export function import_namespace(local) {
+function import_namespace(local) {
 	return {
 		type: 'ImportNamespaceSpecifier',
 		local: id(local)
@@ -287,11 +314,12 @@ export function object_pattern(properties) {
 }
 
 /**
+ * @template {import('estree').Expression} Value
  * @param {'init' | 'get' | 'set'} kind
  * @param {import('estree').Expression} key
- * @param {import('estree').Expression} value
+ * @param {Value} value
  * @param {boolean} computed
- * @returns {import('estree').Property}
+ * @returns {import('estree').Property & { value: Value }}
  */
 export function prop(kind, key, value, computed = false) {
 	return { type: 'Property', kind, key, value, method: false, shorthand: false, computed };
@@ -314,7 +342,7 @@ export function prop_def(key, value, computed = false, is_static = false) {
  * @returns {import('estree').TemplateElement}
  */
 export function quasi(cooked, tail = false) {
-	const raw = cooked.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+	const raw = sanitize_template_string(cooked);
 	return { type: 'TemplateElement', value: { raw, cooked }, tail };
 }
 
@@ -337,7 +365,7 @@ export function sequence(expressions) {
 /**
  * @param {string} name
  * @param {import('estree').Statement[]} body
- * @returns {import('estree').Property}
+ * @returns {import('estree').Property & { value: import('estree').FunctionExpression}}
  */
 export function set(name, body) {
 	return prop('set', key(name), function_builder(null, [id('$$value')], block(body)));
@@ -370,19 +398,23 @@ export function template(elements, expressions) {
 
 /**
  * @param {import('estree').Expression | import('estree').BlockStatement} expression
+ * @param {boolean} [async]
  * @returns {import('estree').Expression}
  */
-export function thunk(expression) {
+export function thunk(expression, async = false) {
 	if (
 		expression.type === 'CallExpression' &&
 		expression.callee.type !== 'Super' &&
 		expression.callee.type !== 'MemberExpression' &&
+		expression.callee.type !== 'CallExpression' &&
 		expression.arguments.length === 0
 	) {
 		return expression.callee;
 	}
 
-	return arrow([], expression);
+	const fn = arrow([], expression);
+	if (async) fn.async = true;
+	return fn;
 }
 
 /**
@@ -572,7 +604,7 @@ export function throw_error(str) {
 }
 
 export {
-	new_builder as new,
+	await_builder as await,
 	let_builder as let,
 	const_builder as const,
 	var_builder as var,

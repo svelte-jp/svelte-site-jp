@@ -4,14 +4,15 @@ import fragment from './state/fragment.js';
 import { regex_whitespace } from '../patterns.js';
 import { reserved } from './utils/names.js';
 import full_char_code_at from './utils/full_char_code_at.js';
-import { error } from '../../errors.js';
+import * as e from '../../errors.js';
 import { create_fragment } from './utils/create.js';
 import read_options from './read/options.js';
+import { getLocator } from 'locate-character';
 
 const regex_position_indicator = / \(\d+:\d+\)$/;
 
 const regex_lang_attribute =
-	/<!--[^]*?-->|<script\s+(?:[^>]*|(?:[^=>'"/]+=(?:"[^"]*"|'[^']*'|[^>\s]+)\s+)*)lang=(["'])?([^"' >]+)\1[^>]*>/;
+	/<!--[^]*?-->|<script\s+(?:[^>]*|(?:[^=>'"/]+=(?:"[^"]*"|'[^']*'|[^>\s]+)\s+)*)lang=(["'])?([^"' >]+)\1[^>]*>/g;
 
 export class Parser {
 	/**
@@ -41,15 +42,25 @@ export class Parser {
 	/** @type {LastAutoClosedTag | undefined} */
 	last_auto_closed_tag;
 
+	locate;
+
 	/** @param {string} template */
 	constructor(template) {
 		if (typeof template !== 'string') {
 			throw new TypeError('Template must be a string');
 		}
 
-		this.template = template.trimRight();
+		this.template = template.trimEnd();
+		this.locate = getLocator(this.template, { offsetLine: 1 });
 
-		this.ts = regex_lang_attribute.exec(template)?.[2] === 'ts';
+		let match_lang;
+
+		do match_lang = regex_lang_attribute.exec(template);
+		while (match_lang && match_lang[0][1] !== 's'); // ensure it starts with '<s' to match script tags
+
+		regex_lang_attribute.lastIndex = 0; // reset matched index to pass tests - otherwise declare the regex inside the constructor
+
+		this.ts = match_lang?.[2] === 'ts';
 
 		this.root = {
 			css: null,
@@ -60,7 +71,10 @@ export class Parser {
 			end: null,
 			type: 'Root',
 			fragment: create_fragment(),
-			options: null
+			options: null,
+			metadata: {
+				ts: this.ts
+			}
 		};
 
 		this.stack.push(this.root);
@@ -78,15 +92,15 @@ export class Parser {
 
 			if (current.type === 'RegularElement') {
 				current.end = current.start + 1;
-				error(current, 'unclosed-element', current.name);
+				e.element_unclosed(current, current.name);
 			} else {
 				current.end = current.start + 1;
-				error(current, 'unclosed-block');
+				e.block_unclosed(current);
 			}
 		}
 
 		if (state !== fragment) {
-			error(this.index, 'unexpected-eof');
+			e.unexpected_eof(this.index);
 		}
 
 		if (this.root.fragment.nodes.length) {
@@ -123,6 +137,18 @@ export class Parser {
 		}
 	}
 
+	/**
+	 * offset -> line/column
+	 * @param {number} start
+	 * @param {number} end
+	 */
+	get_location(start, end) {
+		return {
+			start: /** @type {import('locate-character').Location_1} */ (this.locate(start)),
+			end: /** @type {import('locate-character').Location_1} */ (this.locate(end))
+		};
+	}
+
 	current() {
 		return this.stack[this.stack.length - 1];
 	}
@@ -132,25 +158,21 @@ export class Parser {
 	 * @returns {never}
 	 */
 	acorn_error(err) {
-		error(err.pos, 'js-parse-error', err.message.replace(regex_position_indicator, ''));
+		e.js_parse_error(err.pos, err.message.replace(regex_position_indicator, ''));
 	}
 
 	/**
 	 * @param {string} str
-	 * @param {boolean} [required]
+	 * @param {boolean} required
 	 */
-	eat(str, required) {
+	eat(str, required = false) {
 		if (this.match(str)) {
 			this.index += str.length;
 			return true;
 		}
 
 		if (required) {
-			if (this.index === this.template.length) {
-				error(this.index, 'unexpected-eof', str);
-			} else {
-				error(this.index, 'expected-token', str);
-			}
+			e.expected_token(this.index, str);
 		}
 
 		return false;
@@ -215,7 +237,7 @@ export class Parser {
 		const identifier = this.template.slice(this.index, (this.index = i));
 
 		if (!allow_reserved && reserved.includes(identifier)) {
-			error(start, 'unexpected-reserved-word', identifier);
+			e.unexpected_reserved_word(start, identifier);
 		}
 
 		return identifier;
@@ -224,7 +246,7 @@ export class Parser {
 	/** @param {RegExp} pattern */
 	read_until(pattern) {
 		if (this.index >= this.template.length) {
-			error(this.template.length, 'unexpected-eof');
+			e.unexpected_eof(this.template.length);
 		}
 
 		const start = this.index;
@@ -241,7 +263,7 @@ export class Parser {
 
 	require_whitespace() {
 		if (!regex_whitespace.test(this.template[this.index])) {
-			error(this.index, 'missing-whitespace');
+			e.expected_whitespace(this.index);
 		}
 
 		this.allow_whitespace();
@@ -287,7 +309,6 @@ export class Parser {
  */
 export function parse(template) {
 	const parser = new Parser(template);
-
 	return parser.root;
 }
 

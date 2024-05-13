@@ -1,11 +1,14 @@
-import { parse as _parse } from './phases/1-parse/index.js';
+import { getLocator } from 'locate-character';
+import { walk as zimmerframe_walk } from 'zimmerframe';
+import { CompileError } from './errors.js';
+import { convert } from './legacy.js';
 import { parse as parse_acorn } from './phases/1-parse/acorn.js';
+import { parse as _parse } from './phases/1-parse/index.js';
+import { remove_typescript_nodes } from './phases/1-parse/remove_typescript_nodes.js';
 import { analyze_component, analyze_module } from './phases/2-analyze/index.js';
 import { transform_component, transform_module } from './phases/3-transform/index.js';
-import { getLocator } from 'locate-character';
-import { walk } from 'zimmerframe';
 import { validate_component_options, validate_module_options } from './validate-options.js';
-import { convert } from './legacy.js';
+import { reset_warnings } from './warnings.js';
 export { default as preprocess } from './preprocess/index.js';
 
 /**
@@ -18,24 +21,37 @@ export { default as preprocess } from './preprocess/index.js';
  */
 export function compile(source, options) {
 	try {
+		const warnings = reset_warnings({ source, filename: options.filename });
 		const validated = validate_component_options(options, '');
-		const parsed = _parse(source);
+		let parsed = _parse(source);
 
-		const combined_options = /** @type {import('#compiler').ValidatedCompileOptions} */ ({
+		const { customElement: customElementOptions, ...parsed_options } = parsed.options || {};
+
+		/** @type {import('#compiler').ValidatedCompileOptions} */
+		const combined_options = {
 			...validated,
-			...parsed.options
-		});
+			...parsed_options,
+			customElementOptions
+		};
 
-		const analysis = analyze_component(parsed, combined_options);
+		if (parsed.metadata.ts) {
+			parsed = {
+				...parsed,
+				fragment: parsed.fragment && remove_typescript_nodes(parsed.fragment),
+				instance: parsed.instance && remove_typescript_nodes(parsed.instance),
+				module: parsed.module && remove_typescript_nodes(parsed.module)
+			};
+		}
+
+		const analysis = analyze_component(parsed, source, combined_options);
+
 		const result = transform_component(analysis, source, combined_options);
+		result.warnings = warnings;
+		result.ast = to_public_ast(source, parsed, options.modernAst);
 		return result;
 	} catch (e) {
-		if (/** @type {any} */ (e).name === 'CompileError') {
-			handle_compile_error(
-				/** @type {import('#compiler').CompileError} */ (e),
-				options.filename,
-				source
-			);
+		if (e instanceof CompileError) {
+			handle_compile_error(e, options.filename, source);
 		}
 
 		throw e;
@@ -52,16 +68,15 @@ export function compile(source, options) {
  */
 export function compileModule(source, options) {
 	try {
+		const warnings = reset_warnings({ source, filename: options.filename });
 		const validated = validate_module_options(options, '');
 		const analysis = analyze_module(parse_acorn(source, false), validated);
-		return transform_module(analysis, source, validated);
+		const result = transform_module(analysis, source, validated);
+		result.warnings = warnings;
+		return result;
 	} catch (e) {
-		if (/** @type {any} */ (e).name === 'CompileError') {
-			handle_compile_error(
-				/** @type {import('#compiler').CompileError} */ (e),
-				options.filename,
-				source
-			);
+		if (e instanceof CompileError) {
+			handle_compile_error(e, options.filename, source);
 		}
 
 		throw e;
@@ -96,9 +111,35 @@ function handle_compile_error(error, filename, source) {
  * `modern` will become `true` by default in Svelte 6, and the option will be removed in Svelte 7.
  *
  * https://svelte.dev/docs/svelte-compiler#svelte-parse
+ * @overload
+ * @param {string} source
+ * @param {{ filename?: string; modern: true }} options
+ * @returns {import('#compiler').Root}
+ */
+
+/**
+ * The parse function parses a component, returning only its abstract syntax tree.
+ *
+ * The `modern` option (`false` by default in Svelte 5) makes the parser return a modern AST instead of the legacy AST.
+ * `modern` will become `true` by default in Svelte 6, and the option will be removed in Svelte 7.
+ *
+ * https://svelte.dev/docs/svelte-compiler#svelte-parse
+ * @overload
+ * @param {string} source
+ * @param {{ filename?: string; modern?: false }} [options]
+ * @returns {import('./types/legacy-nodes.js').LegacyRoot}
+ */
+
+/**
+ * The parse function parses a component, returning only its abstract syntax tree.
+ *
+ * The `modern` option (`false` by default in Svelte 5) makes the parser return a modern AST instead of the legacy AST.
+ * `modern` will become `true` by default in Svelte 6, and the option will be removed in Svelte 7.
+ *
+ * https://svelte.dev/docs/svelte-compiler#svelte-parse
  * @param {string} source
  * @param {{ filename?: string; modern?: boolean }} [options]
- * @returns {import('#compiler').SvelteNode | import('./types/legacy-nodes.js').LegacySvelteNode}
+ * @returns {import('#compiler').Root | import('./types/legacy-nodes.js').LegacyRoot}
  */
 export function parse(source, options = {}) {
 	/** @type {import('#compiler').Root} */
@@ -106,20 +147,25 @@ export function parse(source, options = {}) {
 	try {
 		ast = _parse(source);
 	} catch (e) {
-		if (/** @type {any} */ (e).name === 'CompileError') {
-			handle_compile_error(
-				/** @type {import('#compiler').CompileError} */ (e),
-				options.filename,
-				source
-			);
+		if (e instanceof CompileError) {
+			handle_compile_error(e, options.filename, source);
 		}
 
 		throw e;
 	}
 
-	if (options.modern) {
+	return to_public_ast(source, ast, options.modern);
+}
+
+/**
+ * @param {string} source
+ * @param {import('#compiler').Root} ast
+ * @param {boolean | undefined} modern
+ */
+function to_public_ast(source, ast, modern) {
+	if (modern) {
 		// remove things that we don't want to treat as public API
-		return walk(/** @type {import('#compiler').SvelteNode} */ (ast), null, {
+		return zimmerframe_walk(ast, null, {
 			_(node, { next }) {
 				// @ts-ignore
 				delete node.parent;
@@ -137,14 +183,12 @@ export function parse(source, options = {}) {
  * @deprecated Replace this with `import { walk } from 'estree-walker'`
  * @returns {never}
  */
-function _walk() {
+export function walk() {
 	throw new Error(
 		`'svelte/compiler' no longer exports a \`walk\` utility — please import it directly from 'estree-walker' instead`
 	);
 }
 
-export { _walk as walk };
-
 export { CompileError } from './errors.js';
-
 export { VERSION } from '../version.js';
+export { migrate } from './migrate/index.js';

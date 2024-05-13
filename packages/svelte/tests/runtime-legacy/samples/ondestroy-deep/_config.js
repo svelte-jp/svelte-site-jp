@@ -2,13 +2,16 @@ import { test } from '../../test';
 import { destroyed, reset } from './destroyed.js';
 
 export default test({
+	before_test() {
+		reset();
+	},
+
 	test({ assert, component }) {
-		// for hydration, ssr may have pushed to `destroyed`
-		reset();
-
 		component.visible = false;
-		assert.deepEqual(destroyed, ['A', 'B', 'C']);
+		assert.deepEqual(destroyed, ['C', 'B', 'A']);
+	},
 
-		reset();
+	test_ssr({ assert }) {
+		assert.deepEqual(destroyed, ['C', 'B', 'A']);
 	}
 });

@@ -103,7 +103,17 @@ rune モードを選択すると、rune が大体する機能が使えなくな�
 
 ### Svelte 5 のプレビュー版はいつから `npm install` ができるようになりますか? <!--when-can-i-npm-install-the-svelte-5-preview-->
 
-勇敢な方々が自分たちのアプリで試し、どのように壊れたか私たちにフィードバックできるよう、プレリリースバージョンの公開には十分な時間をかける予定です。お見逃しなく!
+今できます！
+
+```bash
+npm install svelte@next
+```
+
+また、新たに SvelteKit プロジェクトを作成する際に、Svelte 5 を選択することもできます:
+
+```bash
+npm create svelte@latest
+```
 
 ### あとは何が残っているのですか? <!--what-s-left-to-do-->
 
@@ -119,12 +129,12 @@ rune モードを選択すると、rune が大体する機能が使えなくな�
 
 ### 支援したいです。どうすればコントリビュートできますか?
 
-皆様の熱意に感謝いたします! 今現在はまだコントリビュートを受け付けることはできませんが、パブリック・ベータになったら、Svelte の GitHub リポジトリですべてを利用できるようになります。
+皆様の熱意に感謝いたします! [sveltejs/svelte](https://github.com/sveltejs/svelte) リポジトリで issue を歓迎します。今現在はまだ多くのことが目まぐるしく変化しているため、Pull request は少しむずかしいと思いますので、issue から始めることをおすすめいたします。
 
 ### どうすればフィードバックやこれによって可能となるクールな事例を共有できますか? <!--how-can-i-share-feedback-or-cool-examples-of-what-this-enables-->
 
-[Discord server](https://svelte.dev/chat) の `#svelte-5-runes` チャンネルか、ソーシャルメディアで `#svelte-5-runes` タグを使用してください。
+[Discord server](https://svelte.dev/chat) の `#svelte-5-alpha` チャンネルか、ソーシャルメディアで `#svelte-5-alpha` タグを使用してください。
 
 ### 私の質問に対する回答がありませんでした。どうすればよいですか? <!--my-question-wasn-t-answered-what-gives-->
 
-その質問はあまり頻繁にされているものではないようです。解決するには、[Discord server](https://svelte.dev/chat) の `#svelte-5-runes` チャンネルに立ち寄ってみてください。
+その質問はあまり頻繁にされているものではないようです。解決するには、[Discord server](https://svelte.dev/chat) の `#svelte-5-alpha` チャンネルに立ち寄ってみてください。

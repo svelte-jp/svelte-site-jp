@@ -2,8 +2,7 @@
 	let foo;
 </script>
 
-<!-- svelte-ignore unused-export-let module-script-reactive-declaration -->
+<!-- svelte-ignore reactive_declaration_module_script -->
 <script>
-	export let unused;
 	$: reactive = foo;
 </script>

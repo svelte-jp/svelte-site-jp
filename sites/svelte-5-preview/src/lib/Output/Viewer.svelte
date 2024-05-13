@@ -111,26 +111,51 @@
 
 					${styles}
 
-					const styles = document.querySelectorAll('style[id^=svelte-]');
+					{
+						const styles = document.querySelectorAll('style[id^=svelte-]');
 
-					let i = styles.length;
-					while (i--) styles[i].parentNode.removeChild(styles[i]);
+						let i = styles.length;
+						while (i--) styles[i].parentNode.removeChild(styles[i]);
 
-					if (window.unmount) {
-						try {
-							window.unmount();
-						} catch (err) {
-							console.error(err);
+						if (window.__unmount_previous) {
+							try {
+								window.__unmount_previous();
+							} catch (err) {
+								console.error(err);
+							}
 						}
+
+						document.body.innerHTML = '';
+						window._svelteTransitionManager = null;
 					}
 
-					document.body.innerHTML = '';
-					window._svelteTransitionManager = null;
+					const __repl_exports = ${$bundle.client?.code};
+					{
+						const { mount, unmount, App, untrack } = __repl_exports;
 
-					const { mount, App } = ${$bundle.client?.code};
-					const [, destroy] = mount(App, { target: document.body });
+						const console_methods = ['log', 'error', 'trace', 'assert', 'warn', 'table', 'group'];
 
-					window.unmount = destroy;
+						// The REPL hooks up to the console to provide a virtual console. However, the implementation
+						// needs to stringify the console to pass over a MessageChannel, which means that the object
+						// can get deeply read and tracked by accident when using the console. We can avoid this by
+						// ensuring we untrack the main console methods.
+
+						const original = {};
+
+						for (const method of console_methods) {
+							original[method] = console[method];
+							console[method] = function (...v) {
+								return untrack(() => original[method].apply(this, v));
+							}
+						}
+						const component = mount(App, { target: document.body });
+						window.__unmount_previous = () => {
+							for (const method of console_methods) {
+								console[method] = original[method];
+							}
+							unmount(component);
+						}
+					}
 					//# sourceURL=playground:output
 				`);
 				error = null;

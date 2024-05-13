@@ -15,8 +15,8 @@ export { createClassComponent };
  * @template {Record<string, any>} Events
  * @template {Record<string, any>} Slots
  *
- * @param {import('../main/public.js').SvelteComponent<Props, Events, Slots>} component
- * @returns {typeof import('../main/public.js').SvelteComponent<Props, Events, Slots> & Exports}
+ * @param {import('../index.js').SvelteComponent<Props, Events, Slots>} component
+ * @returns {typeof import('../index.js').SvelteComponent<Props, Events, Slots> & Exports}
  */
 export function asClassComponent(component) {
 	const component_constructor = as_class_component(component);
@@ -30,9 +30,20 @@ export function asClassComponent(component) {
 			html: result.html
 		};
 	};
-	// this is present for SSR
+	// @ts-expect-error this is present for SSR
 	component_constructor.render = _render;
 
 	// @ts-ignore
 	return component_constructor;
+}
+
+/**
+ * Runs the given function once immediately on the server, and works like `$effect.pre` on the client.
+ *
+ * @deprecated Use this only as a temporary solution to migrate your component code to Svelte 5.
+ * @param {() => void | (() => void)} fn
+ * @returns {void}
+ */
+export function run(fn) {
+	fn();
 }

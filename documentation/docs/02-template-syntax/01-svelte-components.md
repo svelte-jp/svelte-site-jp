@@ -212,7 +212,7 @@ Total: {total}
 
 _ストア(store)_ は、シンプルな _ストアコントラクト(store contract)_ を介して、値へのリアクティブなアクセスを可能にするオブジェクトです。[`svelte/store` モジュール](/docs/svelte-store) にはこのコントラクト(contract)を満たす最小限のストアの実装があります。
 
-ストアへの参照を持っているときはいつでも、`$`を接頭辞として付けることで、コンポーネント内からその値にアクセスできます。これによってSvelteは接頭辞付きの変数を宣言し、ストアのサブスクリプションを設定します。このサブスクリプションは適切なタイミングで解除されます。
+ストアへの参照を持っているときはいつでも、`$`を接頭辞として付けることで、コンポーネント内からその値にアクセスできます。これによってSvelteは接頭辞付きの変数を宣言し、ストアのサブスクリプションをコンポーネントの初期化時に設定します。このサブスクリプションは適切なタイミングで解除されます。
 
 `$` 接頭辞が付いた変数に代入するには、その変数が書き込み可能なストア(writable store)である必要があります。また、代入時にはストアの `.set`メソッドが呼び出されます。 
 
@@ -322,7 +322,11 @@ RxJS の Observables との相互運用性のため、`.subscribe` メソッド�
 
 グローバルにアクセスできる @keyframes を作りたい場合は、keyframe の名前の前に `-global-` を付ける必要があります。
 
+<<<<<<< HEAD
 コンパイル時に `-global-` の部分は削除され、キーフレームはコード内の他の箇所では `my-animation-name` だけを使って参照されます。
+=======
+The `-global-` part will be removed when compiled, and the keyframe will then be referenced using just `my-animation-name` elsewhere in your code.
+>>>>>>> sveltejs/main
 
 ```svelte
 <style>
@@ -334,9 +338,15 @@ RxJS の Observables との相互運用性のため、`.subscribe` メソッド�
 
 トップレベルの `<style>` タグは、1 つのコンポーネントにつき 1 つだけにしなければなりません。
 
+<<<<<<< HEAD
 ただし、他の要素や論理ブロックの中に `<style>` タグを入れ子にすることは可能です。
 
 その場合、 `<style>` タグはそのまま DOM に挿入され、 `<style>` タグのスコープや処理は行われません。
+=======
+However, it is possible to have a `<style>` tag nested inside other elements or logic blocks.
+
+In that case, the `<style>` tag will be inserted as-is into the DOM; no scoping or processing will be done on the `<style>` tag.
+>>>>>>> sveltejs/main
 
 ```svelte
 <div>

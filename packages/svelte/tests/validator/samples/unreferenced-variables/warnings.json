@@ -1,32 +1,32 @@
 [
 	{
-		"code": "unused-export-let",
+		"code": "export_let_unused",
 		"end": {
-			"column": 13,
-			"line": 31
+			"column": 8,
+			"line": 28
 		},
 		"message": "Component has unused export property 'd2'. If it is for external reference only, please consider using `export const d2`",
 		"start": {
-			"column": 11,
-			"line": 31
+			"column": 6,
+			"line": 28
 		}
 	},
 	{
-		"code": "unused-export-let",
+		"code": "export_let_unused",
 		"end": {
-			"column": 17,
-			"line": 31
+			"column": 8,
+			"line": 29
 		},
 		"message": "Component has unused export property 'e2'. If it is for external reference only, please consider using `export const e2`",
 		"start": {
-			"column": 15,
-			"line": 31
+			"column": 6,
+			"line": 29
 		}
 	},
 	{
-		"code": "unused-export-let",
+		"code": "export_let_unused",
 		"end": {
-			"column": 19,
+			"column": 15,
 			"line": 32
 		},
 		"message": "Component has unused export property 'g2'. If it is for external reference only, please consider using `export const g2`",
@@ -36,9 +36,9 @@
 		}
 	},
 	{
-		"code": "unused-export-let",
+		"code": "export_let_unused",
 		"end": {
-			"column": 19,
+			"column": 15,
 			"line": 33
 		},
 		"message": "Component has unused export property 'h2'. If it is for external reference only, please consider using `export const h2`",
@@ -48,9 +48,9 @@
 		}
 	},
 	{
-		"code": "unused-export-let",
+		"code": "export_let_unused",
 		"end": {
-			"column": 26,
+			"column": 15,
 			"line": 35
 		},
 		"message": "Component has unused export property 'j2'. If it is for external reference only, please consider using `export const j2`",

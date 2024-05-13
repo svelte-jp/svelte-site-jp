@@ -92,13 +92,15 @@ _End-to-End Tests_: ユーザーがアプリケーションを操作できるこ
 
 公式のルーティングライブラリは [SvelteKit](https://kit.svelte.jp/) です。SvelteKit は、ファイルシステムルーター、サーバーサイドレンダリング(SSR)、ホットモジュールリローディング(HMR)を1つの使いやすいパッケージで提供します。React にとっての Next.js に相当するものです。
 
-しかしながら、任意のルーターライブラリを使用することもできます。多くの人が [page.js](https://github.com/visionmedia/page.js) を使っています。[navaid](https://github.com/lukeed/navaid)、というよく似たものもあります。[universal-router](https://github.com/kriasoft/universal-router) は子ルートもアイソモーフィックに扱えますが、ヒストリーのサポートは組み込まれていません。
+しかしながら、任意のルーターライブラリを使用することもできます。フレームワークに依存しないライブラリとしては [navaid](https://github.com/lukeed/navaid) があります。アイソモーフィックなものとしては [universal-router](https://github.com/kriasoft/universal-router) があります。[Hono](https://hono.dev/) なら、複数の JS ランタイムをサポートしています。[TanStack Router](https://github.com/TanStack/router/tree/beta-agnostic) なら、型安全でありキャッシュをサポートしています。
 
-宣言的な HTML によるアプローチを好むなら、 アイソモーフィックな [svelte-routing](https://github.com/EmilTholin/svelte-routing) というライブラリと、そのフォークでいくつかの機能が追加されている [svelte-navigator](https://github.com/mefechoel/svelte-navigator) があります。
+宣言的な HTML によるアプローチを好むなら、 アイソモーフィックな [svelte-routing](https://github.com/EmilTholin/svelte-routing) や [svelte-pilot](https://svelte-pilot.github.io/en/link#toc) というライブラリがあります。
 
 クライアント側でハッシュ・ベースのルーティングが必要な場合は、[svelte-spa-router](https://github.com/ItalyPaleAle/svelte-spa-router)、または [abstract-state-router](https://github.com/TehShrike/abstract-state-router/) を確認してみてください。
 
 [Routify](https://routify.dev) は SvelteKit のルーターによく似たファイルシステムベースのルーターです。Version 3 は Svelte のネイティブな SSR をサポートしています。
+
+[Vike](https://vike.dev/svelte) は Vite ベースのルーターで、SvelteKit のルーターに似ていますが、まだ experimental です。
 
 [コミュニティがメンテナンスしているルーターのリストが sveltesociety.dev にあります](https://sveltesociety.dev/components#routers)ので、ご覧ください。
 

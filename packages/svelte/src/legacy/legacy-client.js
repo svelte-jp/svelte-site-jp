@@ -1,5 +1,7 @@
+import { proxy } from '../internal/client/proxy.js';
+import { user_pre_effect } from '../internal/client/reactivity/effects.js';
+import { hydrate, mount, unmount } from '../internal/client/render.js';
 import { define_property } from '../internal/client/utils.js';
-import * as $ from '../internal/index.js';
 
 /**
  * Takes the same options as a Svelte 4 component and the component function and returns a Svelte 4 compatible component.
@@ -11,12 +13,13 @@ import * as $ from '../internal/index.js';
  * @template {Record<string, any>} Events
  * @template {Record<string, any>} Slots
  *
- * @param {import('../main/public.js').ComponentConstructorOptions<Props> & {
- * 	component: import('../main/public.js').SvelteComponent<Props, Events, Slots>;
+ * @param {import('svelte').ComponentConstructorOptions<Props> & {
+ * 	component: import('svelte').ComponentType<import('svelte').SvelteComponent<Props, Events, Slots>>;
  * 	immutable?: boolean;
- * 	recover?: false;
+ * 	hydrate?: boolean;
+ * 	recover?: boolean;
  * }} options
- * @returns {import('../main/public.js').SvelteComponent<Props, Events, Slots> & Exports}
+ * @returns {import('svelte').SvelteComponent<Props, Events, Slots> & Exports}
  */
 export function createClassComponent(options) {
 	// @ts-expect-error $$prop_def etc are not actually defined
@@ -33,8 +36,8 @@ export function createClassComponent(options) {
  * @template {Record<string, any>} Events
  * @template {Record<string, any>} Slots
  *
- * @param {import('../main/public.js').SvelteComponent<Props, Events, Slots>} component
- * @returns {typeof import('../main/public.js').SvelteComponent<Props, Events, Slots> & Exports}
+ * @param {import('svelte').SvelteComponent<Props, Events, Slots>} component
+ * @returns {import('svelte').ComponentType<import('svelte').SvelteComponent<Props, Events, Slots> & Exports>}
  */
 export function asClassComponent(component) {
 	// @ts-expect-error $$prop_def etc are not actually defined
@@ -51,30 +54,36 @@ export function asClassComponent(component) {
 
 class Svelte4Component {
 	/** @type {any} */
-	#events = {};
+	#events;
 
-	/** @type {ReturnType<typeof $.createRoot>} */
+	/** @type {Record<string, any>} */
 	#instance;
 
 	/**
-	 * @param {import('../main/public.js').ComponentConstructorOptions & {
+	 * @param {import('svelte').ComponentConstructorOptions & {
 	 *  component: any;
 	 * 	immutable?: boolean;
+	 * 	hydrate?: boolean;
 	 * 	recover?: false;
 	 * }} options
 	 */
 	constructor(options) {
-		this.#instance = $.createRoot(options.component, {
+		// Using proxy state here isn't completely mirroring the Svelte 4 behavior, because mutations to a property
+		// cause fine-grained updates to only the places where that property is used, and not the entire property.
+		// Reactive statements and actions (the things where this matters) are handling this properly regardless, so it should be fine in practise.
+		const props = proxy({ ...(options.props || {}), $$events: {} }, false);
+		this.#instance = (options.hydrate ? hydrate : mount)(options.component, {
 			target: options.target,
-			props: { ...options.props, $$events: this.#events },
+			props,
 			context: options.context,
 			intro: options.intro,
 			recover: options.recover
 		});
 
-		for (const key of Object.keys(this.#instance)) {
-			if (key === '$set' || key === '$destroy') continue;
+		this.#events = props.$$events;
 
+		for (const key of Object.keys(this.#instance)) {
+			if (key === '$set' || key === '$destroy' || key === '$on') continue;
 			define_property(this, key, {
 				get() {
 					return this.#instance[key];
@@ -86,6 +95,13 @@ class Svelte4Component {
 				enumerable: true
 			});
 		}
+
+		this.#instance.$set = /** @param {Record<string, any>} next */ (next) => {
+			Object.assign(props, next);
+		};
+		this.#instance.$destroy = () => {
+			unmount(this.#instance);
+		};
 	}
 
 	/** @param {Record<string, any>} props */
@@ -112,4 +128,15 @@ class Svelte4Component {
 	$destroy() {
 		this.#instance.$destroy();
 	}
+}
+
+/**
+ * Runs the given function once immediately on the server, and works like `$effect.pre` on the client.
+ *
+ * @deprecated Use this only as a temporary solution to migrate your component code to Svelte 5.
+ * @param {() => void | (() => void)} fn
+ * @returns {void}
+ */
+export function run(fn) {
+	user_pre_effect(fn);
 }

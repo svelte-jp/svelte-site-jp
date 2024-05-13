@@ -1,13 +1,10 @@
+import { noop, run_all } from '../internal/shared/utils.js';
 import { subscribe_to_store } from './utils.js';
 
 /**
  * @type {Array<import('./private').SubscribeInvalidateTuple<any> | any>}
  */
 const subscriber_queue = [];
-
-/** @returns {void} */
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-function noop() {}
 
 /**
  * Creates a `Readable` store that allows reading by subscription.
@@ -30,11 +27,7 @@ export function readable(value, start) {
  * @returns {boolean}
  */
 export function safe_not_equal(a, b) {
-	// eslint-disable-next-line eqeqeq
-	return a != a
-		? // eslint-disable-next-line eqeqeq
-		  b == b
-		: a !== b || (a && typeof a === 'object') || typeof a === 'function';
+	return a != a ? b == b : a !== b || (a && typeof a === 'object') || typeof a === 'function';
 }
 
 /**
@@ -109,26 +102,39 @@ export function writable(value, start = noop) {
 	return { set, update, subscribe };
 }
 
-/** @param {Function} fn */
-function run(fn) {
-	return fn();
-}
-
 /**
- * @param {Function[]} fns
- * @returns {void}
+ * Derived value store by synchronizing one or more readable stores and
+ * applying an aggregation function over its input values.
+ *
+ * https://svelte.dev/docs/svelte-store#derived
+ * @template {import('./private.js').Stores} S
+ * @template T
+ * @overload
+ * @param {S} stores
+ * @param {(values: import('./private.js').StoresValues<S>, set: (value: T) => void, update: (fn: import('./public.js').Updater<T>) => void) => import('./public.js').Unsubscriber | void} fn
+ * @param {T} [initial_value]
+ * @returns {import('./public.js').Readable<T>}
  */
-function run_all(fns) {
-	fns.forEach(run);
-}
-
 /**
- * @template {import('./private').Stores} S
+ * Derived value store by synchronizing one or more readable stores and
+ * applying an aggregation function over its input values.
+ *
+ * https://svelte.dev/docs/svelte-store#derived
+ * @template {import('./private.js').Stores} S
+ * @template T
+ * @overload
+ * @param {S} stores
+ * @param {(values: import('./private.js').StoresValues<S>) => T} fn
+ * @param {T} [initial_value]
+ * @returns {import('./public.js').Readable<T>}
+ */
+/**
+ * @template {import('./private.js').Stores} S
  * @template T
  * @param {S} stores
  * @param {Function} fn
  * @param {T} [initial_value]
- * @returns {import('./public').Readable<T>}
+ * @returns {import('./public.js').Readable<T>}
  */
 export function derived(stores, fn, initial_value) {
 	const single = !Array.isArray(stores);

@@ -28,58 +28,21 @@ export const VoidElements = [
 
 export const PassiveEvents = ['wheel', 'touchstart', 'touchmove', 'touchend', 'touchcancel'];
 
-// TODO this is currently unused
-export const ElementBindings = [
-	'this',
-	'value',
-	'checked',
-	'files',
-	'group',
-	'visibilityState',
-	'fullscreenElement',
-	'innerWidth',
-	'innerHeight',
-	'outerWidth',
-	'outerHeight',
-	'scrollX',
-	'scrollY',
-	'online',
-	'devicePixelRatio',
-	'naturalWidth',
-	'naturalHeight',
-	'clientWidth',
-	'clientHeight',
-	'offsetWidth',
-	'offsetHeight',
-	'duration',
-	'buffered',
-	'played',
-	'seekable',
-	'seeking',
-	'ended',
-	'readyState',
-	'currentTime',
-	'playbackRate',
-	'paused',
-	'volume',
-	'muted',
-	'innerHTML',
-	'innerText',
-	'textContent',
-	'open',
-	'indeterminate'
-];
-
 export const Runes = /** @type {const} */ ([
 	'$state',
+	'$state.frozen',
+	'$state.snapshot',
 	'$props',
+	'$bindable',
 	'$derived',
+	'$derived.by',
 	'$effect',
 	'$effect.pre',
 	'$effect.active',
 	'$effect.root',
 	'$inspect',
-	'$inspect().with'
+	'$inspect().with',
+	'$host'
 ]);
 
 /**
@@ -184,6 +147,39 @@ export const SVGElements = [
 	'use',
 	'view',
 	'vkern'
+];
+
+export const MathMLElements = [
+	'annotation',
+	'annotation-xml',
+	'maction',
+	'math',
+	'merror',
+	'mfrac',
+	'mi',
+	'mmultiscripts',
+	'mn',
+	'mo',
+	'mover',
+	'mpadded',
+	'mphantom',
+	'mprescripts',
+	'mroot',
+	'mrow',
+	'ms',
+	'mspace',
+	'msqrt',
+	'mstyle',
+	'msub',
+	'msubsup',
+	'msup',
+	'mtable',
+	'mtd',
+	'mtext',
+	'mtr',
+	'munder',
+	'munderover',
+	'semantics'
 ];
 
 export const EventModifiers = [
