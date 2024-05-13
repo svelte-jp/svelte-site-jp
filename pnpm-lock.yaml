@@ -246,6 +246,9 @@ importers:
       '@fontsource/fira-mono':
         specifier: ^5.0.8
         version: 5.0.8
+      '@lezer/common':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@sveltejs/adapter-static':
         specifier: ^3.0.1
         version: 3.0.1(@sveltejs/kit@2.5.0)
@@ -1681,7 +1684,6 @@ packages:
 
   /@lezer/common@1.2.1:
     resolution: {integrity: sha512-yemX0ZD2xS/73llMZIK6KplkjIjf2EvAHcinDi/TfJ9hS25G0388+ClHt6/3but0oOxinTcQHJLDXh6w1crzFQ==}
-    dev: false
 
   /@lezer/css@1.1.4:
     resolution: {integrity: sha512-CuUwjidrU7FOBokqASRJc72SmJ9g1PsHXDOWMoKg4md6+2u/Zxzwx5YsYrAFxRDsLrjLlsIyEF1rZHK3gFEJbw==}

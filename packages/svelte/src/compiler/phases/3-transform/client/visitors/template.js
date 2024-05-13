@@ -232,7 +232,7 @@ function setup_select_synchronization(value_binding, context) {
 	context.state.init.push(
 		b.stmt(
 			b.call(
-				'$.render_effect',
+				'$.template_effect',
 				b.thunk(
 					b.block([
 						b.stmt(
@@ -448,7 +448,7 @@ function serialize_dynamic_element_attributes(attributes, context, element_id) {
  * Resulting code for dynamic looks something like this:
  * ```js
  * let value;
- * $.render_effect(() => {
+ * $.template_effect(() => {
  * 	if (value !== (value = 'new value')) {
  * 		element.property = value;
  * 		// or
@@ -960,6 +960,23 @@ function serialize_bind_this(bind_this, context, node) {
 }
 
 /**
+ * @param {import('../types.js').SourceLocation[]} locations
+ */
+function serialize_locations(locations) {
+	return b.array(
+		locations.map((loc) => {
+			const expression = b.array([b.literal(loc[0]), b.literal(loc[1])]);
+
+			if (loc.length === 3) {
+				expression.elements.push(serialize_locations(loc[2]));
+			}
+
+			return expression;
+		})
+	);
+}
+
+/**
  * Creates a new block which looks roughly like this:
  * ```js
  * // hoisted:
@@ -1014,6 +1031,7 @@ function create_block(parent, name, nodes, context) {
 		update: [],
 		after_update: [],
 		template: [],
+		locations: [],
 		metadata: {
 			context: {
 				template_needs_import_node: false,
@@ -1027,6 +1045,24 @@ function create_block(parent, name, nodes, context) {
 	for (const node of hoisted) {
 		context.visit(node, state);
 	}
+
+	/**
+	 * @param {import('estree').Identifier} template_name
+	 * @param {import('estree').Expression[]} args
+	 */
+	const add_template = (template_name, args) => {
+		let call = b.call(get_template_function(namespace, state), ...args);
+		if (context.state.options.dev) {
+			call = b.call(
+				'$.add_locations',
+				call,
+				b.member(b.id(context.state.analysis.name), b.id('filename')),
+				serialize_locations(state.locations)
+			);
+		}
+
+		context.state.hoisted.push(b.var(template_name, call));
+	};
 
 	if (is_single_element) {
 		const element = /** @type {import('#compiler').RegularElement} */ (trimmed[0]);
@@ -1045,9 +1081,7 @@ function create_block(parent, name, nodes, context) {
 			args.push(b.literal(TEMPLATE_USE_IMPORT_NODE));
 		}
 
-		context.state.hoisted.push(
-			b.var(template_name, b.call(get_template_function(namespace, state), ...args))
-		);
+		add_template(template_name, args);
 
 		body.push(b.var(id, b.call(template_name)), ...state.before_init, ...state.init);
 		close = b.stmt(b.call('$.append', b.id('$$anchor'), id));
@@ -1091,16 +1125,10 @@ function create_block(parent, name, nodes, context) {
 					flags |= TEMPLATE_USE_IMPORT_NODE;
 				}
 
-				state.hoisted.push(
-					b.var(
-						template_name,
-						b.call(
-							get_template_function(namespace, state),
-							b.template([b.quasi(state.template.join(''), true)], []),
-							b.literal(flags)
-						)
-					)
-				);
+				add_template(template_name, [
+					b.template([b.quasi(state.template.join(''), true)], []),
+					b.literal(flags)
+				]);
 
 				body.push(b.var(id, b.call(template_name)));
 			}
@@ -1156,7 +1184,7 @@ function serialize_update(statement) {
 	const body =
 		statement.type === 'ExpressionStatement' ? statement.expression : b.block([statement]);
 
-	return b.stmt(b.call('$.render_effect', b.thunk(body)));
+	return b.stmt(b.call('$.template_effect', b.thunk(body)));
 }
 
 /**
@@ -1166,7 +1194,7 @@ function serialize_update(statement) {
 function serialize_render_stmt(state) {
 	return state.update.length === 1
 		? serialize_update(state.update[0])
-		: b.stmt(b.call('$.render_effect', b.thunk(b.block(state.update))));
+		: b.stmt(b.call('$.template_effect', b.thunk(b.block(state.update))));
 }
 
 /**
@@ -1711,7 +1739,7 @@ export const template_visitors = {
 		state.init.push(
 			b.stmt(
 				b.call(
-					'$.render_effect',
+					'$.template_effect',
 					b.thunk(
 						b.block([
 							b.stmt(
@@ -1809,6 +1837,18 @@ export const template_visitors = {
 		state.init.push(b.stmt(b.call('$.transition', ...args)));
 	},
 	RegularElement(node, context) {
+		/** @type {import('../types.js').SourceLocation} */
+		let location = [-1, -1];
+
+		if (context.state.options.dev) {
+			const loc = context.state.source_locator(node.start);
+			if (loc) {
+				location[0] = loc.line;
+				location[1] = loc.column;
+				context.state.locations.push(location);
+			}
+		}
+
 		if (node.name === 'noscript') {
 			context.state.template.push('<!>');
 			return;
@@ -1849,11 +1889,23 @@ export const template_visitors = {
 		let is_content_editable = false;
 		let has_content_editable_binding = false;
 
-		if (is_custom_element) {
+		if (
 			// cloneNode is faster, but it does not instantiate the underlying class of the
 			// custom element until the template is connected to the dom, which would
 			// cause problems when setting properties on the custom element.
 			// Therefore we need to use importNode instead, which doesn't have this caveat.
+			is_custom_element ||
+			// If we have an <img loading="lazy"> occurance, we need to use importNode for FF
+			// otherwise, the image won't be lazy. If we detect an attribute for "loading" then
+			// just fallback to using importNode. Also if we have a spread attribute on the img,
+			// then it might contain this property, so we also need to fallback there too.
+			(node.name === 'img' &&
+				node.attributes.some(
+					(attribute) =>
+						attribute.type === 'SpreadAttribute' ||
+						(attribute.type === 'Attribute' && attribute.name === 'loading')
+				))
+		) {
 			metadata.context.template_needs_import_node = true;
 		}
 
@@ -1993,10 +2045,14 @@ export const template_visitors = {
 
 		context.state.template.push('>');
 
+		/** @type {import('../types.js').SourceLocation[]} */
+		const child_locations = [];
+
 		/** @type {import('../types').ComponentClientTransformState} */
 		const state = {
 			...context.state,
 			metadata: child_metadata,
+			locations: child_locations,
 			scope: /** @type {import('../../../scope').Scope} */ (
 				context.state.scopes.get(node.fragment)
 			),
@@ -2031,6 +2087,11 @@ export const template_visitors = {
 			true,
 			{ ...context, state }
 		);
+
+		if (child_locations.length > 0) {
+			// @ts-expect-error
+			location.push(child_locations);
+		}
 
 		if (!VoidElements.includes(node.name)) {
 			context.state.template.push(`</${node.name}>`);
@@ -2131,19 +2192,21 @@ export const template_visitors = {
 			})
 		);
 
-		const args = [
-			context.state.node,
-			get_tag,
-			node.metadata.svg || node.metadata.mathml ? b.true : b.false
-		];
-		if (inner.length > 0) {
-			args.push(b.arrow([element_id, b.id('$$anchor')], b.block(inner)));
-		}
-		if (dynamic_namespace) {
-			if (inner.length === 0) args.push(b.id('undefined'));
-			args.push(b.thunk(serialize_attribute_value(dynamic_namespace, context)[1]));
-		}
-		context.state.init.push(b.stmt(b.call('$.element', ...args)));
+		const location = context.state.options.dev && context.state.source_locator(node.start);
+
+		context.state.init.push(
+			b.stmt(
+				b.call(
+					'$.element',
+					context.state.node,
+					get_tag,
+					node.metadata.svg || node.metadata.mathml ? b.true : b.false,
+					inner.length > 0 && b.arrow([element_id, b.id('$$anchor')], b.block(inner)),
+					dynamic_namespace && b.thunk(serialize_attribute_value(dynamic_namespace, context)[1]),
+					location && b.array([b.literal(location.line), b.literal(location.column)])
+				)
+			)
+		);
 	},
 	EachBlock(node, context) {
 		const each_node_meta = node.metadata;

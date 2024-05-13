@@ -28,6 +28,9 @@ import { lifecycle_outside_component } from '../shared/errors.js';
 const FLUSH_MICROTASK = 0;
 const FLUSH_SYNC = 1;
 
+// Used for DEV time error handling
+/** @param {WeakSet<Error>} value */
+const handled_errors = new WeakSet();
 // Used for controlling the flush of effects.
 let current_scheduler_mode = FLUSH_MICROTASK;
 // Used for handling scheduling
@@ -43,6 +46,11 @@ export function set_is_flushing_effect(value) {
 /** @param {boolean} value */
 export function set_is_destroying_effect(value) {
 	is_destroying_effect = value;
+}
+
+/** @param {boolean} value */
+export function set_untracking(value) {
+	current_untracking = value;
 }
 
 // Used for $inspect
@@ -191,12 +199,13 @@ export function check_dirtiness(reaction) {
 
 		if (dependencies !== null) {
 			var length = dependencies.length;
+			var is_equal;
 
 			for (var i = 0; i < length; i++) {
 				var dependency = dependencies[i];
 
 				if (!is_dirty && check_dirtiness(/** @type {import('#client').Derived} */ (dependency))) {
-					update_derived(/** @type {import('#client').Derived} **/ (dependency), true);
+					is_equal = update_derived(/** @type {import('#client').Derived} **/ (dependency), true);
 				}
 
 				if (is_unowned) {
@@ -208,7 +217,7 @@ export function check_dirtiness(reaction) {
 
 					if (version > /** @type {import('#client').Derived} */ (reaction).version) {
 						/** @type {import('#client').Derived} */ (reaction).version = version;
-						return true;
+						return !is_equal;
 					}
 
 					if (!current_skip_reaction && !dependency?.reactions?.includes(reaction)) {
@@ -239,6 +248,62 @@ export function check_dirtiness(reaction) {
 }
 
 /**
+ * @param {Error} error
+ * @param {import("#client").Effect} effect
+ * @param {import("#client").ComponentContext | null} component_context
+ */
+function handle_error(error, effect, component_context) {
+	// Given we don't yet have error boundaries, we will just always throw.
+	if (!DEV || handled_errors.has(error) || component_context === null) {
+		throw error;
+	}
+
+	const component_stack = [];
+
+	const effect_name = effect.fn.name;
+
+	if (effect_name) {
+		component_stack.push(effect_name);
+	}
+
+	/** @type {import("#client").ComponentContext | null} */
+	let current_context = component_context;
+
+	while (current_context !== null) {
+		var filename = current_context.function?.filename;
+
+		if (filename) {
+			const file = filename.split('/').at(-1);
+			component_stack.push(file);
+		}
+
+		current_context = current_context.p;
+	}
+
+	const indent = /Firefox/.test(navigator.userAgent) ? '  ' : '\t';
+	error.message += `\n${component_stack.map((name) => `\n${indent}in ${name}`).join('')}\n`;
+
+	const stack = error.stack;
+
+	// Filter out internal files from callstack
+	if (stack) {
+		const lines = stack.split('\n');
+		const new_lines = [];
+		for (let i = 0; i < lines.length; i++) {
+			const line = lines[i];
+			if (line.includes('svelte/src/internal')) {
+				continue;
+			}
+			new_lines.push(line);
+		}
+		error.stack = new_lines.join('\n');
+	}
+
+	handled_errors.add(error);
+	throw error;
+}
+
+/**
  * @template V
  * @param {import('#client').Reaction} signal
  * @returns {V}
@@ -259,7 +324,7 @@ export function execute_reaction_fn(signal) {
 	current_untracking = false;
 
 	try {
-		let res = signal.fn();
+		let res = (0, signal.fn)();
 		let dependencies = /** @type {import('#client').Value<unknown>[]} **/ (signal.deps);
 		if (current_dependencies !== null) {
 			let i;
@@ -430,6 +495,8 @@ export function execute_effect(effect) {
 		execute_effect_teardown(effect);
 		var teardown = execute_reaction_fn(effect);
 		effect.teardown = typeof teardown === 'function' ? teardown : null;
+	} catch (error) {
+		handle_error(/** @type {Error} */ (error), effect, current_component_context);
 	} finally {
 		current_effect = previous_effect;
 		current_component_context = previous_component_context;
@@ -453,9 +520,28 @@ function infinite_loop_guard() {
  * @returns {void}
  */
 function flush_queued_root_effects(root_effects) {
-	for (var i = 0; i < root_effects.length; i++) {
-		var signal = root_effects[i];
-		flush_nested_effects(signal, RENDER_EFFECT | EFFECT);
+	infinite_loop_guard();
+
+	var previously_flushing_effect = is_flushing_effect;
+	is_flushing_effect = true;
+
+	try {
+		for (var i = 0; i < root_effects.length; i++) {
+			var effect = root_effects[i];
+
+			// When working with custom elements, the root effects might not have a root
+			if (effect.first === null && (effect.f & BRANCH_EFFECT) === 0) {
+				flush_queued_effects([effect]);
+			} else {
+				/** @type {import('#client').Effect[]} */
+				var collected_effects = [];
+
+				process_effects(effect, collected_effects);
+				flush_queued_effects(collected_effects);
+			}
+		}
+	} finally {
+		is_flushing_effect = previously_flushing_effect;
 	}
 }
 
@@ -467,7 +553,6 @@ function flush_queued_effects(effects) {
 	var length = effects.length;
 	if (length === 0) return;
 
-	infinite_loop_guard();
 	for (var i = 0; i < length; i++) {
 		var effect = effects[i];
 
@@ -525,12 +610,10 @@ export function schedule_effect(signal) {
  * effects to be flushed.
  *
  * @param {import('#client').Effect} effect
- * @param {number} filter_flags
- * @param {boolean} shallow
  * @param {import('#client').Effect[]} collected_effects
  * @returns {void}
  */
-function process_effects(effect, filter_flags, shallow, collected_effects) {
+function process_effects(effect, collected_effects) {
 	var current_effect = effect.first;
 	var effects = [];
 
@@ -549,25 +632,19 @@ function process_effects(effect, filter_flags, shallow, collected_effects) {
 			}
 
 			if ((flags & RENDER_EFFECT) !== 0) {
-				if (is_branch) {
-					if (!shallow && child !== null) {
-						current_effect = child;
-						continue;
-					}
-				} else {
-					if (check_dirtiness(current_effect)) {
-						execute_effect(current_effect);
-						// Child might have been mutated since running the effect
-						child = current_effect.first;
-					}
-					if (!shallow && child !== null) {
-						current_effect = child;
-						continue;
-					}
+				if (!is_branch && check_dirtiness(current_effect)) {
+					execute_effect(current_effect);
+					// Child might have been mutated since running the effect
+					child = current_effect.first;
+				}
+
+				if (child !== null) {
+					current_effect = child;
+					continue;
 				}
 			} else if ((flags & EFFECT) !== 0) {
 				if (is_branch || is_clean) {
-					if (!shallow && child !== null) {
+					if (child !== null) {
 						current_effect = child;
 						continue;
 					}
@@ -597,58 +674,13 @@ function process_effects(effect, filter_flags, shallow, collected_effects) {
 		current_effect = sibling;
 	}
 
-	if (effects.length > 0) {
-		if ((filter_flags & EFFECT) !== 0) {
-			collected_effects.push(...effects);
-		}
-
-		if (!shallow) {
-			for (var i = 0; i < effects.length; i++) {
-				process_effects(effects[i], filter_flags, false, collected_effects);
-			}
-		}
+	// We might be dealing with many effects here, far more than can be spread into
+	// an array push call (callstack overflow). So let's deal with each effect in a loop.
+	for (var i = 0; i < effects.length; i++) {
+		child = effects[i];
+		collected_effects.push(child);
+		process_effects(child, collected_effects);
 	}
-}
-
-/**
- *
- * This function recursively collects effects in topological order from the starting effect passed in.
- * Effects will be collected when they match the filtered bitwise flag passed in only. The collected
- * array will be populated with all the effects.
- *
- * @param {import('#client').Effect} effect
- * @param {number} filter_flags
- * @param {boolean} [shallow]
- * @returns {void}
- */
-function flush_nested_effects(effect, filter_flags, shallow = false) {
-	/** @type {import('#client').Effect[]} */
-	var collected_effects = [];
-
-	var previously_flushing_effect = is_flushing_effect;
-	is_flushing_effect = true;
-
-	try {
-		// When working with custom elements, the root effects might not have a root
-		if (effect.first === null && (effect.f & BRANCH_EFFECT) === 0) {
-			flush_queued_effects([effect]);
-		} else {
-			process_effects(effect, filter_flags, shallow, collected_effects);
-			flush_queued_effects(collected_effects);
-		}
-	} finally {
-		is_flushing_effect = previously_flushing_effect;
-	}
-}
-
-/**
- * @param {import('#client').Effect} effect
- * @returns {void}
- */
-export function flush_local_render_effects(effect) {
-	// We are entering a new flush sequence, so ensure counter is reset.
-	flush_count = 0;
-	flush_nested_effects(effect, RENDER_EFFECT, true);
 }
 
 /**
@@ -1011,7 +1043,7 @@ function get_parent_context(component_context) {
  * @returns {number}
  */
 export function update(signal, d = 1) {
-	const value = get(signal);
+	var value = +get(signal);
 	set(signal, value + d);
 	return value;
 }
@@ -1022,9 +1054,7 @@ export function update(signal, d = 1) {
  * @returns {number}
  */
 export function update_pre(signal, d = 1) {
-	const value = get(signal) + d;
-	set(signal, value);
-	return value;
+	return set(signal, +get(signal) + d);
 }
 
 /**
@@ -1108,7 +1138,7 @@ export function pop(component) {
 		const effects = context_stack_item.e;
 		if (effects !== null) {
 			context_stack_item.e = null;
-			for (let i = 0; i < effects.length; i++) {
+			for (var i = 0; i < effects.length; i++) {
 				effect(effects[i]);
 			}
 		}
@@ -1162,6 +1192,11 @@ export function deep_read(value, visited = new Set()) {
 		!visited.has(value)
 	) {
 		visited.add(value);
+		// When working with a possible ReactiveDate, this
+		// will ensure we capture changes to it.
+		if (value instanceof Date) {
+			value.getTime();
+		}
 		for (let key in value) {
 			try {
 				deep_read(value[key], visited);

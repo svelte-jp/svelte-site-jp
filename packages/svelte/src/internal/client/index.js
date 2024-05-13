@@ -1,3 +1,4 @@
+export { add_locations } from './dev/elements.js';
 export { hmr } from './dev/hmr.js';
 export {
 	ADD_OWNER,
@@ -6,6 +7,7 @@ export {
 	mark_module_end,
 	add_owner_effect
 } from './dev/ownership.js';
+export { legacy_api } from './dev/legacy.js';
 export { inspect } from './dev/inspect.js';
 export { await_block as await } from './dom/blocks/await.js';
 export { if_block as if } from './dom/blocks/if.js';
@@ -88,6 +90,7 @@ export {
 	legacy_pre_effect,
 	legacy_pre_effect_reset,
 	render_effect,
+	template_effect,
 	user_effect,
 	user_pre_effect
 } from './reactivity/effects.js';
