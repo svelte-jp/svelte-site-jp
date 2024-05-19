@@ -1,59 +1,10 @@
 import {
 	regex_ends_with_whitespaces,
 	regex_not_whitespace,
-	regex_starts_with_whitespaces,
-	regex_whitespaces_strict
+	regex_starts_with_whitespaces
 } from '../patterns.js';
 import * as b from '../../utils/builders.js';
-
-/**
- * @param {string} s
- * @param {boolean} [attr]
- */
-export function escape_html(s, attr) {
-	if (typeof s !== 'string') return s;
-	const delimiter = attr ? '"' : '<';
-	const escaped_delimiter = attr ? '&quot;' : '&lt;';
-	let i_delimiter = s.indexOf(delimiter);
-	let i_ampersand = s.indexOf('&');
-
-	if (i_delimiter < 0 && i_ampersand < 0) return s;
-
-	let left = 0,
-		out = '';
-
-	while (i_delimiter >= 0 && i_ampersand >= 0) {
-		if (i_delimiter < i_ampersand) {
-			if (left < i_delimiter) out += s.substring(left, i_delimiter);
-			out += escaped_delimiter;
-			left = i_delimiter + 1;
-			i_delimiter = s.indexOf(delimiter, left);
-		} else {
-			if (left < i_ampersand) out += s.substring(left, i_ampersand);
-			out += '&amp;';
-			left = i_ampersand + 1;
-			i_ampersand = s.indexOf('&', left);
-		}
-	}
-
-	if (i_delimiter >= 0) {
-		do {
-			if (left < i_delimiter) out += s.substring(left, i_delimiter);
-			out += escaped_delimiter;
-			left = i_delimiter + 1;
-			i_delimiter = s.indexOf(delimiter, left);
-		} while (i_delimiter >= 0);
-	} else if (!attr) {
-		while (i_ampersand >= 0) {
-			if (left < i_ampersand) out += s.substring(left, i_ampersand);
-			out += '&amp;';
-			left = i_ampersand + 1;
-			i_ampersand = s.indexOf('&', left);
-		}
-	}
-
-	return left < s.length ? out + s.substring(left) : out;
-}
+import { walk } from 'zimmerframe';
 
 /**
  * @param {import('estree').Node} node
@@ -83,7 +34,6 @@ export function is_hoistable_function(node) {
  * @param {import('#compiler').Namespace} namespace
  * @param {boolean} preserve_whitespace
  * @param {boolean} preserve_comments
- * @param {boolean} preserve_noscript
  */
 export function clean_nodes(
 	parent,
@@ -91,8 +41,7 @@ export function clean_nodes(
 	path,
 	namespace = 'html',
 	preserve_whitespace,
-	preserve_comments,
-	preserve_noscript
+	preserve_comments
 ) {
 	/** @type {import('#compiler').SvelteNode[]} */
 	const hoisted = [];
@@ -102,10 +51,6 @@ export function clean_nodes(
 
 	for (const node of nodes) {
 		if (node.type === 'Comment' && !preserve_comments) {
-			continue;
-		}
-
-		if (node.type === 'RegularElement' && node.name === 'noscript' && !preserve_noscript) {
 			continue;
 		}
 
@@ -168,24 +113,36 @@ export function clean_nodes(
 	/** @type {import('#compiler').SvelteNode[]} */
 	const trimmed = [];
 
-	/** @type {import('#compiler').Text | null} */
-	let last_text = null;
+	// Replace any whitespace between a text and non-text node with a single spaceand keep whitespace
+	// as-is within text nodes, or between text nodes and expression tags (because in the end they count
+	// as one text). This way whitespace is mostly preserved when using CSS with `white-space: pre-line`
+	// and default slot content going into a pre tag (which we can't see).
+	for (let i = 0; i < regular.length; i++) {
+		const prev = regular[i - 1];
+		const node = regular[i];
+		const next = regular[i + 1];
 
-	// Replace any inbetween whitespace with a single space
-	for (const node of regular) {
 		if (node.type === 'Text') {
-			node.data = node.data.replace(regex_whitespaces_strict, ' ');
-			node.raw = node.raw.replace(regex_whitespaces_strict, ' ');
-			if (
-				(last_text === null && !can_remove_entirely) ||
-				node.data !== ' ' ||
-				node.data.charCodeAt(0) === 160 // non-breaking space
-			) {
+			if (prev?.type !== 'ExpressionTag') {
+				const prev_is_text_ending_with_whitespace =
+					prev?.type === 'Text' && regex_ends_with_whitespaces.test(prev.data);
+				node.data = node.data.replace(
+					regex_starts_with_whitespaces,
+					prev_is_text_ending_with_whitespace ? '' : ' '
+				);
+				node.raw = node.raw.replace(
+					regex_starts_with_whitespaces,
+					prev_is_text_ending_with_whitespace ? '' : ' '
+				);
+			}
+			if (next?.type !== 'ExpressionTag') {
+				node.data = node.data.replace(regex_ends_with_whitespaces, ' ');
+				node.raw = node.raw.replace(regex_ends_with_whitespaces, ' ');
+			}
+			if (node.data && (node.data !== ' ' || !can_remove_entirely)) {
 				trimmed.push(node);
 			}
-			last_text = node;
 		} else {
-			last_text = null;
 			trimmed.push(node);
 		}
 	}
@@ -194,7 +151,7 @@ export function clean_nodes(
 }
 
 /**
- * Infers the new namespace for the children of a node.
+ * Infers the namespace for the children of a node that should be used when creating the `$.template(...)`.
  * @param {import('#compiler').Namespace} namespace
  * @param {import('#compiler').SvelteNode} parent
  * @param {import('#compiler').SvelteNode[]} nodes
@@ -204,36 +161,34 @@ export function infer_namespace(namespace, parent, nodes, path) {
 	const parent_node =
 		parent.type === 'Fragment'
 			? // Messy: We know that Fragment calls create_block directly, so we can do this here
-			  path.at(-1)
+				path.at(-1)
 			: parent;
 
-	if (
-		namespace !== 'foreign' &&
+	if (namespace !== 'foreign') {
+		if (parent_node?.type === 'RegularElement' && parent_node.name === 'foreignObject') {
+			return 'html';
+		}
+
+		if (parent_node?.type === 'RegularElement' || parent_node?.type === 'SvelteElement') {
+			if (parent_node.metadata.svg) {
+				return 'svg';
+			}
+			return parent_node.metadata.mathml ? 'mathml' : 'html';
+		}
+
 		// Re-evaluate the namespace inside slot nodes that reset the namespace
-		(parent_node === undefined ||
+		if (
+			parent_node === undefined ||
 			parent_node.type === 'Root' ||
 			parent_node.type === 'Component' ||
 			parent_node.type === 'SvelteComponent' ||
 			parent_node.type === 'SvelteFragment' ||
-			parent_node.type === 'SnippetBlock')
-	) {
-		// Heuristic: Keep current namespace, unless we find a regular element,
-		// in which case we always want html, or we only find svg nodes,
-		// in which case we assume svg.
-		let only_svg = true;
-		for (const node of nodes) {
-			if (node.type === 'RegularElement') {
-				if (!node.metadata.svg) {
-					namespace = 'html';
-					only_svg = false;
-					break;
-				}
-			} else if (node.type !== 'Text' || node.data.trim() !== '') {
-				only_svg = false;
+			parent_node.type === 'SnippetBlock'
+		) {
+			const new_namespace = check_nodes_for_namespace(nodes, 'keep');
+			if (new_namespace !== 'keep' && new_namespace !== 'maybe_html') {
+				return new_namespace;
 			}
-		}
-		if (only_svg) {
-			namespace = 'svg';
 		}
 	}
 
@@ -241,36 +196,81 @@ export function infer_namespace(namespace, parent, nodes, path) {
 }
 
 /**
- * @param {import('#compiler').RegularElement} node
- * @param {import('#compiler').Namespace} namespace
- * @param {import('#compiler').SvelteNode[]} path
- * @returns {import('#compiler').Namespace}
+ * Heuristic: Keep current namespace, unless we find a regular element,
+ * in which case we always want html, or we only find svg nodes,
+ * in which case we assume svg.
+ * @param {import('#compiler').SvelteNode[]} nodes
+ * @param {import('#compiler').Namespace | 'keep' | 'maybe_html'} namespace
  */
-export function determine_element_namespace(node, namespace, path) {
-	if (namespace !== 'foreign') {
-		let parent = path.at(-1);
-		if (parent?.type === 'Fragment') {
-			parent = path.at(-2);
+function check_nodes_for_namespace(nodes, namespace) {
+	/**
+	 * @param {import('#compiler').SvelteElement | import('#compiler').RegularElement} node}
+	 * @param {{stop: () => void}} context
+	 */
+	const RegularElement = (node, { stop }) => {
+		if (!node.metadata.svg && !node.metadata.mathml) {
+			namespace = 'html';
+			stop();
+		} else if (namespace === 'keep') {
+			namespace = node.metadata.svg ? 'svg' : 'mathml';
 		}
+	};
 
-		if (node.name === 'foreignObject') {
-			return 'html';
-		} else if (
-			namespace !== 'svg' ||
-			parent?.type === 'Component' ||
-			parent?.type === 'SvelteComponent' ||
-			parent?.type === 'SvelteFragment' ||
-			parent?.type === 'SnippetBlock'
-		) {
-			if (node.metadata.svg) {
-				return 'svg';
-			} else {
-				return 'html';
+	for (const node of nodes) {
+		walk(
+			node,
+			{},
+			{
+				_(node, { next }) {
+					if (
+						node.type === 'EachBlock' ||
+						node.type === 'IfBlock' ||
+						node.type === 'AwaitBlock' ||
+						node.type === 'Fragment' ||
+						node.type === 'KeyBlock' ||
+						node.type === 'RegularElement' ||
+						node.type === 'SvelteElement' ||
+						node.type === 'Text'
+					) {
+						next();
+					}
+				},
+				SvelteElement: RegularElement,
+				RegularElement,
+				Text(node) {
+					if (node.data.trim() !== '') {
+						namespace = 'maybe_html';
+					}
+				}
 			}
-		}
+		);
+
+		if (namespace === 'html') return namespace;
 	}
 
 	return namespace;
+}
+
+/**
+ * Determines the namespace the children of this node are in.
+ * @param {import('#compiler').RegularElement | import('#compiler').SvelteElement} node
+ * @param {import('#compiler').Namespace} namespace
+ * @returns {import('#compiler').Namespace}
+ */
+export function determine_namespace_for_children(node, namespace) {
+	if (namespace === 'foreign') {
+		return namespace;
+	}
+
+	if (node.name === 'foreignObject') {
+		return 'html';
+	}
+
+	if (node.metadata.svg) {
+		return 'svg';
+	}
+
+	return node.metadata.mathml ? 'mathml' : 'html';
 }
 
 /**

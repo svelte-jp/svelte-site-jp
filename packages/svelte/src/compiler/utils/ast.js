@@ -1,4 +1,4 @@
-import { error } from '../errors.js';
+import { walk } from 'zimmerframe';
 import * as b from '../utils/builders.js';
 
 /**
@@ -96,12 +96,58 @@ export function extract_identifiers(param, nodes = []) {
 }
 
 /**
- * Extracts all identifiers from an expression.
+ * Extracts all identifiers and a stringified keypath from an expression.
+ * @param {import('estree').Expression} expr
+ * @returns {[keypath: string, ids: import('estree').Identifier[]]}
+ */
+export function extract_all_identifiers_from_expression(expr) {
+	/** @type {import('estree').Identifier[]} */
+	let nodes = [];
+	/** @type {string[]} */
+	let keypath = [];
+
+	walk(
+		expr,
+		{},
+		{
+			Identifier(node, { path }) {
+				const parent = path.at(-1);
+				if (parent?.type !== 'MemberExpression' || parent.property !== node || parent.computed) {
+					nodes.push(node);
+				}
+
+				if (parent?.type === 'MemberExpression' && parent.computed && parent.property === node) {
+					keypath.push(`[${node.name}]`);
+				} else {
+					keypath.push(node.name);
+				}
+			},
+			Literal(node, { path }) {
+				const value = typeof node.value === 'string' ? `"${node.value}"` : String(node.value);
+				const parent = path.at(-1);
+				if (parent?.type === 'MemberExpression' && parent.computed && parent.property === node) {
+					keypath.push(`[${value}]`);
+				} else {
+					keypath.push(value);
+				}
+			},
+			ThisExpression(_, { next }) {
+				keypath.push('this');
+				next();
+			}
+		}
+	);
+
+	return [keypath.join('.'), nodes];
+}
+
+/**
+ * Extracts all leaf identifiers from a destructuring expression.
  * @param {import('estree').Identifier | import('estree').ObjectExpression | import('estree').ArrayExpression} node
  * @param {import('estree').Identifier[]} [nodes]
  * @returns
  */
-export function extract_identifiers_from_expression(node, nodes = []) {
+export function extract_identifiers_from_destructuring(node, nodes = []) {
 	// TODO This isn't complete, but it should be enough for our purposes
 	switch (node.type) {
 		case 'Identifier':
@@ -111,9 +157,9 @@ export function extract_identifiers_from_expression(node, nodes = []) {
 		case 'ObjectExpression':
 			for (const prop of node.properties) {
 				if (prop.type === 'Property') {
-					extract_identifiers_from_expression(/** @type {any} */ (prop.value), nodes);
+					extract_identifiers_from_destructuring(/** @type {any} */ (prop.value), nodes);
 				} else {
-					extract_identifiers_from_expression(/** @type {any} */ (prop.argument), nodes);
+					extract_identifiers_from_destructuring(/** @type {any} */ (prop.argument), nodes);
 				}
 			}
 
@@ -121,7 +167,7 @@ export function extract_identifiers_from_expression(node, nodes = []) {
 
 		case 'ArrayExpression':
 			for (const element of node.elements) {
-				if (element) extract_identifiers_from_expression(/** @type {any} */ (element), nodes);
+				if (element) extract_identifiers_from_destructuring(/** @type {any} */ (element), nodes);
 			}
 
 			break;
@@ -137,11 +183,11 @@ export function extract_identifiers_from_expression(node, nodes = []) {
  * @typedef {Object} DestructuredAssignment
  * @property {import('estree').Identifier | import('estree').MemberExpression} node The node the destructuring path end in. Can be a member expression only for assignment expressions
  * @property {boolean} is_rest `true` if this is a `...rest` destructuring
- * @property {(expression: import('estree').Expression) => import('estree').Identifier | import('estree').MemberExpression | import('estree').CallExpression} expression Returns an expression which walks the path starting at the given expression.
- * This will be a call expression if a rest element or default is involved —
- * e.g. `const { foo: { bar: baz = 42 }, ...rest } = quux` —
- * since we can't represent `baz` or `rest` purely as a path
- * @property {(expression: import('estree').Expression) => import('estree').Identifier | import('estree').MemberExpression | import('estree').CallExpression} update_expression Like `expression` but without default values.
+ * @property {boolean} has_default_value `true` if this has a fallback value like `const { foo = 'bar } = ..`
+ * @property {(expression: import('estree').Expression) => import('estree').Identifier | import('estree').MemberExpression | import('estree').CallExpression | import('estree').AwaitExpression} expression Returns an expression which walks the path starting at the given expression.
+ * This will be a call expression if a rest element or default is involved — e.g. `const { foo: { bar: baz = 42 }, ...rest } = quux` — since we can't represent `baz` or `rest` purely as a path
+ * Will be an await expression in case of an async default value (`const { foo = await bar } = ...`)
+ * @property {(expression: import('estree').Expression) => import('estree').Identifier | import('estree').MemberExpression | import('estree').CallExpression | import('estree').AwaitExpression} update_expression Like `expression` but without default values.
  */
 
 /**
@@ -154,7 +200,8 @@ export function extract_paths(param) {
 		[],
 		param,
 		(node) => /** @type {import('estree').Identifier | import('estree').MemberExpression} */ (node),
-		(node) => /** @type {import('estree').Identifier | import('estree').MemberExpression} */ (node)
+		(node) => /** @type {import('estree').Identifier | import('estree').MemberExpression} */ (node),
+		false
 	);
 }
 
@@ -163,15 +210,17 @@ export function extract_paths(param) {
  * @param {import('estree').Node} param
  * @param {DestructuredAssignment['expression']} expression
  * @param {DestructuredAssignment['update_expression']} update_expression
+ * @param {boolean} has_default_value
  * @returns {DestructuredAssignment[]}
  */
-function _extract_paths(assignments = [], param, expression, update_expression) {
+function _extract_paths(assignments = [], param, expression, update_expression, has_default_value) {
 	switch (param.type) {
 		case 'Identifier':
 		case 'MemberExpression':
 			assignments.push({
 				node: param,
 				is_rest: false,
+				has_default_value,
 				expression,
 				update_expression
 			});
@@ -200,17 +249,30 @@ function _extract_paths(assignments = [], param, expression, update_expression) 
 						assignments.push({
 							node: prop.argument,
 							is_rest: true,
+							has_default_value,
 							expression: rest_expression,
 							update_expression: rest_expression
 						});
 					} else {
-						_extract_paths(assignments, prop.argument, rest_expression, rest_expression);
+						_extract_paths(
+							assignments,
+							prop.argument,
+							rest_expression,
+							rest_expression,
+							has_default_value
+						);
 					}
 				} else {
 					/** @type {DestructuredAssignment['expression']} */
 					const object_expression = (object) =>
 						b.member(expression(object), prop.key, prop.computed || prop.key.type !== 'Identifier');
-					_extract_paths(assignments, prop.value, object_expression, object_expression);
+					_extract_paths(
+						assignments,
+						prop.value,
+						object_expression,
+						object_expression,
+						has_default_value
+					);
 				}
 			}
 
@@ -228,16 +290,29 @@ function _extract_paths(assignments = [], param, expression, update_expression) 
 							assignments.push({
 								node: element.argument,
 								is_rest: true,
+								has_default_value,
 								expression: rest_expression,
 								update_expression: rest_expression
 							});
 						} else {
-							_extract_paths(assignments, element.argument, rest_expression, rest_expression);
+							_extract_paths(
+								assignments,
+								element.argument,
+								rest_expression,
+								rest_expression,
+								has_default_value
+							);
 						}
 					} else {
 						/** @type {DestructuredAssignment['expression']} */
 						const array_expression = (object) => b.member(expression(object), b.literal(i), true);
-						_extract_paths(assignments, element, array_expression, array_expression);
+						_extract_paths(
+							assignments,
+							element,
+							array_expression,
+							array_expression,
+							has_default_value
+						);
 					}
 				}
 			}
@@ -247,16 +322,22 @@ function _extract_paths(assignments = [], param, expression, update_expression) 
 		case 'AssignmentPattern': {
 			/** @type {DestructuredAssignment['expression']} */
 			const fallback_expression = (object) =>
-				b.call('$.value_or_fallback', expression(object), param.right);
+				is_expression_async(param.right)
+					? b.await(
+							b.call('$.value_or_fallback_async', expression(object), b.thunk(param.right, true))
+						)
+					: b.call('$.value_or_fallback', expression(object), b.thunk(param.right));
+
 			if (param.left.type === 'Identifier') {
 				assignments.push({
 					node: param.left,
 					is_rest: false,
+					has_default_value: true,
 					expression: fallback_expression,
 					update_expression
 				});
 			} else {
-				_extract_paths(assignments, param.left, fallback_expression, update_expression);
+				_extract_paths(assignments, param.left, fallback_expression, update_expression, true);
 			}
 
 			break;
@@ -264,28 +345,6 @@ function _extract_paths(assignments = [], param, expression, update_expression) 
 	}
 
 	return assignments;
-}
-
-/**
- * The Acorn TS plugin defines `foo!` as a `TSNonNullExpression` node, and
- * `foo as Bar` as a `TSAsExpression` node. This function unwraps those.
- *
- * @template {import('#compiler').SvelteNode | undefined | null} T
- * @param {T} node
- * @returns {T}
- */
-export function unwrap_ts_expression(node) {
-	if (!node) {
-		return node;
-	}
-
-	// @ts-expect-error these types don't exist on the base estree types
-	if (node.type === 'TSNonNullExpression' || node.type === 'TSAsExpression') {
-		// @ts-expect-error
-		return node.expression;
-	}
-
-	return node;
 }
 
 /**
@@ -336,4 +395,110 @@ export function is_simple_expression(node) {
 	}
 
 	return false;
+}
+
+/**
+ * @template {import('estree').SimpleCallExpression | import('estree').MemberExpression} T
+ * @param {import('estree').ChainExpression & { expression : T } | T} node
+ * @returns {T}
+ */
+export function unwrap_optional(node) {
+	return node.type === 'ChainExpression' ? node.expression : node;
+}
+
+/**
+ * @param {import('estree').Expression | import('estree').Pattern} expression
+ * @returns {boolean}
+ */
+export function is_expression_async(expression) {
+	switch (expression.type) {
+		case 'AwaitExpression': {
+			return true;
+		}
+		case 'ArrayPattern': {
+			return expression.elements.some((element) => element && is_expression_async(element));
+		}
+		case 'ArrayExpression': {
+			return expression.elements.some((element) => {
+				if (!element) {
+					return false;
+				} else if (element.type === 'SpreadElement') {
+					return is_expression_async(element.argument);
+				} else {
+					return is_expression_async(element);
+				}
+			});
+		}
+		case 'AssignmentPattern':
+		case 'AssignmentExpression':
+		case 'BinaryExpression':
+		case 'LogicalExpression': {
+			return is_expression_async(expression.left) || is_expression_async(expression.right);
+		}
+		case 'CallExpression':
+		case 'NewExpression': {
+			return (
+				(expression.callee.type !== 'Super' && is_expression_async(expression.callee)) ||
+				expression.arguments.some((element) => {
+					if (element.type === 'SpreadElement') {
+						return is_expression_async(element.argument);
+					} else {
+						return is_expression_async(element);
+					}
+				})
+			);
+		}
+		case 'ChainExpression': {
+			return is_expression_async(expression.expression);
+		}
+		case 'ConditionalExpression': {
+			return (
+				is_expression_async(expression.test) ||
+				is_expression_async(expression.alternate) ||
+				is_expression_async(expression.consequent)
+			);
+		}
+		case 'ImportExpression': {
+			return is_expression_async(expression.source);
+		}
+		case 'MemberExpression': {
+			return (
+				(expression.object.type !== 'Super' && is_expression_async(expression.object)) ||
+				(expression.property.type !== 'PrivateIdentifier' &&
+					is_expression_async(expression.property))
+			);
+		}
+		case 'ObjectPattern':
+		case 'ObjectExpression': {
+			return expression.properties.some((property) => {
+				if (property.type === 'SpreadElement') {
+					return is_expression_async(property.argument);
+				} else if (property.type === 'Property') {
+					return (
+						(property.key.type !== 'PrivateIdentifier' && is_expression_async(property.key)) ||
+						is_expression_async(property.value)
+					);
+				}
+			});
+		}
+		case 'RestElement': {
+			return is_expression_async(expression.argument);
+		}
+		case 'SequenceExpression':
+		case 'TemplateLiteral': {
+			return expression.expressions.some((subexpression) => is_expression_async(subexpression));
+		}
+		case 'TaggedTemplateExpression': {
+			return is_expression_async(expression.tag) || is_expression_async(expression.quasi);
+		}
+		case 'UnaryExpression':
+		case 'UpdateExpression': {
+			return is_expression_async(expression.argument);
+		}
+		case 'YieldExpression': {
+			return expression.argument ? is_expression_async(expression.argument) : false;
+		}
+		default:
+			return false;
+	}
 }

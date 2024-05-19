@@ -14,5 +14,5 @@ export default test({
 		assert.htmlEqual(target.innerHTML, `<button>1</button><span>1</span>`);
 	},
 
-	error: `Cannot use fallback values with bind:`
+	error: 'props_invalid_value\nCannot do `bind:count={undefined}` when `count` has a fallback value'
 });

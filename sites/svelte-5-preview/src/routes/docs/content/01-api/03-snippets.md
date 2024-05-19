@@ -58,7 +58,7 @@ Snippet、そして _render タグ_ は、コンポーネントの内側で再�
 {/each}
 ```
 
-snippet では最大で1つだけパラメータを受け取ることができます。関数の引数のように、分割することができます ([デモ](/#H4sIAAAAAAAAE5VTYW-bMBD9KyeiKYlEY4jWfSAk2n5H6QcXDmwVbMs2SzuL_z6DTRqp2rQJ2Ycfd_ced2eXtLxHkxRPLhF0wKRIfiiVpIl9V_PB_MTeoj8bOep6RkpTa67spRKV7dECH2iHBs7wNCOVdcFU1ui6gC2zVpmCEMVrMw4HxaSVhnzLMnLMsm26Ol95Y1kBHr9BDHnHbAHHO6ymynIpfF7LuAncwKgBCj0Xrx_5mMb2jh3f6KB6PNRy2AaXKf1fuY__KPfxj3KlQGikL5aQdpUxm-dTJUryUVdRsvwSqEviX2fIbYzgSvmCt7wbNe4ceMUpRIoUFkkpBBkw7ZfMZXC-BLKSDx3Q3p5djJrA-SR-X4K9DdHT6u-jo-flFlKSO3ThIDcSR6LIKUhGWrN1QGhs16LLbXgbjoe5U1PkozCfzu7uy2WtpfuuUTSo1_9ffPZrJKGLoyuwNxjBv0Q4wmdSR2aFi9jS2Pc-FIrlEKeilcI-GP4LfVtxOM1gyO1XSLp6vtD6tdNyFE0BV8YtngKuaNNw0RWQx_jKDlR33M9E5h-PQhZxfxEt6gIaLdWDYbSR191RvcFXv_LMb7p7obssXZ5Dvt_f9HgzdzZKibOZZ9mXmHkdTTpaefqsd4OIay4_hksd_I0fZMNbjk1SWD3i9Dz9BpdEPu8sBAAA)):
+Snippet のパラメーターは分割することができます ([デモ](/#H4sIAAAAAAAAE5VTYW-bMBD9KyeiKYlEY4jWfSAk2n5H6QcXDmwVbMs2SzuL_z6DTRqp2rQJ2Ycfd_ced2eXtLxHkxRPLhF0wKRIfiiVpIl9V_PB_MTeoj8bOep6RkpTa67spRKV7dECH2iHBs7wNCOVdcFU1ui6gC2zVpmCEMVrMw4HxaSVhnzLMnLMsm26Ol95Y1kBHr9BDHnHbAHHO6ymynIpfF7LuAncwKgBCj0Xrx_5mMb2jh3f6KB6PNRy2AaXKf1fuY__KPfxj3KlQGikL5aQdpUxm-dTJUryUVdRsvwSqEviX2fIbYzgSvmCt7wbNe4ceMUpRIoUFkkpBBkw7ZfMZXC-BLKSDx3Q3p5djJrA-SR-X4K9DdHT6u-jo-flFlKSO3ThIDcSR6LIKUhGWrN1QGhs16LLbXgbjoe5U1PkozCfzu7uy2WtpfuuUTSo1_9ffPZrJKGLoyuwNxjBv0Q4wmdSR2aFi9jS2Pc-FIrlEKeilcI-GP4LfVtxOM1gyO1XSLp6vtD6tdNyFE0BV8YtngKuaNNw0RWQx_jKDlR33M9E5h-PQhZxfxEt6gIaLdWDYbSR191RvcFXv_LMb7p7obssXZ5Dvt_f9HgzdzZKibOZZ9mXmHkdTTpaefqsd4OIay4_hksd_I0fZMNbjk1SWD3i9Dz9BpdEPu8sBAAA)):
 
 ```svelte
 {#snippet figure({ src, caption, width, height })}
@@ -68,6 +68,8 @@ snippet では最大で1つだけパラメータを受け取ることができ�
 	</figure>
 {/snippet}
 ```
+
+Like function declarations, snippets can have an arbitrary number of parameters, which can have default values. You cannot use rest parameters however.
 
 ## Snippet scope
 
@@ -217,12 +219,45 @@ snippet は自分自身を参照することができますし、別の snippet 
 
 > コンポーネントの内側にコンテンツがある場合、`children` という名前の props を持つことはできません。このため、`children` という名前の props は避けるべきです。
 
+## Typing snippets
+
+Snippets implement the `Snippet` interface imported from `'svelte'`:
+
+```diff
+-<script>
+-	let { data, children, row } = $props();
++<script lang="ts">
++	import type { Snippet } from 'svelte';
++
++	let { data, children, row }: {
++		data: any[];
++		children: Snippet;
++		row: Snippet<[any]>;
++	} = $props();
+</script>
+```
+
+With this change, red squigglies will appear if you try and use the component without providing a `data` prop and a `row` snippet. Notice that the type argument provided to `Snippet` is a tuple, since snippets can have multiple parameters.
+
+We can tighten things up further by declaring a generic, so that `data` and `row` refer to the same type:
+
+```diff
+-<script lang="ts">
++<script lang="ts" generics="T">
+	import type { Snippet } from 'svelte';
+
+	let { data, children, row }: {
+-		data: any[];
++		data: T[];
+		children: Snippet;
+-		row: Snippet<[any]>;
++		row: Snippet<[T]>;
+	} = $props();
+</script>
+```
+
 ## Snippets and slots
 
 Svelte 4 では、コンポーネントにコンテンツを渡すのに [slot](https://svelte.jp/docs/special-elements#slot) を使用します。snippet はよりパワフルで柔軟であるため、slot は Svelte 5 では非推奨です。
 
-しかし、まだ slot を使用することはでき、コンポーネントで snippet と slot を組み合わせることができます。
-
-## Typing snippets
-
-現時点では、snippet とそのパラメータに型を付けることはできません。Svelte 5 をリリースする前に取り組みたいと考えています。
+しかし、まだ slot を使用することはできますし、コンポーネントで snippet と slot を組み合わせることができます。

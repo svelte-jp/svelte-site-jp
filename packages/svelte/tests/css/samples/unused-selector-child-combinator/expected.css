@@ -1,6 +1,6 @@
 	/* (unused) article > * {
 		font-size: 36px;
-  }*/
+	}*/
 
 	/* (unused) article * {
 		font-size: 36px;
@@ -10,6 +10,6 @@
 		font-size: 48px;
 	}*/
 
-	div.svelte-xyz > .svelte-xyz {
+	div.svelte-xyz > :where(.svelte-xyz) {
 		color: orange;
 	}

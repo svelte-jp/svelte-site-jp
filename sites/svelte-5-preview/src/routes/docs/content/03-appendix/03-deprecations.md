@@ -40,6 +40,50 @@ title: Deprecations
 
 `$effect` と `$effect.pre` を使用すると [rune モード](/docs/runes)になることにご注意ください — あわせて props と state を更新するのをお忘れなく。
 
+## `createEventDispatcher`
+
+`createEventDispatcher` はカスタムイベントをディスパッチするための関数を返します。使い方は少しボイラープレート的ですが、Svelte 4 では DOM イベントをリッスンする方法 (例えば `on:click` を経由するなど) における一貫性のために推奨されていました。
+
+Svelte 5 では [event attributes](/docs/event-handlers) が導入され、これによってイベントのディレクティブが非推奨となりました (`on:click` の代わりに `onclick` を使用します)。また、これにより、イベントにコールバックプロパティを使用することを推奨いたします:
+
+```diff
+<script>
+-	import { createEventDispatcher } from 'svelte';
+-	const dispatch = createEventDispatcher();
++	let { greet } = $props();
+
+-	function greet() {
+-		dispatch('greet');
+-	}
+</script>
+
+<button
+-	on:click={greet}
++	onclick={greet}
+>greet</button>
+```
+
+custom elements を作成する場合は、新しい [host rune](/docs/runes#$host) を使用してイベント(や他のもの)をディスパッチしてください:
+
+```diff
+<script>
+-	import { createEventDispatcher } from 'svelte';
+-	const dispatch = createEventDispatcher();
+
+	function greet() {
+-		dispatch('greet');
++		$host().dispatchEvent(new CustomEvent('greet'));
+	}
+</script>
+
+<button
+-	on:click={greet}
++	onclick={greet}
+>greet</button>
+```
+
+`$props` や `$host` を使用すると、[runes モード](/docs/runes)になることに注意してください — これに応じて、 props と state を更新することを忘れずに。
+
 ## `immutable`
 
 `immutable` コンパイラオプションは非推奨となります。代わりに rune モードを使用して、全ての状態を immutable にします (つまり、`object.property` に代入しても `object` 自身や別のプロパティを監視しているものは更新されません)。

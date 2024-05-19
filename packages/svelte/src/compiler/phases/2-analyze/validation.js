@@ -1,14 +1,29 @@
-import { error } from '../../errors.js';
+import is_reference from 'is-reference';
+import {
+	disallowed_paragraph_contents,
+	interactive_elements,
+	is_tag_valid_with_parent
+} from '../../../constants.js';
+import * as e from '../../errors.js';
 import {
 	extract_identifiers,
 	get_parent,
+	is_event_attribute,
+	is_expression_attribute,
 	is_text_attribute,
-	unwrap_ts_expression
+	object,
+	unwrap_optional
 } from '../../utils/ast.js';
-import { warn } from '../../warnings.js';
+import * as w from '../../warnings.js';
 import fuzzymatch from '../1-parse/utils/fuzzymatch.js';
 import { binding_properties } from '../bindings.js';
-import { ContentEditableBindings, EventModifiers, SVGElements } from '../constants.js';
+import {
+	ContentEditableBindings,
+	EventModifiers,
+	Runes,
+	SVGElements,
+	VoidElements
+} from '../constants.js';
 import { is_custom_element_node } from '../nodes.js';
 import {
 	regex_illegal_attribute_character,
@@ -32,14 +47,34 @@ function validate_component(node, context) {
 			attribute.type !== 'OnDirective' &&
 			attribute.type !== 'BindDirective'
 		) {
-			error(attribute, 'invalid-component-directive');
+			e.component_invalid_directive(attribute);
 		}
 
 		if (
 			attribute.type === 'OnDirective' &&
 			(attribute.modifiers.length > 1 || attribute.modifiers.some((m) => m !== 'once'))
 		) {
-			error(attribute, 'invalid-event-modifier');
+			e.event_handler_invalid_component_modifier(attribute);
+		}
+
+		if (attribute.type === 'Attribute') {
+			if (context.state.analysis.runes && is_expression_attribute(attribute)) {
+				const expression = attribute.value[0].expression;
+				if (expression.type === 'SequenceExpression') {
+					let i = /** @type {number} */ (expression.start);
+					while (--i > 0) {
+						const char = context.state.analysis.source[i];
+						if (char === '(') break; // parenthesized sequence expressions are ok
+						if (char === '{') e.attribute_invalid_sequence_expression(expression);
+					}
+				}
+			}
+
+			validate_attribute_name(attribute);
+
+			if (attribute.name === 'slot') {
+				validate_slot_attribute(context, attribute);
+			}
 		}
 	}
 
@@ -50,28 +85,56 @@ function validate_component(node, context) {
 	});
 }
 
+const react_attributes = new Map([
+	['className', 'class'],
+	['htmlFor', 'for']
+]);
+
 /**
  * @param {import('#compiler').RegularElement | import('#compiler').SvelteElement} node
  * @param {import('zimmerframe').Context<import('#compiler').SvelteNode, import('./types.js').AnalysisState>} context
  */
 function validate_element(node, context) {
 	let has_animate_directive = false;
-	let has_in_transition = false;
-	let has_out_transition = false;
+
+	/** @type {import('#compiler').TransitionDirective | null} */
+	let in_transition = null;
+
+	/** @type {import('#compiler').TransitionDirective | null} */
+	let out_transition = null;
 
 	for (const attribute of node.attributes) {
 		if (attribute.type === 'Attribute') {
+			const is_expression = is_expression_attribute(attribute);
+
+			if (context.state.analysis.runes && is_expression) {
+				const expression = attribute.value[0].expression;
+				if (expression.type === 'SequenceExpression') {
+					let i = /** @type {number} */ (expression.start);
+					while (--i > 0) {
+						const char = context.state.analysis.source[i];
+						if (char === '(') break; // parenthesized sequence expressions are ok
+						if (char === '{') e.attribute_invalid_sequence_expression(expression);
+					}
+				}
+			}
+
 			if (regex_illegal_attribute_character.test(attribute.name)) {
-				error(attribute, 'invalid-attribute-name', attribute.name);
+				e.attribute_invalid_name(attribute, attribute.name);
 			}
 
 			if (attribute.name.startsWith('on') && attribute.name.length > 2) {
+				if (!is_expression) {
+					e.attribute_invalid_event_handler(attribute);
+				}
+
+				const value = attribute.value[0].expression;
 				if (
-					attribute.value === true ||
-					is_text_attribute(attribute) ||
-					attribute.value.length > 1
+					value.type === 'Identifier' &&
+					value.name === attribute.name &&
+					!context.state.scope.get(value.name)
 				) {
-					error(attribute, 'invalid-event-attribute-value');
+					w.attribute_global_event_reference(attribute, attribute.name);
 				}
 			}
 
@@ -81,14 +144,21 @@ function validate_element(node, context) {
 			}
 
 			if (attribute.name === 'is' && context.state.options.namespace !== 'foreign') {
-				warn(context.state.analysis.warnings, attribute, context.path, 'avoid-is');
+				w.attribute_avoid_is(attribute);
 			}
+
+			const correct_name = react_attributes.get(attribute.name);
+			if (correct_name) {
+				w.attribute_invalid_property_name(attribute, attribute.name, correct_name);
+			}
+
+			validate_attribute_name(attribute);
 		} else if (attribute.type === 'AnimateDirective') {
 			const parent = context.path.at(-2);
 			if (parent?.type !== 'EachBlock') {
-				error(attribute, 'invalid-animation', 'no-each');
+				e.animation_invalid_placement(attribute);
 			} else if (!parent.key) {
-				error(attribute, 'invalid-animation', 'each-key');
+				e.animation_missing_key(attribute);
 			} else if (
 				parent.body.nodes.filter(
 					(n) =>
@@ -97,34 +167,39 @@ function validate_element(node, context) {
 						(n.type !== 'Text' || n.data.trim() !== '')
 				).length > 1
 			) {
-				error(attribute, 'invalid-animation', 'child');
+				e.animation_invalid_placement(attribute);
 			}
 
 			if (has_animate_directive) {
-				error(attribute, 'duplicate-animation');
+				e.animation_duplicate(attribute);
 			} else {
 				has_animate_directive = true;
 			}
 		} else if (attribute.type === 'TransitionDirective') {
-			if ((attribute.outro && has_out_transition) || (attribute.intro && has_in_transition)) {
-				/** @param {boolean} _in @param {boolean} _out */
-				const type = (_in, _out) => (_in && _out ? 'transition' : _in ? 'in' : 'out');
-				error(
-					attribute,
-					'duplicate-transition',
-					type(has_in_transition, has_out_transition),
-					type(attribute.intro, attribute.outro)
-				);
+			const existing = /** @type {import('#compiler').TransitionDirective | null} */ (
+				(attribute.intro && in_transition) || (attribute.outro && out_transition)
+			);
+
+			if (existing) {
+				const a = existing.intro ? (existing.outro ? 'transition' : 'in') : 'out';
+				const b = attribute.intro ? (attribute.outro ? 'transition' : 'in') : 'out';
+
+				if (a === b) {
+					e.transition_duplicate(attribute, a);
+				} else {
+					e.transition_conflict(attribute, a, b);
+				}
 			}
 
-			has_in_transition = has_in_transition || attribute.intro;
-			has_out_transition = has_out_transition || attribute.outro;
+			if (attribute.intro) in_transition = attribute;
+			if (attribute.outro) out_transition = attribute;
 		} else if (attribute.type === 'OnDirective') {
 			let has_passive_modifier = false;
 			let conflicting_passive_modifier = '';
 			for (const modifier of attribute.modifiers) {
 				if (!EventModifiers.includes(modifier)) {
-					error(attribute, 'invalid-event-modifier', EventModifiers);
+					const list = `${EventModifiers.slice(0, -1).join(', ')} or ${EventModifiers.at(-1)}`;
+					e.event_handler_invalid_modifier(attribute, list);
 				}
 				if (modifier === 'passive') {
 					has_passive_modifier = true;
@@ -132,15 +207,28 @@ function validate_element(node, context) {
 					conflicting_passive_modifier = modifier;
 				}
 				if (has_passive_modifier && conflicting_passive_modifier) {
-					error(
+					e.event_handler_invalid_modifier_combination(
 						attribute,
-						'invalid-event-modifier-combination',
 						'passive',
 						conflicting_passive_modifier
 					);
 				}
 			}
 		}
+	}
+}
+
+/**
+ * @param {import('#compiler').Attribute} attribute
+ */
+function validate_attribute_name(attribute) {
+	if (
+		attribute.name.includes(':') &&
+		!attribute.name.startsWith('xmlns:') &&
+		!attribute.name.startsWith('xlink:') &&
+		!attribute.name.startsWith('xml:')
+	) {
+		w.attribute_illegal_colon(attribute);
 	}
 }
 
@@ -168,207 +256,118 @@ function validate_slot_attribute(context, attribute) {
 
 	if (owner) {
 		if (!is_text_attribute(attribute)) {
-			error(attribute, 'invalid-slot-attribute');
+			e.slot_attribute_invalid(attribute);
 		}
 
-		if (owner.type === 'Component' || owner.type === 'SvelteComponent') {
+		if (
+			owner.type === 'Component' ||
+			owner.type === 'SvelteComponent' ||
+			owner.type === 'SvelteSelf'
+		) {
 			if (owner !== context.path.at(-2)) {
-				error(attribute, 'invalid-slot-placement');
+				e.slot_attribute_invalid_placement(attribute);
 			}
-		}
 
-		const name = attribute.value[0].data;
-		if (context.state.component_slots.has(name)) {
-			error(attribute, 'duplicate-slot-name', name, owner.name);
-		}
-		context.state.component_slots.add(name);
+			const name = attribute.value[0].data;
 
-		if (name === 'default') {
-			for (const node of owner.fragment.nodes) {
-				if (node.type === 'Text' && regex_only_whitespaces.test(node.data)) {
-					continue;
-				}
+			if (context.state.component_slots.has(name)) {
+				e.slot_attribute_duplicate(attribute, name, owner.name);
+			}
 
-				if (node.type === 'RegularElement' || node.type === 'SvelteFragment') {
-					if (node.attributes.some((a) => a.type === 'Attribute' && a.name === 'slot')) {
+			context.state.component_slots.add(name);
+
+			if (name === 'default') {
+				for (const node of owner.fragment.nodes) {
+					if (node.type === 'Text' && regex_only_whitespaces.test(node.data)) {
 						continue;
 					}
-				}
 
-				error(node, 'invalid-default-slot-content');
+					if (node.type === 'RegularElement' || node.type === 'SvelteFragment') {
+						if (node.attributes.some((a) => a.type === 'Attribute' && a.name === 'slot')) {
+							continue;
+						}
+					}
+
+					e.slot_default_duplicate(node);
+				}
 			}
 		}
 	} else {
-		error(attribute, 'invalid-slot-placement');
+		e.slot_attribute_invalid_placement(attribute);
 	}
 }
 
-// https://html.spec.whatwg.org/multipage/syntax.html#generate-implied-end-tags
-const implied_end_tags = ['dd', 'dt', 'li', 'option', 'optgroup', 'p', 'rp', 'rt'];
-
 /**
- * @param {string} tag
- * @param {string} parent_tag
- * @returns {boolean}
+ * @param {import('#compiler').Fragment | null | undefined} node
+ * @param {import('zimmerframe').Context<import('#compiler').SvelteNode, import('./types.js').AnalysisState>} context
  */
-function is_tag_valid_with_parent(tag, parent_tag) {
-	// First, let's check if we're in an unusual parsing mode...
-	switch (parent_tag) {
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-inselect
-		case 'select':
-			return tag === 'option' || tag === 'optgroup' || tag === '#text';
-		case 'optgroup':
-			return tag === 'option' || tag === '#text';
-		// Strictly speaking, seeing an <option> doesn't mean we're in a <select>
-		// but
-		case 'option':
-			return tag === '#text';
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-intd
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-incaption
-		// No special behavior since these rules fall back to "in body" mode for
-		// all except special table nodes which cause bad parsing behavior anyway.
-
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-intr
-		case 'tr':
-			return (
-				tag === 'th' || tag === 'td' || tag === 'style' || tag === 'script' || tag === 'template'
-			);
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-intbody
-		case 'tbody':
-		case 'thead':
-		case 'tfoot':
-			return tag === 'tr' || tag === 'style' || tag === 'script' || tag === 'template';
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-incolgroup
-		case 'colgroup':
-			return tag === 'col' || tag === 'template';
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-intable
-		case 'table':
-			return (
-				tag === 'caption' ||
-				tag === 'colgroup' ||
-				tag === 'tbody' ||
-				tag === 'tfoot' ||
-				tag === 'thead' ||
-				tag === 'style' ||
-				tag === 'script' ||
-				tag === 'template'
-			);
-		// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-inhead
-		case 'head':
-			return (
-				tag === 'base' ||
-				tag === 'basefont' ||
-				tag === 'bgsound' ||
-				tag === 'link' ||
-				tag === 'meta' ||
-				tag === 'title' ||
-				tag === 'noscript' ||
-				tag === 'noframes' ||
-				tag === 'style' ||
-				tag === 'script' ||
-				tag === 'template'
-			);
-		// https://html.spec.whatwg.org/multipage/semantics.html#the-html-element
-		case 'html':
-			return tag === 'head' || tag === 'body' || tag === 'frameset';
-		case 'frameset':
-			return tag === 'frame';
-		case '#document':
-			return tag === 'html';
+function validate_block_not_empty(node, context) {
+	if (!node) return;
+	// Assumption: If the block has zero elements, someone's in the middle of typing it out,
+	// so don't warn in that case because it would be distracting.
+	if (node.nodes.length === 1 && node.nodes[0].type === 'Text' && !node.nodes[0].raw.trim()) {
+		w.block_empty(node.nodes[0]);
 	}
-
-	// Probably in the "in body" parsing mode, so we outlaw only tag combos
-	// where the parsing rules cause implicit opens or closes to be added.
-	// https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-inbody
-	switch (tag) {
-		case 'h1':
-		case 'h2':
-		case 'h3':
-		case 'h4':
-		case 'h5':
-		case 'h6':
-			return (
-				parent_tag !== 'h1' &&
-				parent_tag !== 'h2' &&
-				parent_tag !== 'h3' &&
-				parent_tag !== 'h4' &&
-				parent_tag !== 'h5' &&
-				parent_tag !== 'h6'
-			);
-
-		case 'rp':
-		case 'rt':
-			return implied_end_tags.indexOf(parent_tag) === -1;
-
-		case 'body':
-		case 'caption':
-		case 'col':
-		case 'colgroup':
-		case 'frameset':
-		case 'frame':
-		case 'head':
-		case 'html':
-		case 'tbody':
-		case 'td':
-		case 'tfoot':
-		case 'th':
-		case 'thead':
-		case 'tr':
-			// These tags are only valid with a few parents that have special child
-			// parsing rules -- if we're down here, then none of those matched and
-			// so we allow it only if we don't know what the parent is, as all other
-			// cases are invalid.
-			return parent_tag == null;
-	}
-
-	return true;
 }
 
 /**
  * @type {import('zimmerframe').Visitors<import('#compiler').SvelteNode, import('./types.js').AnalysisState>}
  */
-export const validation = {
+const validation = {
+	AssignmentExpression(node, context) {
+		validate_assignment(node, node.left, context.state);
+	},
 	BindDirective(node, context) {
 		validate_no_const_assignment(node, node.expression, context.state.scope, true);
 
-		let left = node.expression;
-		while (left.type === 'MemberExpression') {
-			left = /** @type {import('estree').MemberExpression} */ (left.object);
+		const assignee = node.expression;
+		const left = object(assignee);
+
+		if (left === null) {
+			e.bind_invalid_expression(node);
 		}
 
-		if (left.type !== 'Identifier') {
-			error(node, 'invalid-binding-expression');
-		}
+		const binding = context.state.scope.get(left.name);
 
 		if (
-			node.expression.type === 'Identifier' &&
+			assignee.type === 'Identifier' &&
 			node.name !== 'this' // bind:this also works for regular variables
 		) {
-			const binding = context.state.scope.get(left.name);
 			// reassignment
 			if (
 				!binding ||
 				(binding.kind !== 'state' &&
+					binding.kind !== 'frozen_state' &&
 					binding.kind !== 'prop' &&
+					binding.kind !== 'bindable_prop' &&
 					binding.kind !== 'each' &&
 					binding.kind !== 'store_sub' &&
 					!binding.mutated)
 			) {
-				error(node.expression, 'invalid-binding-value');
+				e.bind_invalid_value(node.expression);
 			}
 
 			if (binding.kind === 'derived') {
-				error(node.expression, 'invalid-derived-binding');
+				e.constant_binding(node.expression, 'derived state');
 			}
 
-			// TODO handle mutations of non-state/props in runes mode
+			if (context.state.analysis.runes && binding.kind === 'each') {
+				e.each_item_invalid_assignment(node);
+			}
+
+			if (binding.kind === 'snippet') {
+				e.snippet_parameter_assignment(node);
+			}
 		}
 
 		if (node.name === 'group') {
-			const binding = context.state.scope.get(left.name);
 			if (!binding) {
-				error(node, 'INTERNAL', 'Cannot find declaration for bind:group');
+				throw new Error('Cannot find declaration for bind:group');
 			}
+		}
+
+		if (binding?.kind === 'each' && binding.metadata?.inside_rest) {
+			w.bind_invalid_each_rest(binding.node, binding.node.name);
 		}
 
 		const parent = context.path.at(-1);
@@ -381,21 +380,14 @@ export const validation = {
 			parent?.type === 'SvelteBody'
 		) {
 			if (context.state.options.namespace === 'foreign' && node.name !== 'this') {
-				error(
-					node,
-					'invalid-binding',
-					node.name,
-					undefined,
-					'. Foreign elements only support bind:this'
-				);
+				e.bind_invalid_name(node, node.name, 'Foreign elements only support `bind:this`');
 			}
 
 			if (node.name in binding_properties) {
 				const property = binding_properties[node.name];
 				if (property.valid_elements && !property.valid_elements.includes(parent.name)) {
-					error(
+					e.bind_invalid_target(
 						node,
-						'invalid-binding',
 						node.name,
 						property.valid_elements.map((valid_element) => `<${valid_element}>`).join(', ')
 					);
@@ -406,19 +398,22 @@ export const validation = {
 						parent.attributes.find((a) => a.type === 'Attribute' && a.name === 'type')
 					);
 					if (type && !is_text_attribute(type)) {
-						error(type, 'invalid-type-attribute');
+						if (node.name !== 'value' || type.value === true) {
+							e.attribute_invalid_type(type);
+						}
+						return; // bind:value can handle dynamic `type` attributes
 					}
 
 					if (node.name === 'checked' && type?.value[0].data !== 'checkbox') {
-						error(node, 'invalid-binding', node.name, '<input type="checkbox">');
+						e.bind_invalid_target(node, node.name, '<input type="checkbox">');
 					}
 
 					if (node.name === 'files' && type?.value[0].data !== 'file') {
-						error(node, 'invalid-binding', node.name, '<input type="file">');
+						e.bind_invalid_target(node, node.name, '<input type="file">');
 					}
 				}
 
-				if (parent.name === 'select') {
+				if (parent.name === 'select' && node.name !== 'this') {
 					const multiple = parent.attributes.find(
 						(a) =>
 							a.type === 'Attribute' &&
@@ -427,14 +422,13 @@ export const validation = {
 							a.value !== true
 					);
 					if (multiple) {
-						error(multiple, 'invalid-multiple-attribute');
+						e.attribute_invalid_multiple(multiple);
 					}
 				}
 
 				if (node.name === 'offsetWidth' && SVGElements.includes(parent.name)) {
-					error(
+					e.bind_invalid_target(
 						node,
-						'invalid-binding',
 						node.name,
 						`non-<svg> elements. Use 'clientWidth' for <svg> instead`
 					);
@@ -445,9 +439,9 @@ export const validation = {
 						parent.attributes.find((a) => a.type === 'Attribute' && a.name === 'contenteditable')
 					);
 					if (!contenteditable) {
-						error(node, 'missing-contenteditable-attribute');
-					} else if (!is_text_attribute(contenteditable)) {
-						error(contenteditable, 'dynamic-contenteditable-attribute');
+						e.attribute_contenteditable_missing(node);
+					} else if (!is_text_attribute(contenteditable) && contenteditable.value !== true) {
+						e.attribute_contenteditable_dynamic(contenteditable);
 					}
 				}
 			} else {
@@ -455,15 +449,15 @@ export const validation = {
 				if (match) {
 					const property = binding_properties[match];
 					if (!property.valid_elements || property.valid_elements.includes(parent.name)) {
-						error(node, 'invalid-binding', node.name, undefined, ` (did you mean '${match}'?)`);
+						e.bind_invalid_name(node, node.name, `Did you mean '${match}'?`);
 					}
 				}
-				error(node, 'invalid-binding', node.name);
+				e.bind_invalid_name(node, node.name);
 			}
 		}
 	},
 	ExportDefaultDeclaration(node) {
-		error(node, 'default-export');
+		e.module_illegal_default_export(node);
 	},
 	ConstTag(node, context) {
 		const parent = context.path.at(-1);
@@ -480,7 +474,21 @@ export const validation = {
 				((grand_parent?.type !== 'RegularElement' && grand_parent?.type !== 'SvelteElement') ||
 					!grand_parent.attributes.some((a) => a.type === 'Attribute' && a.name === 'slot')))
 		) {
-			error(node, 'invalid-const-placement');
+			e.const_tag_invalid_placement(node);
+		}
+	},
+	ImportDeclaration(node, context) {
+		if (node.source.value === 'svelte' && context.state.analysis.runes) {
+			for (const specifier of node.specifiers) {
+				if (specifier.type === 'ImportSpecifier') {
+					if (
+						specifier.imported.name === 'beforeUpdate' ||
+						specifier.imported.name === 'afterUpdate'
+					) {
+						e.runes_mode_invalid_import(specifier, specifier.imported.name);
+					}
+				}
+			}
 		}
 	},
 	LetDirective(node, context) {
@@ -489,19 +497,20 @@ export const validation = {
 			parent === undefined ||
 			(parent.type !== 'Component' &&
 				parent.type !== 'RegularElement' &&
+				parent.type !== 'SlotElement' &&
 				parent.type !== 'SvelteElement' &&
 				parent.type !== 'SvelteComponent' &&
 				parent.type !== 'SvelteSelf' &&
 				parent.type !== 'SvelteFragment')
 		) {
-			error(node, 'invalid-let-directive-placement');
+			e.let_directive_invalid_placement(node);
 		}
 	},
 	RegularElement(node, context) {
 		if (node.name === 'textarea' && node.fragment.nodes.length > 0) {
 			for (const attribute of node.attributes) {
 				if (attribute.type === 'Attribute' && attribute.name === 'value') {
-					error(node, 'invalid-textarea-content');
+					e.textarea_invalid_content(node);
 				}
 			}
 		}
@@ -512,21 +521,46 @@ export const validation = {
 			binding.declaration_kind === 'import' &&
 			binding.references.length === 0
 		) {
-			warn(
-				context.state.analysis.warnings,
-				node,
-				context.path,
-				'component-name-lowercase',
-				node.name
-			);
+			w.component_name_lowercase(node, node.name);
 		}
 
 		validate_element(node, context);
 
 		if (context.state.parent_element) {
 			if (!is_tag_valid_with_parent(node.name, context.state.parent_element)) {
-				error(node, 'invalid-node-placement', `<${node.name}>`, context.state.parent_element);
+				e.node_invalid_placement(node, `<${node.name}>`, context.state.parent_element);
 			}
+		}
+
+		if (interactive_elements.has(node.name)) {
+			const path = context.path;
+			for (let parent of path) {
+				if (
+					parent.type === 'RegularElement' &&
+					parent.name === node.name &&
+					interactive_elements.has(parent.name)
+				) {
+					e.node_invalid_placement(node, `<${node.name}>`, parent.name);
+				}
+			}
+		}
+
+		if (disallowed_paragraph_contents.includes(node.name)) {
+			const path = context.path;
+			for (let parent of path) {
+				if (parent.type === 'RegularElement' && parent.name === 'p') {
+					e.node_invalid_placement(node, `<${node.name}>`, parent.name);
+				}
+			}
+		}
+
+		if (
+			context.state.analysis.source[node.end - 2] === '/' &&
+			context.state.options.namespace !== 'foreign' &&
+			!VoidElements.includes(node.name) &&
+			!SVGElements.includes(node.name)
+		) {
+			w.element_invalid_self_closing_tag(node, node.name);
 		}
 
 		context.next({
@@ -534,10 +568,86 @@ export const validation = {
 			parent_element: node.name
 		});
 	},
+	RenderTag(node, context) {
+		context.state.analysis.uses_render_tags = true;
+
+		const raw_args = unwrap_optional(node.expression).arguments;
+		for (const arg of raw_args) {
+			if (arg.type === 'SpreadElement') {
+				e.render_tag_invalid_spread_argument(arg);
+			}
+		}
+
+		const callee = unwrap_optional(node.expression).callee;
+		if (
+			callee.type === 'MemberExpression' &&
+			callee.property.type === 'Identifier' &&
+			['bind', 'apply', 'call'].includes(callee.property.name)
+		) {
+			e.render_tag_invalid_call_expression(node);
+		}
+	},
+	IfBlock(node, context) {
+		validate_block_not_empty(node.consequent, context);
+		validate_block_not_empty(node.alternate, context);
+	},
+	EachBlock(node, context) {
+		validate_block_not_empty(node.body, context);
+		validate_block_not_empty(node.fallback, context);
+	},
+	AwaitBlock(node, context) {
+		validate_block_not_empty(node.pending, context);
+		validate_block_not_empty(node.then, context);
+		validate_block_not_empty(node.catch, context);
+	},
+	KeyBlock(node, context) {
+		validate_block_not_empty(node.fragment, context);
+	},
+	SnippetBlock(node, context) {
+		validate_block_not_empty(node.body, context);
+
+		context.next({ ...context.state, parent_element: null });
+
+		const { path } = context;
+		const parent = path.at(-2);
+		if (!parent) return;
+
+		if (
+			parent.type === 'Component' &&
+			parent.attributes.some(
+				(attribute) =>
+					(attribute.type === 'Attribute' || attribute.type === 'BindDirective') &&
+					attribute.name === node.expression.name
+			)
+		) {
+			e.snippet_shadowing_prop(node, node.expression.name);
+		}
+
+		if (node.expression.name !== 'children') return;
+
+		if (
+			parent.type === 'Component' ||
+			parent.type === 'SvelteComponent' ||
+			parent.type === 'SvelteSelf'
+		) {
+			if (
+				parent.fragment.nodes.some(
+					(node) => node.type !== 'SnippetBlock' && (node.type !== 'Text' || node.data.trim())
+				)
+			) {
+				e.snippet_conflict(node);
+			}
+		}
+	},
+	StyleDirective(node) {
+		if (node.modifiers.length > 1 || (node.modifiers.length && node.modifiers[0] !== 'important')) {
+			e.style_directive_invalid_modifier(node);
+		}
+	},
 	SvelteHead(node) {
 		const attribute = node.attributes[0];
 		if (attribute) {
-			error(attribute, 'illegal-svelte-head-attribute');
+			e.svelte_head_illegal_attribute(attribute);
 		}
 	},
 	SvelteElement(node, context) {
@@ -550,7 +660,7 @@ export const validation = {
 	SvelteFragment(node, context) {
 		const parent = context.path.at(-2);
 		if (parent?.type !== 'Component' && parent?.type !== 'SvelteComponent') {
-			error(node, 'invalid-svelte-fragment-placement');
+			e.svelte_fragment_invalid_placement(node);
 		}
 
 		for (const attribute of node.attributes) {
@@ -559,7 +669,7 @@ export const validation = {
 					validate_slot_attribute(context, attribute);
 				}
 			} else if (attribute.type !== 'LetDirective') {
-				error(attribute, 'invalid-svelte-fragment-attribute');
+				e.svelte_fragment_invalid_attribute(attribute);
 			}
 		}
 	},
@@ -568,15 +678,15 @@ export const validation = {
 			if (attribute.type === 'Attribute') {
 				if (attribute.name === 'name') {
 					if (!is_text_attribute(attribute)) {
-						error(attribute, 'invalid-slot-name', false);
+						e.slot_element_invalid_name(attribute);
 					}
 					const slot_name = attribute.value[0].data;
 					if (slot_name === 'default') {
-						error(attribute, 'invalid-slot-name', true);
+						e.slot_element_invalid_name_default(attribute);
 					}
 				}
-			} else if (attribute.type !== 'SpreadAttribute') {
-				error(attribute, 'invalid-slot-element-attribute');
+			} else if (attribute.type !== 'SpreadAttribute' && attribute.type !== 'LetDirective') {
+				e.slot_element_invalid_attribute(attribute);
 			}
 		}
 	},
@@ -587,26 +697,29 @@ export const validation = {
 		if (!node.parent) return;
 		if (context.state.parent_element && regex_not_whitespace.test(node.data)) {
 			if (!is_tag_valid_with_parent('#text', context.state.parent_element)) {
-				error(node, 'invalid-node-placement', 'Text node', context.state.parent_element);
+				e.node_invalid_placement(node, 'Text node', context.state.parent_element);
 			}
 		}
 	},
 	TitleElement(node) {
 		const attribute = node.attributes[0];
 		if (attribute) {
-			error(attribute, 'illegal-title-attribute');
+			e.title_illegal_attribute(attribute);
 		}
 
 		const child = node.fragment.nodes.find((n) => n.type !== 'Text' && n.type !== 'ExpressionTag');
 		if (child) {
-			error(child, 'invalid-title-content');
+			e.title_invalid_content(child);
 		}
+	},
+	UpdateExpression(node, context) {
+		validate_assignment(node, node.argument, context.state);
 	},
 	ExpressionTag(node, context) {
 		if (!node.parent) return;
 		if (context.state.parent_element) {
 			if (!is_tag_valid_with_parent('#text', context.state.parent_element)) {
-				error(node, 'invalid-node-placement', '{expression}', context.state.parent_element);
+				e.node_invalid_placement(node, '{expression}', context.state.parent_element);
 			}
 		}
 	}
@@ -614,6 +727,8 @@ export const validation = {
 
 export const validation_legacy = merge(validation, a11y_validators, {
 	VariableDeclarator(node, { state }) {
+		ensure_no_module_import_conflict(node, state);
+
 		if (node.init?.type !== 'CallExpression') return;
 
 		const callee = node.init.callee;
@@ -625,7 +740,7 @@ export const validation_legacy = merge(validation, a11y_validators, {
 		}
 
 		if (state.scope.get(callee.name)?.kind !== 'store_sub') {
-			error(node.init, 'invalid-rune-usage', callee.name);
+			e.rune_invalid_usage(node.init, callee.name);
 		}
 	},
 	AssignmentExpression(node, { state, path }) {
@@ -639,7 +754,7 @@ export const validation_legacy = merge(validation, a11y_validators, {
 			(state.ast_type !== 'instance' ||
 				/** @type {import('#compiler').SvelteNode} */ (path.at(-1)).type !== 'Program')
 		) {
-			warn(state.analysis.warnings, node, path, 'no-reactive-declaration');
+			w.reactive_declaration_invalid_placement(node);
 		}
 	},
 	UpdateExpression(node, { state }) {
@@ -658,11 +773,11 @@ function validate_export(node, scope, name) {
 	if (!binding) return;
 
 	if (binding.kind === 'derived') {
-		error(node, 'invalid-derived-export');
+		e.derived_invalid_export(node);
 	}
 
-	if (binding.kind === 'state' && binding.reassigned) {
-		error(node, 'invalid-state-export');
+	if ((binding.kind === 'state' || binding.kind === 'frozen_state') && binding.reassigned) {
+		e.state_invalid_export(node);
 	}
 }
 
@@ -680,46 +795,92 @@ function validate_call_expression(node, scope, path) {
 
 	if (rune === '$props') {
 		if (parent.type === 'VariableDeclarator') return;
-		error(node, 'invalid-props-location');
+		e.props_invalid_placement(node);
 	}
 
-	if (rune === '$state' || rune === '$derived') {
+	if (rune === '$bindable') {
+		if (parent.type === 'AssignmentPattern' && path.at(-3)?.type === 'ObjectPattern') {
+			const declarator = path.at(-4);
+			if (
+				declarator?.type === 'VariableDeclarator' &&
+				get_rune(declarator.init, scope) === '$props'
+			) {
+				return;
+			}
+		}
+		e.bindable_invalid_location(node);
+	}
+
+	if (
+		rune === '$state' ||
+		rune === '$state.frozen' ||
+		rune === '$derived' ||
+		rune === '$derived.by'
+	) {
 		if (parent.type === 'VariableDeclarator') return;
 		if (parent.type === 'PropertyDefinition' && !parent.static && !parent.computed) return;
-		error(node, rune === '$derived' ? 'invalid-derived-location' : 'invalid-state-location');
+		e.state_invalid_placement(node, rune);
 	}
 
 	if (rune === '$effect' || rune === '$effect.pre') {
 		if (parent.type !== 'ExpressionStatement') {
-			error(node, 'invalid-effect-location');
+			e.effect_invalid_placement(node);
 		}
 
 		if (node.arguments.length !== 1) {
-			error(node, 'invalid-rune-args-length', rune, [1]);
+			e.rune_invalid_arguments_length(node, rune, 'exactly one argument');
 		}
 	}
 
 	if (rune === '$effect.active') {
 		if (node.arguments.length !== 0) {
-			error(node, 'invalid-rune-args-length', rune, [0]);
+			e.rune_invalid_arguments(node, rune);
 		}
 	}
 
 	if (rune === '$effect.root') {
 		if (node.arguments.length !== 1) {
-			error(node, 'invalid-rune-args-length', rune, [1]);
+			e.rune_invalid_arguments_length(node, rune, 'exactly one argument');
 		}
 	}
 
 	if (rune === '$inspect') {
 		if (node.arguments.length < 1) {
-			error(node, 'invalid-rune-args-length', rune, [1, 'more']);
+			e.rune_invalid_arguments_length(node, rune, 'one or more arguments');
 		}
 	}
 
 	if (rune === '$inspect().with') {
 		if (node.arguments.length !== 1) {
-			error(node, 'invalid-rune-args-length', rune, [1]);
+			e.rune_invalid_arguments_length(node, rune, 'exactly one argument');
+		}
+	}
+
+	if (rune === '$state.snapshot') {
+		if (node.arguments.length !== 1) {
+			e.rune_invalid_arguments_length(node, rune, 'exactly one argument');
+		}
+	}
+
+	if (rune === '$state.is') {
+		if (node.arguments.length !== 2) {
+			e.rune_invalid_arguments_length(node, rune, 'exactly two arguments');
+		}
+	}
+}
+
+/**
+ * @param {import('estree').VariableDeclarator} node
+ * @param {import('./types.js').AnalysisState} state
+ */
+function ensure_no_module_import_conflict(node, state) {
+	const ids = extract_identifiers(node.id);
+	for (const id of ids) {
+		if (
+			state.scope === state.analysis.instance.scope &&
+			state.analysis.module.scope.get(id.name)?.declaration_kind === 'import'
+		) {
+			e.declaration_duplicate_module_import(node.id);
 		}
 	}
 }
@@ -728,6 +889,11 @@ function validate_call_expression(node, scope, path) {
  * @type {import('zimmerframe').Visitors<import('#compiler').SvelteNode, import('./types.js').AnalysisState>}
  */
 export const validation_runes_js = {
+	ImportDeclaration(node) {
+		if (typeof node.source.value === 'string' && node.source.value.startsWith('svelte/internal')) {
+			e.import_svelte_internal_forbidden(node);
+		}
+	},
 	ExportSpecifier(node, { state }) {
 		validate_export(node, state.scope, node.local.name);
 	},
@@ -744,6 +910,9 @@ export const validation_runes_js = {
 		}
 	},
 	CallExpression(node, { state, path }) {
+		if (get_rune(node, state.scope) === '$host') {
+			e.host_invalid_placement(node);
+		}
 		validate_call_expression(node, state.scope, path);
 	},
 	VariableDeclarator(node, { state }) {
@@ -754,12 +923,14 @@ export const validation_runes_js = {
 
 		const args = /** @type {import('estree').CallExpression} */ (init).arguments;
 
-		if (rune === '$derived' && args.length !== 1) {
-			error(node, 'invalid-rune-args-length', '$derived', [1]);
+		if ((rune === '$derived' || rune === '$derived.by') && args.length !== 1) {
+			e.rune_invalid_arguments_length(node, rune, 'exactly one argument');
 		} else if (rune === '$state' && args.length > 1) {
-			error(node, 'invalid-rune-args-length', '$state', [0, 1]);
+			e.rune_invalid_arguments_length(node, rune, 'zero or one arguments');
 		} else if (rune === '$props') {
-			error(node, 'invalid-props-location');
+			e.props_invalid_placement(node);
+		} else if (rune === '$bindable') {
+			e.bindable_invalid_location(node);
 		}
 	},
 	AssignmentExpression(node, { state }) {
@@ -779,7 +950,7 @@ export const validation_runes_js = {
 				definition.value?.type === 'CallExpression'
 			) {
 				const rune = get_rune(definition.value, context.state.scope);
-				if (rune === '$derived') {
+				if (rune === '$derived' || rune === '$derived.by') {
 					private_derived_state.push(definition.key.name);
 				}
 			}
@@ -797,12 +968,12 @@ export const validation_runes_js = {
 		const allowed_depth = context.state.ast_type === 'module' ? 0 : 1;
 
 		if (context.state.scope.function_depth > allowed_depth) {
-			warn(context.state.analysis.warnings, node, context.path, 'avoid-nested-class');
+			w.perf_avoid_nested_class(node);
 		}
 	},
 	NewExpression(node, context) {
 		if (node.callee.type === 'ClassExpression' && context.state.scope.function_depth > 0) {
-			warn(context.state.analysis.warnings, node, context.path, 'avoid-inline-class');
+			w.perf_avoid_inline_class(node);
 		}
 	}
 };
@@ -829,14 +1000,24 @@ function validate_no_const_assignment(node, argument, scope, is_binding) {
 	} else if (argument.type === 'Identifier') {
 		const binding = scope.get(argument.name);
 		if (binding?.declaration_kind === 'const' && binding.kind !== 'each') {
-			error(
-				node,
-				'invalid-const-assignment',
-				is_binding,
-				// This takes advantage of the fact that we don't assign initial for let directives and then/catch variables.
-				// If we start doing that, we need another property on the binding to differentiate, or give up on the more precise error message.
-				binding.kind !== 'state' && (binding.kind !== 'normal' || !binding.initial)
-			);
+			// e.invalid_const_assignment(
+			// 	node,
+			// 	is_binding,
+			// 	// This takes advantage of the fact that we don't assign initial for let directives and then/catch variables.
+			// 	// If we start doing that, we need another property on the binding to differentiate, or give up on the more precise error message.
+			// 	binding.kind !== 'state' &&
+			// 		binding.kind !== 'frozen_state' &&
+			// 		(binding.kind !== 'normal' || !binding.initial)
+			// );
+
+			// TODO have a more specific error message for assignments to things like `{:then foo}`
+			const thing = 'constant';
+
+			if (is_binding) {
+				e.constant_binding(node, thing);
+			} else {
+				e.constant_assignment(node, thing);
+			}
 		}
 	}
 }
@@ -849,53 +1030,118 @@ function validate_no_const_assignment(node, argument, scope, is_binding) {
 function validate_assignment(node, argument, state) {
 	validate_no_const_assignment(node, argument, state.scope, false);
 
-	let left = /** @type {import('estree').Expression | import('estree').Super} */ (argument);
+	if (argument.type === 'Identifier') {
+		const binding = state.scope.get(argument.name);
+
+		if (state.analysis.runes) {
+			if (binding?.kind === 'derived') {
+				e.constant_assignment(node, 'derived state');
+			}
+
+			if (binding?.kind === 'each') {
+				e.each_item_invalid_assignment(node);
+			}
+		}
+
+		if (binding?.kind === 'snippet') {
+			e.snippet_parameter_assignment(node);
+		}
+	}
+
+	let object = /** @type {import('estree').Expression | import('estree').Super} */ (argument);
 
 	/** @type {import('estree').Expression | import('estree').PrivateIdentifier | null} */
 	let property = null;
 
-	while (left.type === 'MemberExpression') {
-		property = left.property;
-		left = left.object;
+	while (object.type === 'MemberExpression') {
+		property = object.property;
+		object = object.object;
 	}
 
-	if (left.type === 'Identifier') {
-		const binding = state.scope.get(left.name);
-		if (binding?.kind === 'derived') {
-			error(node, 'invalid-derived-assignment');
-		}
-	}
-
-	if (left.type === 'ThisExpression' && property?.type === 'PrivateIdentifier') {
+	if (object.type === 'ThisExpression' && property?.type === 'PrivateIdentifier') {
 		if (state.private_derived_state.includes(property.name)) {
-			error(node, 'invalid-derived-assignment');
+			e.constant_assignment(node, 'derived state');
 		}
 	}
 }
 
 export const validation_runes = merge(validation, a11y_validators, {
-	AssignmentExpression(node, { state, path }) {
-		const parent = path.at(-1);
-		if (parent && parent.type === 'ConstTag') return;
-		validate_assignment(node, node.left, state);
+	ImportDeclaration(node) {
+		if (typeof node.source.value === 'string' && node.source.value.startsWith('svelte/internal')) {
+			e.import_svelte_internal_forbidden(node);
+		}
 	},
-	UpdateExpression(node, { state }) {
-		validate_assignment(node, node.argument, state);
+	Identifier(node, { path, state }) {
+		let i = path.length;
+		let parent = /** @type {import('estree').Expression} */ (path[--i]);
+
+		if (
+			Runes.includes(/** @type {Runes[number]} */ (node.name)) &&
+			is_reference(node, parent) &&
+			state.scope.get(node.name) === null &&
+			state.scope.get(node.name.slice(1)) === null
+		) {
+			/** @type {import('estree').Expression} */
+			let current = node;
+			let name = node.name;
+
+			while (parent.type === 'MemberExpression') {
+				if (parent.computed) e.rune_invalid_computed_property(parent);
+				name += `.${/** @type {import('estree').Identifier} */ (parent.property).name}`;
+
+				current = parent;
+				parent = /** @type {import('estree').Expression} */ (path[--i]);
+
+				if (!Runes.includes(/** @type {Runes[number]} */ (name))) {
+					e.rune_invalid_name(parent, name);
+				}
+			}
+
+			if (parent.type !== 'CallExpression') {
+				e.rune_missing_parentheses(current);
+			}
+		}
 	},
 	LabeledStatement(node, { path }) {
 		if (node.label.name !== '$' || path.at(-1)?.type !== 'Program') return;
-		error(node, 'invalid-legacy-reactive-statement');
+		e.legacy_reactive_statement_invalid(node);
 	},
-	ExportNamedDeclaration(node, { state }) {
-		if (node.declaration?.type !== 'VariableDeclaration') return;
-		if (node.declaration.kind !== 'let') return;
-		if (state.analysis.instance.scope !== state.scope) return;
-		error(node, 'invalid-legacy-export');
+	ExportNamedDeclaration(node, { state, next }) {
+		if (state.ast_type === 'module') {
+			if (node.declaration?.type !== 'VariableDeclaration') return;
+
+			// visit children, so bindings are correctly initialised
+			next();
+
+			for (const declarator of node.declaration.declarations) {
+				for (const id of extract_identifiers(declarator.id)) {
+					validate_export(node, state.scope, id.name);
+				}
+			}
+		} else {
+			if (node.declaration?.type !== 'VariableDeclaration') return;
+			if (node.declaration.kind !== 'let') return;
+			if (state.analysis.instance.scope !== state.scope) return;
+			e.legacy_export_invalid(node);
+		}
 	},
 	ExportSpecifier(node, { state }) {
-		validate_export(node, state.scope, node.local.name);
+		if (state.ast_type === 'module') {
+			validate_export(node, state.scope, node.local.name);
+		}
 	},
 	CallExpression(node, { state, path }) {
+		const rune = get_rune(node, state.scope);
+		if (rune === '$bindable' && node.arguments.length > 1) {
+			e.rune_invalid_arguments_length(node, '$bindable', 'zero or one arguments');
+		} else if (rune === '$host') {
+			if (node.arguments.length > 0) {
+				e.rune_invalid_arguments(node, '$host');
+			} else if (state.ast_type === 'module' || !state.analysis.custom_element) {
+				e.host_invalid_placement(node);
+			}
+		}
+
 		validate_call_expression(node, state.scope, path);
 	},
 	EachBlock(node, { next, state }) {
@@ -904,58 +1150,80 @@ export const validation_runes = merge(validation, a11y_validators, {
 			context.type === 'Identifier' &&
 			(context.name === '$state' || context.name === '$derived')
 		) {
-			error(
-				node,
-				context.name === '$derived' ? 'invalid-derived-location' : 'invalid-state-location'
-			);
+			e.state_invalid_placement(node, context.name);
 		}
 		next({ ...state });
 	},
 	VariableDeclarator(node, { state }) {
-		const init = unwrap_ts_expression(node.init);
+		ensure_no_module_import_conflict(node, state);
+
+		const init = node.init;
 		const rune = get_rune(init, state.scope);
 
 		if (rune === null) return;
 
 		const args = /** @type {import('estree').CallExpression} */ (init).arguments;
 
-		if (rune === '$derived' && args.length !== 1) {
-			error(node, 'invalid-rune-args-length', '$derived', [1]);
+		// TODO some of this is duplicated with above, seems off
+		if ((rune === '$derived' || rune === '$derived.by') && args.length !== 1) {
+			e.rune_invalid_arguments_length(node, rune, 'exactly one argument');
 		} else if (rune === '$state' && args.length > 1) {
-			error(node, 'invalid-rune-args-length', '$state', [0, 1]);
+			e.rune_invalid_arguments_length(node, rune, 'zero or one arguments');
 		} else if (rune === '$props') {
 			if (state.has_props_rune) {
-				error(node, 'duplicate-props-rune');
+				e.props_duplicate(node);
 			}
 
 			state.has_props_rune = true;
 
 			if (args.length > 0) {
-				error(node, 'invalid-rune-args-length', '$props', [0]);
+				e.rune_invalid_arguments(node, rune);
 			}
 
 			if (node.id.type !== 'ObjectPattern') {
-				error(node, 'invalid-props-id');
+				e.props_invalid_identifier(node);
 			}
 
 			if (state.scope !== state.analysis.instance.scope) {
-				error(node, 'invalid-props-location');
+				e.props_invalid_placement(node);
 			}
 
 			for (const property of node.id.properties) {
 				if (property.type === 'Property') {
 					if (property.computed) {
-						error(property, 'invalid-props-pattern');
+						e.props_invalid_pattern(property);
 					}
 
 					const value =
 						property.value.type === 'AssignmentPattern' ? property.value.left : property.value;
 
 					if (value.type !== 'Identifier') {
-						error(property, 'invalid-props-pattern');
+						e.props_invalid_pattern(property);
 					}
 				}
 			}
+		}
+
+		if (rune === '$derived') {
+			const arg = args[0];
+			if (
+				arg.type === 'CallExpression' &&
+				(arg.callee.type === 'ArrowFunctionExpression' || arg.callee.type === 'FunctionExpression')
+			) {
+				w.derived_iife(node);
+			}
+		}
+	},
+	SlotElement(node, { state }) {
+		if (!state.analysis.custom_element) {
+			w.slot_element_deprecated(node);
+		}
+	},
+	OnDirective(node, { path }) {
+		const parent_type = path.at(-1)?.type;
+		// Don't warn on component events; these might not be under the author's control so the warning would be unactionable
+		if (parent_type === 'RegularElement' || parent_type === 'SvelteElement') {
+			w.event_directive_deprecated(node, node.name);
 		}
 	},
 	// TODO this is a code smell. need to refactor this stuff

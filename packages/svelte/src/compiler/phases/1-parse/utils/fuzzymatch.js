@@ -33,11 +33,7 @@ function _distance(str1, str2) {
 	str2 = String(str2);
 
 	const distance = levenshtein(str1, str2);
-	if (str1.length > str2.length) {
-		return 1 - distance / str1.length;
-	} else {
-		return 1 - distance / str2.length;
-	}
+	return 1 - distance / Math.max(str1.length, str2.length);
 }
 
 // helper functions
@@ -136,7 +132,7 @@ class FuzzySet {
 
 	/** @param {string[]} arr */
 	constructor(arr) {
-		// initialization
+		// initialisation
 		for (let i = GRAM_SIZE_LOWER; i < GRAM_SIZE_UPPER + 1; ++i) {
 			this.items[i] = [];
 		}

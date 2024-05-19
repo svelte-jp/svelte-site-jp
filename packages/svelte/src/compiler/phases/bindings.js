@@ -21,6 +21,7 @@ export const binding_properties = {
 		event: 'durationchange',
 		omit_in_ssr: true
 	},
+	focused: {},
 	paused: {
 		valid_elements: ['audio', 'video'],
 		omit_in_ssr: true
@@ -175,14 +176,13 @@ export const binding_properties = {
 	textContent: {},
 	open: {
 		event: 'toggle',
+		type: 'set',
 		valid_elements: ['details']
 	},
 	value: {
 		valid_elements: ['input', 'textarea', 'select']
 	},
 	files: {
-		event: 'change',
-		type: 'set',
 		valid_elements: ['input'],
 		omit_in_ssr: true
 	}

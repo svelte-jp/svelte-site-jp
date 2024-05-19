@@ -4,6 +4,7 @@ import {
 	regex_not_whitespace,
 	regex_starts_with_whitespaces
 } from './phases/patterns.js';
+import { extract_svelte_ignore } from './utils/extract_svelte_ignore.js';
 
 /**
  * Some of the legacy Svelte AST nodes remove whitespace from the start and end of their children.
@@ -33,7 +34,7 @@ function remove_surrounding_whitespace_nodes(nodes) {
  * Transform our nice modern AST into the monstrosity emitted by Svelte 4
  * @param {string} source
  * @param {import('#compiler').Root} ast
- * @returns {import('./types/legacy-nodes.js').LegacySvelteNode}
+ * @returns {import('./types/legacy-nodes.js').LegacyRoot}
  */
 export function convert(source, ast) {
 	const root =
@@ -41,7 +42,7 @@ export function convert(source, ast) {
 			ast
 		);
 
-	return /** @type {import('./types/legacy-nodes.js').LegacySvelteNode} */ (
+	return /** @type {import('./types/legacy-nodes.js').LegacyRoot} */ (
 		walk(root, null, {
 			_(node, { next }) {
 				// @ts-ignore
@@ -86,11 +87,15 @@ export function convert(source, ast) {
 				if (instance) {
 					// @ts-ignore
 					delete instance.parent;
+					// @ts-ignore
+					delete instance.attributes;
 				}
 
 				if (module) {
 					// @ts-ignore
 					delete module.parent;
+					// @ts-ignore
+					delete module.attributes;
 				}
 
 				return {
@@ -102,14 +107,7 @@ export function convert(source, ast) {
 					},
 					instance,
 					module,
-					css: ast.css
-						? walk(ast.css, null, {
-								_(node) {
-									// @ts-ignore
-									delete node.parent;
-								}
-						  })
-						: undefined
+					css: ast.css ? visit(ast.css) : undefined
 				};
 			},
 			AnimateDirective(node) {
@@ -148,29 +146,37 @@ export function convert(source, ast) {
 				};
 
 				if (node.pending) {
-					const first = /** @type {import('#compiler').BaseNode} */ (node.pending.nodes.at(0));
-					const last = /** @type {import('#compiler').BaseNode} */ (node.pending.nodes.at(-1));
+					const first = node.pending.nodes.at(0);
+					const last = node.pending.nodes.at(-1);
 
-					pendingblock.start = first.start;
-					pendingblock.end = last.end;
+					pendingblock.start = first?.start ?? source.indexOf('}', node.expression.end) + 1;
+					pendingblock.end = last?.end ?? pendingblock.start;
 					pendingblock.skip = false;
 				}
 
 				if (node.then) {
-					const first = /** @type {import('#compiler').BaseNode} */ (node.then.nodes.at(0));
-					const last = /** @type {import('#compiler').BaseNode} */ (node.then.nodes.at(-1));
+					const first = node.then.nodes.at(0);
+					const last = node.then.nodes.at(-1);
 
-					thenblock.start = pendingblock.end ?? first.start;
-					thenblock.end = last.end;
+					thenblock.start =
+						pendingblock.end ?? first?.start ?? source.indexOf('}', node.expression.end) + 1;
+					thenblock.end =
+						last?.end ?? source.lastIndexOf('}', pendingblock.end ?? node.expression.end) + 1;
 					thenblock.skip = false;
 				}
 
 				if (node.catch) {
-					const first = /** @type {import('#compiler').BaseNode} */ (node.catch.nodes.at(0));
-					const last = /** @type {import('#compiler').BaseNode} */ (node.catch.nodes.at(-1));
+					const first = node.catch.nodes.at(0);
+					const last = node.catch.nodes.at(-1);
 
-					catchblock.start = thenblock.end ?? pendingblock.end ?? first.start;
-					catchblock.end = last.end;
+					catchblock.start =
+						thenblock.end ??
+						pendingblock.end ??
+						first?.start ??
+						source.indexOf('}', node.expression.end) + 1;
+					catchblock.end =
+						last?.end ??
+						source.lastIndexOf('}', thenblock.end ?? pendingblock.end ?? node.expression.end) + 1;
 					catchblock.skip = false;
 				}
 
@@ -191,6 +197,30 @@ export function convert(source, ast) {
 			},
 			ClassDirective(node) {
 				return { ...node, type: 'Class' };
+			},
+			Comment(node) {
+				return {
+					...node,
+					ignores: extract_svelte_ignore(node.start, node.data, false)
+				};
+			},
+			ComplexSelector(node) {
+				const children = [];
+
+				for (const child of node.children) {
+					if (child.combinator) {
+						children.push(child.combinator);
+					}
+
+					children.push(...child.selectors);
+				}
+
+				return {
+					type: 'Selector',
+					start: node.start,
+					end: node.end,
+					children
+				};
 			},
 			Component(node, { visit }) {
 				return {
@@ -356,7 +386,7 @@ export function convert(source, ast) {
 					start: node.start,
 					end: node.end,
 					expression: node.expression,
-					context: node.context,
+					parameters: node.parameters,
 					children: node.body.nodes.map((child) => visit(child))
 				};
 			},
@@ -388,6 +418,13 @@ export function convert(source, ast) {
 			},
 			SpreadAttribute(node) {
 				return { ...node, type: 'Spread' };
+			},
+			StyleSheet(node, context) {
+				return {
+					...node,
+					...context.next(),
+					type: 'Style'
+				};
 			},
 			SvelteBody(node, { visit }) {
 				return {

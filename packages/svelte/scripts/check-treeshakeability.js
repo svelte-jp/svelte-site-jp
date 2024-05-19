@@ -3,6 +3,43 @@ import path from 'node:path';
 import { rollup } from 'rollup';
 import virtual from '@rollup/plugin-virtual';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { compile } from 'svelte/compiler';
+
+async function bundle_code(entry) {
+	const bundle = await rollup({
+		input: '__entry__',
+		plugins: [
+			virtual({
+				__entry__: entry
+			}),
+			{
+				name: 'resolve-svelte',
+				resolveId(importee) {
+					if (importee.startsWith('svelte')) {
+						const entry = pkg.exports[importee.replace('svelte', '.')];
+						return path.resolve(entry.browser ?? entry.default);
+					}
+				}
+			},
+			nodeResolve({
+				exportConditions: ['production', 'import', 'browser', 'default']
+			})
+		],
+		onwarn: (warning, handle) => {
+			if (warning.code !== 'EMPTY_BUNDLE' && warning.code !== 'CIRCULAR_DEPENDENCY') {
+				handle(warning);
+			}
+		}
+	});
+
+	const { output } = await bundle.generate({});
+
+	if (output.length > 1) {
+		throw new Error('errr what');
+	}
+
+	return output[0].code.trim();
+}
 
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -14,37 +51,15 @@ console.group('checking treeshakeability');
 for (const key in pkg.exports) {
 	// special cases
 	if (key === './compiler') continue;
+	if (key === './internal') continue;
 	if (key === './internal/disclose-version') continue;
 
 	for (const type of ['browser', 'default']) {
 		if (!pkg.exports[key][type]) continue;
 
 		const subpackage = path.join(pkg.name, key);
-
 		const resolved = path.resolve(pkg.exports[key][type]);
-
-		const bundle = await rollup({
-			input: '__entry__',
-			plugins: [
-				virtual({
-					__entry__: `import ${JSON.stringify(resolved)}`
-				}),
-				nodeResolve({
-					exportConditions: ['production', 'import', 'browser', 'default']
-				})
-			],
-			onwarn: (warning, handle) => {
-				// if (warning.code !== 'EMPTY_BUNDLE') handle(warning);
-			}
-		});
-
-		const { output } = await bundle.generate({});
-
-		if (output.length > 1) {
-			throw new Error('errr what');
-		}
-
-		const code = output[0].code.trim();
+		const code = await bundle_code(`import ${JSON.stringify(resolved)}`);
 
 		if (code === '') {
 			// eslint-disable-next-line no-console
@@ -57,6 +72,55 @@ for (const key in pkg.exports) {
 			failed = true;
 		}
 	}
+}
+
+const client_main = path.resolve(pkg.exports['.'].browser);
+const bundle = await bundle_code(
+	// Use all features which contain hydration code to ensure it's treeshakeable
+	compile(
+		`
+<script>
+	import { mount } from ${JSON.stringify(client_main)}; mount();
+	let foo;
+</script>
+
+<svelte:head><title>hi</title></svelte:head>
+
+<a href={foo} class={foo}>a</a>
+<a {...foo}>a</a>
+<svelte:component this={foo} />
+<svelte:element this={foo} />
+<C {foo} />
+
+{#if foo}
+{/if}
+{#each foo as bar}
+{/each}
+{#await foo}
+{/await}
+{#key foo}
+{/key}
+{#snippet x()}
+{/snippet}
+
+{@render x()}
+{@html foo}
+	`,
+		{ filename: 'App.svelte' }
+	).js.code
+);
+
+if (!bundle.includes('hydrate_nodes') && !bundle.includes('hydrate_anchor')) {
+	// eslint-disable-next-line no-console
+	console.error(`✅ Hydration code treeshakeable`);
+} else {
+	// eslint-disable-next-line no-console
+	console.error(bundle);
+	// eslint-disable-next-line no-console
+	console.error(`❌ Hydration code not treeshakeable`);
+	failed = true;
+
+	fs.writeFileSync('scripts/_bundle.js', bundle);
 }
 
 // eslint-disable-next-line no-console

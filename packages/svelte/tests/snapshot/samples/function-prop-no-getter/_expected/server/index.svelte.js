@@ -1,9 +1,7 @@
-// index.svelte (Svelte VERSION)
-// Note: compiler output will change before 5.0 is released!
 import * as $ from "svelte/internal/server";
 
 export default function Function_prop_no_getter($$payload, $$props) {
-	$.push(true);
+	$.push();
 
 	let count = 0;
 
@@ -11,18 +9,20 @@ export default function Function_prop_no_getter($$payload, $$props) {
 		count += 2;
 	}
 
-	const anchor = $.create_anchor($$payload);
+	const plusOne = (num) => num + 1;
 
-	$$payload.out += `${anchor}`;
+	$$payload.out += `<!--[-->`;
 
 	Button($$payload, {
 		onmousedown: () => count += 1,
 		onmouseup,
+		onmouseenter: () => count = plusOne(count),
 		children: ($$payload, $$slotProps) => {
 			$$payload.out += `clicks: ${$.escape(count)}`;
-		}
+		},
+		$$slots: { default: true }
 	});
 
-	$$payload.out += `${anchor}`;
+	$$payload.out += `<!--]-->`;
 	$.pop();
 }

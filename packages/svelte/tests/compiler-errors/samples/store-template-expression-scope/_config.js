@@ -1,10 +1,8 @@
 import { test } from '../../test';
 
 export default test({
-	skip: true,
 	error: {
-		code: '',
-		message:
-			'Stores must be declared at the top level of the component (this may change in a future version of Svelte)'
+		code: 'store_invalid_scoped_subscription',
+		message: 'Cannot subscribe to stores that are not declared at the top level of the component'
 	}
 });

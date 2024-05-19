@@ -1,10 +1,17 @@
-import * as $ from '../client/runtime.js';
-import { set_is_ssr } from '../client/runtime.js';
-import { is_promise } from '../common.js';
+import { is_promise, noop } from '../shared/utils.js';
 import { subscribe_to_store } from '../../store/utils.js';
-import { DOMBooleanAttributes } from '../../constants.js';
-
-export * from '../client/validate.js';
+import {
+	UNINITIALIZED,
+	DOMBooleanAttributes,
+	RawTextElements,
+	ELEMENT_PRESERVE_ATTRIBUTE_CASE,
+	ELEMENT_IS_NAMESPACED
+} from '../../constants.js';
+import { escape_html } from '../../escaping.js';
+import { DEV } from 'esm-env';
+import { current_component, pop, push } from './context.js';
+import { BLOCK_CLOSE, BLOCK_OPEN } from './hydration.js';
+import { validate_store } from '../shared/validate.js';
 
 /**
  * @typedef {{
@@ -13,20 +20,6 @@ export * from '../client/validate.js';
  * }} RenderOutput
  */
 
-/**
- * @typedef {{
- * 	out: string;
- * 	anchor: number;
- * 	head: {
- * 		title: string;
- * 		out: string;
- * 		anchor: number;
- * 	};
- * }} Payload
- */
-
-const ATTR_REGEX = /[&"]/g;
-const CONTENT_REGEX = /[&<]/g;
 // https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
 // https://infra.spec.whatwg.org/#noncharacter
 const INVALID_ATTR_NAME_CHAR_REGEX =
@@ -51,14 +44,14 @@ export const VoidElements = new Set([
 	'wbr'
 ]);
 
-/** @returns {Payload} */
+/** @returns {import('#server').Payload} */
 function create_payload() {
 	return { out: '', head: { title: '', out: '', anchor: 0 }, anchor: 0 };
 }
 
 /**
- * @param {Payload} to_copy
- * @returns {Payload}
+ * @param {import('#server').Payload} to_copy
+ * @returns {import('#server').Payload}
  */
 export function copy_payload(to_copy) {
 	return {
@@ -69,8 +62,8 @@ export function copy_payload(to_copy) {
 
 /**
  * Assigns second payload to first
- * @param {Payload} p1
- * @param {Payload} p2
+ * @param {import('#server').Payload} p1
+ * @param {import('#server').Payload} p2
  * @returns {void}
  */
 export function assign_payload(p1, p2) {
@@ -80,94 +73,79 @@ export function assign_payload(p1, p2) {
 }
 
 /**
- * @param {(...args: any[]) => void} component
+ * @param {import('#server').Payload} payload
+ * @param {string} tag
+ * @param {() => void} attributes_fn
+ * @param {() => void} children_fn
+ * @returns {void}
+ */
+export function element(payload, tag, attributes_fn, children_fn) {
+	payload.out += `<${tag} `;
+	attributes_fn();
+	payload.out += `>`;
+
+	if (!VoidElements.has(tag)) {
+		if (!RawTextElements.includes(tag)) {
+			payload.out += BLOCK_OPEN;
+		}
+		children_fn();
+		if (!RawTextElements.includes(tag)) {
+			payload.out += BLOCK_CLOSE;
+		}
+		payload.out += `</${tag}>`;
+	}
+}
+
+/**
+ * Array of `onDestroy` callbacks that should be called at the end of the server render function
+ * @type {Function[]}
+ */
+export let on_destroy = [];
+
+/**
+ * @param {typeof import('svelte').SvelteComponent} component
  * @param {{ props: Record<string, any>; context?: Map<any, any> }} options
  * @returns {RenderOutput}
  */
 export function render(component, options) {
 	const payload = create_payload();
-	const root_anchor = create_anchor(payload);
-	const root_head_anchor = create_anchor(payload.head);
 
-	set_is_ssr(true);
-	payload.out += root_anchor;
+	const prev_on_destroy = on_destroy;
+	on_destroy = [];
+	payload.out += BLOCK_OPEN;
 
 	if (options.context) {
-		$.push({});
-		/** @type {import('../client/types.js').ComponentContext} */ ($.current_component_context).c =
-			options.context;
+		push();
+		/** @type {import('#server').Component} */ (current_component).c = options.context;
 	}
+
+	// @ts-expect-error
 	component(payload, options.props, {}, {});
+
 	if (options.context) {
-		$.pop();
+		pop();
 	}
-	payload.out += root_anchor;
-	set_is_ssr(false);
+
+	payload.out += BLOCK_CLOSE;
+	for (const cleanup of on_destroy) cleanup();
+	on_destroy = prev_on_destroy;
 
 	return {
-		head:
-			payload.head.out || payload.head.title
-				? payload.head.title + root_head_anchor + payload.head.out + root_head_anchor
-				: '',
+		head: payload.head.out || payload.head.title ? payload.head.out + payload.head.title : '',
 		html: payload.out
 	};
 }
 
 /**
- * @param {boolean} runes
- */
-export function push(runes) {
-	$.push({}, runes);
-}
-
-export function pop() {
-	$.pop();
-}
-
-/**
- * @template V
- * @param {V} value
- * @param {any} is_attr
- * @returns {string}
- */
-export function escape(value, is_attr = false) {
-	const str = String(value ?? '');
-
-	const pattern = is_attr ? ATTR_REGEX : CONTENT_REGEX;
-	pattern.lastIndex = 0;
-
-	let escaped = '';
-	let last = 0;
-
-	while (pattern.test(str)) {
-		const i = pattern.lastIndex - 1;
-		const ch = str[i];
-		escaped += str.substring(last, i) + (ch === '&' ? '&amp;' : ch === '"' ? '&quot;' : '&lt;');
-		last = i + 1;
-	}
-
-	return escaped + str.substring(last);
-}
-
-/**
- * @template V
- * @param {V} value
- * @returns {string}
- */
-export function escape_text(value) {
-	const escaped = escape(value);
-	// If the value is empty, then ensure we put a space so that it creates a text node on the client
-	return escaped === '' ? ' ' : escaped;
-}
-
-/**
- * @param {Payload} payload
- * @param {(head_payload: Payload['head']) => void} fn
+ * @param {import('#server').Payload} payload
+ * @param {(head_payload: import('#server').Payload['head']) => void} fn
  * @returns {void}
  */
 export function head(payload, fn) {
 	const head_payload = payload.head;
+	payload.head.out += BLOCK_OPEN;
 	fn(head_payload);
+	payload.head.out += BLOCK_CLOSE;
 }
 
 /**
@@ -179,12 +157,12 @@ export function head(payload, fn) {
  */
 export function attr(name, value, boolean) {
 	if (value == null || (!value && boolean) || (value === '' && name === 'class')) return '';
-	const assignment = boolean ? '' : `="${escape(value, true)}"`;
+	const assignment = boolean ? '' : `="${escape_html(value, true)}"`;
 	return ` ${name}${assignment}`;
 }
 
 /**
- * @param {Payload} payload
+ * @param {import('#server').Payload} payload
  * @param {boolean} is_html
  * @param {Record<string, string>} props
  * @param {() => void} component
@@ -192,80 +170,63 @@ export function attr(name, value, boolean) {
  */
 export function css_props(payload, is_html, props, component) {
 	const styles = style_object_to_string(props);
-	const anchor = create_anchor(payload);
 	if (is_html) {
-		payload.out += `<div style="display: contents; ${styles}">${anchor}`;
+		payload.out += `<div style="display: contents; ${styles}"><!--[-->`;
 	} else {
-		payload.out += `<g style="${styles}">${anchor}`;
+		payload.out += `<g style="${styles}"><!--[-->`;
 	}
 	component();
 	if (is_html) {
-		payload.out += `${anchor}</div>`;
+		payload.out += `<!--]--></div>`;
 	} else {
-		payload.out += `${anchor}</g>`;
+		payload.out += `<!--]--></g>`;
 	}
 }
 
 /**
- * @param {Record<string, unknown>[]} attrs
- * @param {boolean} lowercase_attributes
- * @param {boolean} is_svg
- * @param {string} class_hash
- * @param {{ styles: Record<string, string> | null; classes: string }} [additional]
+ * @param {Record<string, unknown>} attrs
+ * @param {Record<string, string>} [classes]
+ * @param {Record<string, string>} [styles]
+ * @param {number} [flags]
  * @returns {string}
  */
-export function spread_attributes(attrs, lowercase_attributes, is_svg, class_hash, additional) {
-	/** @type {Record<string, unknown>} */
-	const merged_attrs = {};
-	let key;
+export function spread_attributes(attrs, classes, styles, flags = 0) {
+	if (styles) {
+		attrs.style = attrs.style
+			? style_object_to_string(merge_styles(/** @type {string} */ (attrs.style), styles))
+			: style_object_to_string(styles);
+	}
 
-	for (let i = 0; i < attrs.length; i++) {
-		const obj = attrs[i];
-		for (key in obj) {
-			// omit functions
-			if (typeof obj[key] !== 'function') {
-				merged_attrs[key] = obj[key];
+	if (classes) {
+		const classlist = attrs.class ? [attrs.class] : [];
+
+		for (const key in classes) {
+			if (classes[key]) {
+				classlist.push(key);
 			}
 		}
-	}
 
-	const styles = additional?.styles;
-	if (styles) {
-		if ('style' in merged_attrs) {
-			merged_attrs.style = style_object_to_string(
-				merge_styles(/** @type {string} */ (merged_attrs.style), styles)
-			);
-		} else {
-			merged_attrs.style = style_object_to_string(styles);
-		}
-	}
-
-	if (class_hash) {
-		if ('class' in merged_attrs) {
-			merged_attrs.class += ` ${class_hash}`;
-		} else {
-			merged_attrs.class = class_hash;
-		}
-	}
-	const classes = additional?.classes;
-	if (classes) {
-		if ('class' in merged_attrs) {
-			merged_attrs.class += ` ${classes}`;
-		} else {
-			merged_attrs.class = classes;
-		}
+		attrs.class = classlist.join(' ');
 	}
 
 	let attr_str = '';
 	let name;
 
-	for (name in merged_attrs) {
+	const is_html = (flags & ELEMENT_IS_NAMESPACED) === 0;
+	const lowercase = (flags & ELEMENT_PRESERVE_ATTRIBUTE_CASE) === 0;
+
+	for (name in attrs) {
+		// omit functions, internal svelte properties and invalid attribute names
+		if (typeof attrs[name] === 'function') continue;
+		if (name[0] === '$' && name[1] === '$') continue; // faster than name.startsWith('$$')
 		if (INVALID_ATTR_NAME_CHAR_REGEX.test(name)) continue;
-		if (lowercase_attributes) {
+
+		if (lowercase) {
 			name = name.toLowerCase();
 		}
-		const is_boolean = !is_svg && DOMBooleanAttributes.includes(name);
-		attr_str += attr(name, merged_attrs[name], is_boolean);
+
+		const is_boolean = is_html && DOMBooleanAttributes.includes(name);
+		attr_str += attr(name, attrs[name], is_boolean);
 	}
 
 	return attr_str;
@@ -300,8 +261,8 @@ export function stringify(value) {
 /** @param {Record<string, string>} style_object */
 function style_object_to_string(style_object) {
 	return Object.keys(style_object)
-		.filter(/** @param {any} key */ (key) => style_object[key])
-		.map(/** @param {any} key */ (key) => `${key}: ${escape(style_object[key], true)};`)
+		.filter(/** @param {any} key */ (key) => style_object[key] != null && style_object[key] !== '')
+		.map(/** @param {any} key */ (key) => `${key}: ${escape_html(style_object[key], true)};`)
 		.join(' ');
 }
 
@@ -340,10 +301,14 @@ export function merge_styles(style_attribute, style_directive) {
  * @template V
  * @param {Record<string, [any, any, any]>} store_values
  * @param {string} store_name
- * @param {import('../client/types.js').Store<V> | null | undefined} store
+ * @param {import('#shared').Store<V> | null | undefined} store
  * @returns {V}
  */
 export function store_get(store_values, store_name, store) {
+	if (DEV) {
+		validate_store(store, store_name.slice(1));
+	}
+
 	// it could be that someone eagerly updates the store in the instance script, so
 	// we should only reuse the store value in the template
 	if (store_name in store_values && store_values[store_name][0] === store) {
@@ -361,31 +326,9 @@ export function store_get(store_values, store_name, store) {
 }
 
 /**
- * @template V
- * @param {Record<string, [any, any, any]>} store_values
- * @param {string} store_name
- * @param {import('../client/types.js').Store<V> | null | undefined} store
- * @returns {V}
- */
-export function store_get_dev(store_values, store_name, store) {
-	validate_store(store, store_name.slice(1));
-	return store_get(store_values, store_name, store);
-}
-
-/**
- * @param {any} store
- * @param {string} name
- */
-export function validate_store(store, name) {
-	if (store != null && typeof store.subscribe !== 'function') {
-		throw new Error(`'${name}' is not a store with a 'subscribe' method`);
-	}
-}
-
-/**
  * Sets the new value of a store and returns that value.
  * @template V
- * @param {import('../client/types.js').Store<V>} store
+ * @param {import('#shared').Store<V>} store
  * @param {V} value
  * @returns {V}
  */
@@ -399,12 +342,38 @@ export function store_set(store, value) {
  * @template V
  * @param {Record<string, [any, any, any]>} store_values
  * @param {string} store_name
- * @param {import('../client/types.js').Store<V>} store
+ * @param {import('#shared').Store<V>} store
  * @param {any} expression
  */
 export function mutate_store(store_values, store_name, store, expression) {
 	store_set(store, store_get(store_values, store_name, store));
 	return expression;
+}
+
+/**
+ * @param {Record<string, [any, any, any]>} store_values
+ * @param {string} store_name
+ * @param {import('#shared').Store<number>} store
+ * @param {1 | -1} [d]
+ * @returns {number}
+ */
+export function update_store(store_values, store_name, store, d = 1) {
+	let store_value = store_get(store_values, store_name, store);
+	store.set(store_value + d);
+	return store_value;
+}
+
+/**
+ * @param {Record<string, [any, any, any]>} store_values
+ * @param {string} store_name
+ * @param {import('#shared').Store<number>} store
+ * @param {1 | -1} [d]
+ * @returns {number}
+ */
+export function update_store_pre(store_values, store_name, store, d = 1) {
+	const value = store_get(store_values, store_name, store) + d;
+	store.set(value);
+	return value;
 }
 
 /** @param {Record<string, [any, any, any]>} store_values */
@@ -417,16 +386,26 @@ export function unsubscribe_stores(store_values) {
 /**
  * @template V
  * @param {V} value
- * @param {V} fallback
+ * @param {() => V} fallback lazy because could contain side effects
  * @returns {V}
  */
 export function value_or_fallback(value, fallback) {
-	return value === undefined ? fallback : value;
+	return value === undefined ? fallback() : value;
 }
 
 /**
- * @param {Payload} payload
- * @param {void | ((payload: Payload, props: Record<string, unknown>) => void)} slot_fn
+ * @template V
+ * @param {V} value
+ * @param {() => Promise<V>} fallback lazy because could contain side effects
+ * @returns {Promise<V>}
+ */
+export async function value_or_fallback_async(value, fallback) {
+	return value === undefined ? fallback() : value;
+}
+
+/**
+ * @param {import('#server').Payload} payload
+ * @param {void | ((payload: import('#server').Payload, props: Record<string, unknown>) => void)} slot_fn
  * @param {Record<string, unknown>} slot_props
  * @param {null | (() => void)} fallback_fn
  * @returns {void}
@@ -478,8 +457,8 @@ export function sanitize_slots(props) {
 }
 
 /**
- * If the prop has a fallback and is bound in the parent component,
- * propagate the fallback value upwards.
+ * Legacy mode: If the prop has a fallback and is bound in the
+ * parent component, propagate the fallback value upwards.
  * @param {Record<string, unknown>} props_parent
  * @param {Record<string, unknown>} props_now
  */
@@ -495,10 +474,6 @@ export function bind_props(props_parent, props_now) {
 			props_parent[key] = value;
 		}
 	}
-}
-
-function noop() {
-	// noop
 }
 
 /**
@@ -528,31 +503,6 @@ export function ensure_array_like(array_like_or_iterator) {
 		: Array.from(array_like_or_iterator);
 }
 
-/** @param {{ anchor: number }} payload */
-export function create_anchor(payload) {
-	const depth = payload.anchor++;
-	return `<!--ssr:${depth}-->`;
-}
-
-/** @returns {[() => false, (value: boolean) => void]} */
-export function selector() {
-	// Add SSR stubs
-	return [() => false, noop];
-}
-
-/**
- * @param {number} timeout
- * @returns {() => void}
- * */
-export function loop_guard(timeout) {
-	const start = Date.now();
-	return () => {
-		if (Date.now() - start > timeout) {
-			throw new Error('Infinite loop detected');
-		}
-	};
-}
-
 /**
  * @param {any[]} args
  * @param {Function} [inspect]
@@ -561,3 +511,33 @@ export function loop_guard(timeout) {
 export function inspect(args, inspect = console.log) {
 	inspect('init', ...args);
 }
+
+/**
+ * @template V
+ * @param {() => V} get_value
+ */
+export function once(get_value) {
+	let value = /** @type {V} */ (UNINITIALIZED);
+	return () => {
+		if (value === UNINITIALIZED) {
+			value = get_value();
+		}
+		return value;
+	};
+}
+
+export { push, pop } from './context.js';
+
+export { push_element, pop_element } from './dev.js';
+
+export {
+	add_snippet_symbol,
+	validate_component,
+	validate_dynamic_element_tag,
+	validate_snippet,
+	validate_void_dynamic_element
+} from '../shared/validate.js';
+
+export { escape_html as escape };
+
+export { default_slot } from '../client/dom/legacy/misc.js';

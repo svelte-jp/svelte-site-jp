@@ -1,4 +1,5 @@
-import { error } from './errors.js';
+import * as e from './errors.js';
+import * as w from './warnings.js';
 
 /**
  * @template [Input=any]
@@ -9,13 +10,15 @@ import { error } from './errors.js';
 const common = {
 	filename: string(undefined),
 
+	// default to process.cwd() where it exists to replicate svelte4 behavior
+	// see https://github.com/sveltejs/svelte/blob/b62fc8c8fd2640c9b99168f01b9d958cb2f7574f/packages/svelte/src/compiler/compile/Component.js#L211
+	rootDir: string(typeof process !== 'undefined' ? process.cwd?.() : undefined),
+
 	dev: boolean(false),
 
 	generate: validator('client', (input, keypath) => {
 		if (input === 'dom' || input === 'ssr') {
-			warn(
-				'`generate: "dom"` and `generate: "ssr"` options have been renamed to "client" and "server" respectively'
-			);
+			warn_once(w.options_renamed_ssr_dom);
 			return input === 'dom' ? 'client' : 'server';
 		}
 
@@ -40,7 +43,7 @@ export const validate_component_options =
 		object({
 			...common,
 
-			accessors: boolean(false),
+			accessors: deprecate(w.options_deprecated_accessors, boolean(false)),
 
 			css: validator('external', (input) => {
 				if (input === true || input === false) {
@@ -72,22 +75,20 @@ export const validate_component_options =
 
 			discloseVersion: boolean(true),
 
-			immutable: deprecate(
-				'The immutable option has been deprecated. It has no effect in runes mode.',
-				boolean(false)
-			),
+			immutable: deprecate(w.options_deprecated_immutable, boolean(false)),
 
 			legacy: object({
 				componentApi: boolean(false)
 			}),
 
-			loopGuardTimeout: warn_removed('The loopGuardTimeout option has been removed.'),
+			loopGuardTimeout: warn_removed(w.options_removed_loop_guard_timeout),
 
 			name: string(undefined),
 
 			namespace: list(['html', 'svg', 'foreign']),
 
-			// TODO this is a sourcemap option, would be good to put under a sourcemap namespace
+			modernAst: boolean(false),
+
 			outputFilename: string(undefined),
 
 			preserveComments: boolean(false),
@@ -96,19 +97,16 @@ export const validate_component_options =
 
 			runes: boolean(undefined),
 
-			sourcemap: validator(undefined, (input, keypath) => {
-				// TODO
+			hmr: boolean(false),
+
+			sourcemap: validator(undefined, (input) => {
+				// Source maps can take on a variety of values, including string, JSON, map objects from magic-string and source-map,
+				// so there's no good way to check type validity here
 				return input;
 			}),
 
-			enableSourcemap: validator(undefined, (input, keypath) => {
-				// TODO decide if we want to keep this
-				return input;
-			}),
-
-			hydratable: warn_removed(
-				'The hydratable option has been removed. Svelte components are always hydratable now.'
-			),
+			enableSourcemap: warn_removed(w.options_removed_enable_sourcemap),
+			hydratable: warn_removed(w.options_removed_hydratable),
 			format: removed(
 				'The format option has been removed in Svelte 4, the compiler only outputs ESM now. Remove "format" from your compiler options. ' +
 					'If you did not set this yourself, bump the version of your bundler plugin (vite-plugin-svelte/rollup-plugin-svelte/svelte-loader)'
@@ -141,7 +139,7 @@ export const validate_component_options =
 function removed(msg) {
 	return (input) => {
 		if (input !== undefined) {
-			error(null, 'removed-compiler-option', msg);
+			e.options_removed(null, msg);
 		}
 		return /** @type {any} */ (undefined);
 	};
@@ -149,34 +147,33 @@ function removed(msg) {
 
 const warned = new Set();
 
-/** @param {string} message */
-function warn(message) {
-	if (!warned.has(message)) {
-		warned.add(message);
-		// eslint-disable-next-line no-console
-		console.warn(message);
+/** @param {(node: null) => void} fn */
+function warn_once(fn) {
+	if (!warned.has(fn)) {
+		warned.add(fn);
+		fn(null);
 	}
 }
 
 /**
- * @param {string} message
+ * @param {(node: null) => void} fn
  * @returns {Validator}
  */
-function warn_removed(message) {
+function warn_removed(fn) {
 	return (input) => {
-		if (input !== undefined) warn(message);
+		if (input !== undefined) warn_once(fn);
 		return /** @type {any} */ (undefined);
 	};
 }
 
 /**
- * @param {string} message
+ * @param {(node: null) => void} fn
  * @param {Validator} validator
  * @returns {Validator}
  */
-function deprecate(message, validator) {
+function deprecate(fn, validator) {
 	return (input, keypath) => {
-		if (input !== undefined) warn(message);
+		if (input !== undefined) warn_once(fn);
 		return validator(input, keypath);
 	};
 }
@@ -200,11 +197,7 @@ function object(children, allow_unknown = false) {
 				if (allow_unknown) {
 					output[key] = input[key];
 				} else {
-					error(
-						null,
-						'invalid-compiler-option',
-						`Unexpected option ${keypath ? `${keypath}.${key}` : key}`
-					);
+					e.options_unrecognised(null, `${keypath ? `${keypath}.${key}` : key}`);
 				}
 			}
 		}
@@ -307,5 +300,5 @@ function fun(fallback) {
 
 /** @param {string} msg */
 function throw_error(msg) {
-	error(null, 'invalid-compiler-option', msg);
+	e.options_invalid_value(null, msg);
 }

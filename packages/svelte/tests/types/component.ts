@@ -1,12 +1,14 @@
 import { asClassComponent, createClassComponent } from 'svelte/legacy';
 import {
-	createRoot,
 	SvelteComponent,
 	type ComponentEvents,
 	type ComponentProps,
 	type ComponentType,
-	mount
+	mount,
+	hydrate
 } from 'svelte';
+
+SvelteComponent.element === HTMLElement;
 
 // --------------------------------------------------------------------------- legacy: classes
 
@@ -105,42 +107,36 @@ const newComponentEvents2: ComponentEvents<NewComponent> = {
 };
 
 mount(NewComponent, {
-	target: null as any as Document | Element | ShadowRoot | Text | Comment,
+	target: null as any as Document | Element | ShadowRoot,
 	props: {
 		prop: 'foo',
 		// @ts-expect-error
 		x: ''
 	},
 	events: {
-		event: new MouseEvent('click')
+		event: (e) => e.offsetX
 	},
 	immutable: true,
 	intro: false,
 	recover: false
 });
 
-const instance = createRoot(NewComponent, {
-	target: null as any as Document | Element | ShadowRoot | Text | Comment,
+hydrate(NewComponent, {
+	target: null as any as Document | Element | ShadowRoot,
 	props: {
 		prop: 'foo',
 		// @ts-expect-error
 		x: ''
 	},
 	events: {
-		event: new MouseEvent('click')
+		event: (e) =>
+			// @ts-expect-error
+			e.doesNotExist
 	},
 	immutable: true,
 	intro: false,
 	recover: false
 });
-instance.$set({
-	prop: 'foo',
-	// @ts-expect-error
-	x: ''
-});
-instance.$set({});
-instance.$destroy();
-instance.anExport === 1;
 
 // --------------------------------------------------------------------------- interop
 
@@ -175,5 +171,6 @@ asLegacyComponent.$$prop_def.x = '';
 asLegacyComponent.anExport;
 const x: typeof asLegacyComponent = createClassComponent({
 	target: null as any,
-	component: newComponent
+	hydrate: true,
+	component: NewComponent
 });

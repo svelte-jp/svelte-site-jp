@@ -1,9 +1,8 @@
-import read_context from '../read/context.js';
+import read_pattern from '../read/context.js';
 import read_expression from '../read/expression.js';
-import { error } from '../../../errors.js';
+import * as e from '../../../errors.js';
 import { create_fragment } from '../utils/create.js';
 import { walk } from 'zimmerframe';
-import { parse } from '../acorn.js';
 
 const regex_whitespace_with_closing_curly_brace = /^\s*}/;
 
@@ -24,18 +23,17 @@ export default function mustache(parser) {
 	parser.allow_whitespace();
 	parser.eat('}', true);
 
-	parser.append(
-		/** @type {import('#compiler').ExpressionTag} */ ({
-			type: 'ExpressionTag',
-			start,
-			end: parser.index,
-			expression,
-			metadata: {
-				contains_call_expression: false,
-				dynamic: false
-			}
-		})
-	);
+	/** @type {ReturnType<typeof parser.append<import('#compiler').ExpressionTag>>} */
+	parser.append({
+		type: 'ExpressionTag',
+		start,
+		end: parser.index,
+		expression,
+		metadata: {
+			contains_call_expression: false,
+			dynamic: false
+		}
+	});
 }
 
 /** @param {import('../index.js').Parser} parser */
@@ -45,17 +43,16 @@ function open(parser) {
 	if (parser.eat('if')) {
 		parser.require_whitespace();
 
-		const block = parser.append(
-			/** @type {import('#compiler').IfBlock} */ ({
-				type: 'IfBlock',
-				elseif: false,
-				start,
-				end: -1,
-				test: read_expression(parser),
-				consequent: create_fragment(),
-				alternate: null
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').IfBlock>>} */
+		const block = parser.append({
+			type: 'IfBlock',
+			elseif: false,
+			start,
+			end: -1,
+			test: read_expression(parser),
+			consequent: create_fragment(),
+			alternate: null
+		});
 
 		parser.allow_whitespace();
 		parser.eat('}', true);
@@ -139,7 +136,7 @@ function open(parser) {
 		parser.eat('as', true);
 		parser.require_whitespace();
 
-		const context = read_context(parser);
+		const context = read_pattern(parser);
 
 		parser.allow_whitespace();
 
@@ -150,7 +147,7 @@ function open(parser) {
 			parser.allow_whitespace();
 			index = parser.read_identifier();
 			if (!index) {
-				error(parser.index, 'expected-identifier');
+				e.expected_identifier(parser.index);
 			}
 
 			parser.allow_whitespace();
@@ -167,19 +164,18 @@ function open(parser) {
 
 		parser.eat('}', true);
 
-		const block = parser.append(
-			/** @type {Omit<import('#compiler').EachBlock, 'parent'>} */ ({
-				type: 'EachBlock',
-				start,
-				end: -1,
-				expression,
-				body: create_fragment(),
-				context,
-				index,
-				key,
-				metadata: /** @type {any} */ (null) // filled in later
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').EachBlock>>} */
+		const block = parser.append({
+			type: 'EachBlock',
+			start,
+			end: -1,
+			expression,
+			body: create_fragment(),
+			context,
+			index,
+			key,
+			metadata: /** @type {any} */ (null) // filled in later
+		});
 
 		parser.stack.push(block);
 		parser.fragments.push(block.body);
@@ -192,26 +188,25 @@ function open(parser) {
 		const expression = read_expression(parser);
 		parser.allow_whitespace();
 
-		const block = parser.append(
-			/** @type {import('#compiler').AwaitBlock} */ ({
-				type: 'AwaitBlock',
-				start,
-				end: -1,
-				expression,
-				value: null,
-				error: null,
-				pending: null,
-				then: null,
-				catch: null
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').AwaitBlock>>} */
+		const block = parser.append({
+			type: 'AwaitBlock',
+			start,
+			end: -1,
+			expression,
+			value: null,
+			error: null,
+			pending: null,
+			then: null,
+			catch: null
+		});
 
 		if (parser.eat('then')) {
 			if (parser.match_regex(regex_whitespace_with_closing_curly_brace)) {
 				parser.allow_whitespace();
 			} else {
 				parser.require_whitespace();
-				block.value = read_context(parser);
+				block.value = read_pattern(parser);
 				parser.allow_whitespace();
 			}
 
@@ -222,7 +217,7 @@ function open(parser) {
 				parser.allow_whitespace();
 			} else {
 				parser.require_whitespace();
-				block.error = read_context(parser);
+				block.error = read_pattern(parser);
 				parser.allow_whitespace();
 			}
 
@@ -247,15 +242,14 @@ function open(parser) {
 
 		parser.eat('}', true);
 
-		const block = parser.append(
-			/** @type {import('#compiler').KeyBlock} */ ({
-				type: 'KeyBlock',
-				start,
-				end: -1,
-				expression,
-				fragment: create_fragment()
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').KeyBlock>>} */
+		const block = parser.append({
+			type: 'KeyBlock',
+			start,
+			end: -1,
+			expression,
+			fragment: create_fragment()
+		});
 
 		parser.stack.push(block);
 		parser.fragments.push(block.fragment);
@@ -270,34 +264,55 @@ function open(parser) {
 		const name = parser.read_identifier();
 		const name_end = parser.index;
 
+		if (name === null) {
+			e.expected_identifier(parser.index);
+		}
+
 		parser.eat('(', true);
 
 		parser.allow_whitespace();
 
-		const context = parser.match(')') ? null : read_context(parser);
+		/** @type {import('estree').Pattern[]} */
+		const parameters = [];
 
-		parser.allow_whitespace();
+		while (!parser.match(')')) {
+			let pattern = read_pattern(parser, true);
+
+			parser.allow_whitespace();
+			if (parser.eat('=')) {
+				parser.allow_whitespace();
+				pattern = {
+					type: 'AssignmentPattern',
+					left: pattern,
+					right: read_expression(parser)
+				};
+			}
+
+			parameters.push(pattern);
+
+			if (!parser.eat(',')) break;
+			parser.allow_whitespace();
+		}
+
 		parser.eat(')', true);
 
 		parser.allow_whitespace();
 		parser.eat('}', true);
 
-		const block = parser.append(
-			/** @type {Omit<import('#compiler').SnippetBlock, 'parent'>} */
-			({
-				type: 'SnippetBlock',
-				start,
-				end: -1,
-				expression: {
-					type: 'Identifier',
-					start: name_start,
-					end: name_end,
-					name
-				},
-				context,
-				body: create_fragment()
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').SnippetBlock>>} */
+		const block = parser.append({
+			type: 'SnippetBlock',
+			start,
+			end: -1,
+			expression: {
+				type: 'Identifier',
+				start: name_start,
+				end: name_end,
+				name
+			},
+			parameters,
+			body: create_fragment()
+		});
 
 		parser.stack.push(block);
 		parser.fragments.push(block.body);
@@ -305,7 +320,7 @@ function open(parser) {
 		return;
 	}
 
-	error(parser.index, 'expected-block-type');
+	e.expected_block_type(parser.index);
 }
 
 /** @param {import('../index.js').Parser} parser */
@@ -315,8 +330,8 @@ function next(parser) {
 	const block = parser.current(); // TODO type should not be TemplateNode, that's much too broad
 
 	if (block.type === 'IfBlock') {
-		if (!parser.eat('else')) error(start, 'expected-token', '{:else} or {:else if}');
-		if (parser.eat('if')) error(start, 'invalid-elseif');
+		if (!parser.eat('else')) e.expected_token(start, '{:else} or {:else if}');
+		if (parser.eat('if')) e.block_invalid_elseif(start);
 
 		parser.allow_whitespace();
 
@@ -334,17 +349,16 @@ function next(parser) {
 			parser.allow_whitespace();
 			parser.eat('}', true);
 
-			const child = parser.append(
-				/** @type {import('#compiler').IfBlock} */ ({
-					start: parser.index,
-					end: -1,
-					type: 'IfBlock',
-					elseif: true,
-					test: expression,
-					consequent: create_fragment(),
-					alternate: null
-				})
-			);
+			/** @type {ReturnType<typeof parser.append<import('#compiler').IfBlock>>} */
+			const child = parser.append({
+				start: parser.index,
+				end: -1,
+				type: 'IfBlock',
+				elseif: true,
+				test: expression,
+				consequent: create_fragment(),
+				alternate: null
+			});
 
 			parser.stack.push(child);
 			parser.fragments.pop();
@@ -359,7 +373,7 @@ function next(parser) {
 	}
 
 	if (block.type === 'EachBlock') {
-		if (!parser.eat('else')) error(start, 'expected-token', '{:else}');
+		if (!parser.eat('else')) e.expected_token(start, '{:else}');
 
 		parser.allow_whitespace();
 		parser.eat('}', true);
@@ -375,12 +389,12 @@ function next(parser) {
 	if (block.type === 'AwaitBlock') {
 		if (parser.eat('then')) {
 			if (block.then) {
-				error(start, 'duplicate-block-part', '{:then}');
+				e.block_duplicate_clause(start, '{:then}');
 			}
 
 			if (!parser.eat('}')) {
 				parser.require_whitespace();
-				block.value = read_context(parser);
+				block.value = read_pattern(parser);
 				parser.allow_whitespace();
 				parser.eat('}', true);
 			}
@@ -394,12 +408,12 @@ function next(parser) {
 
 		if (parser.eat('catch')) {
 			if (block.catch) {
-				error(start, 'duplicate-block-part', '{:catch}');
+				e.block_duplicate_clause(start, '{:catch}');
 			}
 
 			if (!parser.eat('}')) {
 				parser.require_whitespace();
-				block.error = read_context(parser);
+				block.error = read_pattern(parser);
 				parser.allow_whitespace();
 				parser.eat('}', true);
 			}
@@ -411,10 +425,10 @@ function next(parser) {
 			return;
 		}
 
-		error(start, 'expected-token', '{:then ...} or {:catch ...}');
+		e.expected_token(start, '{:then ...} or {:catch ...}');
 	}
 
-	error(start, 'invalid-continuing-block-placement');
+	e.block_invalid_continuation_placement(start);
 }
 
 /** @param {import('../index.js').Parser} parser */
@@ -452,11 +466,11 @@ function close(parser) {
 
 		case 'RegularElement':
 			// TODO handle implicitly closed elements
-			error(start, 'unexpected-block-close');
+			e.block_unexpected_close(start);
 			break;
 
 		default:
-			error(start, 'unexpected-block-close');
+			e.block_unexpected_close(start);
 	}
 
 	parser.allow_whitespace();
@@ -479,14 +493,13 @@ function special(parser) {
 		parser.allow_whitespace();
 		parser.eat('}', true);
 
-		parser.append(
-			/** @type {import('#compiler').HtmlTag} */ ({
-				type: 'HtmlTag',
-				start,
-				end: parser.index,
-				expression
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').HtmlTag>>} */
+		parser.append({
+			type: 'HtmlTag',
+			start,
+			end: parser.index,
+			expression
+		});
 
 		return;
 	}
@@ -509,7 +522,7 @@ function special(parser) {
 			identifiers.forEach(
 				/** @param {any} node */ (node) => {
 					if (node.type !== 'Identifier') {
-						error(/** @type {number} */ (node.start), 'invalid-debug');
+						e.debug_tag_invalid_arguments(/** @type {number} */ (node.start));
 					}
 				}
 			);
@@ -518,65 +531,52 @@ function special(parser) {
 			parser.eat('}', true);
 		}
 
-		parser.append(
-			/** @type {import('#compiler').DebugTag} */ ({
-				type: 'DebugTag',
-				start,
-				end: parser.index,
-				identifiers
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').DebugTag>>} */
+		parser.append({
+			type: 'DebugTag',
+			start,
+			end: parser.index,
+			identifiers
+		});
 
 		return;
 	}
 
 	if (parser.eat('const')) {
-		// {@const a = b}
-		const start_index = parser.index - 5;
 		parser.require_whitespace();
 
-		let end_index = parser.index;
-		/** @type {import('estree').VariableDeclaration | undefined} */
-		let declaration = undefined;
+		const id = read_pattern(parser);
+		parser.allow_whitespace();
 
-		// Can't use parse_expression_at here, so we try to parse until we find the correct range
-		const dummy_spaces = parser.template.substring(0, start_index).replace(/[^\n]/g, ' ');
-		while (true) {
-			end_index = parser.template.indexOf('}', end_index + 1);
-			if (end_index === -1) break;
-			try {
-				const node = parse(
-					dummy_spaces + parser.template.substring(start_index, end_index),
-					parser.ts
-				).body[0];
-				if (node?.type === 'VariableDeclaration') {
-					declaration = node;
-					break;
-				}
-			} catch (e) {
-				continue;
-			}
-		}
+		parser.eat('=', true);
+		parser.allow_whitespace();
 
+		const expression_start = parser.index;
+		const init = read_expression(parser);
 		if (
-			declaration === undefined ||
-			declaration.declarations.length !== 1 ||
-			declaration.declarations[0].init === undefined
+			init.type === 'SequenceExpression' &&
+			!parser.template.substring(expression_start, init.start).includes('(')
 		) {
-			error(start, 'invalid-const');
+			// const a = (b, c) is allowed but a = b, c = d is not;
+			e.const_tag_invalid_expression(init);
 		}
+		parser.allow_whitespace();
 
-		parser.index = end_index;
 		parser.eat('}', true);
 
-		parser.append(
-			/** @type {import('#compiler').ConstTag} */ ({
-				type: 'ConstTag',
-				start,
-				end: parser.index,
-				declaration
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').ConstTag>>} */
+		parser.append({
+			type: 'ConstTag',
+			start,
+			end: parser.index,
+			declaration: {
+				type: 'VariableDeclaration',
+				kind: 'const',
+				declarations: [{ type: 'VariableDeclarator', id, init }],
+				start: start + 2, // start at const, not at @const
+				end: parser.index - 1
+			}
+		});
 	}
 
 	if (parser.eat('render')) {
@@ -585,25 +585,22 @@ function special(parser) {
 
 		const expression = read_expression(parser);
 
-		if (expression.type !== 'CallExpression' || expression.callee.type !== 'Identifier') {
-			error(expression, 'TODO', 'expected an identifier followed by (...)');
-		}
-
-		if (expression.arguments.length > 1) {
-			error(expression.arguments[1], 'TODO', 'expected at most one argument');
+		if (
+			expression.type !== 'CallExpression' &&
+			(expression.type !== 'ChainExpression' || expression.expression.type !== 'CallExpression')
+		) {
+			e.render_tag_invalid_expression(expression);
 		}
 
 		parser.allow_whitespace();
 		parser.eat('}', true);
 
-		parser.append(
-			/** @type {import('#compiler').RenderTag} */ ({
-				type: 'RenderTag',
-				start,
-				end: parser.index,
-				expression: expression.callee,
-				argument: expression.arguments[0] ?? null
-			})
-		);
+		/** @type {ReturnType<typeof parser.append<import('#compiler').RenderTag>>} */
+		parser.append({
+			type: 'RenderTag',
+			start,
+			end: parser.index,
+			expression: expression
+		});
 	}
 }

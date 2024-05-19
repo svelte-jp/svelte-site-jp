@@ -1,3 +1,4 @@
+import { interactive_elements } from '../../../../constants.js';
 import entities from './entities.js';
 
 const windows_1252 = [
@@ -142,6 +143,10 @@ const disallowed_contents = {
 	td: new Set(['td', 'th', 'tr']),
 	th: new Set(['td', 'th', 'tr'])
 };
+
+for (const interactive_element of interactive_elements) {
+	disallowed_contents[interactive_element] = interactive_elements;
+}
 
 // can this be a child of the parent element, or does it implicitly
 // close it, like `<li>one<li>two`?

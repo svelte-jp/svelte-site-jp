@@ -77,9 +77,11 @@ export function normalize_html(
 	try {
 		const node = window.document.createElement('div');
 		node.innerHTML = html
-			.replace(/(<!--.*?-->)/g, preserveComments ? '$1' : '')
+			.replace(/(<!(--)?.*?\2>)/g, preserveComments ? '$1' : '')
 			.replace(/(data-svelte-h="[^"]+")/g, removeDataSvelte ? '' : '$1')
 			.replace(/>[ \t\n\r\f]+</g, '><')
+			// Strip out the special onload/onerror hydration events from the test output
+			.replace(/\s?onerror="this.__e=event"|\s?onload="this.__e=event"/g, '')
 			.trim();
 		clean_children(node);
 		return node.innerHTML.replace(/<\/?noscript\/?>/g, '');
@@ -135,15 +137,15 @@ export function setup_html_equal(options = {}) {
 		try {
 			assert.deepEqual(
 				withoutNormalizeHtml
-					? normalize_new_line(actual)
+					? normalize_new_line(actual.trim())
 							.replace(/(\sdata-svelte-h="[^"]+")/g, options.removeDataSvelte ? '' : '$1')
-							.replace(/(<!--.*?-->)/g, preserveComments !== false ? '$1' : '')
-					: normalize_html(window, actual, { ...options, preserveComments }),
+							.replace(/(<!(--)?.*?\2>)/g, preserveComments !== false ? '$1' : '')
+					: normalize_html(window, actual.trim(), { ...options, preserveComments }),
 				withoutNormalizeHtml
-					? normalize_new_line(expected)
+					? normalize_new_line(expected.trim())
 							.replace(/(\sdata-svelte-h="[^"]+")/g, options.removeDataSvelte ? '' : '$1')
-							.replace(/(<!--.*?-->)/g, preserveComments !== false ? '$1' : '')
-					: normalize_html(window, expected, { ...options, preserveComments }),
+							.replace(/(<!(--)?.*?\2>)/g, preserveComments !== false ? '$1' : '')
+					: normalize_html(window, expected.trim(), { ...options, preserveComments }),
 				message
 			);
 		} catch (e) {

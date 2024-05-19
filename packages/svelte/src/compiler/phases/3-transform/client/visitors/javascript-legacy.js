@@ -1,7 +1,33 @@
 import { is_hoistable_function } from '../../utils.js';
 import * as b from '../../../../utils/builders.js';
 import { extract_paths } from '../../../../utils/ast.js';
-import { create_state_declarators, get_prop_source, serialize_get_binding } from '../utils.js';
+import { get_prop_source, serialize_get_binding } from '../utils.js';
+
+/**
+ * Creates the output for a state declaration.
+ * @param {import('estree').VariableDeclarator} declarator
+ * @param {import('../../../scope.js').Scope} scope
+ * @param {import('estree').Expression} value
+ */
+function create_state_declarators(declarator, scope, value) {
+	if (declarator.id.type === 'Identifier') {
+		return [b.declarator(declarator.id, b.call('$.mutable_source', value))];
+	}
+
+	const tmp = scope.generate('tmp');
+	const paths = extract_paths(declarator.id);
+	return [
+		b.declarator(b.id(tmp), value),
+		...paths.map((path) => {
+			const value = path.expression?.(b.id(tmp));
+			const binding = scope.get(/** @type {import('estree').Identifier} */ (path.node).name);
+			return b.declarator(
+				path.node,
+				binding?.kind === 'state' ? b.call('$.mutable_source', value) : value
+			);
+		})
+	];
+}
 
 /** @type {import('../types.js').ComponentVisitors} */
 export const javascript_visitors_legacy = {
@@ -14,7 +40,7 @@ export const javascript_visitors_legacy = {
 				state.scope.get_bindings(declarator)
 			);
 			const has_state = bindings.some((binding) => binding.kind === 'state');
-			const has_props = bindings.some((binding) => binding.kind === 'prop');
+			const has_props = bindings.some((binding) => binding.kind === 'bindable_prop');
 
 			if (!has_state && !has_props) {
 				const init = declarator.init;
@@ -54,7 +80,7 @@ export const javascript_visitors_legacy = {
 						declarations.push(
 							b.declarator(
 								path.node,
-								binding.kind === 'prop'
+								binding.kind === 'bindable_prop'
 									? get_prop_source(binding, state, binding.prop_alias ?? name, value)
 									: value
 							)
@@ -67,24 +93,17 @@ export const javascript_visitors_legacy = {
 					state.scope.get(declarator.id.name)
 				);
 
-				if (
-					state.analysis.accessors ||
-					(state.analysis.immutable ? binding.reassigned : binding.mutated) ||
-					declarator.init
-				) {
-					declarations.push(
-						b.declarator(
-							declarator.id,
-							get_prop_source(
-								binding,
-								state,
-								binding.prop_alias ?? declarator.id.name,
-								declarator.init &&
-									/** @type {import('estree').Expression} */ (visit(declarator.init))
-							)
+				declarations.push(
+					b.declarator(
+						declarator.id,
+						get_prop_source(
+							binding,
+							state,
+							binding.prop_alias ?? declarator.id.name,
+							declarator.init && /** @type {import('estree').Expression} */ (visit(declarator.init))
 						)
-					);
-				}
+					)
+				);
 
 				continue;
 			}
@@ -131,7 +150,6 @@ export const javascript_visitors_legacy = {
 		}
 
 		const body = serialized_body.body;
-		const new_body = [];
 
 		/** @type {import('estree').Expression[]} */
 		const sequence = [];
@@ -141,25 +159,25 @@ export const javascript_visitors_legacy = {
 			const name = binding.node.name;
 			let serialized = serialize_get_binding(b.id(name), state);
 
-			if (name === '$$props' || name === '$$restProps') {
-				serialized = b.call('$.access_props', serialized);
+			// If the binding is a prop, we need to deep read it because it could be fine-grained $state
+			// from a runes-component, where mutations don't trigger an update on the prop as a whole.
+			if (name === '$$props' || name === '$$restProps' || binding.kind === 'bindable_prop') {
+				serialized = b.call('$.deep_read_state', serialized);
 			}
 
 			sequence.push(serialized);
 		}
 
-		if (sequence.length > 0) {
-			new_body.push(b.stmt(b.sequence(sequence)));
-		}
-
-		new_body.push(b.stmt(b.call('$.untrack', b.thunk(b.block(body)))));
-
-		serialized_body.body = new_body;
-
 		// these statements will be topologically ordered later
 		state.legacy_reactive_statements.set(
 			node,
-			b.stmt(b.call('$.pre_effect', b.thunk(serialized_body)))
+			b.stmt(
+				b.call(
+					'$.legacy_pre_effect',
+					sequence.length > 0 ? b.thunk(b.sequence(sequence)) : b.thunk(b.block([])),
+					b.thunk(b.block(body))
+				)
+			)
 		);
 
 		return b.empty;

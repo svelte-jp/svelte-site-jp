@@ -1,9 +1,9 @@
 <style>
-	:global(div) > div {
+	:global(a) > :global(b) > div {
 		color: red;
 	}
 </style>
 
 <div>
-	<div />
+	<div></div>
 </div>

@@ -1,26 +1,31 @@
 import is_reference from 'is-reference';
 import { walk } from 'zimmerframe';
-import { error } from '../../errors.js';
-import * as assert from '../../utils/assert.js';
+import * as e from '../../errors.js';
+import * as w from '../../warnings.js';
 import {
 	extract_identifiers,
+	extract_all_identifiers_from_expression,
 	extract_paths,
 	is_event_attribute,
 	is_text_attribute,
-	object,
-	unwrap_ts_expression
+	object
 } from '../../utils/ast.js';
 import * as b from '../../utils/builders.js';
-import { ReservedKeywords, Runes, SVGElements } from '../constants.js';
+import { MathMLElements, ReservedKeywords, Runes, SVGElements } from '../constants.js';
 import { Scope, ScopeRoot, create_scopes, get_rune, set_scope } from '../scope.js';
 import { merge } from '../visitors.js';
-import Stylesheet from './css/Stylesheet.js';
 import { validation_legacy, validation_runes, validation_runes_js } from './validation.js';
-import { warn } from '../../warnings.js';
 import check_graph_for_cycles from './utils/check_graph_for_cycles.js';
 import { regex_starts_with_newline } from '../patterns.js';
 import { create_attribute, is_element_node } from '../nodes.js';
-import { DelegatedEvents } from '../../../constants.js';
+import { DelegatedEvents, namespace_mathml, namespace_svg } from '../../../constants.js';
+import { should_proxy_or_freeze } from '../3-transform/client/utils.js';
+import { analyze_css } from './css/css-analyze.js';
+import { prune } from './css/css-prune.js';
+import { hash } from './utils.js';
+import { warn_unused } from './css/css-warn.js';
+import { extract_svelte_ignore } from '../../utils/extract_svelte_ignore.js';
+import { pop_ignore, push_ignore } from '../../state.js';
 
 /**
  * @param {import('#compiler').Script | null} script
@@ -59,25 +64,21 @@ function get_component_name(filename) {
 }
 
 /**
- * @param {Pick<import('#compiler').OnDirective, 'expression'| 'name' | 'modifiers'> & { type: string }} node
+ * Checks if given event attribute can be delegated/hoisted and returns the corresponding info if so
+ * @param {string} event_name
+ * @param {import('estree').Expression | null} handler
  * @param {import('./types').Context} context
  * @returns {null | import('#compiler').DelegatedEvent}
  */
-function get_delegated_event(node, context) {
-	const handler = node.expression;
-	const event_name = node.name;
-
+function get_delegated_event(event_name, handler, context) {
 	// Handle delegated event handlers. Bail-out if not a delegated event.
-	if (!handler || node.modifiers.includes('capture') || !DelegatedEvents.includes(event_name)) {
+	if (!handler || !DelegatedEvents.includes(event_name)) {
 		return null;
 	}
+
 	// If we are not working with a RegularElement, then bail-out.
 	const element = context.path.at(-1);
 	if (element?.type !== 'RegularElement') {
-		return null;
-	}
-	// If element says we can't delegate because we have multiple OnDirectives of the same type, bail-out.
-	if (!element.metadata.can_delegate_events) {
 		return null;
 	}
 
@@ -87,7 +88,7 @@ function get_delegated_event(node, context) {
 	let target_function = null;
 	let binding = null;
 
-	if (node.type === 'Attribute' && element.metadata.has_spread) {
+	if (element.metadata.has_spread) {
 		// event attribute becomes part of the dynamic spread array
 		return non_hoistable;
 	}
@@ -96,6 +97,11 @@ function get_delegated_event(node, context) {
 		target_function = handler;
 	} else if (handler.type === 'Identifier') {
 		binding = context.state.scope.get(handler.name);
+
+		if (context.state.analysis.module.scope.references.has(handler.name)) {
+			// If a binding with the same name is referenced in the module scope (even if not declared there), bail-out
+			return non_hoistable;
+		}
 
 		if (binding != null) {
 			for (const { path } of binding.references) {
@@ -123,8 +129,7 @@ function get_delegated_event(node, context) {
 				if (element && event_name) {
 					if (
 						element.type !== 'RegularElement' ||
-						!determine_element_spread_and_delegatable(element).metadata.can_delegate_events ||
-						(element.metadata.has_spread && node.type === 'Attribute') ||
+						determine_element_spread(element).metadata.has_spread ||
 						!DelegatedEvents.includes(event_name)
 					) {
 						return non_hoistable;
@@ -166,6 +171,7 @@ function get_delegated_event(node, context) {
 		return non_hoistable;
 	}
 
+	const visited_references = new Set();
 	const scope = target_function.metadata.scope;
 	for (const [reference] of scope.references) {
 		// Bail-out if the arguments keyword is used
@@ -173,6 +179,26 @@ function get_delegated_event(node, context) {
 			return non_hoistable;
 		}
 		const binding = scope.get(reference);
+		const local_binding = context.state.scope.get(reference);
+
+		// If we are referencing a binding that is shadowed in another scope then bail out.
+		if (local_binding !== null && binding !== null && local_binding.node !== binding.node) {
+			return non_hoistable;
+		}
+
+		// If we have multiple references to the same store using $ prefix, bail out.
+		if (
+			binding !== null &&
+			binding.kind === 'store_sub' &&
+			visited_references.has(reference.slice(1))
+		) {
+			return non_hoistable;
+		}
+
+		// If we reference the index within an each block, then bail-out.
+		if (binding !== null && binding.initial?.type === 'EachBlock') {
+			return non_hoistable;
+		}
 
 		if (
 			binding !== null &&
@@ -188,7 +214,9 @@ function get_delegated_event(node, context) {
 		) {
 			return non_hoistable;
 		}
+		visited_references.add(reference);
 	}
+
 	return { type: 'hoistable', function: target_function };
 }
 
@@ -203,20 +231,13 @@ export function analyze_module(ast, options) {
 	for (const [name, references] of scope.references) {
 		if (name[0] !== '$' || ReservedKeywords.includes(name)) continue;
 		if (name === '$' || name[1] === '$') {
-			error(references[0].node, 'illegal-global', name);
+			e.global_reference_invalid(references[0].node, name);
 		}
 	}
 
-	/** @type {import('../types').RawWarning[]} */
-	const warnings = [];
-
-	const analysis = {
-		warnings
-	};
-
 	walk(
 		/** @type {import('estree').Node} */ (ast),
-		{ scope, analysis },
+		{ scope, analysis: { runes: true } },
 		// @ts-expect-error TODO clean this mess up
 		merge(set_scope(scopes), validation_runes_js, runes_scope_js_tweaker)
 	);
@@ -224,7 +245,6 @@ export function analyze_module(ast, options) {
 	return {
 		module: { ast, scope, scopes },
 		name: options.filename || 'module',
-		warnings,
 		accessors: false,
 		runes: true,
 		immutable: true
@@ -233,10 +253,11 @@ export function analyze_module(ast, options) {
 
 /**
  * @param {import('#compiler').Root} root
+ * @param {string} source
  * @param {import('#compiler').ValidatedCompileOptions} options
  * @returns {import('../types.js').ComponentAnalysis}
  */
-export function analyze_component(root, options) {
+export function analyze_component(root, source, options) {
 	const scope_root = new ScopeRoot();
 
 	const module = js(root.module, scope_root, false, null);
@@ -247,14 +268,11 @@ export function analyze_component(root, options) {
 	/** @type {import('../types.js').Template} */
 	const template = { ast: root.fragment, scope, scopes };
 
-	/** @type {import('../types').RawWarning[]} */
-	const warnings = [];
-
 	// create synthetic bindings for store subscriptions
 	for (const [name, references] of module.scope.references) {
 		if (name[0] !== '$' || ReservedKeywords.includes(name)) continue;
 		if (name === '$' || name[1] === '$') {
-			error(references[0].node, 'illegal-global', name);
+			e.global_reference_invalid(references[0].node, name);
 		}
 
 		const store_name = name.slice(1);
@@ -275,26 +293,50 @@ export function analyze_component(root, options) {
 					declaration.initial.source.value === 'svelte/store'
 				))
 		) {
+			let is_nested_store_subscription_node = undefined;
+			search: for (const reference of references) {
+				for (let i = reference.path.length - 1; i >= 0; i--) {
+					const scope =
+						scopes.get(reference.path[i]) ||
+						module.scopes.get(reference.path[i]) ||
+						instance.scopes.get(reference.path[i]);
+					if (scope) {
+						const owner = scope?.owner(store_name);
+						if (!!owner && owner !== module.scope && owner !== instance.scope) {
+							is_nested_store_subscription_node = reference.node;
+							break search;
+						}
+						break;
+					}
+				}
+			}
+
+			if (is_nested_store_subscription_node) {
+				e.store_invalid_scoped_subscription(is_nested_store_subscription_node);
+			}
+
 			if (options.runes !== false) {
 				if (declaration === null && /[a-z]/.test(store_name[0])) {
-					error(references[0].node, 'illegal-global', name);
+					e.global_reference_invalid(references[0].node, name);
 				} else if (declaration !== null && Runes.includes(/** @type {any} */ (name))) {
 					for (const { node, path } of references) {
 						if (path.at(-1)?.type === 'CallExpression') {
-							warn(warnings, node, [], 'store-with-rune-name', store_name);
+							w.store_rune_conflict(node, store_name);
 						}
 					}
 				}
 			}
 
 			if (module.ast) {
-				// if the reference is inside context="module", error. this is a bit hacky but it works
-				for (const { node } of references) {
+				for (const { node, path } of references) {
+					// if the reference is inside context="module", error. this is a bit hacky but it works
 					if (
 						/** @type {number} */ (node.start) > /** @type {number} */ (module.ast.start) &&
-						/** @type {number} */ (node.end) < /** @type {number} */ (module.ast.end)
+						/** @type {number} */ (node.end) < /** @type {number} */ (module.ast.end) &&
+						// const state = $state(0) is valid
+						get_rune(/** @type {import('estree').Node} */ (path.at(-1)), module.scope) === null
 					) {
-						error(node, 'illegal-subscription');
+						e.store_invalid_subscription(node);
 					}
 				}
 			}
@@ -321,13 +363,6 @@ export function analyze_component(root, options) {
 		instance,
 		template,
 		elements: [],
-		stylesheet: new Stylesheet({
-			ast: root.css,
-			// TODO are any of these necessary or can we just pass in the whole `analysis` object later?
-			filename: options.filename ?? '<unknown>',
-			component_name,
-			get_css_hash: options.cssHash
-		}),
 		runes,
 		immutable: runes || options.immutable,
 		exports: [],
@@ -335,24 +370,62 @@ export function analyze_component(root, options) {
 		uses_rest_props: false,
 		uses_slots: false,
 		uses_component_bindings: false,
-		custom_element: options.customElement,
-		inject_styles: options.css === 'injected' || !!options.customElement,
-		accessors: options.customElement ? true : !!options.accessors,
+		uses_render_tags: false,
+		needs_context: false,
+		needs_props: false,
+		event_directive_node: null,
+		uses_event_attributes: false,
+		custom_element: options.customElementOptions ?? options.customElement,
+		inject_styles: options.css === 'injected' || options.customElement,
+		accessors: options.customElement
+			? true
+			: (runes ? false : !!options.accessors) ||
+				// because $set method needs accessors
+				!!options.legacy?.componentApi,
 		reactive_statements: new Map(),
 		binding_groups: new Map(),
-		slot_names: new Set(),
-		warnings
+		slot_names: new Map(),
+		top_level_snippets: [],
+		css: {
+			ast: root.css,
+			hash: root.css
+				? options.cssHash({
+						css: root.css.content.styles,
+						filename: options.filename ?? '<unknown>',
+						name: component_name,
+						hash
+					})
+				: '',
+			keyframes: []
+		},
+		source
 	};
+
+	if (root.options) {
+		for (const attribute of root.options.attributes) {
+			if (attribute.name === 'accessors') {
+				w.options_deprecated_accessors(attribute);
+			}
+
+			if (attribute.name === 'customElement' && !options.customElement) {
+				w.options_missing_custom_element(attribute);
+			}
+
+			if (attribute.name === 'immutable') {
+				w.options_deprecated_immutable(attribute);
+			}
+		}
+	}
 
 	if (analysis.runes) {
 		const props_refs = module.scope.references.get('$$props');
 		if (props_refs) {
-			error(props_refs[0].node, 'invalid-legacy-props');
+			e.legacy_props_invalid(props_refs[0].node);
 		}
 
 		const rest_props_refs = module.scope.references.get('$$restProps');
 		if (rest_props_refs) {
-			error(rest_props_refs[0].node, 'invalid-legacy-rest-props');
+			e.legacy_rest_props_invalid(rest_props_refs[0].node);
 		}
 
 		for (const { ast, scope, scopes } of [module, instance, template]) {
@@ -376,8 +449,51 @@ export function analyze_component(root, options) {
 				merge(set_scope(scopes), validation_runes, runes_scope_tweaker, common_visitors)
 			);
 		}
+
+		// warn on any nonstate declarations that are a) reassigned and b) referenced in the template
+		for (const scope of [module.scope, instance.scope]) {
+			outer: for (const [name, binding] of scope.declarations) {
+				if (binding.kind === 'normal' && binding.reassigned) {
+					inner: for (const { path } of binding.references) {
+						if (path[0].type !== 'Fragment') continue;
+						for (let i = 1; i < path.length; i += 1) {
+							const type = path[i].type;
+							if (
+								type === 'FunctionDeclaration' ||
+								type === 'FunctionExpression' ||
+								type === 'ArrowFunctionExpression'
+							) {
+								continue inner;
+							}
+							// bind:this doesn't need to be a state reference if it will never change
+							if (
+								type === 'BindDirective' &&
+								/** @type {import('#compiler').BindDirective} */ (path[i]).name === 'this'
+							) {
+								for (let j = i - 1; j >= 0; j -= 1) {
+									const type = path[j].type;
+									if (
+										type === 'IfBlock' ||
+										type === 'EachBlock' ||
+										type === 'AwaitBlock' ||
+										type === 'KeyBlock'
+									) {
+										w.non_reactive_update(binding.node, name);
+										continue outer;
+									}
+								}
+								continue inner;
+							}
+						}
+
+						w.non_reactive_update(binding.node, name);
+						continue outer;
+					}
+				}
+			}
+		}
 	} else {
-		instance.scope.declare(b.id('$$props'), 'prop', 'synthetic');
+		instance.scope.declare(b.id('$$props'), 'rest_prop', 'synthetic');
 		instance.scope.declare(b.id('$$restProps'), 'rest_prop', 'synthetic');
 
 		for (const { ast, scope, scopes } of [module, instance, template]) {
@@ -406,40 +522,106 @@ export function analyze_component(root, options) {
 			);
 		}
 
+		for (const [name, binding] of instance.scope.declarations) {
+			if (
+				(binding.kind === 'prop' || binding.kind === 'bindable_prop') &&
+				binding.node.name !== '$$props'
+			) {
+				const references = binding.references.filter(
+					(r) => r.node !== binding.node && r.path.at(-1)?.type !== 'ExportSpecifier'
+				);
+				if (!references.length && !instance.scope.declarations.has(`$${name}`)) {
+					w.export_let_unused(binding.node, name);
+				}
+			}
+		}
+
 		analysis.reactive_statements = order_reactive_statements(analysis.reactive_statements);
 	}
 
-	// warn on any nonstate declarations that are a) reassigned and b) referenced in the template
-	for (const scope of [module.scope, instance.scope]) {
-		outer: for (const [name, binding] of scope.declarations) {
-			if (binding.kind === 'normal' && binding.reassigned) {
-				for (const { path } of binding.references) {
-					if (path[0].type !== 'Fragment') continue;
-					for (let i = 1; i < path.length; i += 1) {
-						const type = path[i].type;
-						if (
-							type === 'FunctionDeclaration' ||
-							type === 'FunctionExpression' ||
-							type === 'ArrowFunctionExpression'
-						) {
-							continue;
-						}
+	if (analysis.event_directive_node && analysis.uses_event_attributes) {
+		e.mixed_event_handler_syntaxes(
+			analysis.event_directive_node,
+			analysis.event_directive_node.name
+		);
+	}
+
+	if (analysis.uses_render_tags && (analysis.uses_slots || analysis.slot_names.size > 0)) {
+		e.slot_snippet_conflict(analysis.slot_names.values().next().value);
+	}
+
+	if (analysis.css.ast) {
+		analyze_css(analysis.css.ast, analysis);
+
+		// mark nodes as scoped/unused/empty etc
+		for (const element of analysis.elements) {
+			prune(analysis.css.ast, element);
+		}
+
+		const { comment } = analysis.css.ast.content;
+		const should_ignore_unused =
+			comment &&
+			extract_svelte_ignore(comment.start, comment.data, analysis.runes).includes(
+				'css_unused_selector'
+			);
+
+		if (!should_ignore_unused) {
+			warn_unused(analysis.css.ast);
+		}
+
+		outer: for (const element of analysis.elements) {
+			if (element.metadata.scoped) {
+				// Dynamic elements in dom mode always use spread for attributes and therefore shouldn't have a class attribute added to them
+				// TODO this happens during the analysis phase, which shouldn't know anything about client vs server
+				if (element.type === 'SvelteElement' && options.generate === 'client') continue;
+
+				/** @type {import('#compiler').Attribute | undefined} */
+				let class_attribute = undefined;
+
+				for (const attribute of element.attributes) {
+					if (attribute.type === 'SpreadAttribute') {
+						// The spread method appends the hash to the end of the class attribute on its own
+						continue outer;
 					}
 
-					warn(warnings, binding.node, [], 'non-state-reference', name);
-					continue outer;
+					if (attribute.type !== 'Attribute') continue;
+					if (attribute.name.toLowerCase() !== 'class') continue;
+
+					class_attribute = attribute;
+				}
+
+				if (class_attribute && class_attribute.value !== true) {
+					const chunks = class_attribute.value;
+
+					if (chunks.length === 1 && chunks[0].type === 'Text') {
+						chunks[0].data += ` ${analysis.css.hash}`;
+					} else {
+						chunks.push({
+							type: 'Text',
+							data: ` ${analysis.css.hash}`,
+							raw: ` ${analysis.css.hash}`,
+							start: -1,
+							end: -1,
+							parent: null
+						});
+					}
+				} else {
+					element.attributes.push(
+						create_attribute('class', -1, -1, [
+							{
+								type: 'Text',
+								data: analysis.css.hash,
+								raw: analysis.css.hash,
+								parent: null,
+								start: -1,
+								end: -1
+							}
+						])
+					);
 				}
 			}
 		}
 	}
-
-	analysis.stylesheet.validate(analysis);
-
-	for (const element of analysis.elements) {
-		analysis.stylesheet.apply(element);
-	}
-
-	analysis.stylesheet.reify(options.generate === 'client');
 
 	// TODO
 	// analysis.stylesheet.warn_on_unused_selectors(analysis);
@@ -462,30 +644,67 @@ const legacy_scope_tweaker = {
 		/** @type {import('../types.js').ReactiveStatement} */
 		const reactive_statement = {
 			assignments: new Set(),
-			dependencies: new Set()
+			dependencies: []
 		};
 
 		next({ ...state, reactive_statement, function_depth: state.scope.function_depth + 1 });
 
+		// Every referenced binding becomes a dependency, unless it's on
+		// the left-hand side of an `=` assignment
 		for (const [name, nodes] of state.scope.references) {
 			const binding = state.scope.get(name);
 			if (binding === null) continue;
 
-			// Include bindings that have references other than assignments and their own declarations
-			if (
-				nodes.some((n) => n.node !== binding.node && !reactive_statement.assignments.has(n.node))
-			) {
-				reactive_statement.dependencies.add(binding);
+			for (const { node, path } of nodes) {
+				/** @type {import('estree').Expression} */
+				let left = node;
+
+				let i = path.length - 1;
+				let parent = /** @type {import('estree').Expression} */ (path.at(i));
+				while (parent.type === 'MemberExpression') {
+					left = parent;
+					parent = /** @type {import('estree').Expression} */ (path.at(--i));
+				}
+
+				if (
+					parent.type === 'AssignmentExpression' &&
+					parent.operator === '=' &&
+					parent.left === left
+				) {
+					continue;
+				}
+
+				reactive_statement.dependencies.push(binding);
+				break;
 			}
 		}
 
 		state.reactive_statements.set(node, reactive_statement);
 
+		// Ideally this would be in the validation file, but that isn't possible because this visitor
+		// calls "next" before setting the reactive statements.
+		if (
+			reactive_statement.dependencies.length &&
+			reactive_statement.dependencies.every(
+				(d) => d.scope === state.analysis.module.scope && d.declaration_kind !== 'const'
+			)
+		) {
+			w.reactive_declaration_module_script(node);
+		}
+
 		if (
 			node.body.type === 'ExpressionStatement' &&
 			node.body.expression.type === 'AssignmentExpression'
 		) {
-			for (const id of extract_identifiers(node.body.expression.left)) {
+			let ids = extract_identifiers(node.body.expression.left);
+			if (node.body.expression.left.type === 'MemberExpression') {
+				const id = object(node.body.expression.left);
+				if (id !== null) {
+					ids = [id];
+				}
+			}
+
+			for (const id of ids) {
 				const binding = state.scope.get(id.name);
 				if (binding?.kind === 'legacy_reactive') {
 					// TODO does this include `let double; $: double = x * 2`?
@@ -495,9 +714,30 @@ const legacy_scope_tweaker = {
 		}
 	},
 	AssignmentExpression(node, { state, next }) {
-		if (state.reactive_statement && node.operator === '=') {
-			for (const id of extract_identifiers(node.left)) {
-				state.reactive_statement.assignments.add(id);
+		if (state.reactive_statement) {
+			const id = node.left.type === 'MemberExpression' ? object(node.left) : node.left;
+			if (id !== null) {
+				for (const id of extract_identifiers(node.left)) {
+					const binding = state.scope.get(id.name);
+
+					if (binding) {
+						state.reactive_statement.assignments.add(binding);
+					}
+				}
+			}
+		}
+
+		next();
+	},
+	UpdateExpression(node, { state, next }) {
+		if (state.reactive_statement) {
+			const id = node.argument.type === 'MemberExpression' ? object(node.argument) : node.argument;
+			if (id?.type === 'Identifier') {
+				const binding = state.scope.get(id.name);
+
+				if (binding) {
+					state.reactive_statement.assignments.add(binding);
+				}
 			}
 		}
 
@@ -578,16 +818,21 @@ const legacy_scope_tweaker = {
 			return next();
 		}
 
+		state.analysis.needs_props = true;
+
 		if (!node.declaration) {
 			for (const specifier of node.specifiers) {
 				const binding = /** @type {import('#compiler').Binding} */ (
 					state.scope.get(specifier.local.name)
 				);
 				if (
-					binding.kind === 'state' ||
-					(binding.kind === 'normal' && binding.declaration_kind === 'let')
+					binding !== null &&
+					(binding.kind === 'state' ||
+						binding.kind === 'frozen_state' ||
+						(binding.kind === 'normal' &&
+							(binding.declaration_kind === 'let' || binding.declaration_kind === 'var')))
 				) {
-					binding.kind = 'prop';
+					binding.kind = 'bindable_prop';
 					if (specifier.exported.name !== specifier.local.name) {
 						binding.prop_alias = specifier.exported.name;
 					}
@@ -625,29 +870,46 @@ const legacy_scope_tweaker = {
 			for (const declarator of node.declaration.declarations) {
 				for (const id of extract_identifiers(declarator.id)) {
 					const binding = /** @type {import('#compiler').Binding} */ (state.scope.get(id.name));
-					binding.kind = 'prop';
+					binding.kind = 'bindable_prop';
 				}
+			}
+		}
+	},
+	StyleDirective(node, { state }) {
+		// the case for node.value different from true is already covered by the Identifier visitor
+		if (node.value === true) {
+			// get the binding for node.name and change the binding to state
+			let binding = state.scope.get(node.name);
+			if (binding?.mutated && binding.kind === 'normal') {
+				binding.kind = 'state';
 			}
 		}
 	}
 };
 
-/** @type {import('zimmerframe').Visitors<import('#compiler').SvelteNode, { scope: Scope, analysis: { warnings: import('../types').RawWarning[] } }>} */
+/** @type {import('zimmerframe').Visitors<import('#compiler').SvelteNode, { scope: Scope, analysis: { runes: true } }>} */
 const runes_scope_js_tweaker = {
 	VariableDeclarator(node, { state }) {
 		if (node.init?.type !== 'CallExpression') return;
-		if (get_rune(node.init, state.scope) === null) return;
+		const rune = get_rune(node.init, state.scope);
+		if (rune === null) return;
 
 		const callee = node.init.callee;
-		if (callee.type !== 'Identifier') return;
+		if (callee.type !== 'Identifier' && callee.type !== 'MemberExpression') return;
 
-		const name = callee.name;
-		if (name !== '$state' && name !== '$derived') return;
+		if (
+			rune !== '$state' &&
+			rune !== '$state.frozen' &&
+			rune !== '$derived' &&
+			rune !== '$derived.by'
+		)
+			return;
 
 		for (const path of extract_paths(node.id)) {
 			// @ts-ignore this fails in CI for some insane reason
 			const binding = /** @type {import('#compiler').Binding} */ (state.scope.get(path.node.name));
-			binding.kind = name === '$state' ? 'state' : 'derived';
+			binding.kind =
+				rune === '$state' ? 'state' : rune === '$state.frozen' ? 'frozen_state' : 'derived';
 		}
 	}
 };
@@ -663,30 +925,41 @@ const runes_scope_tweaker = {
 		}
 	},
 	VariableDeclarator(node, { state }) {
-		const init = unwrap_ts_expression(node.init);
+		const init = node.init;
 		if (!init || init.type !== 'CallExpression') return;
-		if (get_rune(init, state.scope) === null) return;
+		const rune = get_rune(init, state.scope);
+		if (rune === null) return;
 
 		const callee = init.callee;
-		if (callee.type !== 'Identifier') return;
+		if (callee.type !== 'Identifier' && callee.type !== 'MemberExpression') return;
 
-		const name = callee.name;
-		if (name !== '$state' && name !== '$derived' && name !== '$props') return;
+		if (
+			rune !== '$state' &&
+			rune !== '$state.frozen' &&
+			rune !== '$derived' &&
+			rune !== '$derived.by' &&
+			rune !== '$props'
+		)
+			return;
 
 		for (const path of extract_paths(node.id)) {
 			// @ts-ignore this fails in CI for some insane reason
 			const binding = /** @type {import('#compiler').Binding} */ (state.scope.get(path.node.name));
 			binding.kind =
-				name === '$state'
+				rune === '$state'
 					? 'state'
-					: name === '$derived'
-					? 'derived'
-					: path.is_rest
-					? 'rest_prop'
-					: 'prop';
+					: rune === '$state.frozen'
+						? 'frozen_state'
+						: rune === '$derived' || rune === '$derived.by'
+							? 'derived'
+							: path.is_rest
+								? 'rest_prop'
+								: 'prop';
 		}
 
-		if (name === '$props') {
+		if (rune === '$props') {
+			state.analysis.needs_props = true;
+
 			for (const property of /** @type {import('estree').ObjectPattern} */ (node.id).properties) {
 				if (property.type !== 'Property') continue;
 
@@ -697,12 +970,25 @@ const runes_scope_tweaker = {
 				const alias =
 					property.key.type === 'Identifier'
 						? property.key.name
-						: /** @type {string} */ (/** @type {import('estree').Literal} */ (property.key).value);
-				const initial = property.value.type === 'AssignmentPattern' ? property.value.right : null;
+						: String(/** @type {import('estree').Literal} */ (property.key).value);
+				let initial = property.value.type === 'AssignmentPattern' ? property.value.right : null;
 
 				const binding = /** @type {import('#compiler').Binding} */ (state.scope.get(name));
 				binding.prop_alias = alias;
-				binding.initial = initial; // rewire initial from $props() to the actual initial value
+
+				// rewire initial from $props() to the actual initial value, stripping $bindable() if necessary
+				if (
+					initial?.type === 'CallExpression' &&
+					initial.callee.type === 'Identifier' &&
+					initial.callee.name === '$bindable'
+				) {
+					binding.initial = /** @type {import('estree').Expression | null} */ (
+						initial.arguments[0] ?? null
+					);
+					binding.kind = 'bindable_prop';
+				} else {
+					binding.initial = initial;
+				}
 			}
 		}
 	},
@@ -748,25 +1034,6 @@ const runes_scope_tweaker = {
 function is_known_safe_call(node, context) {
 	const callee = node.callee;
 
-	// Check for selector() API calls
-	if (callee.type === 'MemberExpression' && callee.object.type === 'Identifier') {
-		const binding = context.state.scope.get(callee.object.name);
-		const selector_binding = context.state.scope.get('selector');
-		if (
-			selector_binding !== null &&
-			selector_binding.declaration_kind === 'import' &&
-			selector_binding.initial !== null &&
-			selector_binding.initial.type === 'ImportDeclaration' &&
-			selector_binding.initial.source.value === 'svelte' &&
-			binding !== null &&
-			binding.initial !== null &&
-			binding.initial.type === 'CallExpression' &&
-			binding.initial.callee.type === 'Identifier' &&
-			binding.initial.callee.name === 'selector'
-		) {
-			return true;
-		}
-	}
 	// String / Number / BigInt / Boolean casting calls
 	if (callee.type === 'Identifier') {
 		const name = callee.name;
@@ -778,6 +1045,9 @@ function is_known_safe_call(node, context) {
 			return true;
 		}
 	}
+
+	// TODO add more cases
+
 	return false;
 }
 
@@ -785,7 +1055,7 @@ function is_known_safe_call(node, context) {
  * @param {import('estree').ArrowFunctionExpression | import('estree').FunctionExpression | import('estree').FunctionDeclaration} node
  * @param {import('./types').Context} context
  */
-export const function_visitor = (node, context) => {
+const function_visitor = (node, context) => {
 	// TODO retire this in favour of a more general solution based on bindings
 	node.metadata = {
 		// module context -> already hoisted
@@ -800,8 +1070,83 @@ export const function_visitor = (node, context) => {
 	});
 };
 
+/**
+ * A 'safe' identifier means that the `foo` in `foo.bar` or `foo()` will not
+ * call functions that require component context to exist
+ * @param {import('estree').Expression | import('estree').Super} expression
+ * @param {Scope} scope
+ */
+function is_safe_identifier(expression, scope) {
+	let node = expression;
+	while (node.type === 'MemberExpression') node = node.object;
+
+	if (node.type !== 'Identifier') return false;
+
+	const binding = scope.get(node.name);
+	if (!binding) return true;
+
+	if (binding.kind === 'store_sub') {
+		return is_safe_identifier({ name: node.name.slice(1), type: 'Identifier' }, scope);
+	}
+
+	return (
+		binding.declaration_kind !== 'import' &&
+		binding.kind !== 'prop' &&
+		binding.kind !== 'bindable_prop' &&
+		binding.kind !== 'rest_prop'
+	);
+}
+
 /** @type {import('./types').Visitors} */
 const common_visitors = {
+	_(node, { state, next, path }) {
+		const parent = path.at(-1);
+		if (parent?.type === 'Fragment' && node.type !== 'Comment' && node.type !== 'Text') {
+			const idx = parent.nodes.indexOf(/** @type {any} */ (node));
+			/** @type {string[]} */
+			const ignores = [];
+			for (let i = idx - 1; i >= 0; i--) {
+				const prev = parent.nodes[i];
+				if (prev.type === 'Comment') {
+					ignores.push(
+						...extract_svelte_ignore(
+							prev.start + 4 /* '<!--'.length */,
+							prev.data,
+							state.analysis.runes
+						)
+					);
+				} else if (prev.type !== 'Text') {
+					break;
+				}
+			}
+
+			if (ignores.length > 0) {
+				push_ignore(ignores);
+				next();
+				pop_ignore();
+			}
+		} else {
+			const comments = /** @type {any} */ (node).leadingComments;
+			if (comments) {
+				/** @type {string[]} */
+				const ignores = [];
+				for (const comment of comments) {
+					ignores.push(
+						...extract_svelte_ignore(
+							comment.start + 2 /* '//'.length */,
+							comment.value,
+							state.analysis.runes
+						)
+					);
+				}
+				if (ignores.length > 0) {
+					push_ignore(ignores);
+					next();
+					pop_ignore();
+				}
+			}
+		}
+	},
 	Attribute(node, context) {
 		if (node.value === true) return;
 
@@ -823,21 +1168,14 @@ const common_visitors = {
 		});
 
 		if (is_event_attribute(node)) {
-			/** @type {string[]} */
-			const modifiers = [];
-			const expression = node.value[0].expression;
-
-			let name = node.name.slice(2);
-
-			if (is_capture_event(name)) {
-				name = name.slice(0, -7);
-				modifiers.push('capture');
+			const parent = context.path.at(-1);
+			if (parent?.type === 'RegularElement' || parent?.type === 'SvelteElement') {
+				context.state.analysis.uses_event_attributes = true;
 			}
 
-			const delegated_event = get_delegated_event(
-				{ type: node.type, name, expression, modifiers },
-				context
-			);
+			const expression = node.value[0].expression;
+
+			const delegated_event = get_delegated_event(node.name.slice(2), expression, context);
 
 			if (delegated_event !== null) {
 				if (delegated_event.type === 'hoistable') {
@@ -861,7 +1199,7 @@ const common_visitors = {
 				break;
 			}
 		}
-		context.state.analysis.slot_names.add(name);
+		context.state.analysis.slot_names.set(name, node);
 	},
 	StyleDirective(node, context) {
 		if (node.value === true) {
@@ -897,23 +1235,39 @@ const common_visitors = {
 			}
 
 			if (
+				context.state.analysis.runes &&
 				node !== binding.node &&
-				(binding.kind === 'state' || binding.kind === 'derived') &&
-				context.state.function_depth === binding.scope.function_depth
+				context.state.function_depth === binding.scope.function_depth &&
+				// If we have $state that can be proxied or frozen and isn't re-assigned, then that means
+				// it's likely not using a primitive value and thus this warning isn't that helpful.
+				((binding.kind === 'state' &&
+					(binding.reassigned ||
+						(binding.initial?.type === 'CallExpression' &&
+							binding.initial.arguments.length === 1 &&
+							binding.initial.arguments[0].type !== 'SpreadElement' &&
+							!should_proxy_or_freeze(binding.initial.arguments[0], context.state.scope)))) ||
+					binding.kind === 'frozen_state' ||
+					binding.kind === 'derived') &&
+				// We're only concerned with reads here
+				(parent.type !== 'AssignmentExpression' || parent.left !== node) &&
+				parent.type !== 'UpdateExpression'
 			) {
-				warn(context.state.analysis.warnings, node, context.path, 'static-state-reference');
+				w.state_referenced_locally(node);
 			}
 		}
 	},
 	CallExpression(node, context) {
+		const { expression } = context.state;
 		if (
-			context.state.expression?.type === 'ExpressionTag' ||
-			(context.state.expression?.type === 'SpreadAttribute' && !is_known_safe_call(node, context))
+			(expression?.type === 'ExpressionTag' || expression?.type === 'SpreadAttribute') &&
+			!is_known_safe_call(node, context)
 		) {
-			context.state.expression.metadata.contains_call_expression = true;
+			expression.metadata.contains_call_expression = true;
 		}
 
 		const callee = node.callee;
+		const rune = get_rune(node, context.state.scope);
+
 		if (callee.type === 'Identifier') {
 			const binding = context.state.scope.get(callee.name);
 
@@ -921,7 +1275,7 @@ const common_visitors = {
 				binding.is_called = true;
 			}
 
-			if (get_rune(node, context.state.scope) === '$derived') {
+			if (rune === '$derived') {
 				// special case — `$derived(foo)` is treated as `$derived(() => foo)`
 				// for the purposes of identifying static state references
 				context.next({
@@ -933,6 +1287,16 @@ const common_visitors = {
 			}
 		}
 
+		if (rune === '$effect' || rune === '$effect.pre') {
+			// `$effect` needs context because Svelte needs to know whether it should re-run
+			// effects that invalidate themselves, and that's determined by whether we're in runes mode
+			context.state.analysis.needs_context = true;
+		} else if (rune === null) {
+			if (!is_safe_identifier(callee, context.state.scope)) {
+				context.state.analysis.needs_context = true;
+			}
+		}
+
 		context.next();
 	},
 	MemberExpression(node, context) {
@@ -940,7 +1304,18 @@ const common_visitors = {
 			context.state.expression.metadata.dynamic = true;
 		}
 
+		if (!is_safe_identifier(node, context.state.scope)) {
+			context.state.analysis.needs_context = true;
+		}
+
 		context.next();
+	},
+	OnDirective(node, { state, path, next }) {
+		const parent = path.at(-1);
+		if (parent?.type === 'SvelteElement' || parent?.type === 'RegularElement') {
+			state.analysis.event_directive_node ??= node;
+		}
+		next();
 	},
 	BindDirective(node, context) {
 		let i = context.path.length;
@@ -951,7 +1326,9 @@ const common_visitors = {
 				parent.type === 'SvelteComponent' ||
 				parent.type === 'SvelteSelf'
 			) {
-				context.state.analysis.uses_component_bindings = true;
+				if (node.name !== 'this') {
+					context.state.analysis.uses_component_bindings = true;
+				}
 				break;
 			} else if (is_element_node(parent)) {
 				break;
@@ -960,62 +1337,64 @@ const common_visitors = {
 
 		if (node.name !== 'group') return;
 
+		// Traverse the path upwards and find all EachBlocks who are (indirectly) contributing to bind:group,
+		// i.e. one of their declarations is referenced in the binding. This allows group bindings to work
+		// correctly when referencing a variable declared in an EachBlock by using the index of the each block
+		// entries as keys.
 		i = context.path.length;
+		const each_blocks = [];
+		const [keypath, expression_ids] = extract_all_identifiers_from_expression(node.expression);
+		let ids = expression_ids;
 		while (i--) {
 			const parent = context.path[i];
 			if (parent.type === 'EachBlock') {
-				parent.metadata.contains_group_binding = true;
-				for (const binding of parent.metadata.references) {
-					binding.mutated = true;
+				const references = ids.filter((id) => parent.metadata.declarations.has(id.name));
+				if (references.length > 0) {
+					parent.metadata.contains_group_binding = true;
+					for (const binding of parent.metadata.references) {
+						binding.mutated = true;
+					}
+					each_blocks.push(parent);
+					ids = ids.filter((id) => !references.includes(id));
+					ids.push(...extract_all_identifiers_from_expression(parent.expression)[1]);
 				}
 			}
 		}
 
-		const id = object(node.expression);
-
-		const binding = id === null ? null : context.state.scope.get(id.name);
-		assert.ok(binding);
-
-		let group = context.state.analysis.binding_groups.get(binding);
-		if (!group) {
-			group = {
-				name: context.state.scope.root.unique('binding_group'),
-				directives: []
-			};
-
-			context.state.analysis.binding_groups.set(binding, group);
+		// The identifiers that make up the binding expression form they key for the binding group.
+		// If the same identifiers in the same order are used in another bind:group, they will be in the same group.
+		// (there's an edge case where `bind:group={a[i]}` will be in a different group than `bind:group={a[j]}` even when i == j,
+		//  but this is a limitation of the current static analysis we do; it also never worked in Svelte 4)
+		const bindings = expression_ids.map((id) => context.state.scope.get(id.name));
+		let group_name;
+		outer: for (const [[key, b], group] of context.state.analysis.binding_groups) {
+			if (b.length !== bindings.length || key !== keypath) continue;
+			for (let i = 0; i < bindings.length; i++) {
+				if (bindings[i] !== b[i]) continue outer;
+			}
+			group_name = group;
 		}
 
-		group.directives.push(node);
+		if (!group_name) {
+			group_name = context.state.scope.root.unique('binding_group');
+			context.state.analysis.binding_groups.set([keypath, bindings], group_name);
+		}
 
 		node.metadata = {
-			binding_group_name: group.name,
-			parent_each_blocks: /** @type {import('#compiler').EachBlock[]} */ (
-				context.path.filter((p) => p.type === 'EachBlock')
-			)
+			binding_group_name: group_name,
+			parent_each_blocks: each_blocks
 		};
-	},
-	OnDirective(node, context) {
-		node.metadata = { delegated: null };
-		context.next();
-		const delegated_event = get_delegated_event(node, context);
-
-		if (delegated_event !== null) {
-			if (delegated_event.type === 'hoistable') {
-				delegated_event.function.metadata.hoistable = true;
-			}
-			node.metadata.delegated = delegated_event;
-		}
 	},
 	ArrowFunctionExpression: function_visitor,
 	FunctionExpression: function_visitor,
 	FunctionDeclaration: function_visitor,
 	RegularElement(node, context) {
-		if (context.state.options.namespace !== 'foreign' && SVGElements.includes(node.name)) {
-			node.metadata.svg = true;
+		if (context.state.options.namespace !== 'foreign') {
+			if (SVGElements.includes(node.name)) node.metadata.svg = true;
+			else if (MathMLElements.includes(node.name)) node.metadata.mathml = true;
 		}
 
-		determine_element_spread_and_delegatable(node);
+		determine_element_spread(node);
 
 		// Special case: Move the children of <textarea> into a value attribute if they are dynamic
 		if (
@@ -1067,57 +1446,57 @@ const common_visitors = {
 
 		context.state.analysis.elements.push(node);
 	},
-	SvelteElement(node, { state }) {
-		state.analysis.elements.push(node);
+	SvelteElement(node, context) {
+		context.state.analysis.elements.push(node);
+
+		for (const attribute of node.attributes) {
+			if (attribute.type === 'Attribute') {
+				if (attribute.name === 'xmlns' && is_text_attribute(attribute)) {
+					node.metadata.svg = attribute.value[0].data === namespace_svg;
+					node.metadata.mathml = attribute.value[0].data === namespace_mathml;
+					return;
+				}
+			}
+		}
+
+		for (let i = context.path.length - 1; i >= 0; i--) {
+			const ancestor = context.path[i];
+			if (
+				ancestor.type === 'Component' ||
+				ancestor.type === 'SvelteComponent' ||
+				ancestor.type === 'SvelteFragment' ||
+				ancestor.type === 'SnippetBlock'
+			) {
+				// Inside a slot or a snippet -> this resets the namespace, so assume the component namespace
+				node.metadata.svg = context.state.options.namespace === 'svg';
+				node.metadata.mathml = context.state.options.namespace === 'mathml';
+				return;
+			}
+			if (ancestor.type === 'SvelteElement' || ancestor.type === 'RegularElement') {
+				node.metadata.svg =
+					ancestor.type === 'RegularElement' && ancestor.name === 'foreignObject'
+						? false
+						: ancestor.metadata.svg;
+				node.metadata.mathml =
+					ancestor.type === 'RegularElement' && ancestor.name === 'foreignObject'
+						? false
+						: ancestor.metadata.mathml;
+				return;
+			}
+		}
 	}
 };
 
 /**
- * Check if events on this element can theoretically be delegated. They can if there's no
- * possibility of an OnDirective and an event attribute on the same element, and if there's
- * no OnDirectives of the same type (the latter is a bit too strict because `on:click on:click on:keyup`
- * means that `on:keyup` can be delegated but we gloss over this edge case).
  * @param {import('#compiler').RegularElement} node
  */
-function determine_element_spread_and_delegatable(node) {
-	if (typeof node.metadata.can_delegate_events === 'boolean') {
-		return node; // did this already
-	}
-
-	let events = new Map();
+function determine_element_spread(node) {
 	let has_spread = false;
-	let has_on = false;
-	let has_action_or_bind = false;
 	for (const attribute of node.attributes) {
-		if (
-			attribute.type === 'OnDirective' ||
-			(attribute.type === 'Attribute' && is_event_attribute(attribute))
-		) {
-			let event_name = attribute.name;
-			if (attribute.type === 'Attribute') {
-				event_name = get_attribute_event_name(event_name);
-			}
-			events.set(event_name, (events.get(event_name) || 0) + 1);
-			if (!has_on && attribute.type === 'OnDirective') {
-				has_on = true;
-			}
-		} else if (!has_spread && attribute.type === 'SpreadAttribute') {
+		if (!has_spread && attribute.type === 'SpreadAttribute') {
 			has_spread = true;
-		} else if (
-			!has_action_or_bind &&
-			((attribute.type === 'BindDirective' && attribute.name !== 'this') ||
-				attribute.type === 'UseDirective')
-		) {
-			has_action_or_bind = true;
 		}
 	}
-	node.metadata.can_delegate_events =
-		// Actions/bindings need the old on:-events to fire in order
-		!has_action_or_bind &&
-		// spreading events means we don't know if there's an event attribute with the same name as an on:-event
-		!(has_spread && has_on) &&
-		// multiple on:-events/event attributes with the same name
-		![...events.values()].some((count) => count > 1);
 	node.metadata.has_spread = has_spread;
 
 	return node;
@@ -1154,21 +1533,21 @@ function order_reactive_statements(unsorted_reactive_declarations) {
 	const lookup = new Map();
 
 	for (const [node, declaration] of unsorted_reactive_declarations) {
-		declaration.assignments.forEach(({ name }) => {
-			const statements = lookup.get(name) ?? [];
+		for (const binding of declaration.assignments) {
+			const statements = lookup.get(binding.node.name) ?? [];
 			statements.push([node, declaration]);
-			lookup.set(name, statements);
-		});
+			lookup.set(binding.node.name, statements);
+		}
 	}
 
 	/** @type {Array<[string, string]>} */
 	const edges = [];
 
 	for (const [, { assignments, dependencies }] of unsorted_reactive_declarations) {
-		for (const { name } of assignments) {
-			for (const { node } of dependencies) {
-				if (![...assignments].find(({ name }) => node.name === name)) {
-					edges.push([name, node.name]);
+		for (const assignment of assignments) {
+			for (const dependency of dependencies) {
+				if (!assignments.has(dependency)) {
+					edges.push([assignment.node.name, dependency.node.name]);
 				}
 			}
 		}
@@ -1177,7 +1556,7 @@ function order_reactive_statements(unsorted_reactive_declarations) {
 	const cycle = check_graph_for_cycles(edges);
 	if (cycle?.length) {
 		const declaration = /** @type {Tuple[]} */ (lookup.get(cycle[0]))[0];
-		error(declaration[0], 'cyclical-reactive-declaration', cycle);
+		e.reactive_declaration_cycle(declaration[0], cycle.join(' → '));
 	}
 
 	// We use a map and take advantage of the fact that the spec says insertion order is preserved when iterating
@@ -1192,14 +1571,17 @@ function order_reactive_statements(unsorted_reactive_declarations) {
 	 */
 	const add_declaration = (node, declaration) => {
 		if ([...reactive_declarations.values()].includes(declaration)) return;
-		declaration.dependencies.forEach(({ node: { name } }) => {
-			if ([...declaration.assignments].some((a) => a.name === name)) return;
-			for (const [node, earlier] of lookup.get(name) ?? []) {
+
+		for (const binding of declaration.dependencies) {
+			if (declaration.assignments.has(binding)) continue;
+			for (const [node, earlier] of lookup.get(binding.node.name) ?? []) {
 				add_declaration(node, earlier);
 			}
-		});
+		}
+
 		reactive_declarations.set(node, declaration);
 	};
+
 	for (const [node, declaration] of unsorted_reactive_declarations) {
 		add_declaration(node, declaration);
 	}

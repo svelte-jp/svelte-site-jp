@@ -9,32 +9,38 @@ import {
 } from '../utils/bracket.js';
 import { parse_expression_at } from '../acorn.js';
 import { regex_not_newline_characters } from '../../patterns.js';
-import { error } from '../../../errors.js';
+import * as e from '../../../errors.js';
+import { locator } from '../../../state.js';
 
 /**
  * @param {import('../index.js').Parser} parser
- * @returns {any}
+ * @param {boolean} [optional_allowed]
+ * @returns {import('estree').Pattern}
  */
-export default function read_context(parser) {
+export default function read_pattern(parser, optional_allowed = false) {
 	const start = parser.index;
 	let i = parser.index;
 
 	const code = full_char_code_at(parser.template, i);
 	if (isIdentifierStart(code, true)) {
 		const name = /** @type {string} */ (parser.read_identifier());
-		const annotation = read_type_annotation(parser);
+		const annotation = read_type_annotation(parser, optional_allowed);
 
 		return {
 			type: 'Identifier',
 			name,
 			start,
+			loc: {
+				start: /** @type {import('locate-character').Location} */ (locator(start)),
+				end: /** @type {import('locate-character').Location} */ (locator(parser.index))
+			},
 			end: parser.index,
 			typeAnnotation: annotation
 		};
 	}
 
 	if (!is_bracket_open(code)) {
-		error(i, 'expected-pattern');
+		e.expected_pattern(i);
 	}
 
 	const bracket_stack = [code];
@@ -47,11 +53,7 @@ export default function read_context(parser) {
 		} else if (is_bracket_close(code)) {
 			const popped = /** @type {number} */ (bracket_stack.pop());
 			if (!is_bracket_pair(popped, code)) {
-				error(
-					i,
-					'expected-token',
-					String.fromCharCode(/** @type {number} */ (get_bracket_close(popped)))
-				);
+				e.expected_token(i, String.fromCharCode(/** @type {number} */ (get_bracket_close(popped))));
 			}
 			if (bracket_stack.length === 0) {
 				i += code <= 0xffff ? 1 : 2;
@@ -82,7 +84,7 @@ export default function read_context(parser) {
 			parse_expression_at(`${space_with_newline}(${pattern_string} = 1)`, parser.ts, start - 1)
 		).left;
 
-		expression.typeAnnotation = read_type_annotation(parser);
+		expression.typeAnnotation = read_type_annotation(parser, optional_allowed);
 		if (expression.typeAnnotation) {
 			expression.end = expression.typeAnnotation.end;
 		}
@@ -95,27 +97,53 @@ export default function read_context(parser) {
 
 /**
  * @param {import('../index.js').Parser} parser
+ * @param {boolean} [optional_allowed]
  * @returns {any}
  */
-function read_type_annotation(parser) {
-	const index = parser.index;
+function read_type_annotation(parser, optional_allowed = false) {
+	const start = parser.index;
 	parser.allow_whitespace();
 
-	if (parser.eat(':')) {
-		// we need to trick Acorn into parsing the type annotation
-		const insert = '_ as ';
-		let a = parser.index - insert.length;
-		const template = ' '.repeat(a) + insert + parser.template.slice(parser.index);
-		let expression = parse_expression_at(template, parser.ts, a);
-
-		// `array as item: string, index` becomes `string, index`, which is mistaken as a sequence expression - fix that
-		if (expression.type === 'SequenceExpression') {
-			expression = expression.expressions[0];
-		}
-
-		parser.index = /** @type {number} */ (expression.end);
-		return /** @type {any} */ (expression).typeAnnotation;
-	} else {
-		parser.index = index;
+	if (optional_allowed && parser.eat('?')) {
+		// Acorn-TS puts the optional info as a property on the surrounding node.
+		// We spare the work here because it doesn't matter for us anywhere else.
+		parser.allow_whitespace();
 	}
+
+	if (!parser.eat(':')) {
+		parser.index = start;
+		return undefined;
+	}
+
+	// we need to trick Acorn into parsing the type annotation
+	const insert = '_ as ';
+	let a = parser.index - insert.length;
+	const template =
+		parser.template.slice(0, a).replace(/[^\n]/g, ' ') +
+		insert +
+		// If this is a type annotation for a function parameter, Acorn-TS will treat subsequent
+		// parameters as part of a sequence expression instead, and will then error on optional
+		// parameters (`?:`). Therefore replace that sequence with something that will not error.
+		parser.template.slice(parser.index).replace(/\?\s*:/g, ':');
+	let expression = parse_expression_at(template, parser.ts, a);
+
+	// `foo: bar = baz` gets mangled — fix it
+	if (expression.type === 'AssignmentExpression') {
+		let b = expression.right.start;
+		while (template[b] !== '=') b -= 1;
+		expression = parse_expression_at(template.slice(0, b), parser.ts, a);
+	}
+
+	// `array as item: string, index` becomes `string, index`, which is mistaken as a sequence expression - fix that
+	if (expression.type === 'SequenceExpression') {
+		expression = expression.expressions[0];
+	}
+
+	parser.index = /** @type {number} */ (expression.end);
+	return {
+		type: 'TSTypeAnnotation',
+		start,
+		end: parser.index,
+		typeAnnotation: /** @type {any} */ (expression).typeAnnotation
+	};
 }

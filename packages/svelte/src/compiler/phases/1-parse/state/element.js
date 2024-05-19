@@ -1,11 +1,10 @@
-import { extract_svelte_ignore } from '../../../utils/extract_svelte_ignore.js';
-import fuzzymatch from '../utils/fuzzymatch.js';
 import { is_void } from '../utils/names.js';
 import read_expression from '../read/expression.js';
 import { read_script } from '../read/script.js';
 import read_style from '../read/style.js';
 import { closing_tag_omitted, decode_character_references } from '../utils/html.js';
-import { error } from '../../../errors.js';
+import * as e from '../../../errors.js';
+import * as w from '../../../warnings.js';
 import { create_fragment } from '../utils/create.js';
 import { create_attribute } from '../../nodes.js';
 
@@ -51,6 +50,23 @@ function parent_is_head(stack) {
 	return false;
 }
 
+/** @param {import('#compiler').TemplateNode[]} stack */
+function parent_is_shadowroot_template(stack) {
+	// https://developer.chrome.com/docs/css-ui/declarative-shadow-dom#building_a_declarative_shadow_root
+	let i = stack.length;
+	while (i--) {
+		if (
+			stack[i].type === 'RegularElement' &&
+			/** @type {import('#compiler').RegularElement} */ (stack[i]).attributes.some(
+				(a) => a.type === 'Attribute' && a.name === 'shadowrootmode'
+			)
+		) {
+			return true;
+		}
+	}
+	return false;
+}
+
 const regex_closing_textarea_tag = /^<\/textarea(\s[^>]*)?>/i;
 const regex_closing_comment = /-->/;
 const regex_capital_letter = /[A-Z]/;
@@ -65,12 +81,12 @@ export default function tag(parser) {
 		const data = parser.read_until(regex_closing_comment);
 		parser.eat('-->', true);
 
+		/** @type {ReturnType<typeof parser.append<import('#compiler').Comment>>} */
 		parser.append({
 			type: 'Comment',
 			start,
 			end: parser.index,
-			data,
-			ignores: extract_svelte_ignore(data)
+			data
 		});
 
 		return;
@@ -83,22 +99,21 @@ export default function tag(parser) {
 	if (root_only_meta_tags.has(name)) {
 		if (is_closing_tag) {
 			if (
-				(name === 'svelte:window' || name === 'svelte:body' || name === 'svelte:document') &&
+				['svelte:options', 'svelte:window', 'svelte:body', 'svelte:document'].includes(name) &&
 				/** @type {import('#compiler').ElementLike} */ (parent).fragment.nodes.length
 			) {
-				error(
+				e.svelte_meta_invalid_content(
 					/** @type {import('#compiler').ElementLike} */ (parent).fragment.nodes[0].start,
-					'invalid-element-content',
 					name
 				);
 			}
 		} else {
 			if (name in parser.meta_tags) {
-				error(start, 'duplicate-svelte-element', name);
+				e.svelte_meta_duplicate(start, name);
 			}
 
 			if (parent.type !== 'Root') {
-				error(start, 'invalid-svelte-element-placement', name);
+				e.svelte_meta_invalid_placement(start, name);
 			}
 
 			parser.meta_tags[name] = true;
@@ -108,12 +123,13 @@ export default function tag(parser) {
 	const type = meta_tags.has(name)
 		? meta_tags.get(name)
 		: regex_capital_letter.test(name[0]) || name === 'svelte:self' || name === 'svelte:component'
-		? 'Component'
-		: name === 'title' && parent_is_head(parser.stack)
-		? 'TitleElement'
-		: name === 'slot'
-		? 'SlotElement'
-		: 'RegularElement';
+			? 'Component'
+			: name === 'title' && parent_is_head(parser.stack)
+				? 'TitleElement'
+				: // TODO Svelte 6/7: once slots are removed in favor of snippets, always keep slot as a regular element
+					name === 'slot' && !parent_is_shadowroot_template(parser.stack)
+					? 'SlotElement'
+					: 'RegularElement';
 
 	/** @type {import('#compiler').ElementLike} */
 	// @ts-expect-error TODO can't figure out this error
@@ -128,11 +144,10 @@ export default function tag(parser) {
 					fragment: create_fragment(true),
 					metadata: {
 						svg: false,
-						has_spread: false,
-						can_delegate_events: null
+						has_spread: false
 					},
 					parent: null
-			  }
+				}
 			: {
 					type: /** @type {import('#compiler').ElementLike['type']} */ (type),
 					start,
@@ -140,14 +155,17 @@ export default function tag(parser) {
 					name,
 					attributes: [],
 					fragment: create_fragment(true),
-					parent: null
-			  };
+					parent: null,
+					metadata: {
+						svg: false
+					}
+				};
 
 	parser.allow_whitespace();
 
 	if (is_closing_tag) {
 		if (is_void(name)) {
-			error(start, 'invalid-void-content');
+			e.void_element_invalid_content(start);
 		}
 
 		parser.eat('>', true);
@@ -156,14 +174,9 @@ export default function tag(parser) {
 		while (/** @type {import('#compiler').RegularElement} */ (parent).name !== name) {
 			if (parent.type !== 'RegularElement') {
 				if (parser.last_auto_closed_tag && parser.last_auto_closed_tag.tag === name) {
-					error(
-						start,
-						'invalid-closing-tag-after-autoclose',
-						name,
-						parser.last_auto_closed_tag.reason
-					);
+					e.element_invalid_closing_tag_autoclosed(start, name, parser.last_auto_closed_tag.reason);
 				} else {
-					error(start, 'invalid-closing-tag', name);
+					e.element_invalid_closing_tag(start, name);
 				}
 			}
 
@@ -204,7 +217,7 @@ export default function tag(parser) {
 	while ((attribute = read(parser))) {
 		if (attribute.type === 'Attribute' || attribute.type === 'BindDirective') {
 			if (unique_names.includes(attribute.name)) {
-				error(attribute.start, 'duplicate-attribute');
+				e.attribute_duplicate(attribute.start);
 				// <svelte:element bind:this this=..> is allowed
 			} else if (attribute.name !== 'this') {
 				unique_names.push(attribute.name);
@@ -221,7 +234,7 @@ export default function tag(parser) {
 			(attr) => attr.type === 'Attribute' && attr.name === 'this'
 		);
 		if (index === -1) {
-			error(start, 'missing-svelte-component-definition');
+			e.svelte_component_missing_this(start);
 		}
 
 		const definition = /** @type {import('#compiler').Attribute} */ (
@@ -232,7 +245,7 @@ export default function tag(parser) {
 			definition.value.length !== 1 ||
 			definition.value[0].type === 'Text'
 		) {
-			error(definition.start, 'invalid-svelte-component-definition');
+			e.svelte_component_invalid_this(definition.start);
 		}
 
 		element.expression = definition.value[0].expression;
@@ -244,43 +257,84 @@ export default function tag(parser) {
 			(attr) => attr.type === 'Attribute' && attr.name === 'this'
 		);
 		if (index === -1) {
-			error(start, 'missing-svelte-element-definition');
+			e.svelte_element_missing_this(start);
 		}
 
 		const definition = /** @type {import('#compiler').Attribute} */ (
 			element.attributes.splice(index, 1)[0]
 		);
-		if (definition.value === true || definition.value.length !== 1) {
-			error(definition.start, 'invalid-svelte-element-definition');
+
+		if (definition.value === true) {
+			e.svelte_element_missing_this(definition);
 		}
+
 		const chunk = definition.value[0];
-		element.tag =
-			chunk.type === 'Text'
-				? { type: 'Literal', value: chunk.data, raw: `'${chunk.raw}'` }
-				: chunk.expression;
+
+		if (definition.value.length !== 1 || chunk.type !== 'ExpressionTag') {
+			chunk.type;
+			w.svelte_element_invalid_this(definition);
+
+			// note that this is wrong, in the case of e.g. `this="h{n}"` — it will result in `<h>`.
+			// it would be much better to just error here, but we are preserving the existing buggy
+			// Svelte 4 behaviour out of an overabundance of caution regarding breaking changes.
+			// TODO in 6.0, error
+			element.tag =
+				chunk.type === 'Text'
+					? {
+							type: 'Literal',
+							value: chunk.data,
+							raw: `'${chunk.raw}'`,
+							start: chunk.start,
+							end: chunk.end
+						}
+					: chunk.expression;
+		} else {
+			element.tag = chunk.expression;
+		}
 	}
 
 	if (is_top_level_script_or_style) {
 		parser.eat('>', true);
+
+		/** @type {import('#compiler').Comment | null} */
+		let prev_comment = null;
+		for (let i = current.fragment.nodes.length - 1; i >= 0; i--) {
+			const node = current.fragment.nodes[i];
+
+			if (i === current.fragment.nodes.length - 1 && node.end !== start) {
+				break;
+			}
+
+			if (node.type === 'Comment') {
+				prev_comment = node;
+				break;
+			} else if (node.type !== 'Text' || node.data.trim()) {
+				break;
+			}
+		}
+
 		if (name === 'script') {
 			const content = read_script(parser, start, element.attributes);
+			if (prev_comment) {
+				// We take advantage of the fact that the root will never have leadingComments set,
+				// and set the previous comment to it so that the warning mechanism can later
+				// inspect the root and see if there was a html comment before it silencing specific warnings.
+				content.content.leadingComments = [{ type: 'Line', value: prev_comment.data }];
+			}
 
-			if (content) {
-				if (content.context === 'module') {
-					if (current.module) error(start, 'duplicate-script-element');
-					current.module = content;
-				} else {
-					if (current.instance) error(start, 'duplicate-script-element');
-					current.instance = content;
-				}
+			if (content.context === 'module') {
+				if (current.module) e.script_duplicate(start);
+				current.module = content;
+			} else {
+				if (current.instance) e.script_duplicate(start);
+				current.instance = content;
 			}
 		} else {
 			const content = read_style(parser, start, element.attributes);
+			content.content.comment = prev_comment;
 
-			if (content) {
-				if (current.css) error(start, 'duplicate-style-element');
-				current.css = content;
-			}
+			if (current.css) e.style_duplicate(start);
+			current.css = content;
 		}
 		return;
 	}
@@ -354,7 +408,7 @@ function read_tag_name(parser) {
 		}
 
 		if (!legal) {
-			error(start, 'invalid-self-placement');
+			e.svelte_self_invalid_placement(start);
 		}
 
 		return 'svelte:self';
@@ -370,12 +424,12 @@ function read_tag_name(parser) {
 	if (meta_tags.has(name)) return name;
 
 	if (name.startsWith('svelte:')) {
-		const match = fuzzymatch(name.slice(7), valid_meta_tags);
-		error(start, 'invalid-svelte-tag', valid_meta_tags, match);
+		const list = `${valid_meta_tags.slice(0, -1).join(', ')} or ${valid_meta_tags[valid_meta_tags.length - 1]}`;
+		e.svelte_meta_invalid_tag(start, list);
 	}
 
 	if (!valid_tag_name.test(name)) {
-		error(start, 'invalid-tag-name');
+		e.element_invalid_tag_name(start);
 	}
 
 	return name;
@@ -403,7 +457,7 @@ function read_static_attribute(parser) {
 		parser.allow_whitespace();
 		let raw = parser.match_regex(regex_attribute_value);
 		if (!raw) {
-			error(parser.index, 'missing-attribute-value');
+			e.expected_attribute_value(parser.index);
 		}
 
 		parser.index += raw.length;
@@ -426,7 +480,7 @@ function read_static_attribute(parser) {
 	}
 
 	if (parser.match_regex(regex_starts_with_quote_characters)) {
-		error(parser.index, 'expected-token', '=');
+		e.expected_token(parser.index, '=');
 	}
 
 	return create_attribute(name, start, parser.index, value);
@@ -467,7 +521,7 @@ function read_attribute(parser) {
 			const name = parser.read_identifier();
 
 			if (name === null) {
-				error(start, 'empty-attribute-shorthand');
+				e.attribute_empty_shorthand(start);
 			}
 
 			parser.allow_whitespace();
@@ -512,14 +566,14 @@ function read_attribute(parser) {
 		value = read_attribute_value(parser);
 		end = parser.index;
 	} else if (parser.match_regex(regex_starts_with_quote_characters)) {
-		error(parser.index, 'expected-token', '=');
+		e.expected_token(parser.index, '=');
 	}
 
 	if (type) {
 		const [directive_name, ...modifiers] = name.slice(colon_index + 1).split('|');
 
 		if (directive_name === '') {
-			error(start + colon_index + 1, 'empty-directive-name', type);
+			e.directive_missing_name({ start, end: start + colon_index + 1 }, name);
 		}
 
 		if (type === 'StyleDirective') {
@@ -544,7 +598,7 @@ function read_attribute(parser) {
 			const attribute_contains_text =
 				/** @type {any[]} */ (value).length > 1 || first_value.type === 'Text';
 			if (attribute_contains_text) {
-				error(/** @type {number} */ (first_value.start), 'invalid-directive-value');
+				e.directive_invalid_value(/** @type {number} */ (first_value.start));
 			} else {
 				expression = first_value.expression;
 			}
@@ -637,22 +691,22 @@ function read_attribute_value(parser) {
 			},
 			'in attribute value'
 		);
-	} catch (/** @type {any} e */ e) {
-		if (e.code === 'js-parse-error') {
+	} catch (/** @type {any} */ error) {
+		if (error.code === 'js_parse_error') {
 			// if the attribute value didn't close + self-closing tag
 			// eg: `<Component test={{a:1} />`
 			// acorn may throw a `Unterminated regular expression` because of `/>`
-			const pos = e.position?.[0];
+			const pos = error.position?.[0];
 			if (pos !== undefined && parser.template.slice(pos - 1, pos + 1) === '/>') {
 				parser.index = pos;
-				error(pos, 'unclosed-attribute-value', quote_mark || '}');
+				e.expected_token(pos, quote_mark || '}');
 			}
 		}
-		throw e;
+		throw error;
 	}
 
 	if (value.length === 0 && !quote_mark) {
-		error(parser.index, 'missing-attribute-value');
+		e.expected_attribute_value(parser.index);
 	}
 
 	if (quote_mark) parser.index += 1;
@@ -699,12 +753,12 @@ function read_sequence(parser, done, location) {
 				const index = parser.index - 1;
 				parser.eat('#');
 				const name = parser.read_until(/[^a-z]/);
-				error(index, 'invalid-block-placement', location, name);
+				e.block_invalid_placement(index, name, location);
 			} else if (parser.match('@')) {
 				const index = parser.index - 1;
 				parser.eat('@');
 				const name = parser.read_until(/[^a-z]/);
-				error(index, 'invalid-tag-placement', location, name);
+				e.tag_invalid_placement(index, name, location);
 			}
 
 			flush(parser.index - 1);
@@ -742,5 +796,5 @@ function read_sequence(parser, done, location) {
 		}
 	}
 
-	error(parser.template.length, 'unexpected-eof');
+	e.unexpected_eof(parser.template.length);
 }
