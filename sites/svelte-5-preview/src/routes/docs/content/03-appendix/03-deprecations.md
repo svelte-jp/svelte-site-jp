@@ -42,9 +42,9 @@ title: Deprecations
 
 ## `createEventDispatcher`
 
-`createEventDispatcher` returns a function from which you can dispatch custom events. The usage is somewhat boilerplate-y, but it was encouraged in Svelte 4 due to consistency with how you listen to dom events (via `on:click` for example).
+`createEventDispatcher` はカスタムイベントをディスパッチするための関数を返します。使い方は少しボイラープレート的ですが、Svelte 4 では DOM イベントをリッスンする方法 (例えば `on:click` を経由するなど) における一貫性のために推奨されていました。
 
-Svelte 5 introduces [event attributes](/docs/event-handlers) which deprecate event directives (`onclick` instead of `on:click`), and as such we also encourage you to use callback properties for events instead:
+Svelte 5 では [event attributes](/docs/event-handlers) が導入され、これによってイベントのディレクティブが非推奨となりました (`on:click` の代わりに `onclick` を使用します)。また、これにより、イベントにコールバックプロパティを使用することを推奨いたします:
 
 ```diff
 <script>
@@ -63,7 +63,7 @@ Svelte 5 introduces [event attributes](/docs/event-handlers) which deprecate eve
 >greet</button>
 ```
 
-When authoring custom elements, use the new [host rune](/docs/runes#$host) to dispatch events (among other things):
+custom elements を作成する場合は、新しい [host rune](/docs/runes#$host) を使用してイベント(や他のもの)をディスパッチしてください:
 
 ```diff
 <script>
@@ -82,7 +82,7 @@ When authoring custom elements, use the new [host rune](/docs/runes#$host) to di
 >greet</button>
 ```
 
-Note that using `$props` and `$host` will put you in [runes mode](/docs/runes) — be sure to update your props and state accordingly.
+`$props` や `$host` を使用すると、[runes モード](/docs/runes)になることに注意してください — これに応じて、 props と state を更新することを忘れずに。
 
 ## `immutable`
 

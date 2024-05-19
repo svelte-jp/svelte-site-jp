@@ -66,7 +66,7 @@ class Todo {
 
 ## `$state.frozen`
 
-State declared with `$state.frozen` cannot be mutated; it can only be _reassigned_. In other words, rather than assigning to a property of an object, or using an array method like `push`, replace the object or array altogether if you'd like to update it:
+`$state.frozen` で宣言された state は変更することができません、できるのは再代入だけです。言い換えると、もし更新したいのであれば、オブジェクトのプロパティに代入したり `push` のような配列のメソッドを使用するのではなく、オブジェクトや配列を完全に置き換える必要がある、ということです:
 
 ```diff
 <script>
@@ -89,28 +89,28 @@ State declared with `$state.frozen` cannot be mutated; it can only be _reassigne
 </p>
 ```
 
-This can improve performance with large arrays and objects that you weren't planning to mutate anyway, since it avoids the cost of making them reactive. Note that frozen state can _contain_ reactive state (for example, a frozen array of reactive objects).
+これによって、対象ををリアクティブにするコストを避けることができるため、変更するつもりのない大きな配列やオブジェクトを扱うときにパフォーマンスを改善することができます。凍結された(frozen) state にはリアテクティブな state を含めることができます(例えば、リアクティブなオブジェクトの凍結された配列、のように)。
 
-> Objects and arrays passed to `$state.frozen` will be shallowly frozen using `Object.freeze()`. If you don't want this, pass in a clone of the object or array instead.
+> `$state.frozen` に渡されたオブジェクトや配列は、`Object.freeze()` を使用して浅く (shallowly) 凍結されます。こうしたくない場合は、代わりにオブジェクトや配列のクローンを渡してください。
 
 ## `$state.snapshot`
 
-To take a static snapshot of a deeply reactive `$state` proxy, use `$state.snapshot`:
+深い (deeply) リアクティブな `$state` proxy の静的なスナップショットを取得するには、`$state.snapshot` を使用します:
 
 ```svelte
 <script>
 	let counter = $state({ count: 0 });
 
 	function onclick() {
-		// Will log `{ count: ... }` rather than `Proxy { ... }`
+		// `Proxy { ... }` ではなく`{ count: ... }` がログ出力される
 		console.log($state.snapshot(counter));
 	}
 </script>
 ```
 
-This is handy when you want to pass some state to an external library or API that doesn't expect a proxy, such as `structuredClone`.
+これは、例えば `structuredClone` のような、proxy を受け取ることを想定していない API や外部のライブラリに state を渡すときに役立ちます。
 
-> Note that `$state.snapshot` will clone the data when removing reactivity. If the value passed isn't a `$state` proxy, it will be returned as-is.
+> `$state.snapshot` はリアクティビティを削除するときにそのデータをクローンしていることにご注意ください。渡された値が `$state` proxy でない場合は、そのまま返されます。
 
 ## `$derived`
 
@@ -155,7 +155,7 @@ This is handy when you want to pass some state to an external library or API tha
 
 ## `$derived.by`
 
-Sometimes you need to create complex derivations that don't fit inside a short expression. In these cases, you can use `$derived.by` which accepts a function as its argument.
+時には、短い式には収まらない、複雑な導出(derivations)を作成する必要あります。そのような場合は、関数を引数に取る `$derived.by` を使用します。
 
 ```svelte
 <script>
@@ -174,7 +174,7 @@ Sometimes you need to create complex derivations that don't fit inside a short e
 </button>
 ```
 
-In essence, `$derived(expression)` is equivalent to `$derived.by(() => expression)`.
+本質的には、`$derived(expression)` と `$derived.by(() => expression)` は同等のものです。
 
 ## `$effect`
 
@@ -197,7 +197,7 @@ In essence, `$derived(expression)` is equivalent to `$derived.by(() => expressio
 <p>{count} doubled is {doubled}</p>
 ```
 
-`$effect` will automatically subscribe to any `$state` or `$derived` values it reads _synchronously_ and reruns whenever their values change — that means, values after an `await` or inside a `setTimeout` will _not_ be tracked. `$effect` will run after the DOM has been updated.
+`$effect` は 同期的に読み取った `$state` や `$derived` の値を自動的にサブスクライブし、値が変わるたびに再実行されます。なお、その値が `await` の後や `setTimeout` の中にある場合はその値は追跡されません。`$effect` は DOM が更新されたあとに実行されます。
 
 ```svelte
 <script>
@@ -205,10 +205,10 @@ In essence, `$derived(expression)` is equivalent to `$derived.by(() => expressio
 	let doubled = $derived(count * 2);
 
 	$effect(() => {
-		// runs after the DOM has been updated
-		// when the component is mounted
-		// and whenever `count` changes,
-		// but not when `doubled` changes,
+		// DOM が更新されたあとに実行されます。
+		// コンポーネントがマウントされるときや、
+		// `count` が変更されるたびに実行されますが、
+		// `doubled` が変更されたときには実行されません。
 		console.log(count);
 
 		setTimeout(() => console.log(doubled));
@@ -222,7 +222,7 @@ In essence, `$derived(expression)` is equivalent to `$derived.by(() => expressio
 <p>{count} doubled is {doubled}</p>
 ```
 
-An effect only reruns when the object it reads changes, not when a property inside it changes. If you want to react to _any_ change inside an object for inspection purposes at dev time, you may want to use [`inspect`](#$inspect).
+effect は読み取ったオブジェクトが変更された場合には再実行されますが、そのオブジェクトが持つプロパティが変更された場合には再実行されません。もし開発時に、検査(inspection)目的でオブジェクト内部のあらゆる変更にリアクティブにしたければ、[`inspect`](#$inspect) を使用するとよいでしょう。
 
 ```svelte
 <script>
@@ -232,20 +232,20 @@ An effect only reruns when the object it reads changes, not when a property insi
 	});
 
 	$effect(() => {
-		// never reruns, because object does not change,
-		// only its property changes
+		// これは再実行されません。objectのプロパティ(object.count)は変更されますが、
+		// object自体は変更されないからです。
 		object;
 		console.log('object');
 	});
 
 	$effect(() => {
-		// reruns, because object.count changes
+		// これは再実行されます。object.count は変更されるからです。
 		object.count;
 		console.log('object.count');
 	});
 
 	$effect(() => {
-		// reruns, because $derived produces a new object on each rerun
+		// これは再実行されます。$derived は派生元(object.count)が変更されるたびに、新しいオブジェクトを生成するからです。
 		derived_object;
 		console.log('derived_object');
 	});
@@ -258,7 +258,7 @@ An effect only reruns when the object it reads changes, not when a property insi
 <p>{object.count} doubled is {derived_object.doubled}</p>
 ```
 
-You can return a function from `$effect`, which will run immediately before the effect re-runs, and before it is destroyed ([demo](/#H4sIAAAAAAAAE42SzW6DMBCEX2Vl5RDaVCQ9JoDUY--9lUox9lKsGBvZC1GEePcaKPnpqSe86_m0M2t6ViqNnu0_e2Z4jWzP3pqGbRhdmrHwHWrCUHvbOjF2Ei-caijLTU4aCYRtDUEKK0-ccL2NDstNrbRWHoU10t8Eu-121gTVCssSBa3XEaQZ9GMrpziGj0p5OAccCgSHwmEgJZwrNNihg6MyhK7j-gii4uYb_YyGUZ5guQwzPdL7b_U4ZNSOvp9T2B3m1rB5cLx4zMkhtc7AHz7YVCVwEFzrgosTBMuNs52SKDegaPbvWnMH8AhUXaNUIY6-hHCldQhUIcyLCFlfAuHvkCKaYk8iYevGGgy2wyyJnpy9oLwG0sjdNe2yhGhJN32HsUzi2xOapNpl_bSLIYnDeeoVLZE1YI3QSpzSfo7-8J5PKbwOmdf2jC6JZyD7HxpPaMk93aHhF6utVKVCyfbkWhy-hh9Z3o_2nQIAAA==)).
+`$effect` は関数を返すことができます。その関数は、effect が再実行される直前と、破棄される直前に実行されます ([デモ](/#H4sIAAAAAAAAE42SzW6DMBCEX2Vl5RDaVCQ9JoDUY--9lUox9lKsGBvZC1GEePcaKPnpqSe86_m0M2t6ViqNnu0_e2Z4jWzP3pqGbRhdmrHwHWrCUHvbOjF2Ei-caijLTU4aCYRtDUEKK0-ccL2NDstNrbRWHoU10t8Eu-121gTVCssSBa3XEaQZ9GMrpziGj0p5OAccCgSHwmEgJZwrNNihg6MyhK7j-gii4uYb_YyGUZ5guQwzPdL7b_U4ZNSOvp9T2B3m1rB5cLx4zMkhtc7AHz7YVCVwEFzrgosTBMuNs52SKDegaPbvWnMH8AhUXaNUIY6-hHCldQhUIcyLCFlfAuHvkCKaYk8iYevGGgy2wyyJnpy9oLwG0sjdNe2yhGhJN32HsUzi2xOapNpl_bSLIYnDeeoVLZE1YI3QSpzSfo7-8J5PKbwOmdf2jC6JZyD7HxpPaMk93aHhF6utVKVCyfbkWhy-hh9Z3o_2nQIAAA==)).
 
 ```svelte
 <script>
@@ -266,15 +266,15 @@ You can return a function from `$effect`, which will run immediately before the 
 	let milliseconds = $state(1000);
 
 	$effect(() => {
-		// This will be recreated whenever `milliseconds` changes
+		// この interval は `milliseconds`が変更されるたびに再作成されます 
 		const interval = setInterval(() => {
 			count += 1;
 		}, milliseconds);
 
 		return () => {
-			// if a callback is provided, it will run
-			// a) immediately before the effect re-runs
-			// b) when the component is destroyed
+			// コールバックが提供される場合、以下のときに実行されます
+			// a) effect が再実行される直前
+			// b) コンポーネントが破棄されるとき
 			clearInterval(interval);
 		};
 	});
@@ -288,21 +288,21 @@ You can return a function from `$effect`, which will run immediately before the 
 
 ### When not to use `$effect`
 
-In general, `$effect` is best considered something of an escape hatch — useful for things like analytics and direct DOM manipulation — rather than a tool you should use frequently. In particular, avoid using it to synchronise state. Instead of this...
+一般的には、`$effect` は、頻繁に使用すべきツールというよりは、なんらかの (例えばアナリティクスや直接的な DOM 操作を行うのに便利な) エスケープハッチであると考えたほうがよいでしょう。特に、state の同期に使用するのは避けましょう。こうする代わりに…
 
 ```svelte
 <script>
 	let count = $state(0);
 	let doubled = $state();
 
-	// don't do this!
+	// これをやってはいけません！
 	$effect(() => {
 		doubled = count * 2;
 	});
 </script>
 ```
 
-...do this:
+…こうしましょう:
 
 ```svelte
 <script>
@@ -311,12 +311,12 @@ In general, `$effect` is best considered something of an escape hatch — useful
 </script>
 ```
 
-> For things that are more complicated than a simple expression like `count * 2`, you can also use [`$derived.by`](#$derived-by).
+> `count * 2` のようなシンプルな式ではなく、もっと複雑なものを扱う場合は、[`$derived.by`](#$derived-by) を使うこともできます。
 
-When reacting to a state change and writing to a different state as a result, think about if it's possible to use callback props instead.
+ある state の変更に対してリアクティブに反応し、その結果として別のステートに書き込む場合は、代わりにコールバック props が使用できないか検討しましょう。
 
 ```svelte
-<!-- Don't do this -->
+<!-- これをやってはいけません -->
 <script>
 	let value = $state();
 	let value_uppercase = $state();
@@ -327,7 +327,7 @@ When reacting to a state change and writing to a different state as a result, th
 
 <Text bind:value />
 
-<!-- Do this instead: -->
+<!-- 代わりにこうしましょう: -->
 <script>
 	let value = $state();
 	let value_uppercase = $state();
@@ -340,7 +340,7 @@ When reacting to a state change and writing to a different state as a result, th
 <Text {value} {onValueChange}>
 ```
 
-If you want to have something update from above but also modify it from below (i.e. you want some kind of "writable `$derived`"), and events aren't an option, you can also use an object with getters and setters.
+何かを (コンポーネントツリーの) 上側から更新したいけれど、下側からも変更したい場合 (つまり、ある種の "書き込み可能な (writable) `$derived`" が欲しい場合)、かつ、event が選択肢にない場合、getter と setter を持つオブジェクトを使うこともできます。
 
 ```svelte
 <script>
@@ -358,7 +358,7 @@ If you want to have something update from above but also modify it from below (i
 <input bind:value={facade.value} />
 ```
 
-If you absolutely have to update `$state` within an effect and run into an infinite loop because you read and write to the same `$state`, use [untrack](functions#untrack).
+もし、どうしても `$state` を effect の中で更新する必要があり、同じ `$state` を読み書きするために無限ループになってしまう場合は、[untrack](functions#untrack) を使用しましょう。
 
 ### What this replaces
 
@@ -384,12 +384,12 @@ If you absolutely have to update `$state` within an effect and run into an infin
 	// ...
 
 	$effect.pre(() => {
-		if (!div) return; // not yet mounted
+		if (!div) return; // まだマウントされていない場合
 
-		// reference `messages` so that this code re-runs whenever it changes
+		// `messages` を参照することで、これが変更されるたびにこのコードが再実行されます
 		messages;
 
-		// autoscroll when new messages are added
+		// 新しい messages が追加されるたびに自動スクロールします
 		if (
 			div.offsetHeight + div.scrollTop >
 			div.scrollHeight - 20
@@ -408,7 +408,7 @@ If you absolutely have to update `$state` within an effect and run into an infin
 </div>
 ```
 
-Apart from the timing, `$effect.pre` works exactly like [`$effect`](#$effect) — refer to its documentation for more info.
+タイミング以外は、`$effect.pre` は [`$effect`](#$effect) と同じように動作します。詳細はドキュメントをご参照ください。
 
 ### What this replaces
 
@@ -517,7 +517,7 @@ let { y } = $props();
 
 ## `$bindable`
 
-To declare props as bindable, use `$bindable()`. Besides using them as regular props, the parent can (_can_, not _must_) then also `bind:` to them.
+バインド可能 (bindable) な props を宣言するには、`$bindable()` を使用します。通常の props として使用するだけでなく、親がそれを `bind:` することができます(必須ではなく、あくまで可能であるというだけです)。
 
 ```svelte
 <script>
@@ -525,7 +525,7 @@ To declare props as bindable, use `$bindable()`. Besides using them as regular p
 </script>
 ```
 
-You can pass an argument to `$bindable()`. This argument is used as a fallback value when the property is `undefined`.
+`$bindable()` には引数を渡すことができます。この引数は、その props が `undefined` のときのフォールバック値として使用されます。
 
 ```svelte
 <script>
@@ -533,12 +533,12 @@ You can pass an argument to `$bindable()`. This argument is used as a fallback v
 </script>
 ```
 
-Note that the parent is not allowed to pass `undefined` to a property with a fallback if it `bind:`s to that property.
+フォールバックを持つ props を親が `bind:` している場合、親はその props に `undefined` を渡すことはできないことにご注意ください。
 
 ## `$inspect`
 
 `$inspect` rune は大まかには `console.log` と一緒ですが、与えられた引数が変わるたびに再実行されるという点が異なります。
-`$inspect` はリアクティブな state を深く(deeply)追跡します。つまり、[fine-grained reactivity](/docs/fine-grained-reactivity) によって
+`$inspect` はリアクティブな state を深く(deeply)追跡します。つまり、[きめ細やかなリアクティビティ(fine-grained reactivity)](/docs/fine-grained-reactivity) によって
 オブジェクトや配列の内側で何かしらが更新されると再実行されます。([デモ:](/#H4sIAAAAAAAACkWQ0YqDQAxFfyUMhSotdZ-tCvu431AXtGOqQ2NmmMm0LOK_r7Utfby5JzeXTOpiCIPKT5PidkSVq2_n1F7Jn3uIcEMSXHSw0evHpAjaGydVzbUQCmgbWaCETZBWMPlKj29nxBDaHj_edkAiu12JhdkYDg61JGvE_s2nR8gyuBuiJZuDJTyQ7eE-IEOzog1YD80Lb0APLfdYc5F9qnFxjiKWwbImo6_llKRQVs-2u91c_bD2OCJLkT3JZasw7KLA2XCX31qKWE6vIzNk1fKE0XbmYrBTufiI8-_8D2cUWBA_AQAA))
 
 ```svelte

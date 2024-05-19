@@ -2,13 +2,13 @@
 title: Imports
 ---
 
-As well as runes, Svelte 5 introduces a handful of new things you can import, alongside existing ones like `getContext`, `setContext` and `tick`.
+Svelte 5 では runes だけでなく、`getContext`、`setContext`、`tick` などの既存のものに加えて、import することができる新しい便利なものが導入されています。
 
 ## `svelte`
 
 ### `mount`
 
-Instantiates a component and mounts it to the given target:
+コンポーネントをインスタンス化し、指定されたターゲットにマウントします:
 
 ```js
 // @errors: 2322
@@ -23,7 +23,7 @@ const app = mount(App, {
 
 ### `hydrate`
 
-Like `mount`, but will reuse up any HTML rendered by Svelte's SSR output (from the [`render`](#svelte-server-render) function) inside the target and make it interactive:
+`mount` に似ていますが、Svelte の SSR 出力 ([`render`](#svelte-server-render) 関数) によってレンダリングされた HTML をターゲット内で再利用し、それをインタラクティブにします:
 
 ```js
 // @errors: 2322
@@ -38,7 +38,7 @@ const app = hydrate(App, {
 
 ### `unmount`
 
-Unmounts a component created with [`mount`](#svelte-mount) or [`hydrate`](#svelte-hydrate):
+[`mount`](#svelte-mount) や [`hydrate`](#svelte-hydrate) で作成されたコンポーネントをアンマウントします:
 
 ```js
 // @errors: 1109
@@ -53,7 +53,7 @@ unmount(app);
 
 ### `untrack`
 
-To prevent something from being treated as an `$effect`/`$derived` dependency, use `untrack`:
+(変数などが) `$effect`/`$derived` の依存関係として扱われるのを止めたい場合は、`untrack` を使用します:
 
 ```svelte
 <script>
@@ -62,8 +62,8 @@ To prevent something from being treated as an `$effect`/`$derived` dependency, u
 	let { a, b } = $props();
 
 	$effect(() => {
-		// this will run when `a` changes,
-		// but not when `b` changes
+		// `a` が変更されたときには実行されますが、
+		// `b` が変更されたときには実行されません
 		console.log(a);
 		console.log(untrack(() => b));
 	});
@@ -72,7 +72,7 @@ To prevent something from being treated as an `$effect`/`$derived` dependency, u
 
 ## `svelte/reactivity`
 
-Svelte provides reactive `Map`, `Set`, `Date` and `URL` classes. These can be imported from `svelte/reactivity` and used just like their native counterparts. [Demo:](https://svelte-5-preview.vercel.app/#H4sIAAAAAAAAE32QzWrDMBCEX2Wri1uo7bvrBHrvqdBTUogqryuBfhZp5SQYv3slSsmpOc7uN8zsrmI2FpMYDqvw0qEYxCuReBZ8pSrSgpax6BRyVHUyJhUN8f7oj2wchciwwsf7G2wwx-Cg-bX0EaVisxi-Ni-FLbQKPjHkaGEHHs_V9NhoZkpD3-NFOrLYqeB6kqybp-Ia-1uYHx_aFpSW_hsTcADWmLDrOmjbsh-Np8zwZfw0LNJm3K0lqaMYOKhgt_8RHRLX0-8gtdAfUiAdb4XOxlrINElGOOmI8wmkn2AxCmHBmOTdetWw7ct7XZjMbHASA8eM2-f2A-JarmyZAQAA)
+Svelte ではリアクティブな `Map`、`Set`、`Date`、`URL` classを提供しています。これらは `svelte/reactivity` から import し、ネイティブなものと同じように使用することができます。[デモ:](https://svelte-5-preview.vercel.app/#H4sIAAAAAAAAE32QzWrDMBCEX2Wri1uo7bvrBHrvqdBTUogqryuBfhZp5SQYv3slSsmpOc7uN8zsrmI2FpMYDqvw0qEYxCuReBZ8pSrSgpax6BRyVHUyJhUN8f7oj2wchciwwsf7G2wwx-Cg-bX0EaVisxi-Ni-FLbQKPjHkaGEHHs_V9NhoZkpD3-NFOrLYqeB6kqybp-Ia-1uYHx_aFpSW_hsTcADWmLDrOmjbsh-Np8zwZfw0LNJm3K0lqaMYOKhgt_8RHRLX0-8gtdAfUiAdb4XOxlrINElGOOmI8wmkn2AxCmHBmOTdetWw7ct7XZjMbHASA8eM2-f2A-JarmyZAQAA)
 
 ```svelte
 <script>
@@ -81,14 +81,14 @@ Svelte provides reactive `Map`, `Set`, `Date` and `URL` classes. These can be im
 	const url = new URL('https://example.com/path');
 </script>
 
-<!-- changes to these... -->
+<!-- これらを変更すると… -->
 <input bind:value={url.protocol} />
 <input bind:value={url.hostname} />
 <input bind:value={url.pathname} />
 
 <hr />
 
-<!-- will update `href` and vice versa -->
+<!-- `href` が更新さrます。逆もまた同様です -->
 <input bind:value={url.href} />
 ```
 
@@ -96,7 +96,7 @@ Svelte provides reactive `Map`, `Set`, `Date` and `URL` classes. These can be im
 
 ### `render`
 
-Only available on the server and when compiling with the `server` option. Takes a component and returns an object with `html` and `head` properties on it, which you can use to populate the HTML when server-rendering your app:
+サーバー上で、かつ、`server` オプションでコンパイルした場合にのみ、利用可能です。コンポーネントを引数に取り、`html` プロパティと `head` プロパティを持つオブジェクトを返します。このオブジェクトは、アプリをサーバーでレンダリングする際に HTML を入力するのに使用することができます:
 
 ```js
 // @errors: 2724 2305 2307
