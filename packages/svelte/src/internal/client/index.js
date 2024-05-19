@@ -26,10 +26,11 @@ export {
 	set_attributes,
 	set_custom_element_data,
 	set_dynamic_element_attributes,
-	set_xlink_attribute
+	set_xlink_attribute,
+	handle_lazy_img
 } from './dom/elements/attributes.js';
 export { set_class, set_svg_class, set_mathml_class, toggle_class } from './dom/elements/class.js';
-export { event, delegate } from './dom/elements/events.js';
+export { event, delegate, replay_events } from './dom/elements/events.js';
 export { autofocus, remove_textarea_child } from './dom/elements/misc.js';
 export { set_style } from './dom/elements/style.js';
 export { animation, transition } from './dom/elements/transitions.js';
@@ -71,7 +72,8 @@ export {
 	add_legacy_event_listener,
 	bubble_event,
 	reactive_import,
-	update_legacy_props
+	update_legacy_props,
+	default_slot
 } from './dom/legacy/misc.js';
 export {
 	append,
@@ -142,7 +144,7 @@ export {
 	validate_prop_bindings
 } from './validate.js';
 export { raf } from './timing.js';
-export { proxy, snapshot } from './proxy.js';
+export { proxy, snapshot, is } from './proxy.js';
 export { create_custom_element } from './dom/elements/custom-element.js';
 export {
 	child,
@@ -153,10 +155,10 @@ export {
 } from './dom/operations.js';
 export { noop } from '../shared/utils.js';
 export {
-	add_snippet_symbol,
 	validate_component,
 	validate_dynamic_element_tag,
 	validate_snippet,
 	validate_store,
 	validate_void_dynamic_element
 } from '../shared/validate.js';
+export { strict_equals, equals } from './dev/equality.js';

@@ -148,17 +148,17 @@ rune の場合、`$effect.pre` (`$effect` と同じように動作するが DOM 
 +	let theme = $state('dark');
 +	let messages = $state([]);
 
-	let div;
+	let viewport;
 
 -	beforeUpdate(() => {
 +	$effect.pre(() => {
 -		if (!updatingMessages) return;
 +		messages;
-		const autoscroll = div && div.offsetHeight + div.scrollTop > div.scrollHeight - 50;
+		const autoscroll = viewport && viewport.offsetHeight + viewport.scrollTop > viewport.scrollHeight - 50;
 
 		if (autoscroll) {
 			tick().then(() => {
-				div.scrollTo(0, div.scrollHeight);
+				viewport.scrollTo(0, viewport.scrollHeight);
 			});
 		}
 

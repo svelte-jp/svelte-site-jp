@@ -6,6 +6,7 @@ import { delegate } from './events.js';
 import { autofocus } from './misc.js';
 import { effect, effect_root } from '../../reactivity/effects.js';
 import * as w from '../../warnings.js';
+import { LOADING_ATTR_SYMBOL } from '../../constants.js';
 
 /**
  * The value/checked attribute in the template actually corresponds to the defaultValue property, so we need
@@ -50,6 +51,11 @@ export function set_attribute(element, attribute, value) {
 	}
 
 	if (attributes[attribute] === (attributes[attribute] = value)) return;
+
+	if (attribute === 'loading') {
+		// @ts-expect-error
+		element[LOADING_ATTR_SYMBOL] = value;
+	}
 
 	if (value === null) {
 		element.removeAttribute(attribute);
@@ -143,6 +149,7 @@ export function set_attributes(element, prev, next, lowercase_attributes, css_ha
 
 			if (value != null) {
 				if (!delegated) {
+					// we use `addEventListener` here because these events are not delegated
 					if (!prev) {
 						events.push([key, value, () => element.addEventListener(event_name, value, opts)]);
 					} else {
@@ -332,4 +339,29 @@ function srcset_url_equal(element, srcset) {
 				(src_url_equal(element_urls[i][0], url) || src_url_equal(url, element_urls[i][0]))
 		)
 	);
+}
+
+/**
+ * @param {HTMLImageElement} element
+ * @returns {void}
+ */
+export function handle_lazy_img(element) {
+	// If we're using an image that has a lazy loading attribute, we need to apply
+	// the loading and src after the img element has been appended to the document.
+	// Otherwise the lazy behaviour will not work due to our cloneNode heuristic for
+	// templates.
+	if (!hydrating && element.loading === 'lazy') {
+		var src = element.src;
+		// @ts-expect-error
+		element[LOADING_ATTR_SYMBOL] = null;
+		element.loading = 'eager';
+		element.removeAttribute('src');
+		requestAnimationFrame(() => {
+			// @ts-expect-error
+			if (element[LOADING_ATTR_SYMBOL] !== 'eager') {
+				element.loading = 'lazy';
+			}
+			element.src = src;
+		});
+	}
 }

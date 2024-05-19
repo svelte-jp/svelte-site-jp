@@ -586,22 +586,6 @@ const validation = {
 		) {
 			e.render_tag_invalid_call_expression(node);
 		}
-
-		const is_inside_textarea = context.path.find((n) => {
-			return (
-				n.type === 'SvelteElement' &&
-				n.name === 'svelte:element' &&
-				n.tag.type === 'Literal' &&
-				n.tag.value === 'textarea'
-			);
-		});
-		if (is_inside_textarea) {
-			e.tag_invalid_placement(
-				node,
-				'inside <textarea> or <svelte:element this="textarea">',
-				'render'
-			);
-		}
 	},
 	IfBlock(node, context) {
 		validate_block_not_empty(node.consequent, context);
@@ -624,11 +608,23 @@ const validation = {
 
 		context.next({ ...context.state, parent_element: null });
 
-		if (node.expression.name !== 'children') return;
-
 		const { path } = context;
 		const parent = path.at(-2);
 		if (!parent) return;
+
+		if (
+			parent.type === 'Component' &&
+			parent.attributes.some(
+				(attribute) =>
+					(attribute.type === 'Attribute' || attribute.type === 'BindDirective') &&
+					attribute.name === node.expression.name
+			)
+		) {
+			e.snippet_shadowing_prop(node, node.expression.name);
+		}
+
+		if (node.expression.name !== 'children') return;
+
 		if (
 			parent.type === 'Component' ||
 			parent.type === 'SvelteComponent' ||
@@ -865,6 +861,12 @@ function validate_call_expression(node, scope, path) {
 			e.rune_invalid_arguments_length(node, rune, 'exactly one argument');
 		}
 	}
+
+	if (rune === '$state.is') {
+		if (node.arguments.length !== 2) {
+			e.rune_invalid_arguments_length(node, rune, 'exactly two arguments');
+		}
+	}
 }
 
 /**
@@ -887,6 +889,11 @@ function ensure_no_module_import_conflict(node, state) {
  * @type {import('zimmerframe').Visitors<import('#compiler').SvelteNode, import('./types.js').AnalysisState>}
  */
 export const validation_runes_js = {
+	ImportDeclaration(node) {
+		if (typeof node.source.value === 'string' && node.source.value.startsWith('svelte/internal')) {
+			e.import_svelte_internal_forbidden(node);
+		}
+	},
 	ExportSpecifier(node, { state }) {
 		validate_export(node, state.scope, node.local.name);
 	},
@@ -1059,6 +1066,11 @@ function validate_assignment(node, argument, state) {
 }
 
 export const validation_runes = merge(validation, a11y_validators, {
+	ImportDeclaration(node) {
+		if (typeof node.source.value === 'string' && node.source.value.startsWith('svelte/internal')) {
+			e.import_svelte_internal_forbidden(node);
+		}
+	},
 	Identifier(node, { path, state }) {
 		let i = path.length;
 		let parent = /** @type {import('estree').Expression} */ (path[--i]);

@@ -112,6 +112,24 @@ class Todo {
 
 > `$state.snapshot` はリアクティビティを削除するときにそのデータをクローンしていることにご注意ください。渡された値が `$state` proxy でない場合は、そのまま返されます。
 
+## `$state.is`
+
+Sometimes you might need to compare two values, one of which is a reactive `$state(...)` proxy. For this you can use `$state.is(a, b)`:
+
+```svelte
+<script>
+	let foo = $state({});
+	let bar = {};
+
+	foo.bar = bar;
+
+	console.log(foo.bar === bar); // false — `foo.bar` is a reactive proxy
+	console.log($state.is(foo.bar, bar)); // true
+</script>
+```
+
+This is handy when you might want to check if the object exists within a deeply reactive object/array.
+
 ## `$derived`
 
 派生するステートは `$derived` rune で宣言します:
@@ -178,48 +196,58 @@ class Todo {
 
 ## `$effect`
 
-ある値が変更されたときやコンポーネントが DOM にマウントされたときに、ロギングやアナリティクスのような副作用 (side-effects) を実行するには、`$effect` rune を使用します:
+コンポーネントが DOM にマウントされたときや値が変更されたときに _副作用(side-effects)_ を実行するには、 `$effect` rune を使用します ([デモ](/#H4sIAAAAAAAAE31T24rbMBD9lUG7kAQ2sbdlX7xOYNk_aB_rQhRpbAsU2UiTW0P-vbrYubSlYGzmzMzROTPymdVKo2PFjzMzfIusYB99z14YnfoQuD1qQh-7bmdFQEonrOppVZmKNBI49QthCc-OOOH0LZ-9jxnR6c7eUpOnuv6KeT5JFdcqbvbcBcgDz1jXKGg6ncFyBedYR6IzLrAZwiN5vtSxaJA-EzadfJEjKw11C6GR22-BLH8B_wxdByWpvUYtqqal2XB6RVkG1CoHB6U1WJzbnYFDiwb3aGEdDa3Bm1oH12sQLTcNPp7r56m_00mHocSG97_zd7ICUXonA5fwKbPbkE2ZtMJGGVkEdctzQi4QzSwr9prnFYNk5hpmqVuqPQjNnfOJoMF22lUsrq_UfIN6lfSVyvQ7grB3X2mjMZYO3XO9w-U5iLx42qg29md3BP_ni5P4gy9ikTBlHxjLzAtPDlyYZmRdjAbGq7HprEQ7p64v4LU_guu0kvAkhBim3nMplWl8FreQD-CW20aZR0wq12t-KqDWeBywhvexKC3memmDwlHAv9q4Vo2ZK8KtK0CgX7u9J8wXbzdKv-nRnfF_2baTqlYoWUF2h5efl9-n0O6koAMAAA==)):
 
 ```svelte
 <script>
-	let count = $state(0);
-	let doubled = $derived(count * 2);
+	let size = $state(50);
+	let color = $state('#ff3e00');
+
+	let canvas;
 
 	$effect(() => {
-		console.log({ count, doubled });
+		const context = canvas.getContext('2d');
+		context.clearRect(0, 0, canvas.width, canvas.height);
+
+		// this will re-run whenever `color` or `size` change
+		context.fillStyle = color;
+		context.fillRect(0, 0, size, size);
 	});
 </script>
 
-<button on:click={() => count++}>
-	{doubled}
-</button>
-
-<p>{count} doubled is {doubled}</p>
+<canvas bind:this={canvas} width="100" height="100" />
 ```
 
-`$effect` は 同期的に読み取った `$state` や `$derived` の値を自動的にサブスクライブし、値が変わるたびに再実行されます。なお、その値が `await` の後や `setTimeout` の中にある場合はその値は追跡されません。`$effect` は DOM が更新されたあとに実行されます。
+`$effect` に渡された関数はコンポーネントがマウントされたときに実行され、`$state` や `$derived` で宣言された値 (`$props` で渡されたものも含む) が変更されたあとに再実行されます。再実行はバッチで行われ (つまり、`color` と `size` が同じタイミングで変更されても、2回に分けて実行されません)、その処理は DOM が更新されたあとに発生します。
 
-```svelte
-<script>
-	let count = $state(0);
-	let doubled = $derived(count * 2);
+非同期に読み取られた値 (例えば、`await` の後や、`setTimeout` の内側で) は、追跡されません。この例では、`color` が変更されたときに canvas が再描画されますが、`size` が変更されたときには再描画されません ([デモ](/#H4sIAAAAAAAAE31T24rbMBD9lUG7kCxsbG_LvrhOoPQP2r7VhSjy2BbIspHGuTT436tLnMtSCiaOzpw5M2dGPrNaKrQs_3VmmnfIcvZ1GNgro9PgD3aPitCdbT8a4ZHCCiMH2pS6JIUEVv5BWMOzJU64fM9evswR0ave3EKLp7r-jFm2iIwri-s9tx5ywDPWNQpaLl9gvYFz4JHotfVqmvBITi9mJA3St4gtF5-qWZUuvEQo5Oa7F8tewT2XrIOsqL2eWpRNS7eGSkpToFZaOEilwODKjBoOLWrco4FtsLQF0XLdoE2S5LGmm6X6QSflBxKod8IW6afssB8_uAslndJuJNA9hWKw9VO91pmJ92XunHlu_J1nMDk8_p_8q0hvO9NFtA47qavcW12fIzJBmM26ZG9ZVjKIs7ke05hdyT0Ixa11Ad-P6ZUtWbgNheI7VJvYQiH14Bz5a-SYxvtwIqHonqsR12ff8ORkQ-chP70T-L9eGO4HvYAFwRh9UCxS13h0YP2CgmoyG5h3setNhWZF_ZDD23AE2ytZwZMQ4jLYgVeV1I2LYgfZBey4aaR-xCppB8VPOdQKjxes4UMgxcVcvwHf4dzAv9K4ko1eScLO5iDQXQFzL5gl7zdJt-nZnXYfbddXspZYsZzMiNPv6S8Bl41G7wMAAA==)):
 
-	$effect(() => {
-		// DOM が更新されたあとに実行されます。
-		// コンポーネントがマウントされるときや、
-		// `count` が変更されるたびに実行されますが、
-		// `doubled` が変更されたときには実行されません。
-		console.log(count);
+```ts
+// @filename: index.ts
+declare let canvas: {
+	width: number;
+	height: number;
+	getContext(
+		type: '2d',
+		options?: CanvasRenderingContext2DSettings
+	): CanvasRenderingContext2D;
+};
+declare let color: string;
+declare let size: number;
 
-		setTimeout(() => console.log(doubled));
-	});
-</script>
+// ---cut---
+$effect(() => {
+	const context = canvas.getContext('2d');
+	context.clearRect(0, 0, canvas.width, canvas.height);
 
-<button on:click={() => count++}>
-	{doubled}
-</button>
+	// this will re-run whenever `color` changes...
+	context.fillStyle = color;
 
-<p>{count} doubled is {doubled}</p>
+	setTimeout(() => {
+		// ...but not when `size` changes
+		context.fillRect(0, 0, size, size);
+	}, 0);
+});
 ```
 
 effect は読み取ったオブジェクトが変更された場合には再実行されますが、そのオブジェクトが持つプロパティが変更された場合には再実行されません。もし開発時に、検査(inspection)目的でオブジェクト内部のあらゆる変更にリアクティブにしたければ、[`inspect`](#$inspect) を使用するとよいでしょう。

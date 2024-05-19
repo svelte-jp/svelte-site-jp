@@ -728,6 +728,12 @@ declare module 'svelte/compiler' {
 		 * Used for debugging hints and sourcemaps. Your bundler plugin will set it automatically.
 		 */
 		filename?: string;
+
+		/**
+		 * Used for ensuring filenames don't leak filesystem information. Your bundler plugin will set it automatically.
+		 * @default process.cwd() on node-like environments, undefined elsewhere
+		 */
+		rootDir?: string;
 	}
 
 	type DeclarationKind =
@@ -1053,8 +1059,7 @@ declare module 'svelte/compiler' {
 	export class CompileError extends Error {
 		
 		constructor(code: string, message: string, position: [number, number] | undefined);
-		
-		filename: CompileError_1['filename'];
+		filename: string | undefined;
 		
 		position: CompileError_1['position'];
 		
@@ -2549,6 +2554,12 @@ declare module 'svelte/types/compiler/interfaces' {
 		 * Used for debugging hints and sourcemaps. Your bundler plugin will set it automatically.
 		 */
 		filename?: string;
+
+		/**
+		 * Used for ensuring filenames don't leak filesystem information. Your bundler plugin will set it automatically.
+		 * @default process.cwd() on node-like environments, undefined elsewhere
+		 */
+		rootDir?: string;
 	}
 	/**
 	 * - `html`    — the default, for e.g. `<div>` or `<span>`
@@ -2623,6 +2634,27 @@ declare namespace $state {
 	 * @param state The value to snapshot
 	 */
 	export function snapshot<T>(state: T): T;
+
+	/**
+	 * Compare two values, one or both of which is a reactive `$state(...)` proxy.
+	 *
+	 * Example:
+	 * ```ts
+	 * <script>
+	 *	 let foo = $state({});
+	 *	 let bar = {};
+	 *
+	 *	 foo.bar = bar;
+	 *
+	 *	 console.log(foo.bar === bar); // false — `foo.bar` is a reactive proxy
+	 *   console.log($state.is(foo.bar, bar)); // true
+	 * </script>
+	 * ```
+	 *
+	 * https://svelte-5-preview.vercel.app/docs/runes#$state.is
+	 *
+	 */
+	export function is(a: any, b: any): boolean;
 
 	// prevent intellisense from being unhelpful
 	/** @deprecated */

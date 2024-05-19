@@ -32,6 +32,7 @@ export const Runes = /** @type {const} */ ([
 	'$state',
 	'$state.frozen',
 	'$state.snapshot',
+	'$state.is',
 	'$props',
 	'$bindable',
 	'$derived',
@@ -59,6 +60,18 @@ export const ReservedKeywords = ['$$props', '$$restProps', '$$slots'];
 export const WhitespaceInsensitiveAttributes = ['class', 'style'];
 
 export const ContentEditableBindings = ['textContent', 'innerHTML', 'innerText'];
+
+export const LoadErrorElements = [
+	'body',
+	'embed',
+	'iframe',
+	'img',
+	'link',
+	'object',
+	'script',
+	'style',
+	'track'
+];
 
 export const SVGElements = [
 	'altGlyph',

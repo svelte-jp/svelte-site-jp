@@ -174,7 +174,7 @@
 
 ## mixed_event_handler_syntaxes
 
-> Mixing old (on:%name%) and new syntaxes for event handling is not allowed. Use only the on%name% syntax.
+> Mixing old (on:%name%) and new syntaxes for event handling is not allowed. Use only the on%name% syntax
 
 ## node_invalid_placement
 
@@ -230,7 +230,7 @@
 
 ## slot_snippet_conflict
 
-> Cannot use `<slot>` syntax and `{@render ...}` tags in the same component. Migrate towards `{@render ...}` tags completely.
+> Cannot use `<slot>` syntax and `{@render ...}` tags in the same component. Migrate towards `{@render ...}` tags completely
 
 ## snippet_conflict
 
@@ -239,6 +239,10 @@
 ## snippet_invalid_rest_parameter
 
 > snippets do not support rest parameters; use an array instead
+
+## snippet_shadowing_prop
+
+> This snippet is shadowing the prop `%prop%` with the same name
 
 ## style_directive_invalid_modifier
 
@@ -256,13 +260,9 @@
 
 > `<svelte:component>` must have a 'this' attribute
 
-## svelte_element_invalid_this
-
-> Invalid element definition — must be an `{expression}`
-
 ## svelte_element_missing_this
 
-> `<svelte:element>` must have a 'this' attribute
+> `<svelte:element>` must have a 'this' attribute with a value
 
 ## svelte_fragment_invalid_attribute
 

@@ -133,6 +133,25 @@ Svelte 4 の構文では、(`export let` で宣言された) 全てのプロパ�
 
 `accessors` オプションを `true` にすると、コンポーネントのインスタンス上でそのコンポーネントのプロパティに直接アクセスできるようになります。runes モードでは、コンポーネントのインスタンス上で直接プロパティにアクセスすることはできません。プロパティを公開する必要がある場合は、代わりにコンポーネントの exports を使用します。
 
+### `immutable` オプションは無視されるようになりました <!--immutable-option-is-ignored-->
+
+`immutable` オプションを設定しても rune モードでは効果がない。このコンセプトは、`$state` とそのバリエーションの動作・仕組みによって置き換えられています。
+
+### Class は "自動リアクティブ(auto-reactive)" ではなくなりました <!--classes-are-no-longer-auto-reactive-->
+
+Svelte 4 では、以下のようにするとリアクティビティがトリガーされました:
+
+```svelte
+<script>
+	let foo = new Foo();
+</script>
+
+<button on:click={() => (foo.value = 1)}>{foo.value}</button
+>
+```
+
+これは、Svelte コンパイラが `foo.value` への代入を、`foo` を参照するものを更新する命令として扱ったからです。Svelte 5 では、リアクティビティはコンパイル時ではなく実行時に決定されるため、`Foo` class 上で `value` をリアクティブな `$state` フィールドとして定義する必要があります。`new Foo()` を `$state(...)` でラップしても効果はありません。バニラオブジェクトと配列(vanilla objects and arrays)だけが、ディープなリアクティブになります。
+
 ## その他の破壊的変更 <!--other-breaking-changes-->
 
 ### `@const` 代入に対するより厳格なバリデーション <!--stricter-const-assignment-validation-->
@@ -158,9 +177,9 @@ Svelte 4 の構文では、(`export let` で宣言された) 全てのプロパ�
 css = css.replace(/:where\((.+?)\)/, '$1');
 ```
 
-### 各エラー/警告のコードのリネーム <!--renames-of-various-error-warning-codes-->
+### エラー/警告のコードのリネーム <!--error-warning-codes-have-been-renamed-->
 
-各エラーや警告のコードの名称が少し変更されました。
+エラーと警告のコードがリネームされました。以前は単語を区切るのにダッシュを使用していましたが、現在はアンダースコアを使用しています (例: foo-bar が foo_bar になりました)。加えて、若干のコードが少し言い換えられました。
 
 ### 名前空間(namespaces)の数が削減 <!--reduced-number-of-namespaces-->
 
@@ -204,3 +223,22 @@ Svelte 4では、`null` と `undefined` をプリント出力したときに、�
 ### `walk` が export されなくなりました <!--walk-not-longer-exported-->
 
 `svelte/compiler` はこれまで便宜的に `estree-walker` から `walk` を再 export していましたが、Svelte 5では不要となったため、もし必要な場合は直接 import してください。
+
+### `svelte:options` の内側にコンテンツを置くことは禁止されました <!--content-inside-svelte-options-is-forbidden-->
+
+Svelte 4 では、`<svelte:options />` タグの内側にコンテンツを置くことができました。無視されますが、そこになにかを書くことはできました。Svelte 5 では、このタグの内側のコンテンツはコンパイルエラーとなります。
+
+### declarative shadow roots の `<slot>` 要素はそのまま保持されます <!--slot-elements-in-declarative-shadow-roots-are-preserved-->
+
+Svelte 4 では、どんな場所にある `<slot />` タグでも独自のバージョンの slot に置き換えられました。Svelte 5 では`<template shadowrootmode="...">` 要素の子である場合、そのまま保持されます。
+
+### `<svelte:element>` タグは式でなければいけません <!--svelte-element-tag-must-be-an-expression-->
+
+Svelte 4では、`<svelte:element this="div">` は有効なコードです。しかし、これはあまり意味がありません。単に`<div>`とすべきです。まれに、何らかの理由でリテラル値を使用する必要がある場合は、このようにすることができます：
+
+```diff
+- <svelte:element this="div">
++ <svelte:element this={"div"}>
+```
+
+Svelte 4では、例えば `<svelte:element this="input">` を `<input>` と同じように扱い、どの `bind:` ディレクティブが適用されるかを決定していましたが、Svelte 5ではそうではないことに注意してください。

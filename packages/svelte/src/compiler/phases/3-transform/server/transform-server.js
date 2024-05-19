@@ -11,6 +11,7 @@ import * as b from '../../../utils/builders.js';
 import is_reference from 'is-reference';
 import {
 	ContentEditableBindings,
+	LoadErrorElements,
 	VoidElements,
 	WhitespaceInsensitiveAttributes
 } from '../../constants.js';
@@ -23,10 +24,17 @@ import {
 import { create_attribute, is_custom_element_node, is_element_node } from '../../nodes.js';
 import { binding_properties } from '../../bindings.js';
 import { regex_starts_with_newline, regex_whitespaces_strict } from '../../patterns.js';
-import { DOMBooleanAttributes, HYDRATION_END, HYDRATION_START } from '../../../../constants.js';
+import {
+	DOMBooleanAttributes,
+	ELEMENT_IS_NAMESPACED,
+	ELEMENT_PRESERVE_ATTRIBUTE_CASE,
+	HYDRATION_END,
+	HYDRATION_START
+} from '../../../../constants.js';
 import { escape_html } from '../../../../escaping.js';
 import { sanitize_template_string } from '../../../utils/sanitize_template_string.js';
 import { BLOCK_CLOSE, BLOCK_CLOSE_ELSE } from '../../../../internal/server/hydration.js';
+import { filename, locator } from '../../../state.js';
 
 export const block_open = t_string(`<!--${HYDRATION_START}-->`);
 export const block_close = t_string(`<!--${HYDRATION_END}-->`);
@@ -778,6 +786,13 @@ const javascript_visitors_runes = {
 			return /** @type {import('estree').Expression} */ (context.visit(node.arguments[0]));
 		}
 
+		if (rune === '$state.is') {
+			return b.call(
+				'Object.is',
+				/** @type {import('estree').Expression} */ (context.visit(node.arguments[0]))
+			);
+		}
+
 		if (rune === '$inspect' || rune === '$inspect().with') {
 			return transform_inspect_rune(node, context);
 		}
@@ -880,42 +895,29 @@ function serialize_element_spread_attributes(
 	class_directives,
 	context
 ) {
-	/** @type {import('estree').Expression[]} */
-	const values = [];
+	let classes;
+	let styles;
+	let flags = 0;
 
-	for (const attribute of attributes) {
-		if (attribute.type === 'Attribute') {
-			const name = get_attribute_name(element, attribute, context);
-			const value = serialize_attribute_value(
-				attribute.value,
-				context,
-				WhitespaceInsensitiveAttributes.includes(name)
-			);
-			values.push(b.object([b.prop('init', b.literal(name), value)]));
-		} else {
-			values.push(/** @type {import('estree').Expression} */ (context.visit(attribute)));
+	if (class_directives.length > 0 || context.state.analysis.css.hash) {
+		const properties = class_directives.map((directive) =>
+			b.init(
+				directive.name,
+				directive.expression.type === 'Identifier' && directive.expression.name === directive.name
+					? b.id(directive.name)
+					: /** @type {import('estree').Expression} */ (context.visit(directive.expression))
+			)
+		);
+
+		if (context.state.analysis.css.hash) {
+			properties.unshift(b.init(context.state.analysis.css.hash, b.literal(true)));
 		}
+
+		classes = b.object(properties);
 	}
 
-	const lowercase_attributes =
-		element.metadata.svg ||
-		element.metadata.mathml ||
-		(element.type === 'RegularElement' && is_custom_element_node(element))
-			? b.false
-			: b.true;
-
-	const is_html = element.metadata.svg || element.metadata.mathml ? b.false : b.true;
-
-	/** @type {import('estree').Expression[]} */
-	const args = [
-		b.array(values),
-		lowercase_attributes,
-		is_html,
-		b.literal(context.state.analysis.css.hash)
-	];
-
-	if (style_directives.length > 0 || class_directives.length > 0) {
-		const styles = style_directives.map((directive) =>
+	if (style_directives.length > 0) {
+		const properties = style_directives.map((directive) =>
 			b.init(
 				directive.name,
 				directive.value === true
@@ -923,25 +925,33 @@ function serialize_element_spread_attributes(
 					: serialize_attribute_value(directive.value, context, true)
 			)
 		);
-		const expressions = class_directives.map((directive) =>
-			b.conditional(directive.expression, b.literal(directive.name), b.literal(''))
-		);
-		const classes = expressions.length
-			? b.call(
-					b.member(
-						b.call(b.member(b.array(expressions), b.id('filter')), b.id('Boolean')),
-						b.id('join')
-					),
-					b.literal(' ')
-				)
-			: b.literal('');
-		args.push(
-			b.object([
-				b.init('styles', styles.length === 0 ? b.literal(null) : b.object(styles)),
-				b.init('classes', classes)
-			])
-		);
+
+		styles = b.object(properties);
 	}
+
+	if (element.metadata.svg || element.metadata.mathml) {
+		flags |= ELEMENT_IS_NAMESPACED | ELEMENT_PRESERVE_ATTRIBUTE_CASE;
+	} else if (is_custom_element_node(element)) {
+		flags |= ELEMENT_PRESERVE_ATTRIBUTE_CASE;
+	}
+
+	const object = b.object(
+		attributes.map((attribute) => {
+			if (attribute.type === 'Attribute') {
+				const name = get_attribute_name(element, attribute, context);
+				const value = serialize_attribute_value(
+					attribute.value,
+					context,
+					WhitespaceInsensitiveAttributes.includes(name)
+				);
+				return b.prop('init', b.key(name), value);
+			}
+
+			return b.spread(/** @type {import('estree').Expression} */ (context.visit(attribute)));
+		})
+	);
+
+	const args = [object, classes, styles, flags ? b.literal(flags) : undefined];
 	context.state.template.push(t_expression(b.call('$.spread_attributes', ...args)));
 }
 
@@ -971,6 +981,13 @@ function serialize_inline_component(node, component_name, context) {
 	let slot_scope_applies_to_itself = false;
 
 	/**
+	 * Components may have a children prop and also have child nodes. In this case, we assume
+	 * that the child component isn't using render tags yet and pass the slot as $$slots.default.
+	 * We're not doing it for spread attributes, as this would result in too many false positives.
+	 */
+	let has_children_prop = false;
+
+	/**
 	 * @param {import('estree').Property} prop
 	 */
 	function push_prop(prop) {
@@ -996,6 +1013,10 @@ function serialize_inline_component(node, component_name, context) {
 
 			if (attribute.name === 'slot') {
 				slot_scope_applies_to_itself = true;
+			}
+
+			if (attribute.name === 'children') {
+				has_children_prop = true;
 			}
 
 			const value = serialize_attribute_value(attribute.value, context, false, true);
@@ -1072,7 +1093,7 @@ function serialize_inline_component(node, component_name, context) {
 			b.block([...(slot_name === 'default' && !slot_scope_applies_to_itself ? lets : []), ...body])
 		);
 
-		if (slot_name === 'default') {
+		if (slot_name === 'default' && !has_children_prop) {
 			push_prop(
 				b.prop(
 					'init',
@@ -1080,6 +1101,9 @@ function serialize_inline_component(node, component_name, context) {
 					context.state.options.dev ? b.call('$.add_snippet_symbol', slot_fn) : slot_fn
 				)
 			);
+			// We additionally add the default slot as a boolean, so that the slot render function on the other
+			// side knows it should get the content to render from $$props.children
+			serialized_slots.push(b.init('default', b.true));
 		} else {
 			const slot = b.prop('init', b.literal(slot_name), slot_fn);
 			serialized_slots.push(slot);
@@ -1364,8 +1388,19 @@ const template_visitors = {
 		}
 
 		if (context.state.options.dev) {
+			const location = /** @type {import('locate-character').Location} */ (locator(node.start));
 			context.state.template.push(
-				t_statement(b.stmt(b.call('$.push_element', b.literal(node.name), b.id('$$payload'))))
+				t_statement(
+					b.stmt(
+						b.call(
+							'$.push_element',
+							b.id('$$payload'),
+							b.literal(node.name),
+							b.literal(location.line),
+							b.literal(location.column)
+						)
+					)
+				)
 			);
 		}
 
@@ -1736,7 +1771,7 @@ const template_visitors = {
 		const lets = [];
 
 		/** @type {import('estree').Expression} */
-		let expression = b.member_id('$$props.children');
+		let expression = b.call('$.default_slot', b.id('$$props'));
 
 		for (const attribute of node.attributes) {
 			if (attribute.type === 'SpreadAttribute') {
@@ -1812,6 +1847,7 @@ function serialize_element_attributes(node, context) {
 	// Use the index to keep the attributes order which is important for spreading
 	let class_attribute_idx = -1;
 	let style_attribute_idx = -1;
+	let events_to_capture = new Set();
 
 	for (const attribute of node.attributes) {
 		if (attribute.type === 'Attribute') {
@@ -1828,8 +1864,15 @@ function serialize_element_attributes(node, context) {
 				}
 				content = { escape: true, expression: serialize_attribute_value(attribute.value, context) };
 
-				// omit event handlers
-			} else if (!is_event_attribute(attribute)) {
+				// omit event handlers except for special cases
+			} else if (is_event_attribute(attribute)) {
+				if (
+					(attribute.name === 'onload' || attribute.name === 'onerror') &&
+					LoadErrorElements.includes(node.name)
+				) {
+					events_to_capture.add(attribute.name);
+				}
+			} else {
 				if (attribute.name === 'class') {
 					class_attribute_idx = attributes.length;
 				} else if (attribute.name === 'style') {
@@ -1927,6 +1970,15 @@ function serialize_element_attributes(node, context) {
 		} else if (attribute.type === 'SpreadAttribute') {
 			attributes.push(attribute);
 			has_spread = true;
+			if (LoadErrorElements.includes(node.name)) {
+				events_to_capture.add('onload');
+				events_to_capture.add('onerror');
+			}
+		} else if (attribute.type === 'UseDirective') {
+			if (LoadErrorElements.includes(node.name)) {
+				events_to_capture.add('onload');
+				events_to_capture.add('onerror');
+			}
 		} else if (attribute.type === 'ClassDirective') {
 			class_directives.push(attribute);
 		} else if (attribute.type === 'StyleDirective') {
@@ -2006,6 +2058,12 @@ function serialize_element_attributes(node, context) {
 			context.state.template.push(
 				t_expression(b.call('$.attr', b.literal(name), value, b.literal(is_boolean)))
 			);
+		}
+	}
+
+	if (events_to_capture.size !== 0) {
+		for (const event of events_to_capture) {
+			context.state.template.push(t_string(` ${event}="this.__e=event"`));
 		}
 	}
 
@@ -2279,9 +2337,12 @@ export function server_component(analysis, options) {
 		// undefined to a binding that has a default value.
 		template.body.push(b.stmt(b.call('$.bind_props', b.id('$$props'), b.object(props))));
 	}
+	/** @type {import('estree').Expression[]} */
+	const push_args = [];
+	if (options.dev) push_args.push(b.id(analysis.name));
 
 	const component_block = b.block([
-		b.stmt(b.call('$.push', b.literal(analysis.runes))),
+		b.stmt(b.call('$.push', ...push_args)),
 		.../** @type {import('estree').Statement[]} */ (instance.body),
 		.../** @type {import('estree').Statement[]} */ (template.body),
 		b.stmt(b.call('$.pop'))
@@ -2374,6 +2435,15 @@ export function server_component(analysis, options) {
 		);
 	} else {
 		body.push(b.export_default(component_function));
+	}
+
+	if (options.dev && filename) {
+		// add `App.filename = 'App.svelte'` so that we can print useful messages later
+		body.unshift(
+			b.stmt(
+				b.assignment('=', b.member(b.id(analysis.name), b.id('filename')), b.literal(filename))
+			)
+		);
 	}
 
 	return {

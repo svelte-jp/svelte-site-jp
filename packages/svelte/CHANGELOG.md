@@ -1,5 +1,77 @@
 # svelte
 
+## 5.0.0-next.136
+
+### Patch Changes
+
+- chore: remove `handle_compile_error` ([#11639](https://github.com/sveltejs/svelte/pull/11639))
+
+- breaking: disallow string literal values in `<svelte:element this="...">` ([#11454](https://github.com/sveltejs/svelte/pull/11454))
+
+- fix: use coarse-grained updates for derived expressions passed to props in legacy mode ([#11652](https://github.com/sveltejs/svelte/pull/11652))
+
+- fix: robustify `bind:scrollX/Y` binding ([#11655](https://github.com/sveltejs/svelte/pull/11655))
+
+- feat: migrate `<svelte:element this="div">` ([#11659](https://github.com/sveltejs/svelte/pull/11659))
+
+- feat: more information when hydration fails ([#11649](https://github.com/sveltejs/svelte/pull/11649))
+
+- fix: replay load and error events on load during hydration ([#11642](https://github.com/sveltejs/svelte/pull/11642))
+
+## 5.0.0-next.135
+
+### Patch Changes
+
+- fix: make messages more consistent ([#11643](https://github.com/sveltejs/svelte/pull/11643))
+
+- feat: introduce `rootDir` compiler option, make `filename` relative to it ([#11627](https://github.com/sveltejs/svelte/pull/11627))
+
+- fix: rename `__svelte_meta.filename` to `__svelte_meta.file` to align with svelte 4 ([#11627](https://github.com/sveltejs/svelte/pull/11627))
+
+- fix: avoid state_referenced_locally warning within type annotations ([#11638](https://github.com/sveltejs/svelte/pull/11638))
+
+## 5.0.0-next.134
+
+### Patch Changes
+
+- chore: improve SSR invalid element error message ([#11585](https://github.com/sveltejs/svelte/pull/11585))
+
+- fix: deduplicate children prop and default slot ([#10800](https://github.com/sveltejs/svelte/pull/10800))
+
+- feat: error on imports to `svelte/internal/*` ([#11632](https://github.com/sveltejs/svelte/pull/11632))
+
+- fix: better handle img loading attribute ([#11635](https://github.com/sveltejs/svelte/pull/11635))
+
+- feat: add $state.is rune ([#11613](https://github.com/sveltejs/svelte/pull/11613))
+
+- feat: provide $state warnings for accidental equality ([#11610](https://github.com/sveltejs/svelte/pull/11610))
+
+- feat: error when snippet shadow a prop ([#11631](https://github.com/sveltejs/svelte/pull/11631))
+
+- chore: use `new CustomEvent` instead of deprecated `initCustomEvent` ([#11629](https://github.com/sveltejs/svelte/pull/11629))
+
+## 5.0.0-next.133
+
+### Patch Changes
+
+- fix: add backwards-compat for old warning codes in legacy mode ([#11607](https://github.com/sveltejs/svelte/pull/11607))
+
+## 5.0.0-next.132
+
+### Patch Changes
+
+- chore: improve runtime overhead of creating comment templates ([#11591](https://github.com/sveltejs/svelte/pull/11591))
+
+- fix: replicate Svelte 4 props update detection in legacy mode ([#11577](https://github.com/sveltejs/svelte/pull/11577))
+
+- fix: allow for non optional chain call expression in render ([#11578](https://github.com/sveltejs/svelte/pull/11578))
+
+- fix: correctly handle falsy values of style directives in SSR mode ([#11583](https://github.com/sveltejs/svelte/pull/11583))
+
+- fix: improve handling of lazy image elements ([#11593](https://github.com/sveltejs/svelte/pull/11593))
+
+- fix: skip deriveds for props with known safe calls ([#11595](https://github.com/sveltejs/svelte/pull/11595))
+
 ## 5.0.0-next.131
 
 ### Patch Changes
