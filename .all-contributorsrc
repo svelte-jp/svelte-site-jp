@@ -203,6 +203,13 @@
 			"avatar_url": "https://avatars.githubusercontent.com/u/1425259?v=4",
 			"profile": "https://shuuji3.xyz/",
 			"contributions": ["doc"]
+		},
+		{
+			"login": "yo-goto",
+			"name": "PADAone",
+			"avatar_url": "https://avatars.githubusercontent.com/u/50942816?v=4",
+			"profile": "https://github.com/yo-goto",
+			"contributions": ["doc"]
 		}
 	],
 	"contributorsPerLine": 7

@@ -66,6 +66,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="http://tatsuyafw.hatenablog.jp/"><img src="https://avatars.githubusercontent.com/u/1162665?v=4?s=100" width="100px;" alt="Tatsuya Hoshino"/><br /><sub><b>Tatsuya Hoshino</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=tatsuyafw" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://shuuji3.xyz/"><img src="https://avatars.githubusercontent.com/u/1425259?v=4?s=100" width="100px;" alt="TAKAHASHI Shuuji"/><br /><sub><b>TAKAHASHI Shuuji</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=shuuji3" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/yo-goto"><img src="https://avatars.githubusercontent.com/u/50942816?v=4?s=100" width="100px;" alt="PADAone"/><br /><sub><b>PADAone</b></sub></a><br /><a href="https://github.com/svelte-jp/svelte-site-jp/commits?author=yo-goto" title="Documentation">📖</a></td>
+    </tr>
   </tbody>
 </table>
 
