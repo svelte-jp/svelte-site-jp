@@ -59,7 +59,7 @@ unsubscribe(); // logs 'no more subscribers'
 
 > EXPORT_SNIPPET: svelte/store#readable
 
-「外側」から値を設定できないストアを作成します。`readable` の第1引数はストアの初期値で、の第2引数は `writable` の第2引数と同じです。
+「外側」から値を設定できないストアを作成します。`readable` の第1引数はストアの初期値で、第2引数は `writable` の第2引数と同じです。
 
 ```ts
 import { readable } from 'svelte/store';
