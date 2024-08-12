@@ -32,12 +32,12 @@ const get_rss = (posts) =>
 
 <channel>
 	<title>Svelte blog</title>
-	<link>https://svelte.dev/blog</link>
+	<link>https://svelte.jp/blog</link>
 	<description>News and information about the magical disappearing UI framework</description>
 	<image>
-		<url>https://svelte.dev/favicon.png</url>
+		<url>https://svelte.jp/favicon.png</url>
 		<title>Svelte</title>
-		<link>https://svelte.dev/blog</link>
+		<link>https://svelte.jp/blog</link>
 	</image>
 	${posts
 		.filter((post) => !post.draft)
@@ -45,7 +45,7 @@ const get_rss = (posts) =>
 			(post) => `
 		<item>
 			<title>${escapeHTML(post.title)}</title>
-			<link>https://svelte.dev/blog/${post.slug}</link>
+			<link>https://svelte.jp/blog/${post.slug}</link>
 			<description>${escapeHTML(post.description)}</description>
 			<pubDate>${formatPubdate(post.date)}</pubDate>
 		</item>

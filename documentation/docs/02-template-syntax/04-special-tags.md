@@ -13,7 +13,7 @@ title: Special tags
 
 HTML の式は単独で正しい HTML になっている必要があります。`{@html "<div>"}content{@html "</div>"}` は `</div>` の部分が正しい HTML ではないため、動作しません。また、Svelteコードをコンパイルすることもできません。
 
-> Svelte は HTML を挿入する前に式をサニタイズしません。データが信頼できないソースからのものである場合は自分でサニタイズする必要があります。そうしないと、ユーザーを XSS の脆弱性にさらしてしまいます。
+> Svelte は HTML を挿入する前に式をサニタイズしません。データが信頼できないソースからのものである場合は自分でサニタイズする必要があります。そうしないと、ユーザーを [XSS の脆弱性](https://owasp.org/www-community/attacks/xss/) にさらしてしまいます。
 
 ```svelte
 <div class="blog-post">

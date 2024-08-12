@@ -20,8 +20,8 @@ authorURL: https://dreamindani.com
 
 ## What's new in Svelte
 
-- `createEventDispatcher` 関数で、カスタムイベントをキャンセルできるようになりました (**3.48.0**, [Docs](https://svelte.jp/docs#run-time-svelte-createeventdispatcher), [PR](https://github.com/sveltejs/svelte/pull/7064))
-- `{@const}` タグが `{#if}` ブロックの中で使えるようになり、条件に応じて変数が定義できるようになりました (**3.48.0**, [Docs](https://svelte.jp/docs#template-syntax-const), [PR](https://github.com/sveltejs/svelte/pull/7451))
+- `createEventDispatcher` 関数で、カスタムイベントをキャンセルできるようになりました (**3.48.0**, [Docs](/docs/svelte#createeventdispatcher), [PR](https://github.com/sveltejs/svelte/pull/7064))
+- `{@const}` タグが `{#if}` ブロックの中で使えるようになり、条件に応じて変数が定義できるようになりました (**3.48.0**, [Docs](/docs/special-tags#const), [PR](https://github.com/sveltejs/svelte/pull/7451))
 - `<svelte:element>`、アニメーション、多くの DOM 要素に関するバグが修正されました。詳細は [CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md#3480) をご覧ください!
 
 ## What's new in SvelteKit

@@ -38,7 +38,7 @@ export const load: PageServerLoad = () => {
 };
 ```
 
-SvelteKit は自動的にこの `fetchPost` の呼び出しを await してからページのレンダリングを開始します。なぜならそれがトップレベルだからです。しかし、ネストした `fetchComments` の呼び出しが完了するのは待ちません – ページはレンダリングされ、`data.streamed.comments` はリクエストが完了すると解決する promise となります。`+page.svelte` で、Svelte の [await block](https://svelte.jp/docs#template-syntax-await) を使用してロード中の状態を表示することもできます:
+SvelteKit は自動的にこの `fetchPost` の呼び出しを await してからページのレンダリングを開始します。なぜならそれがトップレベルだからです。しかし、ネストした `fetchComments` の呼び出しが完了するのは待ちません – ページはレンダリングされ、`data.streamed.comments` はリクエストが完了すると解決する promise となります。`+page.svelte` で、Svelte の [await block](/docs/logic-blocks#await) を使用してロード中の状態を表示することもできます:
 
 ```svelte
 <script lang="ts">

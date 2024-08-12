@@ -18,8 +18,9 @@ Happy February, everyone! ここ1か月ほどで、Svelte と SvelteKit の [開
 それでは見ていきましょう…
 
 ## Highlights from the Svelte changelog
-- **3.45.0** では、[新しい a11y の warning である `a11y-no-redundant-roles`](https://svelte.jp/docs#accessibility-warnings-a11y-no-redundant-roles) と、分割代入およびキャッシュの修正が行われました
-- **3.46.0** では、要望が多かった [`{@const}` tag](https://svelte.jp/docs#template-syntax-const) と [`style:` directive](https://svelte.jp/docs#template-syntax-element-directives-style-property) が追加されました
+
+- **3.45.0** では、[新しい a11y の warning である `a11y-no-redundant-roles`](/docs/accessibility-warnings#a11y-no-redundant-roles) と、分割代入およびキャッシュの修正が行われました
+- **3.46.0** では、要望が多かった [`{@const}` tag](/docs/special-tags#const) と [`style:` directive](/docs/element-directives#style-property) が追加されました
 - **3.46.1 - 3.46.3** では、`{@const}` タグと `style:` ディレクティブの修正、アニメーションに関する多くの修正が行われました
 - [Svelte REPL で AST が出力できるようになりました](https://svelte.dev/repl/hello-world)
 
