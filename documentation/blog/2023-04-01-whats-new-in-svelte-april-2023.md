@@ -24,18 +24,18 @@ Happy April、みなさん！ 今月は、Svelte コンパイラの全ての新�
 ## What's new in Svelte
 
 - **3.56.0** でたくさんの新機能が使えるようになりました！
-  - `|stopImmediatePropagation` という `on:eventname` 向けのイベント修飾子(event modifier) が追加されました ([#5085](https://github.com/sveltejs/svelte/issues/5085), [Docs](https://svelte.jp/docs#template-syntax-element-directives-on-eventname))
-  - `slide` トランジションに `axis` パラメータが追加されました ([#6182](https://github.com/sveltejs/svelte/issues/6182), [Docs](https://svelte.jp/docs#run-time-svelte-transition-slide))
-  - `writable` ストアを読み取り専用に変換する `readonly` ユーティリティが追加されました ([#6518](https://github.com/sveltejs/svelte/pull/6518), [Docs](https://svelte.jp/docs#run-time-svelte-store-writable))
-  - メディア要素向けの `readyState` バインディングが追加されました ([#6666](https://github.com/sveltejs/svelte/issues/6666), [Docs](https://svelte.jp/docs#template-syntax-element-directives-bind-property-media-element-bindings))
-  - 画像(image) に `naturalWidth` と `naturalHeight` バインディングが追加されました ([#7771](https://github.com/sveltejs/svelte/issues/7771), [Docs](https://svelte.jp/docs#template-syntax-element-directives-bind-property-image-element-bindings))
+  - `|stopImmediatePropagation` という `on:eventname` 向けのイベント修飾子(event modifier) が追加されました ([#5085](https://github.com/sveltejs/svelte/issues/5085), [Docs](/docs/element-directives#on-eventname))
+  - `slide` トランジションに `axis` パラメータが追加されました ([#6182](https://github.com/sveltejs/svelte/issues/6182), [Docs](/docs/svelte-transition#slide))
+  - `writable` ストアを読み取り専用に変換する `readonly` ユーティリティが追加されました ([#6518](https://github.com/sveltejs/svelte/pull/6518), [Docs](/docs/svelte-store#writable))
+  - メディア要素向けの `readyState` バインディングが追加されました ([#6666](https://github.com/sveltejs/svelte/issues/6666), [Docs](/docs/element-directives#media-element-bindings))
+  - 画像(image) に `naturalWidth` と `naturalHeight` バインディングが追加されました ([#7771](https://github.com/sveltejs/svelte/issues/7771), [Docs](/docs/element-directives#image-element-bindings))
 - コンポーネントでの `<!-- svelte-ignore ... -->` がサポートされました ([#8082](https://github.com/sveltejs/svelte/issues/8082))
 - `bind:group` の input で、値に `undefined` がセットされたときにクリアされるようになりました (**3.56.0**, [#8214](https://github.com/sveltejs/svelte/issues/8214))
 - `{#each}` ブロック内にある、spread 属性を持つ `<input>` 要素を入れ替えたとき、その `<input>` の値が保持されるようになりました (**3.56.0**, [#7578](https://github.com/sveltejs/svelte/issues/7578))
 - 全体的に警告(warning)が改善されました - `noreferrer` から `aria` ルールまで！ (**3.56.0**)
 - `<svelte:document>` が追加されました (**3.57.0**, [#3310](https://github.com/sveltejs/svelte/issues/3310))
 - `style:` ディレクティブが `style=` 属性より優先されるようになりました (**3.57.0**, [#7475](https://github.com/sveltejs/svelte/issues/7475))
-- `fly` と `blur` トランジションで CSS の単位がサポートされました (**3.57.0**, [#7623](https://github.com/sveltejs/svelte/pull/7623), [Docs](https://svelte.jp/docs#run-time-svelte-transition))
+- `fly` と `blur` トランジションで CSS の単位がサポートされました (**3.57.0**, [#7623](https://github.com/sveltejs/svelte/pull/7623), [Docs](/docs/svelte-transition))
 
 Svelte コンパイラに対する全ての変更については、まだ未リリースの変更も含め、[CHANGELOG](https://github.com/sveltejs/svelte/blob/master/CHANGELOG.md)  をご確認ください。
 

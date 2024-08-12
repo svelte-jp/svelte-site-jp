@@ -16,8 +16,8 @@
 	<meta name="twitter:description" content={data.post.description} />
 	<meta name="Description" content={data.post.description} />
 
-	<meta name="twitter:image" content="https://svelte.dev/blog/{$page.params.slug}/card.png" />
-	<meta name="og:image" content="https://svelte.dev/blog/{$page.params.slug}/card.png" />
+	<meta name="twitter:image" content="https://svelte.jp/blog/{$page.params.slug}/card.png" />
+	<meta name="og:image" content="https://svelte.jp/blog/{$page.params.slug}/card.png" />
 </svelte:head>
 
 <div class="content">
@@ -52,9 +52,6 @@
 		{@html data.post.content}
 	</article>
 </div>
-
-<!-- the crawler doesn't understand twitter:image etc, so we have to add this hack. TODO fix in sveltekit -->
-<img hidden src="/blog/{$page.params.slug}/card.png" alt="Social card for {data.post.title}" />
 
 <style>
 	.post {

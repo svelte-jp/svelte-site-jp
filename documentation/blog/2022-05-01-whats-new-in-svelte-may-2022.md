@@ -18,7 +18,7 @@ authorURL: https://dreamindani.com
 
 ## What's new in Svelte
 
-- `<svelte:element>` 要素によって、動的に指定したタイプの要素をレンダリングできます。これは例えば、CMS のリッチなテキストコンテンツをレンダリングする場合などに便利です。詳細は [docs](https://svelte.jp/docs#template-syntax-svelte-element) や [tutorial](https://svelte.jp/tutorial/svelte-element) をチェックしてみてください (**3.47.0**)!
+- `<svelte:element>` 要素によって、動的に指定したタイプの要素をレンダリングできます。これは例えば、CMS のリッチなテキストコンテンツをレンダリングする場合などに便利です。詳細は [docs](/docs/special-elements#svelte-element) や [tutorial](https://svelte.jp/tutorial/svelte-element) をチェックしてみてください (**3.47.0**)!
 
 ## Language Tools updates
 
